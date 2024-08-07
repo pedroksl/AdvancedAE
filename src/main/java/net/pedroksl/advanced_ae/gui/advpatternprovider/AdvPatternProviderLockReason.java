@@ -21,10 +21,10 @@ public class AdvPatternProviderLockReason implements ICompositeWidget {
 	protected int x;
 	protected int y;
 
-	private final AdvPatternProviderScreen<?> screen;
+	private final AdvPatternProviderGui gui;
 
-	public AdvPatternProviderLockReason(AdvPatternProviderScreen<?> screen) {
-		this.screen = screen;
+	public AdvPatternProviderLockReason(AdvPatternProviderGui gui) {
+		this.gui = gui;
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class AdvPatternProviderLockReason implements ICompositeWidget {
 
 	@Override
 	public void drawForegroundLayer(GuiGraphics guiGraphics, Rect2i bounds, Point mouse) {
-		var menu = screen.getMenu();
+		var menu = gui.getMenu();
 
 		Icon icon;
 		Component lockStatusText;
@@ -74,7 +74,7 @@ public class AdvPatternProviderLockReason implements ICompositeWidget {
 	@Nullable
 	@Override
 	public Tooltip getTooltip(int mouseX, int mouseY) {
-		var menu = screen.getMenu();
+		var menu = gui.getMenu();
 		var tooltip = switch (menu.getCraftingLockedReason()) {
 			case NONE -> null;
 			case LOCK_UNTIL_PULSE -> InGameTooltip.CraftingLockedUntilPulse.text();

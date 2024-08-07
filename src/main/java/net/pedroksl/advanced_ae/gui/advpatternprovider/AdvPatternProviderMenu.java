@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.gui.advpatternprovider;
 
-import appeng.menu.implementations.MenuTypeBuilder;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
@@ -23,10 +22,6 @@ import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
  */
 public class AdvPatternProviderMenu extends AEBaseMenu {
 
-	public static final MenuType<AdvPatternProviderMenu> TYPE = MenuTypeBuilder
-			.create((id, inv, host) -> new AdvPatternProviderMenu(id, inv, host), AdvPatternProviderLogicHost.class)
-			.build("adv_pattern_provider");
-
 	protected final AdvPatternProviderLogic logic;
 
 	@GuiSync(3)
@@ -39,10 +34,6 @@ public class AdvPatternProviderMenu extends AEBaseMenu {
 	public LockCraftingMode craftingLockedReason = LockCraftingMode.NONE;
 	@GuiSync(7)
 	public GenericStack unlockStack = null;
-
-	public AdvPatternProviderMenu(int id, Inventory playerInventory, AdvPatternProviderLogicHost host) {
-		this(TYPE, id, playerInventory, host);
-	}
 
 	protected AdvPatternProviderMenu(MenuType<? extends AdvPatternProviderMenu> menuType,
 	                                 int id, Inventory playerInventory,

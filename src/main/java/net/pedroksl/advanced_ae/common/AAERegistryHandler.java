@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.common;
 
+import appeng.api.parts.PartModels;
 import appeng.block.AEBaseBlockItem;
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
@@ -20,7 +21,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
+import net.pedroksl.advanced_ae.common.parts.AdvPatternEncodingTermPart;
+import net.pedroksl.advanced_ae.gui.advpatternencoding.AdvPatternEncodingTermContainer;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class AAERegistryHandler extends RegistryHandler {
@@ -42,11 +45,12 @@ public class AAERegistryHandler extends RegistryHandler {
 	public void register(RegisterEvent event) {
 		super.register(event);
 		this.onRegisterContainer();
-		// this.onRegisterModels(); // Parts
+		this.onRegisterModels(); // Parts
 	}
 
 	private void onRegisterContainer() {
-		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_provider"), AdvPatternProviderMenu.TYPE);
+		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_provider"), AdvPatternProviderContainer.TYPE);
+		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_encoding_terminal"), AdvPatternEncodingTermContainer.TYPE);
 	}
 
 	private <T extends AEBaseBlockEntity> void bindTileEntity(Class<T> clazz, AEBaseEntityBlock<T> block, BlockEntityType.BlockEntitySupplier<T> supplier) {
@@ -77,6 +81,10 @@ public class AAERegistryHandler extends RegistryHandler {
 
 	private void registerAEUpgrade() {
 
+	}
+
+	private void onRegisterModels() {
+		PartModels.registerModels(AdvPatternEncodingTermPart.MODELS);
 	}
 
 	private void registerPackagedItems() {

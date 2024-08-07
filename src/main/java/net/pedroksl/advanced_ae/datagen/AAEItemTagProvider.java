@@ -12,12 +12,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class AAEItemTagProvider extends ItemTagsProvider {
-    public AAEItemTagProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pLookupProvider, CompletableFuture<TagLookup<Block>> pBlockTags, @Nullable ExistingFileHelper existingFileHelper) {
-        super(pOutput, pLookupProvider, pBlockTags, AdvancedAE.MOD_ID, existingFileHelper);
-    }
+	public AAEItemTagProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pLookupProvider, CompletableFuture<TagLookup<Block>> pBlockTags, @Nullable ExistingFileHelper existingFileHelper) {
+		super(pOutput, pLookupProvider, pBlockTags, AdvancedAE.MOD_ID, existingFileHelper);
+	}
 
-    @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider) {
-
-    }
+	@SuppressWarnings("DataFlowIssue")
+	@Override
+	protected void addTags(HolderLookup.@NotNull Provider provider) {
+//		tag(AAETags.EX_PATTERN_PROVIDER)
+//				.add(AAEItemAndBlock.ADV_PATTERN_PROVIDER_PART)
+//				.add(AAEItemAndBlock.ADV_PATTERN_PROVIDER.asItem());
+//		tag(AAETags.EX_INTERFACE)
+//				.add(AAEItemAndBlock.ADV_INTERFACE_PART)
+//				.add(AAEItemAndBlock.ADV_INTERFACE.asItem());
+	}
 }

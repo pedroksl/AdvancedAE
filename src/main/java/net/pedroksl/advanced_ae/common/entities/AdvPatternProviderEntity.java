@@ -25,7 +25,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -204,11 +204,11 @@ public class AdvPatternProviderEntity extends AENetworkBlockEntity implements Ad
 
 	@Override
 	public void openMenu(Player player, MenuLocator locator) {
-		MenuOpener.open(AdvPatternProviderMenu.TYPE, player, locator);
+		MenuOpener.open(AdvPatternProviderContainer.TYPE, player, locator);
 	}
 
 	@Override
 	public void returnToMainMenu(Player player, ISubMenu subMenu) {
-		MenuOpener.returnTo(AdvPatternProviderMenu.TYPE, player, subMenu.getLocator());
+		MenuOpener.returnTo(AdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
 	}
 }

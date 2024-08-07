@@ -1,5 +1,12 @@
 {
   "itemGroup.app": "Advanced AE",
   "block.advanced_ae.adv_pattern_provider": "ME Advanced Pattern Provider",
-  "gui.advanced_ae.ex_pattern_provider": "ME Advanced Pattern Provider"
+  "item.advanced_ae.adv_blank_pattern": "Advanced Blank Pattern",
+  "item.advanced_ae.adv_crafting_pattern": "Advanced Crafting Pattern",
+  "item.advanced_ae.adv_processing_pattern": "Advanced Processing Pattern",
+  "item.advanced_ae.adv_smithing_pattern": "Advanced Smithing Pattern",
+  "item.advanced_ae.adv_stonecutting_pattern": "Advanced Stonecutting Pattern",
+  "item.advanced_ae.adv_pattern_encoding_terminal_part": "ME Advanced Pattern Encoding Terminal",
+  "gui.advanced_ae.adv_pattern_provider": "ME Advanced Pattern Provider",
+  "gui.advanced_ae.adv_pattern_encoding_terminal": "ME Advanced Pattern Encoding Terminal"
 }
