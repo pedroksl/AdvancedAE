@@ -1,11 +1,9 @@
 package net.pedroksl.advanced_ae.mixins;
 
 import appeng.api.inventories.InternalInventory;
-import appeng.api.stacks.AEKey;
 import appeng.core.definitions.AEItems;
 import appeng.core.definitions.ItemDefinition;
 import appeng.util.inv.filter.AEItemDefinitionFilter;
-import appeng.util.inv.filter.IAEItemFilter;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
 import org.spongepowered.asm.mixin.Final;
@@ -16,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AEItemDefinitionFilter.class)
-public class MixinAEItemDefinitionFilter {
+public abstract class MixinAEItemDefinitionFilter {
 
 	@Final
 	@Shadow(remap = false)
@@ -27,8 +25,5 @@ public class MixinAEItemDefinitionFilter {
 		if (this.definition.isSameAs(AEItems.BLANK_PATTERN.stack()) && stack.is(AAEItemAndBlock.ADV_BLANK_PATTERN.asItem())) {
 			cir.setReturnValue(true);
 		}
-	}
-
-	public MixinAEItemDefinitionFilter(ItemDefinition<?> definition) {
 	}
 }
