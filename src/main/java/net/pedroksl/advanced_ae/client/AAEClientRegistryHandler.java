@@ -20,7 +20,8 @@ public class AAEClientRegistryHandler {
 
 	public void registerGui() {
 		InitScreens.register(AdvPatternProviderContainer.TYPE, AdvPatternProviderGui::new, "/screens/adv_pattern_provider.json");
-		InitScreens.<AdvPatternEncodingTermContainer, AdvPatternEncodingTermGui<AdvPatternEncodingTermContainer>>register(AdvPatternEncodingTermContainer.TYPE, AdvPatternEncodingTermGui::new, "/screens/adv_pattern_encoding_terminal.json");
+		InitScreens.register(AdvPatternEncodingTermContainer.TYPE,
+				AdvPatternEncodingTermGui::new, "/screens/terminals/adv_pattern_encoding_terminal.json");
 	}
 
 	@SubscribeEvent

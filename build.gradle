@@ -39,10 +39,12 @@ minecraft {
 
         client {
             property 'forge.enabledGameTestNamespaces', mod_id
+            arg "-mixin.config=" + "mixins.aae.json"
         }
 
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
+            arg "-mixin.config=" + "mixins.aae.json"
             args '--nogui'
         }
 
@@ -102,6 +104,7 @@ dependencies {
     compileOnly fg.deobf("dev.architectury:architectury-forge:7.0.66")
     compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:12.0.622")
     compileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:9.0.94")
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
     // runtime test
     runtimeOnly fg.deobf("mezz.jei:jei-1.20.1-forge:15.0.0.12")
     runtimeOnly fg.deobf("curse.maven:applied-energistics-2-223794:5565729")
@@ -111,11 +114,11 @@ dependencies {
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-            neo_version: forge_version, forge_version_range: forge_version_range,
+            minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+            neo_version         : forge_version, forge_version_range: forge_version_range,
             loader_version_range: loader_version_range,
-            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description,
+            mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors         : mod_authors, mod_description: mod_description,
     ]
     inputs.properties replaceProperties
 
@@ -134,9 +137,9 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Version'  : project.jar.archiveVersion,
                 'Implementation-Vendor'   : mod_authors,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'TweakClass': "org.spongepowered.asm.launch.MixinTweaker",
-                'TweakOrder': 0,
-                'MixinConfigs': "mixins.epp.json"
+                'TweakClass'              : "org.spongepowered.asm.launch.MixinTweaker",
+                'TweakOrder'              : 0,
+                'MixinConfigs'            : "mixins.aae.json"
         ])
     }
     finalizedBy 'reobfJar'
@@ -157,7 +160,7 @@ publishing {
 }
 
 mixin {
-    add sourceSets.main, "mixins.epp.refmap.json"
+    add sourceSets.main, "mixins.aae.refmap.json"
 }
 
 tasks.withType(JavaCompile).configureEach {

@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "net.pedroksl.advanced_ae.mixins",
+  "refmap": "mixins.aae.refmap.json",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MixinRestrictedInputSlot",
+    "MixinAEItemDefinitionFilter"
+  ],
+  "client": [
+  ],
+  "server": [
+  ]
+}

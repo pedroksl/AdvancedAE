@@ -4,7 +4,6 @@ import appeng.api.parts.IPartItem;
 import appeng.api.parts.IPartModel;
 import appeng.helpers.IPatternTerminalLogicHost;
 import appeng.helpers.IPatternTerminalMenuHost;
-import appeng.menu.me.items.PatternEncodingTermMenu;
 import appeng.parts.PartModel;
 import appeng.parts.encoding.PatternEncodingLogic;
 import appeng.parts.reporting.AbstractTerminalPart;
@@ -17,6 +16,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.gui.advpatternencoding.AdvPatternEncodingTermContainer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,7 +73,7 @@ public class AdvPatternEncodingTermPart extends AbstractTerminalPart
 
 	@Override
 	public MenuType<?> getMenuType(Player p) {
-		return PatternEncodingTermMenu.TYPE;
+		return AdvPatternEncodingTermContainer.TYPE;
 	}
 
 	@Override

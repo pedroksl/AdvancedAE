@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +44,7 @@ import appeng.parts.encoding.EncodingMode;
 import appeng.parts.encoding.PatternEncodingLogic;
 import appeng.util.ConfigInventory;
 
+@SuppressWarnings("deprecation")
 public class AdvPatternEncodingTermMenu extends MEStorageMenu implements IMenuCraftingPacket {
 
 	private static final int CRAFTING_GRID_WIDTH = 3;
@@ -95,10 +97,6 @@ public class AdvPatternEncodingTermMenu extends MEStorageMenu implements IMenuCr
 	 */
 	public IntSet slotsSupportingFluidSubstitution = new IntArraySet();
 
-	public AdvPatternEncodingTermMenu(int id, Inventory ip, IPatternTerminalMenuHost host) {
-		this(TYPE, id, ip, host, true);
-	}
-
 	public AdvPatternEncodingTermMenu(MenuType<?> menuType, int id, Inventory ip, IPatternTerminalMenuHost host,
 	                                  boolean bindInventory) {
 		super(menuType, id, ip, host, bindInventory);
@@ -149,11 +147,13 @@ public class AdvPatternEncodingTermMenu extends MEStorageMenu implements IMenuCr
 				SlotSemantics.SMITHING_TABLE_ADDITION);
 		this.smithingTableAdditionSlot.setHideAmount(true);
 
-		this.addSlot(this.blankPatternSlot = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.BLANK_PATTERN,
-				encodingLogic.getBlankPatternInv(), 0), SlotSemantics.BLANK_PATTERN);
+		this.addSlot(this.blankPatternSlot =
+				new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.BLANK_PATTERN,
+						encodingLogic.getBlankPatternInv(), 0), SlotSemantics.BLANK_PATTERN);
 		this.addSlot(
-				this.encodedPatternSlot = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.ENCODED_PATTERN,
-						encodingLogic.getEncodedPatternInv(), 0),
+				this.encodedPatternSlot =
+						new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.ENCODED_PATTERN,
+								encodingLogic.getEncodedPatternInv(), 0),
 				SlotSemantics.ENCODED_PATTERN);
 
 		this.encodedPatternSlot.setStackLimit(1);
@@ -311,8 +311,13 @@ public class AdvPatternEncodingTermMenu extends MEStorageMenu implements IMenuCr
 			return null;
 		}
 
-		return PatternDetailsHelper.encodeCraftingPattern(this.currentRecipe, ingredients, result, isSubstitute(),
-				isSubstituteFluids());
+		if (AEItems.BLANK_PATTERN.isSameAs(blankPatternSlot.getItem())) {
+			return PatternDetailsHelper.encodeCraftingPattern(this.currentRecipe, ingredients, result, isSubstitute(),
+					isSubstituteFluids());
+		} else {
+			return PatternDetailsHelper.encodeCraftingPattern(this.currentRecipe, ingredients, result, isSubstitute(),
+					isSubstituteFluids());
+		}
 	}
 
 	@Nullable
@@ -418,7 +423,8 @@ public class AdvPatternEncodingTermMenu extends MEStorageMenu implements IMenuCr
 			return false;
 		}
 
-		return AEItems.BLANK_PATTERN.isSameAs(output);
+		return AEItems.BLANK_PATTERN.isSameAs(output)
+				|| output.is(AAEItemAndBlock.ADV_BLANK_PATTERN.asItem());
 	}
 
 	@Override
