@@ -22,7 +22,8 @@ public abstract class MixinAEItemDefinitionFilter {
 
 	@Inject(method = "allowInsert", at = @At("HEAD"), cancellable = true, remap = false)
 	protected void onAllowInsert(InternalInventory inv, int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-		if (this.definition.isSameAs(AEItems.BLANK_PATTERN.stack()) && stack.is(AAEItemAndBlock.ADV_BLANK_PATTERN.asItem())) {
+		if (this.definition.isSameAs(AEItems.BLANK_PATTERN.stack())
+				&& stack.is(AAEItemAndBlock.ADV_BLANK_PATTERN.asItem())) {
 			cir.setReturnValue(true);
 		}
 	}

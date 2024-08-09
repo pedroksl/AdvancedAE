@@ -5,10 +5,10 @@ import appeng.items.parts.PartItem;
 import net.minecraft.world.item.Item;
 import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
-import net.pedroksl.advanced_ae.common.items.AdvCraftingPatternItem;
-import net.pedroksl.advanced_ae.common.items.AdvProcessingPatternItem;
-import net.pedroksl.advanced_ae.common.items.AdvSmithingPatternItem;
-import net.pedroksl.advanced_ae.common.items.AdvStonecuttingPatternItem;
+import net.pedroksl.advanced_ae.common.patterns.AdvCraftingPatternItem;
+import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPatternItem;
+import net.pedroksl.advanced_ae.common.patterns.AdvSmithingPatternItem;
+import net.pedroksl.advanced_ae.common.patterns.AdvStonecuttingPatternItem;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternEncodingTermPart;
 
 public class AAEItemAndBlock {

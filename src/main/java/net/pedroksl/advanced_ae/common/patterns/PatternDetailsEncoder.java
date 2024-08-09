@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.common.helpers;
+package net.pedroksl.advanced_ae.common.patterns;
 
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.GenericStack;

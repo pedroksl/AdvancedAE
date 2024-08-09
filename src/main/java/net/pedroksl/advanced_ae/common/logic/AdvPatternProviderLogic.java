@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import appeng.helpers.patternprovider.*;
+import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +107,6 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 	private GenericStack unlockStack;
 	private int roundRobinIndex = 0;
 
-	@Nullable
 	public AdvPatternProviderLogic(IManagedGridNode mainNode, AdvPatternProviderLogicHost host) {
 		this(mainNode, host, 36);
 	}
@@ -283,6 +283,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 		var be = host.getBlockEntity();
 		var level = be.getLevel();
+		var advPattern = patternDetails instanceof AdvProcessingPattern;
 
 		if (getCraftingLockedReason() != LockCraftingMode.NONE) {
 			return false;
@@ -297,7 +298,6 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			var adjPos = be.getBlockPos().relative(direction);
 			var adjBe = level.getBlockEntity(adjPos);
 			var adjBeSide = direction.getOpposite();
-			adjBeSide = Direction.UP;
 
 			var craftingMachine = ICraftingMachine.of(level, adjPos, adjBeSide, adjBe);
 			if (craftingMachine != null && craftingMachine.acceptsPlans()) {
@@ -333,6 +333,12 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 				continue;
 			}
 
+			if (advPattern && ((AdvProcessingPattern) patternDetails).directionalInputsSet()) {
+				if (this.pushInputsDirectionally()) {
+					return true;
+				}
+			}
+
 			if (this.adapterAcceptsAll(adapter, inputHolder)) {
 				patternDetails.pushInputsToExternalInventory(inputHolder, (what, amount) -> {
 					var inserted = adapter.insert(what, amount, Actionable.MODULATE);
@@ -349,6 +355,10 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		}
 
 		return false;
+	}
+
+	private boolean pushInputsDirectionally() {
+		return true;
 	}
 
 	public void resetCraftingLock() {
@@ -435,6 +445,11 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 	@Nullable
 	private PatternProviderTarget findAdapter(Direction side) {
+		return findAdapter(side, null);
+	}
+
+	@Nullable
+	private PatternProviderTarget findAdapter(Direction side, Direction fromSide) {
 		if (targetCaches[side.get3DDataValue()] == null) {
 			var thisBe = host.getBlockEntity();
 			targetCaches[side.get3DDataValue()] = new AdvPatternProviderTargetCache(
@@ -443,21 +458,8 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 					side.getOpposite(),
 					actionSource);
 		}
-		return targetCaches[side.get3DDataValue()].find();
+		return targetCaches[side.get3DDataValue()].find(fromSide);
 	}
-
-//	@Nullable
-//	private PatternProviderTarget[] findAdapters(Direction side, Direction[] sneakySides, KeyCounter[] inputs) {
-//		if (targetCaches[side.get3DDataValue()] == null) {
-//			var thisBe = host.getBlockEntity();
-//			targetCaches[side.get3DDataValue()] = new AdvPatternProviderTargetCache(
-//					(ServerLevel) thisBe.getLevel(),
-//					thisBe.getBlockPos().relative(side),
-//					side.getOpposite(),
-//					actionSource);
-//		}
-//		return targetCaches[side.get3DDataValue()].find();
-//	}
 
 	private boolean adapterAcceptsAll(PatternProviderTarget target, KeyCounter[] inputHolder) {
 		for (var inputList : inputHolder) {

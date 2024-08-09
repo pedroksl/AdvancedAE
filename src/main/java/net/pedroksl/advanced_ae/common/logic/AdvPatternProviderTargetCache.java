@@ -33,12 +33,13 @@ class AdvPatternProviderTargetCache {
 		this.direction = direction;
 		this.src = src;
 		this.strategies = StackWorldBehaviors.createExternalStorageStrategies(l, pos, direction);
+
 	}
 
 	@Nullable
-	PatternProviderTarget find() {
+	PatternProviderTarget find(Direction fromSide) {
 		// our capability first: allows any storage channel
-		var meStorage = cache.find(direction);
+		var meStorage = cache.find(fromSide == null ? direction : fromSide);
 		if (meStorage != null) {
 			return wrapMeStorage(meStorage);
 		}
@@ -53,7 +54,7 @@ class AdvPatternProviderTargetCache {
 			}
 		}
 
-		if (externalStorages.size() > 0) {
+		if (!externalStorages.isEmpty()) {
 			return wrapMeStorage(new CompositeStorage(externalStorages));
 		}
 
