@@ -18,8 +18,6 @@
 
 package net.pedroksl.advanced_ae.common.patterns;
 
-import appeng.api.stacks.GenericStack;
-import appeng.crafting.pattern.AEProcessingPattern;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -33,17 +31,7 @@ import java.util.Objects;
  * Helper functions to work with patterns, mostly related to (de)serialization.
  */
 class AdvProcessingPatternEncoding {
-	private static final String NBT_INPUTS = "in";
-	private static final String NBT_OUTPUTS = "out";
 	private static final String NBT_INPUT_DIRECTIONS = "dir";
-
-	public static GenericStack[] getProcessingInputs(CompoundTag nbt) {
-		return getMixedList(nbt, NBT_INPUTS, AEProcessingPattern.MAX_INPUT_SLOTS);
-	}
-
-	public static GenericStack[] getProcessingOutputs(CompoundTag nbt) {
-		return getMixedList(nbt, NBT_OUTPUTS, AEProcessingPattern.MAX_OUTPUT_SLOTS);
-	}
 
 	public static Direction[] getProcessingInputDirections(CompoundTag nbt) {
 		Objects.requireNonNull(nbt, "Pattern must have a tag.");
@@ -61,51 +49,8 @@ class AdvProcessingPatternEncoding {
 		return result;
 	}
 
-	public static GenericStack[] getMixedList(CompoundTag nbt, String nbtKey, int maxSize) {
-		Objects.requireNonNull(nbt, "Pattern must have a tag.");
-
-		ListTag tag = nbt.getList(nbtKey, Tag.TAG_COMPOUND);
-		Preconditions.checkArgument(tag.size() <= maxSize, "Cannot use more than " + maxSize + " ingredients");
-
-		var result = new GenericStack[tag.size()];
-		for (int x = 0; x < tag.size(); ++x) {
-			var entry = tag.getCompound(x);
-			if (entry.isEmpty()) {
-				continue;
-			}
-			var stack = GenericStack.readTag(entry);
-			if (stack == null) {
-				throw new IllegalArgumentException("Pattern references missing stack: " + entry);
-			}
-			result[x] = stack;
-		}
-		return result;
-	}
-
-	public static void encodeProcessingPattern(CompoundTag tag, GenericStack[] sparseInputs,
-	                                           GenericStack[] sparseOutputs) {
-		tag.put(NBT_INPUTS, encodeStackList(sparseInputs));
-		tag.put(NBT_OUTPUTS, encodeStackList(sparseOutputs));
-	}
-
-	public static void encodeProcessingPattern(CompoundTag tag, GenericStack[] sparseInputs,
-	                                           GenericStack[] sparseOutputs, Direction[] sides) {
-		tag.put(NBT_INPUTS, encodeStackList(sparseInputs));
-		tag.put(NBT_OUTPUTS, encodeStackList(sparseOutputs));
+	public static void encodeDirectionList(CompoundTag tag, Direction[] sides) {
 		tag.put(NBT_INPUT_DIRECTIONS, encodeDirectionList(sides));
-	}
-
-	private static ListTag encodeStackList(GenericStack[] stacks) {
-		ListTag tag = new ListTag();
-		boolean foundStack = false;
-		for (var stack : stacks) {
-			tag.add(GenericStack.writeTag(stack));
-			if (stack != null && stack.amount() > 0) {
-				foundStack = true;
-			}
-		}
-		Preconditions.checkArgument(foundStack, "List passed to pattern must contain at least one stack.");
-		return tag;
 	}
 
 	private static ListTag encodeDirectionList(Direction[] directions) {

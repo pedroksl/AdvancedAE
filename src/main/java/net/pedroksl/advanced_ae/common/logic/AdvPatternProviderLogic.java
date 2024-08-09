@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import appeng.helpers.patternprovider.*;
-import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
+import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetails;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -283,7 +283,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 		var be = host.getBlockEntity();
 		var level = be.getLevel();
-		var advPattern = patternDetails instanceof AdvProcessingPattern;
+		var advPattern = patternDetails instanceof AdvPatternDetails;
 
 		if (getCraftingLockedReason() != LockCraftingMode.NONE) {
 			return false;
@@ -333,8 +333,8 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 				continue;
 			}
 
-			if (advPattern && ((AdvProcessingPattern) patternDetails).directionalInputsSet()) {
-				if (this.pushInputsDirectionally()) {
+			if (advPattern && ((AdvPatternDetails) patternDetails).directionalInputsSet()) {
+				if (this.pushInputsDirectionally(direction, inputHolder, (AdvPatternDetails) patternDetails)) {
 					return true;
 				}
 			}
@@ -357,7 +357,34 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		return false;
 	}
 
-	private boolean pushInputsDirectionally() {
+	private boolean pushInputsDirectionally(Direction direction, KeyCounter[] inputHolder,
+	                                        AdvPatternDetails patternDetails) {
+		for (int x = 0; x < inputHolder.length; x++) {
+			var inputList = inputHolder[x];
+			Direction fromSide = patternDetails.getDirectionSideForInputSlot(x);
+			var adapter = findAdapter(direction, fromSide);
+
+			if (!this.adapterAcceptsItem(adapter, inputList)) {
+				// If one of the inputs fail, we can't input the items directionally
+				return false;
+			}
+		}
+		for (int x = 0; x < inputHolder.length; x++) {
+			var inputList = inputHolder[x];
+			Direction fromSide = patternDetails.getDirectionSideForInputSlot(x);
+			var adapter = findAdapter(direction, fromSide);
+
+			patternDetails.pushInputsToExternalInventory(inputList, (what, amount) -> {
+				var inserted = adapter.insert(what, amount, Actionable.MODULATE);
+				if (inserted < amount) {
+					this.addToSendList(what, amount - inserted);
+				}
+			});
+		}
+		onPushPatternSuccess((IPatternDetails) patternDetails);
+		this.sendDirection = direction;
+		this.sendStacksOut();
+		++roundRobinIndex;
 		return true;
 	}
 
@@ -468,6 +495,16 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 				if (inserted == 0) {
 					return false;
 				}
+			}
+		}
+		return true;
+	}
+
+	private boolean adapterAcceptsItem(PatternProviderTarget target, KeyCounter inputList) {
+		for (var input : inputList) {
+			var inserted = target.insert(input.getKey(), input.getLongValue(), Actionable.SIMULATE);
+			if (inserted == 0) {
+				return false;
 			}
 		}
 		return true;
