@@ -30,7 +30,7 @@ import java.util.Objects;
 /**
  * Helper functions to work with patterns, mostly related to (de)serialization.
  */
-class AdvProcessingPatternEncoding {
+class AdvPatternEncoding {
 	private static final String NBT_INPUT_DIRECTIONS = "dir";
 
 	public static Direction[] getProcessingInputDirections(CompoundTag nbt) {

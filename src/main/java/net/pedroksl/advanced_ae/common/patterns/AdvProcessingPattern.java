@@ -17,7 +17,7 @@ public class AdvProcessingPattern extends AEProcessingPattern implements AdvPatt
 
 		var tag = Objects.requireNonNull(definition.getTag());
 
-		this.fromSides = AdvProcessingPatternEncoding.getProcessingInputDirections(tag);
+		this.fromSides = AdvPatternEncoding.getProcessingInputDirections(tag);
 	}
 
 	@Override
