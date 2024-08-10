@@ -5,7 +5,7 @@ import appeng.menu.SlotSemantics;
 
 public class AAESemantics {
 
-	public final static SlotSemantic EX_1 = SlotSemantics.register("EX_1", false);
+	public final static SlotSemantic OUTPUT_SLOT = SlotSemantics.register("OutputSlot", false);
 	public final static SlotSemantic EX_2 = SlotSemantics.register("EX_2", false);
 	public final static SlotSemantic EX_3 = SlotSemantics.register("EX_3", false);
 	public final static SlotSemantic EX_4 = SlotSemantics.register("EX_4", false);
