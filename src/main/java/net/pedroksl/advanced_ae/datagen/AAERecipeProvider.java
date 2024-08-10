@@ -31,15 +31,15 @@ public class AAERecipeProvider extends RecipeProvider {
 				.define('L', AEItems.LOGIC_PROCESSOR)
 				.unlockedBy("hasItem", has(EPPItemAndBlock.EX_PATTERN_PROVIDER))
 				.save(consumer, "app");
-		ShapedRecipeBuilder
-				.shaped(RecipeCategory.MISC, AAEItemAndBlock.ADV_BLANK_PATTERN, 8)
-				.pattern("PPP")
-				.pattern("PLP")
-				.pattern("PPP")
-				.define('P', AEItems.BLANK_PATTERN)
-				.define('L', AEItems.LOGIC_PROCESSOR)
-				.unlockedBy("hasItem", has(AAEItemAndBlock.ADV_PATTERN_PROVIDER))
-				.save(consumer, "acp");
+//		ShapedRecipeBuilder
+//				.shaped(RecipeCategory.MISC, AAEItemAndBlock.ADV_BLANK_PATTERN, 8)
+//				.pattern("PPP")
+//				.pattern("PLP")
+//				.pattern("PPP")
+//				.define('P', AEItems.BLANK_PATTERN)
+//				.define('L', AEItems.LOGIC_PROCESSOR)
+//				.unlockedBy("hasItem", has(AAEItemAndBlock.ADV_PATTERN_PROVIDER))
+//				.save(consumer, "acp");
 		ShapedRecipeBuilder
 				.shaped(RecipeCategory.MISC, AAEItemAndBlock.ADV_PATTERN_ENCODING_TERM)
 				.pattern("RLR")

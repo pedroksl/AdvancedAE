@@ -7,6 +7,7 @@
   "item.advanced_ae.adv_smithing_pattern": "Advanced Smithing Pattern",
   "item.advanced_ae.adv_stonecutting_pattern": "Advanced Stonecutting Pattern",
   "item.advanced_ae.adv_pattern_encoding_terminal_part": "ME Advanced Pattern Encoding Terminal",
+  "item.advanced_ae.adv_pattern_encoder": "Advanced Pattern Encoder",
   "gui.advanced_ae.adv_pattern_provider": "ME Advanced Pattern Provider",
   "gui.advanced_ae.adv_pattern_encoding_terminal": "ME Advanced Pattern Encoding Terminal"
 }

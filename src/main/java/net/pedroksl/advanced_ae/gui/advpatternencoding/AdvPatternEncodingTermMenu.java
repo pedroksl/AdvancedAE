@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
 
-import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -423,8 +422,7 @@ public class AdvPatternEncodingTermMenu extends MEStorageMenu implements IMenuCr
 			return false;
 		}
 
-		return AEItems.BLANK_PATTERN.isSameAs(output)
-				|| output.is(AAEItemAndBlock.ADV_BLANK_PATTERN.asItem());
+		return AEItems.BLANK_PATTERN.isSameAs(output);
 	}
 
 	@Override

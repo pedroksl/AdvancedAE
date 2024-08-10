@@ -16,11 +16,8 @@ public class AAEItemModelProvider extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
-		simpleItem(Objects.requireNonNull(AAEItemAndBlock.ADV_BLANK_PATTERN.getRegistryName()));
-		simpleItem(Objects.requireNonNull(AAEItemAndBlock.ADV_CRAFTING_PATTERN.getRegistryName()));
 		simpleItem(Objects.requireNonNull(AAEItemAndBlock.ADV_PROCESSING_PATTERN.getRegistryName()));
-		simpleItem(Objects.requireNonNull(AAEItemAndBlock.ADV_SMITHING_PATTERN.getRegistryName()));
-		simpleItem(Objects.requireNonNull(AAEItemAndBlock.ADV_STONECUTTING_PATTERN.getRegistryName()));
+		simpleItem(Objects.requireNonNull(AAEItemAndBlock.ADV_PATTERN_ENCODER.getRegistryName()));
 	}
 
 	private void simpleItem(ResourceLocation item) {

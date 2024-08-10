@@ -33,7 +33,7 @@ import java.util.Objects;
 class AdvPatternEncoding {
 	private static final String NBT_INPUT_DIRECTIONS = "dir";
 
-	public static Direction[] getProcessingInputDirections(CompoundTag nbt) {
+	public static Direction[] getInputDirections(CompoundTag nbt) {
 		Objects.requireNonNull(nbt, "Pattern must have a tag.");
 
 		ListTag tag = nbt.getList(NBT_INPUT_DIRECTIONS, Tag.TAG_COMPOUND);

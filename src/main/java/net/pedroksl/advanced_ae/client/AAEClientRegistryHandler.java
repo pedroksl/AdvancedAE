@@ -10,6 +10,8 @@ import net.pedroksl.advanced_ae.gui.advpatternencoding.AdvPatternEncodingTermCon
 import net.pedroksl.advanced_ae.gui.advpatternencoding.AdvPatternEncodingTermGui;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderGui;
+import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
+import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderGui;
 
 public class AAEClientRegistryHandler {
 	public static final net.pedroksl.advanced_ae.client.AAEClientRegistryHandler INSTANCE = new net.pedroksl.advanced_ae.client.AAEClientRegistryHandler();
@@ -22,6 +24,7 @@ public class AAEClientRegistryHandler {
 		InitScreens.register(AdvPatternProviderContainer.TYPE, AdvPatternProviderGui::new, "/screens/adv_pattern_provider.json");
 		InitScreens.register(AdvPatternEncodingTermContainer.TYPE,
 				AdvPatternEncodingTermGui::new, "/screens/terminals/adv_pattern_encoding_terminal.json");
+		InitScreens.register(AdvPatternEncoderContainer.TYPE, AdvPatternEncoderGui::new, "/screens/adv_pattern_encoder.json");
 	}
 
 	@SubscribeEvent

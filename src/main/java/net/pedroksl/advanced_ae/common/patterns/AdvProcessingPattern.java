@@ -17,7 +17,7 @@ public class AdvProcessingPattern extends AEProcessingPattern implements AdvPatt
 
 		var tag = Objects.requireNonNull(definition.getTag());
 
-		this.fromSides = AdvPatternEncoding.getProcessingInputDirections(tag);
+		this.fromSides = AdvPatternEncoding.getInputDirections(tag);
 	}
 
 	@Override
@@ -33,6 +33,9 @@ public class AdvProcessingPattern extends AEProcessingPattern implements AdvPatt
 
 	@Override
 	public Direction getDirectionSideForInputSlot(int pIndex) {
+		if (fromSides.length < pIndex - 1)
+			return null;
+		
 		return fromSides[pIndex];
 	}
 
