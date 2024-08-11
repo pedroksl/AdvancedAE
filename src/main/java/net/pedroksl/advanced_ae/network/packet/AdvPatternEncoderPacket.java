@@ -17,6 +17,7 @@ public class AdvPatternEncoderPacket implements IMessage<AdvPatternEncoderPacket
 	private HashMap<AEKey, Direction> dirMap;
 
 	public AdvPatternEncoderPacket() {
+		this.dirMap = new HashMap<>();
 	}
 
 	public AdvPatternEncoderPacket(HashMap<AEKey, Direction> dirMap) {

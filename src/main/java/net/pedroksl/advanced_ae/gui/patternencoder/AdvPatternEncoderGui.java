@@ -10,8 +10,11 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.pedroksl.advanced_ae.AdvancedAE;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContainer> {
@@ -22,10 +25,8 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	private static final int LIST_ANCHOR_X = 20;
 	private static final int LIST_ANCHOR_Y = 35;
-	private static final int LIST_LIMIT_X = 148;
-	private static final int LIST_LIMIT_Y = 95;
 
-	private static final Rect2i SLOT_BBOX = new Rect2i(7, 109, SLOT_SIZE, SLOT_SIZE);
+	private static final Rect2i SLOT_BBOX = new Rect2i(7, 121, SLOT_SIZE, SLOT_SIZE);
 
 
 	private final Scrollbar scrollbar;
@@ -38,6 +39,17 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 	}
 
 	@Override
+	public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
+		super.drawFG(guiGraphics, offsetX, offsetY, mouseX, mouseY);
+
+		this.directionButtons.forEach((key, value) -> {
+			for (int x = 0; x < 7; x++) {
+				value[x].visible = true;
+			}
+		});
+	}
+
+	@Override
 	public void drawBG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX,
 	                   int mouseY, float partialTicks) {
 		super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
@@ -45,14 +57,10 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 		final int scrollLevel = scrollbar.getCurrentScroll();
 		int currentX = offsetX + LIST_ANCHOR_X;
 		int currentY = offsetY + LIST_ANCHOR_Y;
-		int limitX = offsetX + LIST_LIMIT_X;
-		int limitY = offsetY + LIST_LIMIT_Y;
 
 		int visibleRows = Math.min(VISIBLE_ROWS, this.inputList.size());
 		for (int i = 0; i < visibleRows; ++i) {
-			Rect2i adjBBox = SLOT_BBOX;
-			adjBBox.setHeight(Math.min(limitY - currentY, SLOT_SIZE));
-			blit(guiGraphics, currentX, currentY, adjBBox);
+			blit(guiGraphics, currentX, currentY, SLOT_BBOX);
 			currentY += ROW_HEIGHT;
 		}
 	}
@@ -60,7 +68,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 	@Override
 	public void init() {
 		super.init();
-		this.resetScrollbar();
+		this.refreshList();
 	}
 
 	public void update(HashMap<AEKey, Direction> inputList) {
@@ -68,27 +76,58 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 		this.directionButtons.clear();
 
 		this.inputList = inputList;
+		this.refreshList();
+	}
 
-		for (var key : inputList.keySet()) {
+	private void refreshList() {
+		for (var key : this.inputList.keySet()) {
 			//key.wrapForDisplayOrFilter();
 			//Direction selectedDir = inputList.get(key);
 
 			DirectionInputButton[] buttons = new DirectionInputButton[7];
 			for (var x = 0; x < 7; x++) {
-				var button = new DirectionInputButton(this::directionButtonPressed);
+				var button = new DirectionInputButton(0, 0, 18, 18, getDirButtonTexture(x),
+						this::directionButtonPressed);
 				button.setKey(key);
 				button.setIndex(x);
+				button.visible = false;
 				buttons[x] = button;
 			}
 
 			directionButtons.put(key.hashCode(), buttons);
 		}
+
+		this.resetScrollbar();
 	}
 
 	private void directionButtonPressed(Button b) {
 		DirectionInputButton button = ((DirectionInputButton) b);
 		this.inputList.put(button.getKey(), button.getDiretion());
-		super.getMenu().update();
+	}
+
+	private int getSelectedDirButton(@Nullable Direction dir) {
+		if (dir == null) return 0;
+
+		return switch (dir) {
+			case NORTH -> 1;
+			case EAST -> 2;
+			case SOUTH -> 3;
+			case WEST -> 4;
+			case UP -> 5;
+			case DOWN -> 6;
+		};
+	}
+
+	private ResourceLocation getDirButtonTexture(int index) {
+		return switch (index) {
+			case 1 -> AdvancedAE.id("guis/north_button.png");
+			case 2 -> AdvancedAE.id("guis/east_button.png");
+			case 3 -> AdvancedAE.id("guis/south_button.png");
+			case 4 -> AdvancedAE.id("guis/west_button.png");
+			case 5 -> AdvancedAE.id("guis/up_button.png");
+			case 6 -> AdvancedAE.id("guis/down_button.png");
+			default -> AdvancedAE.id("guis/any_button.png");
+		};
 	}
 
 	private void resetScrollbar() {

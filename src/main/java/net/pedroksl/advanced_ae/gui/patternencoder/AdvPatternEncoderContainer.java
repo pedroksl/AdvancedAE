@@ -41,6 +41,9 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 		this.addSlot(this.outputSlot = new OutputSlot(host.getInventory(), 1, null), SlotSemantics.MACHINE_OUTPUT);
 
 		this.host.setInventoryChangedHandler(this::onChangeInventory);
+		if (this.inputSlot.hasItem()) {
+			decodeInputPattern();
+		}
 	}
 
 	public void onChangeInventory(InternalInventory inv, int slot) {
@@ -69,11 +72,11 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 		AdvProcessingPattern advDetails = advPattern ? (AdvProcessingPattern) details :
 				null;
 
-		var sparceInputs = pattern.getSparseInputs();
+		var sparseInputs = pattern.getSparseInputs();
 
 		HashMap<AEKey, Direction> inputList = new HashMap<>();
-		for (int x = 0; x < sparceInputs.length; x++) {
-			var input = sparceInputs[x];
+		for (int x = 0; x < sparseInputs.length; x++) {
+			var input = sparseInputs[x];
 			if (input == null) {
 				continue;
 			}
@@ -90,10 +93,9 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 	}
 
 	private void clearDecodedPattern() {
-	}
-
-	public void update() {
-
+		if (this.getPlayer() instanceof ServerPlayer sp) {
+			AAENetworkHandler.INSTANCE.sendTo(new AdvPatternEncoderPacket(), sp);
+		}
 	}
 
 	public interface inventoryChangedHandler {
