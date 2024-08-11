@@ -11,11 +11,14 @@ import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.OutputSlot;
 import appeng.menu.slot.RestrictedInputSlot;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderInventory;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
+import net.pedroksl.advanced_ae.network.AAENetworkHandler;
+import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderPacket;
 
 import java.util.HashMap;
 
@@ -28,8 +31,6 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 	private final OutputSlot outputSlot;
 	private final AdvPatternEncoderInventory host;
 
-	private AdvPatternEncoderGui childGui;
-
 	public AdvPatternEncoderContainer(int id, Inventory playerInventory, AdvPatternEncoderInventory host) {
 		super(TYPE, id, playerInventory, host);
 		this.createPlayerInventorySlots(playerInventory);
@@ -39,7 +40,7 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 				host.getInventory(), 0), SlotSemantics.ENCODED_PATTERN);
 		this.addSlot(this.outputSlot = new OutputSlot(host.getInventory(), 1, null), SlotSemantics.MACHINE_OUTPUT);
 
-		host.setInventoryChangedHandler(this::onChangeInventory);
+		this.host.setInventoryChangedHandler(this::onChangeInventory);
 	}
 
 	public void onChangeInventory(InternalInventory inv, int slot) {
@@ -83,7 +84,9 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 			}
 		}
 
-		childGui.refreshList(inputList);
+		if (this.getPlayer() instanceof ServerPlayer sp) {
+			AAENetworkHandler.INSTANCE.sendTo(new AdvPatternEncoderPacket(inputList), sp);
+		}
 	}
 
 	private void clearDecodedPattern() {
@@ -93,11 +96,7 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 
 	}
 
-	protected void setChild(AdvPatternEncoderGui child) {
-		this.childGui = child;
-	}
-
 	public interface inventoryChangedHandler {
-		public void handleChange(InternalInventory inv, int slot);
+		void handleChange(InternalInventory inv, int slot);
 	}
 }

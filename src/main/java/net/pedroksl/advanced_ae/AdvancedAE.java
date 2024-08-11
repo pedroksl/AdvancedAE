@@ -14,6 +14,7 @@ import net.pedroksl.advanced_ae.client.AAEClientRegistryHandler;
 import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
 import net.pedroksl.advanced_ae.common.AAERegistryHandler;
 import net.minecraftforge.registries.RegisterEvent;
+import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(AdvancedAE.MOD_ID)
@@ -37,6 +38,7 @@ public class AdvancedAE {
 
 	private void commonSetup(final FMLCommonSetupEvent event) {
 		AAERegistryHandler.INSTANCE.onInit();
+		AAENetworkHandler.INSTANCE.init();
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {
