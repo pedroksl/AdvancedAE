@@ -4,7 +4,10 @@ import appeng.api.stacks.AEKey;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.Scrollbar;
+import appeng.client.guidebook.document.LytRect;
+import appeng.client.guidebook.render.SimpleRenderContext;
 import appeng.core.AppEng;
+import appeng.menu.slot.FakeSlot;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
@@ -15,6 +18,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.AdvancedAE;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContainer> {
@@ -31,7 +35,8 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	private final Scrollbar scrollbar;
 	private HashMap<AEKey, Direction> inputList = new HashMap<>();
-	private final HashMap<Integer, DirectionInputButton[]> directionButtons = new HashMap<>();
+	private final HashMap<AEKey, DirectionInputButton[]> directionButtons = new HashMap<>();
+	private final ArrayList<InputRow> rows = new ArrayList<>();
 
 	public AdvPatternEncoderGui(AdvPatternEncoderContainer menu, Inventory playerInventory, Component title, ScreenStyle style) {
 		super(menu, playerInventory, title, style);
@@ -42,11 +47,30 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 	public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
 		super.drawFG(guiGraphics, offsetX, offsetY, mouseX, mouseY);
 
+		this.menu.slots.removeIf(slot -> slot instanceof FakeSlot);
 		this.directionButtons.forEach((key, value) -> {
 			for (int x = 0; x < 7; x++) {
 				value[x].visible = true;
 			}
 		});
+
+		final int scrollLevel = scrollbar.getCurrentScroll();
+		int visibleRows = Math.min(VISIBLE_ROWS, this.inputList.size());
+		int i = 0;
+		for (; i < visibleRows; ++i) {
+			int currentRow = scrollLevel + i;
+			if (currentRow >= this.inputList.size()) {
+				break;
+			}
+
+			InputRow row = this.rows.get(currentRow);
+			var renderContext = new SimpleRenderContext(LytRect.empty(), guiGraphics);
+			renderContext.renderItem(
+					row.key().wrapForDisplayOrFilter(),
+					LIST_ANCHOR_X + 1, LIST_ANCHOR_Y + 1 + i * ROW_HEIGHT,
+					16, 16
+			);
+		}
 	}
 
 	@Override
@@ -54,7 +78,6 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 	                   int mouseY, float partialTicks) {
 		super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
 
-		final int scrollLevel = scrollbar.getCurrentScroll();
 		int currentX = offsetX + LIST_ANCHOR_X;
 		int currentY = offsetY + LIST_ANCHOR_Y;
 
@@ -74,6 +97,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 	public void update(HashMap<AEKey, Direction> inputList) {
 		this.inputList.clear();
 		this.directionButtons.clear();
+		this.rows.clear();
 
 		this.inputList = inputList;
 		this.refreshList();
@@ -81,6 +105,8 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	private void refreshList() {
 		for (var key : this.inputList.keySet()) {
+			this.rows.add(new InputRow(key, this.inputList.get(key)));
+
 			//key.wrapForDisplayOrFilter();
 			//Direction selectedDir = inputList.get(key);
 
@@ -94,7 +120,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 				buttons[x] = button;
 			}
 
-			directionButtons.put(key.hashCode(), buttons);
+			directionButtons.put(key, buttons);
 		}
 
 		this.resetScrollbar();
@@ -120,13 +146,13 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	private ResourceLocation getDirButtonTexture(int index) {
 		return switch (index) {
-			case 1 -> AdvancedAE.id("guis/north_button.png");
-			case 2 -> AdvancedAE.id("guis/east_button.png");
-			case 3 -> AdvancedAE.id("guis/south_button.png");
-			case 4 -> AdvancedAE.id("guis/west_button.png");
-			case 5 -> AdvancedAE.id("guis/up_button.png");
-			case 6 -> AdvancedAE.id("guis/down_button.png");
-			default -> AdvancedAE.id("guis/any_button.png");
+			case 1 -> AdvancedAE.id("textures/guis/north_button.png");
+			case 2 -> AdvancedAE.id("textures/guis/east_button.png");
+			case 3 -> AdvancedAE.id("textures/guis/south_button.png");
+			case 4 -> AdvancedAE.id("textures/guis/west_button.png");
+			case 5 -> AdvancedAE.id("textures/guis/up_button.png");
+			case 6 -> AdvancedAE.id("textures/guis/down_button.png");
+			default -> AdvancedAE.id("textures/guis/any_button.png");
 		};
 	}
 
@@ -140,5 +166,9 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 		var texture = AppEng.makeId("textures/guis/adv_pattern_encoder.png");
 		guiGraphics.blit(texture, offsetX, offsetY, srcRect.getX(), srcRect.getY(), srcRect.getWidth(),
 				srcRect.getHeight());
+	}
+
+	public record InputRow(AEKey key, @Nullable Direction dir) {
+
 	}
 }

@@ -51,7 +51,6 @@ public class DirectionInputButton extends Button {
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		RenderSystem.setShaderTexture(0, texture);
 		pGuiGraphics.blit(texture, this.getX(), this.getY(), 0, 0, width, height, width, height);
-		super.renderWidget(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
 	}
 
 	@Override
