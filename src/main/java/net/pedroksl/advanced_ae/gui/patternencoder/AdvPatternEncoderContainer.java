@@ -124,6 +124,10 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 				var newPattern = AdvPatternDetailsEncoder.encodeProcessingPattern(pattern.getSparseInputs(),
 						pattern.getSparseOutputs(), dirMap);
 				this.outputSlot.set(newPattern);
+
+				if (this.getPlayer() instanceof ServerPlayer sp) {
+					AAENetworkHandler.INSTANCE.sendTo(new AdvPatternEncoderPacket(dirMap), sp);
+				}
 			}
 		}
 	}

@@ -78,6 +78,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 			);
 
 			var buttons = this.directionButtons.get(row.key);
+			var highlight = getSelectedDirButton(row.dir);
 			for (var col = 0; col < 7; col++) {
 				var button = buttons[col];
 				button.setPosition(
@@ -85,14 +86,9 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 								LIST_ANCHOR_X + SLOT_SIZE + (col + 1) * DIRECTION_BUTTONS_OFFSET_X + col * DIRECTION_BUTTONS_WIDTH,
 						this.topPos + LIST_ANCHOR_Y + 1 + i * ROW_HEIGHT
 				);
+				button.setHighlighted(col == highlight);
 				button.visible = true;
 			}
-
-			var highlight = getSelectedDirButton(row.dir);
-			var posX = this.leftPos +
-					LIST_ANCHOR_X + SLOT_SIZE + (highlight + 1) * DIRECTION_BUTTONS_OFFSET_X + highlight * DIRECTION_BUTTONS_WIDTH - 1;
-			var posY = this.topPos + LIST_ANCHOR_Y + 1 + i * ROW_HEIGHT - 1;
-			blit(guiGraphics, posX, posY, HIGHLIGHT_BBOX, HIGHLIGHT_TEXTURE);
 		}
 	}
 
@@ -106,7 +102,8 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 		int visibleRows = Math.min(VISIBLE_ROWS, this.inputList.size());
 		for (int i = 0; i < visibleRows; ++i) {
-			blit(guiGraphics, currentX, currentY, SLOT_BBOX, DEFAULT_TEXTURE);
+			guiGraphics.blit(DEFAULT_TEXTURE, currentX, currentY, SLOT_BBOX.getX(), SLOT_BBOX.getY(), SLOT_BBOX.getWidth(),
+					SLOT_BBOX.getHeight());
 			currentY += ROW_HEIGHT;
 		}
 	}
@@ -143,6 +140,8 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 				var button = new DirectionInputButton(0, 0, DIRECTION_BUTTONS_WIDTH, DIRECTION_BUTTONS_HEIGHT,
 						getDirButtonTexture(x),
 						this::directionButtonPressed);
+				button.setHighlight(HIGHLIGHT_TEXTURE, 0, 0, HIGHLIGHT_BBOX.getWidth(), HIGHLIGHT_BBOX.getHeight(), 32,
+						32);
 				button.setKey(key);
 				button.setIndex(x);
 				button.visible = false;
@@ -189,11 +188,6 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 		// Needs to take the border into account, so offset for 1 px on the top and bottom.
 		scrollbar.setHeight(VISIBLE_ROWS * ROW_HEIGHT - 2);
 		scrollbar.setRange(0, this.inputList.size() - VISIBLE_ROWS, 2);
-	}
-
-	private void blit(GuiGraphics guiGraphics, int offsetX, int offsetY, Rect2i srcRect, ResourceLocation texture) {
-		guiGraphics.blit(texture, offsetX, offsetY, srcRect.getX(), srcRect.getY(), srcRect.getWidth(),
-				srcRect.getHeight());
 	}
 
 	public record InputRow(AEKey key, @Nullable Direction dir) {
