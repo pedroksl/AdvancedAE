@@ -15,7 +15,7 @@ public class DirectionInputButton extends Button {
 	private AEKey key;
 	private int index;
 
-	public DirectionInputButton(int x, int y, int width, int height, ResourceLocation texture, net.minecraft.client.gui.components.Button.OnPress onPress) {
+	public DirectionInputButton(int x, int y, int width, int height, ResourceLocation texture, OnPress onPress) {
 		super(x, y, width, height, Component.empty(), onPress, Button.DEFAULT_NARRATION);
 
 		this.texture = texture;
@@ -33,7 +33,7 @@ public class DirectionInputButton extends Button {
 		this.index = index;
 	}
 
-	public Direction getDiretion() {
+	public Direction getDirection() {
 		return switch (index) {
 			case 1 -> Direction.NORTH;
 			case 2 -> Direction.EAST;
@@ -50,7 +50,7 @@ public class DirectionInputButton extends Button {
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		RenderSystem.setShaderTexture(0, texture);
-		pGuiGraphics.blit(texture, this.getX(), this.getY(), 0, 0, width, height, width, height);
+		pGuiGraphics.blit(texture, this.getX(), this.getY(), 0, 0, width, height, 16, 16);
 	}
 
 	@Override

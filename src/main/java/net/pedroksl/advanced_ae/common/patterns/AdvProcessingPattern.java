@@ -2,62 +2,42 @@ package net.pedroksl.advanced_ae.common.patterns;
 
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.AEKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.crafting.pattern.AEProcessingPattern;
 import net.minecraft.core.Direction;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class AdvProcessingPattern extends AEProcessingPattern implements AdvPatternDetails {
 
-	private final Direction[] fromSides;
+	private final HashMap<AEKey, Direction> dirMap;
 
 	public AdvProcessingPattern(AEItemKey definition) {
 		super(definition);
 
 		var tag = Objects.requireNonNull(definition.getTag());
 
-		this.fromSides = AdvPatternEncoding.getInputDirections(tag);
+		this.dirMap = AdvPatternEncoding.getInputDirections(tag);
+	}
+
+	public HashMap<AEKey, Direction> getDirectionMap() {
+		return dirMap;
 	}
 
 	@Override
 	public boolean directionalInputsSet() {
-		for (Direction side : fromSides) {
-			if (side != null) {
-				return true;
-			}
-		}
-
-		return false;
+		return dirMap != null && !dirMap.isEmpty();
 	}
 
 	@Override
-	public Direction getDirectionSideForInputSlot(int pIndex) {
-		if (fromSides.length < pIndex - 1)
-			return null;
-		
-		return fromSides[pIndex];
+	public Direction getDirectionSideForInputKey(AEKey key) {
+		return this.dirMap.get(key);
 	}
 
 	@Override
-	public void pushInputsToExternalInventory(KeyCounter inputList, IPatternDetails.PatternInputSink inputSink) {
-		var sparceInputs = this.getSparseInputs();
-		for (var sparseInput : sparceInputs) {
-			if (sparseInput == null) {
-				continue;
-			}
-
-			var key = sparseInput.what();
-			var amount = sparseInput.amount();
-			long available = inputList.get(key);
-
-			if (available < amount) {
-				throw new RuntimeException("Expected at least %d of %s when pushing pattern, but only %d available"
-						.formatted(amount, key, available));
-			}
-
-			inputSink.pushInput(key, amount);
-			inputList.remove(key, amount);
-		}
+	public void pushInputsToExternalInventory(KeyCounter[] inputHolder, IPatternDetails.PatternInputSink inputSink) {
+		super.pushInputsToExternalInventory(inputHolder, inputSink);
 	}
 }

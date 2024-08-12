@@ -16,6 +16,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.network.AAENetworkHandler;
+import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionPacket;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -29,9 +31,15 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	private static final int LIST_ANCHOR_X = 20;
 	private static final int LIST_ANCHOR_Y = 35;
+	private static final int DIRECTION_BUTTONS_OFFSET_X = 2;
+	private static final int DIRECTION_BUTTONS_WIDTH = 13;
+	private static final int DIRECTION_BUTTONS_HEIGHT = 15;
 
 	private static final Rect2i SLOT_BBOX = new Rect2i(7, 121, SLOT_SIZE, SLOT_SIZE);
+	private static final Rect2i HIGHLIGHT_BBOX = new Rect2i(0, 0, 15, 17);
 
+	private final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/adv_pattern_encoder.png");
+	private final ResourceLocation HIGHLIGHT_TEXTURE = AdvancedAE.id("textures/guis/selection_ring.png");
 
 	private final Scrollbar scrollbar;
 	private HashMap<AEKey, Direction> inputList = new HashMap<>();
@@ -45,12 +53,10 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	@Override
 	public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
-		super.drawFG(guiGraphics, offsetX, offsetY, mouseX, mouseY);
-
 		this.menu.slots.removeIf(slot -> slot instanceof FakeSlot);
 		this.directionButtons.forEach((key, value) -> {
 			for (int x = 0; x < 7; x++) {
-				value[x].visible = true;
+				value[x].visible = false;
 			}
 		});
 
@@ -70,6 +76,23 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 					LIST_ANCHOR_X + 1, LIST_ANCHOR_Y + 1 + i * ROW_HEIGHT,
 					16, 16
 			);
+
+			var buttons = this.directionButtons.get(row.key);
+			for (var col = 0; col < 7; col++) {
+				var button = buttons[col];
+				button.setPosition(
+						this.leftPos +
+								LIST_ANCHOR_X + SLOT_SIZE + (col + 1) * DIRECTION_BUTTONS_OFFSET_X + col * DIRECTION_BUTTONS_WIDTH,
+						this.topPos + LIST_ANCHOR_Y + 1 + i * ROW_HEIGHT
+				);
+				button.visible = true;
+			}
+
+			var highlight = getSelectedDirButton(row.dir);
+			var posX = this.leftPos +
+					LIST_ANCHOR_X + SLOT_SIZE + (highlight + 1) * DIRECTION_BUTTONS_OFFSET_X + highlight * DIRECTION_BUTTONS_WIDTH - 1;
+			var posY = this.topPos + LIST_ANCHOR_Y + 1 + i * ROW_HEIGHT - 1;
+			blit(guiGraphics, posX, posY, HIGHLIGHT_BBOX, HIGHLIGHT_TEXTURE);
 		}
 	}
 
@@ -83,7 +106,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 		int visibleRows = Math.min(VISIBLE_ROWS, this.inputList.size());
 		for (int i = 0; i < visibleRows; ++i) {
-			blit(guiGraphics, currentX, currentY, SLOT_BBOX);
+			blit(guiGraphics, currentX, currentY, SLOT_BBOX, DEFAULT_TEXTURE);
 			currentY += ROW_HEIGHT;
 		}
 	}
@@ -96,6 +119,11 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	public void update(HashMap<AEKey, Direction> inputList) {
 		this.inputList.clear();
+		this.directionButtons.forEach((k, v) -> {
+			for (var btn : v) {
+				this.removeWidget(btn);
+			}
+		});
 		this.directionButtons.clear();
 		this.rows.clear();
 
@@ -112,12 +140,13 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 			DirectionInputButton[] buttons = new DirectionInputButton[7];
 			for (var x = 0; x < 7; x++) {
-				var button = new DirectionInputButton(0, 0, 18, 18, getDirButtonTexture(x),
+				var button = new DirectionInputButton(0, 0, DIRECTION_BUTTONS_WIDTH, DIRECTION_BUTTONS_HEIGHT,
+						getDirButtonTexture(x),
 						this::directionButtonPressed);
 				button.setKey(key);
 				button.setIndex(x);
 				button.visible = false;
-				buttons[x] = button;
+				buttons[x] = this.addRenderableWidget(button);
 			}
 
 			directionButtons.put(key, buttons);
@@ -128,7 +157,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	private void directionButtonPressed(Button b) {
 		DirectionInputButton button = ((DirectionInputButton) b);
-		this.inputList.put(button.getKey(), button.getDiretion());
+		AAENetworkHandler.INSTANCE.sendToServer(new AdvPatternEncoderChangeDirectionPacket(button.getKey(), button.getDirection()));
 	}
 
 	private int getSelectedDirButton(@Nullable Direction dir) {
@@ -162,8 +191,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 		scrollbar.setRange(0, this.inputList.size() - VISIBLE_ROWS, 2);
 	}
 
-	private void blit(GuiGraphics guiGraphics, int offsetX, int offsetY, Rect2i srcRect) {
-		var texture = AppEng.makeId("textures/guis/adv_pattern_encoder.png");
+	private void blit(GuiGraphics guiGraphics, int offsetX, int offsetY, Rect2i srcRect, ResourceLocation texture) {
 		guiGraphics.blit(texture, offsetX, offsetY, srcRect.getX(), srcRect.getY(), srcRect.getWidth(),
 				srcRect.getHeight());
 	}

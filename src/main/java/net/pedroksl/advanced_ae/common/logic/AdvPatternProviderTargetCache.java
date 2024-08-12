@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.common.logic;
 
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,27 +27,29 @@ class AdvPatternProviderTargetCache {
 	private final BlockApiCache<MEStorage> cache;
 	private final Direction direction;
 	private final IActionSource src;
-	private final Map<AEKeyType, ExternalStorageStrategy> strategies;
+	private final HashMap<Direction, Map<AEKeyType, ExternalStorageStrategy>> strategiesMap = new HashMap<>();
 
 	AdvPatternProviderTargetCache(ServerLevel l, BlockPos pos, Direction direction, IActionSource src) {
 		this.cache = BlockApiCache.create(Capabilities.STORAGE, l, pos);
 		this.direction = direction;
 		this.src = src;
-		this.strategies = StackWorldBehaviors.createExternalStorageStrategies(l, pos, direction);
-
+		for (Direction dir : Direction.values()) {
+			this.strategiesMap.put(dir, StackWorldBehaviors.createExternalStorageStrategies(l, pos, dir));
+		}
 	}
 
 	@Nullable
 	PatternProviderTarget find(Direction fromSide) {
 		// our capability first: allows any storage channel
-		var meStorage = cache.find(fromSide == null ? direction : fromSide);
+		Direction side = fromSide == null ? direction : fromSide;
+		var meStorage = cache.find(side);
 		if (meStorage != null) {
 			return wrapMeStorage(meStorage);
 		}
 
 		// otherwise fall back to the platform capability
 		var externalStorages = new IdentityHashMap<AEKeyType, MEStorage>(2);
-		for (var entry : strategies.entrySet()) {
+		for (var entry : strategiesMap.get(side).entrySet()) {
 			var wrapper = entry.getValue().createWrapper(false, () -> {
 			});
 			if (wrapper != null) {

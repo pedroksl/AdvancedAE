@@ -1,10 +1,6 @@
 package net.pedroksl.advanced_ae.common.logic;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import appeng.helpers.patternprovider.*;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetails;
@@ -359,28 +355,23 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 	private boolean pushInputsDirectionally(Direction direction, KeyCounter[] inputHolder,
 	                                        AdvPatternDetails patternDetails) {
-		for (int x = 0; x < inputHolder.length; x++) {
-			var inputList = inputHolder[x];
-			Direction fromSide = patternDetails.getDirectionSideForInputSlot(x);
+		HashMap<AEKey, PatternProviderTarget> adapterMap = new HashMap<>();
+		for (KeyCounter inputList : inputHolder) {
+			Direction fromSide = patternDetails.getDirectionSideForInputKey(inputList.getFirstKey());
 			var adapter = findAdapter(direction, fromSide);
+			adapterMap.put(inputList.getFirstKey(), adapter);
 
 			if (!this.adapterAcceptsItem(adapter, inputList)) {
 				// If one of the inputs fail, we can't input the items directionally
 				return false;
 			}
 		}
-		for (int x = 0; x < inputHolder.length; x++) {
-			var inputList = inputHolder[x];
-			Direction fromSide = patternDetails.getDirectionSideForInputSlot(x);
-			var adapter = findAdapter(direction, fromSide);
-
-			patternDetails.pushInputsToExternalInventory(inputList, (what, amount) -> {
-				var inserted = adapter.insert(what, amount, Actionable.MODULATE);
-				if (inserted < amount) {
-					this.addToSendList(what, amount - inserted);
-				}
-			});
-		}
+		patternDetails.pushInputsToExternalInventory(inputHolder, (what, amount) -> {
+			var inserted = adapterMap.get(what).insert(what, amount, Actionable.MODULATE);
+			if (inserted < amount) {
+				this.addToSendList(what, amount - inserted);
+			}
+		});
 		onPushPatternSuccess((IPatternDetails) patternDetails);
 		this.sendDirection = direction;
 		this.sendStacksOut();
