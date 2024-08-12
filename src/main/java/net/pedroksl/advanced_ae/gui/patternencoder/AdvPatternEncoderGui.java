@@ -132,9 +132,6 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 		for (var key : this.inputList.keySet()) {
 			this.rows.add(new InputRow(key, this.inputList.get(key)));
 
-			//key.wrapForDisplayOrFilter();
-			//Direction selectedDir = inputList.get(key);
-
 			DirectionInputButton[] buttons = new DirectionInputButton[7];
 			for (var x = 0; x < 7; x++) {
 				var button = new DirectionInputButton(0, 0, DIRECTION_BUTTONS_WIDTH, DIRECTION_BUTTONS_HEIGHT,
