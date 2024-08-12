@@ -185,8 +185,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 	}
 
 	private void resetScrollbar() {
-		// Needs to take the border into account, so offset for 1 px on the top and bottom.
-		scrollbar.setHeight(VISIBLE_ROWS * ROW_HEIGHT - 2);
+		scrollbar.setHeight(VISIBLE_ROWS * ROW_HEIGHT);
 		scrollbar.setRange(0, this.inputList.size() - VISIBLE_ROWS, 2);
 	}
 
