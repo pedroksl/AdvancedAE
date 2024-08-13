@@ -2,6 +2,8 @@ package net.pedroksl.advanced_ae.common.logic;
 
 import java.util.EnumSet;
 
+import appeng.api.upgrades.IUpgradeInventory;
+import appeng.api.upgrades.IUpgradeableObject;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
@@ -23,7 +25,7 @@ import appeng.menu.MenuOpener;
 import appeng.menu.implementations.PatternProviderMenu;
 import appeng.menu.locator.MenuLocator;
 
-public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPriorityHost, PatternContainer {
+public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPriorityHost, PatternContainer, IUpgradeableObject {
 	AdvPatternProviderLogic getLogic();
 
 	/**
@@ -32,7 +34,7 @@ public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPrior
 	BlockEntity getBlockEntity();
 
 	EnumSet<Direction> getTargets();
-
+	
 	void saveChanges();
 
 	@Override
@@ -83,5 +85,9 @@ public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPrior
 
 	default PatternContainerGroup getTerminalGroup() {
 		return getLogic().getTerminalGroup();
+	}
+
+	default IUpgradeInventory getUpgrades() {
+		return ((IUpgradeableObject) this.getLogic()).getUpgrades();
 	}
 }

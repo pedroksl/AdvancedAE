@@ -95,10 +95,11 @@ dependencies {
     implementation fg.deobf("curse.maven:glodium-957920:5006780")
     compileOnly fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:5162352")
     compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge:15.0.0.12")
-    compileOnly fg.deobf("curse.maven:applied-flux-965012:5329825")
+    compileOnly fg.deobf("curse.maven:applied-flux-965012:5392513")
     compileOnly fg.deobf("appeng:appliedenergistics2-forge:15.2.11")
     compileOnly fg.deobf("curse.maven:ex-pattern-provider-892005:5577174")
     compileOnly fg.deobf("curse.maven:jade-324717:4768593")
+    compileOnly fg.deobf("curse.maven:mekanism-268560:5395221")
     // rei
     compileOnly "me.shedaniel.cloth:basic-math:0.6.1"
     compileOnly fg.deobf("dev.architectury:architectury-forge:7.0.66")
@@ -106,10 +107,12 @@ dependencies {
     compileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:9.0.94")
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
     // runtime test
-    runtimeOnly fg.deobf("mezz.jei:jei-1.20.1-forge:15.0.0.12")
+    runtimeOnly fg.deobf("curse.maven:jei-238222:5621194")
     runtimeOnly fg.deobf("curse.maven:applied-energistics-2-223794:5565729")
     runtimeOnly fg.deobf("curse.maven:ex-pattern-provider-892005:5577174")
+    runtimeOnly fg.deobf("curse.maven:applied-flux-965012:5392513")
     runtimeOnly fg.deobf("curse.maven:jade-324717:4768593")
+    runtimeOnly fg.deobf("curse.maven:mekanism-268560:5395221")
 }
 
 tasks.named('processResources', ProcessResources).configure {

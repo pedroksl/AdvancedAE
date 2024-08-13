@@ -8,6 +8,7 @@ import appeng.blockentity.ClientTickingBlockEntity;
 import appeng.blockentity.ServerTickingBlockEntity;
 import appeng.core.AppEng;
 import appeng.items.AEBaseItem;
+import net.pedroksl.advanced_ae.xmod.appflux.AFCommonLoad;
 import com.glodblock.github.glodium.registry.RegistryHandler;
 import com.glodblock.github.glodium.util.GlodUtil;
 import net.minecraft.core.Registry;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
@@ -77,10 +79,12 @@ public class AAERegistryHandler extends RegistryHandler {
 		}
 		this.registerAEUpgrade();
 		this.registerPackagedItems();
+		if (ModList.get().isLoaded("appflux")) {
+			AFCommonLoad.init();
+		}
 	}
 
 	private void registerAEUpgrade() {
-
 	}
 
 	private void onRegisterModels() {

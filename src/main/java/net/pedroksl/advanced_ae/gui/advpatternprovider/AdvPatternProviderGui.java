@@ -3,17 +3,21 @@ package net.pedroksl.advanced_ae.gui.advpatternprovider;
 import appeng.api.config.LockCraftingMode;
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
+import appeng.api.upgrades.Upgrades;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.Icon;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.ServerSettingToggleButton;
-import appeng.client.gui.widgets.SettingToggleButton;
-import appeng.client.gui.widgets.ToggleButton;
+import appeng.client.gui.widgets.*;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.ConfigButtonPacket;
+import appeng.menu.SlotSemantics;
+import com.glodblock.github.appflux.util.helpers.IUpgradableMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderContainer> {
 
@@ -42,6 +46,11 @@ public class AdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderContai
 
 		this.lockReason = new AdvPatternProviderLockReason(this);
 		widgets.add("lockReason", this.lockReason);
+
+		this.widgets.add("upgrades", new UpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), this::getCompatibleUpgrades));
+		if (((IUpgradableMenu) menu).getToolbox().isPresent()) {
+			this.widgets.add("toolbox", new ToolboxPanel(style, ((IUpgradableMenu) menu).getToolbox().getName()));
+		}
 	}
 
 	@Override
@@ -57,5 +66,12 @@ public class AdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderContai
 	private void selectNextPatternProviderMode() {
 		final boolean backwards = isHandlingRightClick();
 		NetworkHandler.instance().sendToServer(new ConfigButtonPacket(Settings.PATTERN_ACCESS_TERMINAL, backwards));
+	}
+
+	private List<Component> getCompatibleUpgrades() {
+		ArrayList<Component> list = new ArrayList<>();
+		list.add(GuiText.CompatibleUpgrades.text());
+		list.addAll(Upgrades.getTooltipLinesForMachine(((IUpgradableMenu) this.menu).getUpgrades().getUpgradableItem()));
+		return list;
 	}
 }
