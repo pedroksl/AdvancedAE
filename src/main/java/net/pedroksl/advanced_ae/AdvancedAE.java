@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae;
 
+import appeng.api.crafting.PatternDetailsHelper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,6 +15,7 @@ import net.pedroksl.advanced_ae.client.AAEClientRegistryHandler;
 import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
 import net.pedroksl.advanced_ae.common.AAERegistryHandler;
 import net.minecraftforge.registries.RegisterEvent;
+import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetailsDecoder;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -39,6 +41,7 @@ public class AdvancedAE {
 	private void commonSetup(final FMLCommonSetupEvent event) {
 		AAERegistryHandler.INSTANCE.onInit();
 		AAENetworkHandler.INSTANCE.init();
+		PatternDetailsHelper.registerDecoder(AdvPatternDetailsDecoder.INSTANCE);
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {
