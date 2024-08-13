@@ -21,8 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.parts.AdvPatternEncodingTermPart;
-import net.pedroksl.advanced_ae.gui.advpatternencoding.AdvPatternEncodingTermContainer;
+import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
 import org.apache.commons.lang3.tuple.Pair;
@@ -51,7 +50,6 @@ public class AAERegistryHandler extends RegistryHandler {
 
 	private void onRegisterContainer() {
 		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_provider"), AdvPatternProviderContainer.TYPE);
-		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_encoding_terminal"), AdvPatternEncodingTermContainer.TYPE);
 		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_encoder"), AdvPatternEncoderContainer.TYPE);
 	}
 
@@ -86,7 +84,7 @@ public class AAERegistryHandler extends RegistryHandler {
 	}
 
 	private void onRegisterModels() {
-		PartModels.registerModels(AdvPatternEncodingTermPart.MODELS);
+		PartModels.registerModels(AdvPatternProviderPart.MODELS);
 	}
 
 	private void registerPackagedItems() {

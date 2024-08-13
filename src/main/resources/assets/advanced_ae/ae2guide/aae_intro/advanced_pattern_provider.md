@@ -10,13 +10,13 @@ item_ids:
   - advanced_ae:adv_pattern_provider_part
 ---
 
-# ME Extended Pattern Provider
+# ME Advanced Pattern Provider
 
 <Row gap="20">
 <BlockImage id="advanced_ae:adv_pattern_provider" scale="8"></BlockImage>
-<BlockImage id="advanced_ae:adv_pattern_provider_part" p:push_direction="up" scale="8"></BlockImage>
+<BlockImage id="advanced_ae:adv_pattern_provider" p:push_direction="up" scale="8"></BlockImage>
 <GameScene zoom="8" background="transparent">
-  <ImportStructure src="../structure/cable_adv_pattern_provider.snbt"></ImportStructure>
+  <ImportStructure src="../structure/cable_app_part.snbt"></ImportStructure>
 </GameScene>
 </Row>
 

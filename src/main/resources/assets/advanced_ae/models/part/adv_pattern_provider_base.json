@@ -1,0 +1,9 @@
+{
+  "parent": "ae2:part/pattern_provider_base",
+  "textures": {
+    "front": "advanced_ae:part/adv_pattern_provider",
+    "sides": "advanced_ae:part/adv_pattern_provider_sides",
+    "back": "advanced_ae:part/adv_pattern_provider_back",
+    "particle": "advanced_ae:part/adv_pattern_provider_back"
+  }
+}

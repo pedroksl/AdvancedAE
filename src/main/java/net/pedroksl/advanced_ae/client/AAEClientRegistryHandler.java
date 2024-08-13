@@ -6,8 +6,6 @@ import appeng.init.client.InitScreens;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
-import net.pedroksl.advanced_ae.gui.advpatternencoding.AdvPatternEncodingTermContainer;
-import net.pedroksl.advanced_ae.gui.advpatternencoding.AdvPatternEncodingTermGui;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderGui;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
@@ -22,9 +20,8 @@ public class AAEClientRegistryHandler {
 
 	public void registerGui() {
 		InitScreens.register(AdvPatternProviderContainer.TYPE, AdvPatternProviderGui::new, "/screens/adv_pattern_provider.json");
-		InitScreens.register(AdvPatternEncodingTermContainer.TYPE,
-				AdvPatternEncodingTermGui::new, "/screens/terminals/adv_pattern_encoding_terminal.json");
-		InitScreens.register(AdvPatternEncoderContainer.TYPE, AdvPatternEncoderGui::new, "/screens/adv_pattern_encoder.json");
+		InitScreens.register(AdvPatternEncoderContainer.TYPE, AdvPatternEncoderGui::new, "/screens" +
+				"/adv_pattern_encoder.json");
 	}
 
 	@SubscribeEvent

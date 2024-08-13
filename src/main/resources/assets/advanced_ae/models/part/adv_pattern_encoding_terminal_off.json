@@ -1,8 +1,0 @@
-{
-  "parent": "ae2:part/pattern_encoding_terminal_off",
-  "textures": {
-    "lightsBright": "advanced_ae:part/adv_pattern_encoding_terminal_bright",
-    "lightsMedium": "advanced_ae:part/adv_pattern_encoding_terminal_medium",
-    "lightsDark": "advanced_ae:part/adv_pattern_encoding_terminal_dark"
-  }
-}
