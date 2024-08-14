@@ -25,4 +25,6 @@ an <ItemLink id="expatternprovider:ex_pattern_provider" /> with the capability t
 in a pattern will be pushed to. This powerful addition allows for automation of machines that require specific sides for
 specific inputs to be done with a single block and no pipes!
 
+*Looking at you, Mekanism.*
+
 ![AAEGui](../pic/app_gui.png)

@@ -123,8 +123,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		this.host = host;
 		this.mainNode = mainNode
 				.setFlags(GridFlags.REQUIRE_CHANNEL)
-				.addService(IGridTickable.class,
-						new net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic.Ticker())
+				.addService(IGridTickable.class, new AdvPatternProviderLogic.Ticker())
 				.addService(ICraftingProvider.class, this);
 		this.actionSource = new MachineSource(mainNode::getNode);
 
@@ -496,6 +495,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			for (var entry : node.getInWorldConnections().entrySet()) {
 				var otherNode = entry.getValue().getOtherSide(node);
 				if (otherNode.getOwner() instanceof PatternProviderLogicHost
+						|| otherNode.getOwner() instanceof AdvPatternProviderLogicHost
 						|| (otherNode.getOwner() instanceof InterfaceLogicHost
 						&& otherNode.getGrid().equals(mainNode.getGrid()))) {
 					sides.remove(entry.getKey());

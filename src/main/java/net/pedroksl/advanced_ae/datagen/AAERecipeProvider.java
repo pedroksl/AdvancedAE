@@ -26,16 +26,26 @@ public class AAERecipeProvider extends RecipeProvider {
 				.define('E', Items.ENDER_PEARL)
 				.define('L', AEItems.LOGIC_PROCESSOR)
 				.unlockedBy("hasItem", has(EPPItemAndBlock.EX_PATTERN_PROVIDER))
-				.save(consumer, "app");
+				.save(consumer, "advpatpro");
 		ShapelessRecipeBuilder
 				.shapeless(RecipeCategory.MISC, AAEItemAndBlock.ADV_PATTERN_PROVIDER)
 				.requires(AAEItemAndBlock.ADV_PATTERN_PROVIDER_PART)
 				.unlockedBy("hasItem", has(EPPItemAndBlock.EX_PATTERN_PROVIDER))
-				.save(consumer, "app2");
+				.save(consumer, "advpatpro2");
 		ShapelessRecipeBuilder
 				.shapeless(RecipeCategory.MISC, AAEItemAndBlock.ADV_PATTERN_PROVIDER_PART)
 				.requires(AAEItemAndBlock.ADV_PATTERN_PROVIDER)
 				.unlockedBy("hasItem", has(EPPItemAndBlock.EX_PATTERN_PROVIDER))
-				.save(consumer, "appp");
+				.save(consumer, "advpatpropart");
+		ShapedRecipeBuilder
+				.shaped(RecipeCategory.MISC, AAEItemAndBlock.ADV_PATTERN_ENCODER)
+				.pattern("QRQ")
+				.pattern("RER")
+				.pattern("QRQ")
+				.define('Q', AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED)
+				.define('R', AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED)
+				.define('E', AEItems.ENGINEERING_PROCESSOR)
+				.unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
+				.save(consumer, "advpartenc");
 	}
 }

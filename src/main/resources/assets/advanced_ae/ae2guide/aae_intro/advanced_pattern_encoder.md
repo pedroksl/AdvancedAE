@@ -25,7 +25,7 @@ displayed in a list.
 
 Each row contains a set of buttons that represent all possible block faces to which the ingredient
 can be sent to. Leaving the Selection in the "A" button will send it to whatever face is directly connected to the
-Pattern Provider, while choosing a specific face, will force that to be where items will be inserted. It's important to
+Pattern Provider, while choosing a specific face will force that to be where items will be inserted. It's important to
 note that advanced patterns can only be decoded properly by <ItemLink id="advanced_ae:adv_pattern_provider" /> and will
 behave like a normal pattern if used in other types of pattern provider.
 Additionally, if a single item cannot be inserted in the specified face, no items will be inserted directionally and
