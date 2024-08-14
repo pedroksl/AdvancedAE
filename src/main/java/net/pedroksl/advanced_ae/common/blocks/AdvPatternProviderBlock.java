@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
@@ -24,16 +25,18 @@ import org.jetbrains.annotations.Nullable;
 public class AdvPatternProviderBlock extends AEBaseEntityBlock<AdvPatternProviderEntity> {
 	public static final EnumProperty<PushDirection> PUSH_DIRECTION = EnumProperty.create("push_direction",
 			PushDirection.class);
+	public static final BooleanProperty CONNECTION_STATE = BooleanProperty.create("connection_state");
 
 	public AdvPatternProviderBlock() {
 		super(metalProps());
-		registerDefaultState(defaultBlockState().setValue(PUSH_DIRECTION, PushDirection.ALL));
+		registerDefaultState(defaultBlockState().setValue(PUSH_DIRECTION, PushDirection.ALL).setValue(CONNECTION_STATE, false));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(PUSH_DIRECTION);
+		builder.add(CONNECTION_STATE);
 	}
 
 	@Override

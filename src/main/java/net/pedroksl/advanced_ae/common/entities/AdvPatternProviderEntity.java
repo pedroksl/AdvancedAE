@@ -10,6 +10,7 @@ import appeng.blockentity.grid.AENetworkBlockEntity;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
+import appeng.util.Platform;
 import appeng.util.SettingsFrom;
 import com.glodblock.github.glodium.util.GlodUtil;
 import net.minecraft.core.BlockPos;
@@ -19,19 +20,18 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
+import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 public class AdvPatternProviderEntity extends AENetworkBlockEntity implements AdvPatternProviderLogicHost {
 	protected final AdvPatternProviderLogic logic = createLogic();
@@ -51,7 +51,34 @@ public class AdvPatternProviderEntity extends AENetworkBlockEntity implements Ad
 
 	@Override
 	public void onMainNodeStateChanged(IGridNodeListener.State reason) {
+		this.updateState();
+	}
+
+	public void updateState() {
 		this.logic.onMainNodeStateChanged();
+
+		if (!this.getMainNode().isReady()) {
+			return;
+		}
+
+		var connected = false;
+		var grid = getMainNode().getGrid();
+		if (grid != null) {
+			if (grid.getEnergyService().isNetworkPowered()) {
+				connected = true;
+			}
+		}
+
+		if (this.checkPosition(this.worldPosition) && this.level.getBlockState(this.worldPosition)
+				.getValue(AdvPatternProviderBlock.CONNECTION_STATE) != connected) {
+			this.level.setBlock(this.worldPosition,
+					this.level.getBlockState(this.worldPosition).setValue(AdvPatternProviderBlock.CONNECTION_STATE,
+							connected), Block.UPDATE_CLIENTS);
+		}
+	}
+
+	private boolean checkPosition(BlockPos pos) {
+		return Platform.getTickingBlockEntity(getLevel(), pos) instanceof AdvPatternProviderEntity;
 	}
 
 	private PushDirection getPushDirection() {
@@ -94,6 +121,8 @@ public class AdvPatternProviderEntity extends AENetworkBlockEntity implements Ad
 
 		super.onReady();
 		this.logic.updatePatterns();
+
+		this.updateState();
 	}
 
 	@Override

@@ -1,0 +1,25 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"3": "advanced_ae:block/adv_pattern_provider_alt_ani",
+		"4": "advanced_ae:block/adv_pattern_provider_front_ani",
+		"5": "advanced_ae:block/adv_pattern_provider_back_ani",
+		"particle": "advanced_ae:block/adv_pattern_provider_alt_ani"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"up": {"uv": [16, 16, 0, 0], "texture": "#4"},
+				"down": {"uv": [16, 0, 0, 16], "texture": "#5"}
+			}
+		}
+	]
+}
