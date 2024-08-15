@@ -428,6 +428,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 				});
 				onPushPatternSuccess(patternDetails);
 				this.sendDirection = direction;
+				this.directionMap = null;
 				this.sendStacksOut();
 				++roundRobinIndex;
 				return true;
