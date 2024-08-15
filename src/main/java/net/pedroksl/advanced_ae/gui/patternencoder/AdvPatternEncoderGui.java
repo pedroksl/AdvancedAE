@@ -83,7 +83,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 				var button = buttons[col];
 				button.setPosition(
 						this.leftPos +
-								LIST_ANCHOR_X + SLOT_SIZE + (col + 1) * DIRECTION_BUTTONS_OFFSET_X + col * DIRECTION_BUTTONS_WIDTH,
+								LIST_ANCHOR_X + 1 + SLOT_SIZE + (col + 1) * DIRECTION_BUTTONS_OFFSET_X + col * DIRECTION_BUTTONS_WIDTH,
 						this.topPos + LIST_ANCHOR_Y + 1 + i * ROW_HEIGHT
 				);
 				button.setHighlighted(col == highlight);
