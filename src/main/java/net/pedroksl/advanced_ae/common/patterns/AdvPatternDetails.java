@@ -5,8 +5,12 @@ import appeng.api.stacks.AEKey;
 import appeng.api.stacks.KeyCounter;
 import net.minecraft.core.Direction;
 
+import java.util.HashMap;
+
 public interface AdvPatternDetails {
 	boolean directionalInputsSet();
+
+	HashMap<AEKey, Direction> getDirectionMap();
 
 	Direction getDirectionSideForInputKey(AEKey key);
 

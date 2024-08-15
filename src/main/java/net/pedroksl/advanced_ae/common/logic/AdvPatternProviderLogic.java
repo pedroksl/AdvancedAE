@@ -11,6 +11,7 @@ import com.glodblock.github.appflux.common.AFItemAndBlock;
 import com.glodblock.github.appflux.common.me.energy.EnergyHandler;
 import com.glodblock.github.appflux.common.me.service.IEnergyDistributor;
 import com.glodblock.github.appflux.util.AFUtil;
+import net.minecraft.nbt.IntTag;
 import net.minecraftforge.fml.ModList;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetails;
 import org.jetbrains.annotations.Nullable;
@@ -79,6 +80,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 	public static final String NBT_PRIORITY = "priority";
 	public static final String NBT_SEND_LIST = "sendList";
 	public static final String NBT_SEND_DIRECTION = "sendDirection";
+	public static final String NBT_DIRECTION_MAP = "directionMap";
 	public static final String NBT_RETURN_INV = "returnInv";
 
 	private final AdvPatternProviderLogicHost host;
@@ -100,6 +102,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 	// Pattern sending logic
 	private final List<GenericStack> sendList = new ArrayList<>();
 	private Direction sendDirection;
+	private HashMap<AEKey, Direction> directionMap;
 	// Stack returning logic
 	private final PatternProviderReturnInventory returnInv;
 
@@ -184,6 +187,22 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			tag.putByte(NBT_SEND_DIRECTION, (byte) sendDirection.get3DDataValue());
 		}
 
+		if (directionMap != null) {
+			ListTag listTag = new ListTag();
+			for (var entry : this.directionMap.entrySet()) {
+				CompoundTag dirTag = new CompoundTag();
+				dirTag.put("aekey", entry.getKey().toTagGeneric());
+				Direction dir = entry.getValue();
+				if (dir == null) {
+					dirTag.put("dir", IntTag.valueOf(-1));
+				} else {
+					dirTag.put("dir", IntTag.valueOf(dir.get3DDataValue()));
+				}
+				listTag.add(dirTag);
+			}
+			tag.put(NBT_DIRECTION_MAP, listTag);
+		}
+
 		tag.put(NBT_RETURN_INV, this.returnInv.writeToTag());
 		this.upgrades.writeToNBT(tag, "upgrades");
 	}
@@ -219,8 +238,25 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 				this.addToSendList(stack.what(), stack.amount());
 			}
 		}
-		if (tag.contains("sendDirection")) {
-			sendDirection = Direction.from3DDataValue(tag.getByte("sendDirection"));
+		if (tag.contains(NBT_SEND_DIRECTION)) {
+			sendDirection = Direction.from3DDataValue(tag.getByte(NBT_SEND_DIRECTION));
+		}
+
+		if (tag.contains(NBT_DIRECTION_MAP)) {
+			if (this.directionMap == null) {
+				this.directionMap = new HashMap<>();
+			}
+
+			ListTag listTag = tag.getList(NBT_SEND_DIRECTION, Tag.TAG_COMPOUND);
+			for (int x = 0; x < listTag.size(); x++) {
+				CompoundTag compTag = listTag.getCompound(x);
+				AEKey key = AEKey.fromTagGeneric(compTag.getCompound("aekey"));
+
+				var intTag = compTag.getInt("dir");
+				Direction dir = intTag == -1 ? null : Direction.from3DDataValue(intTag);
+
+				this.directionMap.put(key, dir);
+			}
 		}
 
 		this.returnInv.readFromTag(tag.getList("returnInv", Tag.TAG_COMPOUND));
@@ -422,6 +458,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		});
 		onPushPatternSuccess((IPatternDetails) patternDetails);
 		this.sendDirection = direction;
+		this.directionMap = patternDetails.getDirectionMap();
 		this.sendStacksOut();
 		++roundRobinIndex;
 		return true;
@@ -578,6 +615,14 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			var what = stack.what();
 			long amount = stack.amount();
 
+			if (directionMap != null) {
+				Direction dir = directionMap.get(what);
+				var newAdapter = findAdapter(sendDirection, dir);
+				if (newAdapter != null) {
+					adapter = newAdapter;
+				}
+			}
+
 			var inserted = adapter.insert(what, amount, Actionable.MODULATE);
 			if (inserted >= amount) {
 				it.remove();
@@ -590,6 +635,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 		if (sendList.isEmpty()) {
 			sendDirection = null;
+			directionMap = null;
 		}
 
 		return didSomething;
