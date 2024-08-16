@@ -4,16 +4,17 @@ import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
+import net.pedroksl.advanced_ae.common.AAESingletons;
 
 import java.util.HashMap;
+import java.util.List;
 
 public final class AdvPatternDetailsEncoder {
 
-	public static ItemStack encodeProcessingPattern(GenericStack[] sparseInputs, GenericStack[] sparseOutputs,
+	public static ItemStack encodeProcessingPattern(List<GenericStack> sparseInputs, List<GenericStack> sparseOutputs,
 	                                                HashMap<AEKey, Direction> dirMap) {
-		ItemStack pattern = new ItemStack(AAEItemAndBlock.ADV_PROCESSING_PATTERN);
-		AdvPatternEncoding.encodeProcessingPattern(pattern.getOrCreateTag(), sparseInputs, sparseOutputs, dirMap);
-		return pattern;
+		ItemStack stack = new ItemStack(AAESingletons.ADV_PROCESSING_PATTERN);
+		AdvProcessingPattern.encode(stack, sparseInputs, sparseOutputs, dirMap);
+		return stack;
 	}
 }

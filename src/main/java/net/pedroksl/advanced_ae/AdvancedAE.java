@@ -1,54 +1,65 @@
 package net.pedroksl.advanced_ae;
 
-import appeng.api.crafting.PatternDetailsHelper;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.client.AAEClientRegistryHandler;
-import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
+import net.pedroksl.advanced_ae.common.AAESingletons;
 import net.pedroksl.advanced_ae.common.AAERegistryHandler;
-import net.minecraftforge.registries.RegisterEvent;
-import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetailsDecoder;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
+import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
+// The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(AdvancedAE.MOD_ID)
 public class AdvancedAE {
 	public static final String MOD_ID = "advanced_ae";
+	public static final Logger LOGGER = LogUtils.getLogger();
+	public static AdvancedAE INSTANCE;
 
-	public AdvancedAE() {
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AAEConfig.SPEC);
-		AAEItemAndBlock.init(AAERegistryHandler.INSTANCE);
-		modEventBus.register(AAERegistryHandler.INSTANCE);
-		modEventBus.addListener(this::commonSetup);
-		modEventBus.addListener(this::clientSetup);
-		MinecraftForge.EVENT_BUS.register(this);
-		modEventBus.addListener((RegisterEvent e) -> {
-			if (e.getRegistryKey() == Registries.CREATIVE_MODE_TAB) {
-				AAERegistryHandler.INSTANCE.registerTab(e.getVanillaRegistry());
+	public AdvancedAE(IEventBus eventBus, ModContainer container) {
+		assert INSTANCE == null;
+		INSTANCE = this;
+
+		if (!container.getModId().equals(MOD_ID)) {
+			throw new IllegalArgumentException("Invalid ID: " + MOD_ID);
+		}
+		container.registerConfig(ModConfig.Type.COMMON, AAEConfig.SPEC);
+
+		eventBus.addListener((RegisterEvent e) -> {
+			if (e.getRegistryKey().equals(Registries.CREATIVE_MODE_TAB)) {
+				AAERegistryHandler.INSTANCE.registerTab(e.getRegistry(Registries.CREATIVE_MODE_TAB));
+				return;
+			}
+			if (e.getRegistryKey().equals(Registries.BLOCK)) {
+				AAESingletons.init(AAERegistryHandler.INSTANCE);
+				AAERegistryHandler.INSTANCE.runRegister();
 			}
 		});
+		if (FMLEnvironment.dist.isClient()) {
+			eventBus.register(AAEClientRegistryHandler.INSTANCE);
+		}
+		eventBus.addListener(this::commonSetup);
+		eventBus.addListener(this::clientSetup);
+		eventBus.addListener(AAENetworkHandler.INSTANCE::onRegister);
+		eventBus.register(AAERegistryHandler.INSTANCE);
 	}
 
-	private void commonSetup(final FMLCommonSetupEvent event) {
+	private void commonSetup(FMLCommonSetupEvent event) {
 		AAERegistryHandler.INSTANCE.onInit();
-		AAENetworkHandler.INSTANCE.init();
-		PatternDetailsHelper.registerDecoder(AdvPatternDetailsDecoder.INSTANCE);
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {
-		AAEClientRegistryHandler.INSTANCE.init();
 	}
 
 	public static ResourceLocation id(String id) {
-		return new ResourceLocation(MOD_ID, id);
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, id);
 	}
 }

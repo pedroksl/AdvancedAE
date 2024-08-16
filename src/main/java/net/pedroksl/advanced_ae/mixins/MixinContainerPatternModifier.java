@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 @Mixin(ContainerPatternModifier.class)
@@ -76,36 +77,44 @@ public class MixinContainerPatternModifier extends AEBaseMenu {
 		}
 		for (var slot : this.getSlots(SlotSemantics.ENCODED_PATTERN)) {
 			var stack = slot.getItem();
-			if (stack.getItem() instanceof EncodedPatternItem pattern) {
-				var detail = pattern.decode(stack, this.getPlayer().level(), false);
-				if (detail instanceof AEProcessingPattern process) {
-					var input = process.getSparseInputs();
-					var output = process.getOutputs();
+			if (stack.getItem() instanceof EncodedPatternItem<?>) {
+				var detail = PatternDetailsHelper.decodePattern(stack, this.getPlayer().level());
+				if (detail instanceof AdvProcessingPattern processingPattern) {
+					var input = processingPattern.getSparseInputs().toArray(new GenericStack[0]);
+					var output = processingPattern.getOutputs().toArray(new GenericStack[0]);
 					var replaceInput = new GenericStack[input.length];
 					var replaceOutput = new GenericStack[output.length];
 					this.replace(input, replaceInput, AEItemKey.of(replace), AEItemKey.of(with));
 					this.replace(output, replaceOutput, AEItemKey.of(replace), AEItemKey.of(with));
-					// Start edit
-					if (detail instanceof AdvProcessingPattern advPattern) {
-						var dirMap = advPattern.getDirectionMap();
-						var newDirMap = new HashMap<AEKey, Direction>();
-						for (var entry : dirMap.entrySet()) {
-							if (AEItemKey.matches(entry.getKey(), replace)) {
-								newDirMap.put(AEItemKey.of(with), entry.getValue());
-							} else {
-								newDirMap.put(entry.getKey(), entry.getValue());
-							}
+
+					var dirMap = processingPattern.getDirectionMap();
+					var newDirMap = new HashMap<AEKey, Direction>();
+					for (var entry : dirMap.entrySet()) {
+						if (AEItemKey.matches(entry.getKey(), replace)) {
+							newDirMap.put(AEItemKey.of(with), entry.getValue());
+						} else {
+							newDirMap.put(entry.getKey(), entry.getValue());
 						}
-						ItemStack newPattern = AdvPatternDetailsEncoder.encodeProcessingPattern(replaceInput,
-								replaceOutput, newDirMap);
-						slot.set(newPattern);
-					} else {
-						ItemStack newPattern = PatternDetailsHelper.encodeProcessingPattern(replaceInput, replaceOutput);
-						slot.set(newPattern);
 					}
-					// End edit
+					ItemStack newPattern = AdvPatternDetailsEncoder.encodeProcessingPattern(
+							Arrays.asList(replaceInput),
+							Arrays.asList(replaceOutput),
+							newDirMap);
+					slot.set(newPattern);
+				} else if (detail instanceof AEProcessingPattern process) {
+					var input = process.getSparseInputs().toArray(new GenericStack[0]);
+					var output = process.getOutputs().toArray(new GenericStack[0]);
+					var replaceInput = new GenericStack[input.length];
+					var replaceOutput = new GenericStack[output.length];
+					this.replace(input, replaceInput, AEItemKey.of(replace), AEItemKey.of(with));
+					this.replace(output, replaceOutput, AEItemKey.of(replace), AEItemKey.of(with));
+					var newPattern = PatternDetailsHelper.encodeProcessingPattern(
+							Arrays.asList(replaceInput),
+							Arrays.asList(replaceOutput)
+					);
+					slot.set(newPattern);
 				} else if (detail instanceof AECraftingPattern craft) {
-					var input = craft.getSparseInputs();
+					var input = craft.getSparseInputs().toArray(new GenericStack[0]);
 					var output = craft.getPrimaryOutput();
 					var replaceInput = new GenericStack[input.length];
 					this.replace(input, replaceInput, AEItemKey.of(replace), AEItemKey.of(with));
@@ -143,27 +152,36 @@ public class MixinContainerPatternModifier extends AEBaseMenu {
 		}
 		for (var slot : this.getSlots(SlotSemantics.ENCODED_PATTERN)) {
 			var stack = slot.getItem();
-			if (stack.getItem() instanceof EncodedPatternItem pattern) {
-				var detail = pattern.decode(stack, this.getPlayer().level(), false);
-				if (detail instanceof AEProcessingPattern process) {
-					var input = process.getSparseInputs();
-					var output = process.getOutputs();
+			if (stack.getItem() instanceof EncodedPatternItem<?>) {
+				var detail = PatternDetailsHelper.decodePattern(stack, this.getPlayer().level());
+				if (detail instanceof AdvProcessingPattern processingPattern) {
+					var input = processingPattern.getSparseInputs().toArray(new GenericStack[0]);
+					var output = processingPattern.getOutputs().toArray(new GenericStack[0]);
 					if (checkModify(input, scale, div) && checkModify(output, scale, div)) {
 						var mulInput = new GenericStack[input.length];
 						var mulOutput = new GenericStack[output.length];
 						modifyStacks(input, mulInput, scale, div);
 						modifyStacks(output, mulOutput, scale, div);
-						// Start edit
-						if (detail instanceof AdvProcessingPattern advPattern) {
-							var dirMap = advPattern.getDirectionMap();
-							ItemStack newPattern = AdvPatternDetailsEncoder.encodeProcessingPattern(mulInput,
-									mulOutput, dirMap);
-							slot.set(newPattern);
-						} else {
-							ItemStack newPattern = PatternDetailsHelper.encodeProcessingPattern(mulInput, mulOutput);
-							slot.set(newPattern);
-						}
-						// End edit
+						var dirMap = processingPattern.getDirectionMap();
+						ItemStack newPattern = AdvPatternDetailsEncoder.encodeProcessingPattern(
+								Arrays.asList(mulInput),
+								Arrays.asList(mulOutput),
+								dirMap);
+						slot.set(newPattern);
+					}
+				} else if (detail instanceof AEProcessingPattern process) {
+					var input = process.getSparseInputs().toArray(new GenericStack[0]);
+					var output = process.getOutputs().toArray(new GenericStack[0]);
+					if (checkModify(input, scale, div) && checkModify(output, scale, div)) {
+						var mulInput = new GenericStack[input.length];
+						var mulOutput = new GenericStack[output.length];
+						modifyStacks(input, mulInput, scale, div);
+						modifyStacks(output, mulOutput, scale, div);
+						var newPattern = PatternDetailsHelper.encodeProcessingPattern(
+								Arrays.asList(mulInput),
+								Arrays.asList(mulOutput)
+						);
+						slot.set(newPattern);
 					}
 				}
 			}

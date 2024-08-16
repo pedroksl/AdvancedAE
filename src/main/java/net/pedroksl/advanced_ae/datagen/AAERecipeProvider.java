@@ -1,44 +1,45 @@
 package net.pedroksl.advanced_ae.datagen;
 
 import appeng.core.definitions.AEItems;
-import com.glodblock.github.extendedae.common.EPPItemAndBlock;
+import com.glodblock.github.extendedae.common.EAESingletons;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
-import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
+import net.pedroksl.advanced_ae.common.AAESingletons;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 public class AAERecipeProvider extends RecipeProvider {
-	public AAERecipeProvider(PackOutput pOutput) {
-		super(pOutput);
+	public AAERecipeProvider(PackOutput p, CompletableFuture<HolderLookup.Provider> provider) {
+		super(p, provider);
 	}
 
 	@Override
-	protected void buildRecipes(@NotNull Consumer<FinishedRecipe> consumer) {
+	protected void buildRecipes(@NotNull RecipeOutput c) {
 		ShapedRecipeBuilder
-				.shaped(RecipeCategory.MISC, AAEItemAndBlock.ADV_PATTERN_PROVIDER)
+				.shaped(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_PROVIDER)
 				.pattern("PR")
 				.pattern("EL")
-				.define('P', EPPItemAndBlock.EX_PATTERN_PROVIDER)
+				.define('P', EAESingletons.EX_PATTERN_PROVIDER)
 				.define('R', Items.REDSTONE)
 				.define('E', Items.ENDER_PEARL)
 				.define('L', AEItems.LOGIC_PROCESSOR)
-				.unlockedBy("hasItem", has(EPPItemAndBlock.EX_PATTERN_PROVIDER))
-				.save(consumer, "advpatpro");
+				.unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
+				.save(c, "advpatpro");
 		ShapelessRecipeBuilder
-				.shapeless(RecipeCategory.MISC, AAEItemAndBlock.ADV_PATTERN_PROVIDER)
-				.requires(AAEItemAndBlock.ADV_PATTERN_PROVIDER_PART)
-				.unlockedBy("hasItem", has(EPPItemAndBlock.EX_PATTERN_PROVIDER))
-				.save(consumer, "advpatpro2");
+				.shapeless(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_PROVIDER)
+				.requires(AAESingletons.ADV_PATTERN_PROVIDER_PART)
+				.unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
+				.save(c, "advpatpro2");
 		ShapelessRecipeBuilder
-				.shapeless(RecipeCategory.MISC, AAEItemAndBlock.ADV_PATTERN_PROVIDER_PART)
-				.requires(AAEItemAndBlock.ADV_PATTERN_PROVIDER)
-				.unlockedBy("hasItem", has(EPPItemAndBlock.EX_PATTERN_PROVIDER))
-				.save(consumer, "advpatpropart");
+				.shapeless(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_PROVIDER_PART)
+				.requires(AAESingletons.ADV_PATTERN_PROVIDER)
+				.unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
+				.save(c, "advpatpropart");
 		ShapedRecipeBuilder
-				.shaped(RecipeCategory.MISC, AAEItemAndBlock.ADV_PATTERN_ENCODER)
+				.shaped(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_ENCODER)
 				.pattern("QRQ")
 				.pattern("RER")
 				.pattern("QRQ")
@@ -46,6 +47,6 @@ public class AAERecipeProvider extends RecipeProvider {
 				.define('R', AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED)
 				.define('E', AEItems.ENGINEERING_PROCESSOR)
 				.unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
-				.save(consumer, "advpartenc");
+				.save(c, "advpartenc");
 	}
 }

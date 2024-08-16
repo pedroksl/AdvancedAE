@@ -4,6 +4,8 @@ import java.util.EnumSet;
 
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
+import appeng.menu.locator.MenuHostLocator;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
@@ -22,8 +24,6 @@ import appeng.api.util.IConfigurableObject;
 import appeng.helpers.IPriorityHost;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
-import appeng.menu.implementations.PatternProviderMenu;
-import appeng.menu.locator.MenuLocator;
 
 public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPriorityHost, PatternContainer, IUpgradeableObject {
 	AdvPatternProviderLogic getLogic();
@@ -34,7 +34,7 @@ public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPrior
 	BlockEntity getBlockEntity();
 
 	EnumSet<Direction> getTargets();
-	
+
 	void saveChanges();
 
 	@Override
@@ -52,13 +52,13 @@ public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPrior
 		getLogic().setPriority(newValue);
 	}
 
-	default void openMenu(Player player, MenuLocator locator) {
-		MenuOpener.open(PatternProviderMenu.TYPE, player, locator);
+	default void openMenu(Player player, MenuHostLocator locator) {
+		MenuOpener.open(AdvPatternProviderContainer.TYPE, player, locator);
 	}
 
 	@Override
 	default void returnToMainMenu(Player player, ISubMenu subMenu) {
-		MenuOpener.returnTo(PatternProviderMenu.TYPE, player, subMenu.getLocator());
+		MenuOpener.returnTo(AdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
 	}
 
 	@Override

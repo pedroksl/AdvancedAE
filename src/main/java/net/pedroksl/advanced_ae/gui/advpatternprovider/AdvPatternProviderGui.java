@@ -9,12 +9,13 @@ import appeng.client.gui.Icon;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.*;
 import appeng.core.localization.GuiText;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.ConfigButtonPacket;
+import appeng.core.network.ServerboundPacket;
+import appeng.core.network.serverbound.ConfigButtonPacket;
 import appeng.menu.SlotSemantics;
 import com.glodblock.github.appflux.util.helpers.IUpgradableMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +49,6 @@ public class AdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderContai
 		widgets.add("lockReason", this.lockReason);
 
 		this.widgets.add("upgrades", new UpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), this::getCompatibleUpgrades));
-		if (((IUpgradableMenu) menu).getToolbox().isPresent()) {
-			this.widgets.add("toolbox", new ToolboxPanel(style, ((IUpgradableMenu) menu).getToolbox().getName()));
-		}
 	}
 
 	@Override
@@ -65,7 +63,8 @@ public class AdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderContai
 
 	private void selectNextPatternProviderMode() {
 		final boolean backwards = isHandlingRightClick();
-		NetworkHandler.instance().sendToServer(new ConfigButtonPacket(Settings.PATTERN_ACCESS_TERMINAL, backwards));
+		ServerboundPacket message = new ConfigButtonPacket(Settings.PATTERN_ACCESS_TERMINAL, backwards);
+		PacketDistributor.sendToServer(message);
 	}
 
 	private List<Component> getCompatibleUpgrades() {

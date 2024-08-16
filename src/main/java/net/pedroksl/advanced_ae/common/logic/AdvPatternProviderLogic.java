@@ -2,17 +2,19 @@ package net.pedroksl.advanced_ae.common.logic;
 
 import java.util.*;
 
-import appeng.api.networking.storage.IStorageService;
+import appeng.api.ids.AEComponents;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.helpers.patternprovider.*;
-import com.glodblock.github.appflux.common.AFItemAndBlock;
-import com.glodblock.github.appflux.common.me.energy.EnergyHandler;
+import com.glodblock.github.appflux.common.AFSingletons;
+import com.glodblock.github.appflux.common.me.energy.EnergyTicker;
 import com.glodblock.github.appflux.common.me.service.IEnergyDistributor;
-import com.glodblock.github.appflux.util.AFUtil;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.IntTag;
-import net.minecraftforge.fml.ModList;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.neoforged.fml.ModList;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetails;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -30,8 +32,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.LockCraftingMode;
@@ -63,7 +63,6 @@ import appeng.core.localization.PlayerMessages;
 import appeng.core.settings.TickRates;
 import appeng.helpers.InterfaceLogicHost;
 import appeng.me.helpers.MachineSource;
-import appeng.util.ConfigManager;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 import appeng.util.inv.PlayerInternalInventory;
@@ -71,8 +70,8 @@ import appeng.util.inv.PlayerInternalInventory;
 /**
  * Shared code between the pattern provider block and part.
  */
-public class AdvPatternProviderLogic implements InternalInventoryHost, ICraftingProvider, IUpgradeableObject, IEnergyDistributor {
-	private static final Logger LOGGER = LoggerFactory.getLogger(appeng.helpers.patternprovider.PatternProviderLogic.class);
+public class AdvPatternProviderLogic implements InternalInventoryHost, ICraftingProvider, IUpgradeableObject {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdvPatternProviderLogic.class);
 
 	public static final String NBT_MEMORY_CARD_PATTERNS = "patterns";
 	public static final String NBT_UNLOCK_EVENT = "unlockEvent";
@@ -86,8 +85,9 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 	private final AdvPatternProviderLogicHost host;
 	private final IManagedGridNode mainNode;
 	private final IActionSource actionSource;
-	private final ConfigManager configManager = new ConfigManager(this::configChanged);
+	private final IConfigManager configManager;
 	private final IUpgradeInventory upgrades;
+	private EnergyTicker afTicker;
 
 	private int priority;
 
@@ -126,13 +126,15 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		this.host = host;
 		this.mainNode = mainNode
 				.setFlags(GridFlags.REQUIRE_CHANNEL)
-				.addService(IGridTickable.class, new AdvPatternProviderLogic.Ticker())
+				.addService(IGridTickable.class, new Ticker())
 				.addService(ICraftingProvider.class, this);
 		this.actionSource = new MachineSource(mainNode::getNode);
 
-		this.configManager.registerSetting(Settings.BLOCKING_MODE, YesNo.NO);
-		this.configManager.registerSetting(Settings.PATTERN_ACCESS_TERMINAL, YesNo.YES);
-		this.configManager.registerSetting(Settings.LOCK_CRAFTING_MODE, LockCraftingMode.NONE);
+		configManager = IConfigManager.builder(this::configChanged)
+				.registerSetting(Settings.BLOCKING_MODE, YesNo.NO)
+				.registerSetting(Settings.PATTERN_ACCESS_TERMINAL, YesNo.YES)
+				.registerSetting(Settings.LOCK_CRAFTING_MODE, LockCraftingMode.NONE)
+				.build();
 
 		this.returnInv = new PatternProviderReturnInventory(() -> {
 			this.mainNode.ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
@@ -140,7 +142,8 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		});
 		int upgradeCount = ModList.get().isLoaded("appflux") ? 2 : 1;
 		this.upgrades = UpgradeInventories.forMachine(host.getTerminalIcon().getItem(), upgradeCount, this::onUpgradesChanged);
-		this.mainNode.addService(IEnergyDistributor.class, this);
+		this.afTicker = new EnergyTicker(this.host::getBlockEntity, this.host, () -> this.upgrades.isInstalled(AFSingletons.INDUCTION_CARD), this.mainNode, this.actionSource);
+		this.mainNode.addService(IEnergyDistributor.class, this.afTicker);
 	}
 
 	public int getPriority() {
@@ -161,18 +164,20 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 	private void onUpgradesChanged() {
 		this.host.saveChanges();
+		this.host.getBlockEntity().invalidateCapabilities();
+		this.afTicker.updateSleep();
 	}
 
-	public void writeToNBT(CompoundTag tag) {
-		this.configManager.writeToNBT(tag);
-		this.patternInventory.writeToNBT(tag, NBT_MEMORY_CARD_PATTERNS);
+	public void writeToNBT(CompoundTag tag, HolderLookup.Provider registries) {
+		this.configManager.writeToNBT(tag, registries);
+		this.patternInventory.writeToNBT(tag, NBT_MEMORY_CARD_PATTERNS, registries);
 		tag.putInt(NBT_PRIORITY, this.priority);
 		if (unlockEvent == UnlockCraftingEvent.PULSE) {
 			tag.putByte(NBT_UNLOCK_EVENT, (byte) 1);
 		} else if (unlockEvent == UnlockCraftingEvent.RESULT) {
 			if (unlockStack != null) {
 				tag.putByte(NBT_UNLOCK_EVENT, (byte) 2);
-				tag.put(NBT_UNLOCK_STACK, GenericStack.writeTag(unlockStack));
+				tag.put(NBT_UNLOCK_STACK, GenericStack.writeTag(registries, unlockStack));
 			} else {
 				LOGGER.error("Saving pattern provider {}, locked waiting for stack, but stack is null!", host);
 			}
@@ -180,7 +185,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 		ListTag sendListTag = new ListTag();
 		for (var toSend : sendList) {
-			sendListTag.add(GenericStack.writeTag(toSend));
+			sendListTag.add(GenericStack.writeTag(registries, toSend));
 		}
 		tag.put(NBT_SEND_LIST, sendListTag);
 		if (sendDirection != null) {
@@ -191,7 +196,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			ListTag listTag = new ListTag();
 			for (var entry : this.directionMap.entrySet()) {
 				CompoundTag dirTag = new CompoundTag();
-				dirTag.put("aekey", entry.getKey().toTagGeneric());
+				dirTag.put("aekey", entry.getKey().toTagGeneric(registries));
 				Direction dir = entry.getValue();
 				if (dir == null) {
 					dirTag.put("dir", IntTag.valueOf(-1));
@@ -203,13 +208,13 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			tag.put(NBT_DIRECTION_MAP, listTag);
 		}
 
-		tag.put(NBT_RETURN_INV, this.returnInv.writeToTag());
-		this.upgrades.writeToNBT(tag, "upgrades");
+		tag.put(NBT_RETURN_INV, this.returnInv.writeToTag(registries));
+		this.upgrades.writeToNBT(tag, "upgrades", registries);
 	}
 
-	public void readFromNBT(CompoundTag tag) {
-		this.configManager.readFromNBT(tag);
-		this.patternInventory.readFromNBT(tag, NBT_MEMORY_CARD_PATTERNS);
+	public void readFromNBT(CompoundTag tag, HolderLookup.Provider registries) {
+		this.configManager.readFromNBT(tag, registries);
+		this.patternInventory.readFromNBT(tag, NBT_MEMORY_CARD_PATTERNS, registries);
 		this.priority = tag.getInt(NBT_PRIORITY);
 
 		var unlockEventType = tag.getByte(NBT_UNLOCK_EVENT);
@@ -223,7 +228,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			}
 		};
 		if (this.unlockEvent == UnlockCraftingEvent.RESULT) {
-			this.unlockStack = GenericStack.readTag(tag.getCompound(NBT_UNLOCK_STACK));
+			this.unlockStack = GenericStack.readTag(registries, tag.getCompound(NBT_UNLOCK_STACK));
 			if (this.unlockStack == null) {
 				LOGGER.error("Could not load unlock stack for pattern provider from NBT: {}", tag);
 			}
@@ -233,7 +238,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 		var sendListTag = tag.getList("sendList", Tag.TAG_COMPOUND);
 		for (int i = 0; i < sendListTag.size(); ++i) {
-			var stack = GenericStack.readTag(sendListTag.getCompound(i));
+			var stack = GenericStack.readTag(registries, sendListTag.getCompound(i));
 			if (stack != null) {
 				this.addToSendList(stack.what(), stack.amount());
 			}
@@ -250,7 +255,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			ListTag listTag = tag.getList(NBT_SEND_DIRECTION, Tag.TAG_COMPOUND);
 			for (int x = 0; x < listTag.size(); x++) {
 				CompoundTag compTag = listTag.getCompound(x);
-				AEKey key = AEKey.fromTagGeneric(compTag.getCompound("aekey"));
+				AEKey key = AEKey.fromTagGeneric(registries, compTag.getCompound("aekey"));
 
 				var intTag = compTag.getInt("dir");
 				Direction dir = intTag == -1 ? null : Direction.from3DDataValue(intTag);
@@ -259,21 +264,25 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			}
 		}
 
-		this.returnInv.readFromTag(tag.getList("returnInv", Tag.TAG_COMPOUND));
-		this.upgrades.readFromNBT(tag, "upgrades");
+		this.returnInv.readFromTag(tag.getList("returnInv", Tag.TAG_COMPOUND), registries);
+		this.upgrades.readFromNBT(tag, "upgrades", registries);
 	}
 
 	public IConfigManager getConfigManager() {
 		return this.configManager;
 	}
 
-	@Override
 	public void saveChanges() {
 		this.host.saveChanges();
 	}
 
 	@Override
-	public void onChangeInventory(InternalInventory inv, int slot) {
+	public void saveChangedInventory(AppEngInternalInventory inv) {
+		this.host.saveChanges();
+	}
+
+	@Override
+	public void onChangeInventory(AppEngInternalInventory inv, int slot) {
 		this.saveChanges();
 		this.updatePatterns();
 	}
@@ -282,31 +291,6 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 	public boolean isClientSide() {
 		Level level = this.host.getBlockEntity().getLevel();
 		return level == null || level.isClientSide();
-	}
-
-	@Override
-	public void distribute() {
-		if (this.upgrades.isInstalled(AFItemAndBlock.INDUCTION_CARD)) {
-			var storage = this.getStorage();
-			var grid = this.mainNode.getGrid();
-			var self = this.host.getBlockEntity();
-			if (storage != null && self.getLevel() != null) {
-				for (var d : AFUtil.getSides(this.host)) {
-					var te = self.getLevel().getBlockEntity(self.getBlockPos().offset(d.getNormal()));
-					var thatGrid = AFUtil.getGrid(te, d.getOpposite());
-					if (te != null && thatGrid != grid && !AFUtil.isBlackListTE(te, d.getOpposite())) {
-						EnergyHandler.send(te, d.getOpposite(), storage, this.actionSource);
-					}
-				}
-			}
-		}
-	}
-
-	private IStorageService getStorage() {
-		if (this.mainNode.getGrid() != null) {
-			return this.mainNode.getGrid().getStorageService();
-		}
-		return null;
 	}
 
 	public void updatePatterns() {
@@ -376,10 +360,9 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		// Push to crafting machines first
 		for (var direction : getActiveSides()) {
 			var adjPos = be.getBlockPos().relative(direction);
-			var adjBe = level.getBlockEntity(adjPos);
 			var adjBeSide = direction.getOpposite();
 
-			var craftingMachine = ICraftingMachine.of(level, adjPos, adjBeSide, adjBe);
+			var craftingMachine = ICraftingMachine.of(level, adjPos, adjBeSide);
 			if (craftingMachine != null && craftingMachine.acceptsPlans()) {
 				if (craftingMachine.pushPattern(patternDetails, inputHolder, adjBeSide)) {
 					onPushPatternSuccess(patternDetails);
@@ -682,8 +665,10 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 		this.returnInv.addDrops(drops, this.host.getBlockEntity().getLevel(), this.host.getBlockEntity().getBlockPos());
 
-		for (var upgrade : this.upgrades) {
-			drops.add(upgrade);
+		for (var is : this.upgrades) {
+			if (!is.isEmpty()) {
+				drops.add(is);
+			}
 		}
 	}
 
@@ -698,16 +683,18 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		return this.returnInv;
 	}
 
-	public void exportSettings(CompoundTag output) {
-		patternInventory.writeToNBT(output, NBT_MEMORY_CARD_PATTERNS);
+	public void exportSettings(DataComponentMap.Builder builder) {
+		builder.set(AEComponents.EXPORTED_PATTERNS, patternInventory.toItemContainerContents());
 	}
 
-	public void importSettings(CompoundTag input, @Nullable Player player) {
-		if (player != null && input.contains(NBT_MEMORY_CARD_PATTERNS) && !player.level().isClientSide) {
+	public void importSettings(DataComponentMap input, @Nullable Player player) {
+		var patterns = input.getOrDefault(AEComponents.EXPORTED_PATTERNS, ItemContainerContents.EMPTY);
+
+		if (player != null && !player.level().isClientSide) {
 			clearPatternInventory(player);
 
 			var desiredPatterns = new AppEngInternalInventory(patternInventory.size());
-			desiredPatterns.readFromNBT(input, NBT_MEMORY_CARD_PATTERNS);
+			desiredPatterns.fromItemContainerContents(patterns);
 
 			// Restore from blank patterns in the player inv
 			var playerInv = player.getInventory();
@@ -715,9 +702,13 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 					: playerInv.countItem(AEItems.BLANK_PATTERN.asItem());
 			var blankPatternsUsed = 0;
 			for (int i = 0; i < desiredPatterns.size(); i++) {
+				if (desiredPatterns.getStackInSlot(i).isEmpty()) {
+					continue;
+				}
+
 				// Don't restore junk
 				var pattern = PatternDetailsHelper.decodePattern(desiredPatterns.getStackInSlot(i),
-						host.getBlockEntity().getLevel(), true);
+						host.getBlockEntity().getLevel());
 				if (pattern == null) {
 					continue; // Skip junk / broken recipes
 				}
@@ -806,7 +797,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
 		@Override
 		public TickingRequest getTickingRequest(IGridNode node) {
-			return new TickingRequest(TickRates.Interface, !hasWorkToDo(), true);
+			return new TickingRequest(TickRates.Interface, !hasWorkToDo());
 		}
 
 		@Override
@@ -876,10 +867,6 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 	public long getSortValue() {
 		final BlockEntity te = this.host.getBlockEntity();
 		return te.getBlockPos().getZ() << 24 ^ te.getBlockPos().getX() << 8 ^ te.getBlockPos().getY();
-	}
-
-	public <T> LazyOptional<T> getCapability(Capability<T> capability) {
-		return this.returnInv.getCapability(capability);
 	}
 
 	@Nullable

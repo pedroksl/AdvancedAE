@@ -5,7 +5,9 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import appeng.api.AECapabilities;
 import appeng.helpers.patternprovider.PatternProviderTarget;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -18,19 +20,17 @@ import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AEKeyType;
 import appeng.api.storage.MEStorage;
-import appeng.capabilities.Capabilities;
 import appeng.me.storage.CompositeStorage;
 import appeng.parts.automation.StackWorldBehaviors;
-import appeng.util.BlockApiCache;
 
 class AdvPatternProviderTargetCache {
-	private final BlockApiCache<MEStorage> cache;
+	private final BlockCapabilityCache<MEStorage, Direction> cache;
 	private final Direction direction;
 	private final IActionSource src;
 	private final HashMap<Direction, Map<AEKeyType, ExternalStorageStrategy>> strategiesMap = new HashMap<>();
 
 	AdvPatternProviderTargetCache(ServerLevel l, BlockPos pos, Direction direction, IActionSource src) {
-		this.cache = BlockApiCache.create(Capabilities.STORAGE, l, pos);
+		this.cache = BlockCapabilityCache.create(AECapabilities.ME_STORAGE, l, pos, direction);
 		this.direction = direction;
 		this.src = src;
 		for (Direction dir : Direction.values()) {
@@ -42,7 +42,7 @@ class AdvPatternProviderTargetCache {
 	PatternProviderTarget find(Direction fromSide) {
 		// our capability first: allows any storage channel
 		Direction side = fromSide == null ? direction : fromSide;
-		var meStorage = cache.find(side);
+		var meStorage = cache.getCapability();
 		if (meStorage != null) {
 			return wrapMeStorage(meStorage);
 		}

@@ -1,13 +1,17 @@
 package net.pedroksl.advanced_ae.common;
 
 import appeng.api.parts.PartModels;
+import appeng.api.parts.RegisterPartCapabilitiesEvent;
 import appeng.block.AEBaseBlockItem;
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
 import appeng.blockentity.ClientTickingBlockEntity;
 import appeng.blockentity.ServerTickingBlockEntity;
-import appeng.core.AppEng;
 import appeng.items.AEBaseItem;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.pedroksl.advanced_ae.xmod.appflux.AFCommonLoad;
 import com.glodblock.github.glodium.registry.RegistryHandler;
 import com.glodblock.github.glodium.util.GlodUtil;
@@ -19,9 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
@@ -44,15 +45,25 @@ public class AAERegistryHandler extends RegistryHandler {
 	}
 
 	@Override
-	public void register(RegisterEvent event) {
-		super.register(event);
+	public void runRegister() {
+		super.runRegister();
 		this.onRegisterContainer();
 		this.onRegisterModels(); // Parts
 	}
 
+	@SubscribeEvent
+	public void onRegisterCapability(RegisterPartCapabilitiesEvent event) {
+		AdvPatternProviderPart.registerCapability(event);
+	}
+
+	@SubscribeEvent
+	public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+		super.onRegisterCapabilities(event);
+	}
+
 	private void onRegisterContainer() {
-		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_provider"), AdvPatternProviderContainer.TYPE);
-		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_encoder"), AdvPatternEncoderContainer.TYPE);
+		Registry.register(BuiltInRegistries.MENU, AdvancedAE.id("adv_pattern_provider"), AdvPatternProviderContainer.TYPE);
+		Registry.register(BuiltInRegistries.MENU, AdvancedAE.id("adv_pattern_encoder"), AdvPatternEncoderContainer.TYPE);
 	}
 
 	private <T extends AEBaseBlockEntity> void bindTileEntity(Class<T> clazz, AEBaseEntityBlock<T> block, BlockEntityType.BlockEntitySupplier<T> supplier) {
@@ -69,7 +80,7 @@ public class AAERegistryHandler extends RegistryHandler {
 
 	public void onInit() {
 		for (Pair<String, Block> entry : blocks) {
-			Block block = ForgeRegistries.BLOCKS.getValue(AdvancedAE.id(entry.getKey()));
+			Block block = entry.getRight();
 			if (block instanceof AEBaseEntityBlock<?>) {
 				AEBaseBlockEntity.registerBlockEntityItem(
 						((AEBaseEntityBlock<?>) block).getBlockEntityType(),
@@ -97,12 +108,12 @@ public class AAERegistryHandler extends RegistryHandler {
 
 	public void registerTab(Registry<CreativeModeTab> registry) {
 		var tab = CreativeModeTab.builder()
-				.icon(() -> new ItemStack(AAEItemAndBlock.ADV_PATTERN_PROVIDER))
+				.icon(() -> new ItemStack(AAESingletons.ADV_PATTERN_PROVIDER))
 				.title(Component.translatable("itemGroup.app"))
-				.displayItems((__, o) -> {
+				.displayItems((p, o) -> {
 					for (Pair<String, Item> entry : items) {
 						if (entry.getRight() instanceof AEBaseItem aeItem) {
-							aeItem.addToMainCreativeTab(o);
+							aeItem.addToMainCreativeTab(p, o);
 						} else {
 							o.accept(entry.getRight());
 						}

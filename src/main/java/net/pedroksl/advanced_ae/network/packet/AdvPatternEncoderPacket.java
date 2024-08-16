@@ -4,15 +4,17 @@ import appeng.api.stacks.AEKey;
 import com.glodblock.github.glodium.network.packet.IMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderGui;
 
 import java.util.HashMap;
 
 import static appeng.api.stacks.AEKey.writeKey;
 
-public class AdvPatternEncoderPacket implements IMessage<AdvPatternEncoderPacket> {
+public class AdvPatternEncoderPacket implements IMessage {
 
 	private HashMap<AEKey, Direction> dirMap;
 
@@ -25,7 +27,7 @@ public class AdvPatternEncoderPacket implements IMessage<AdvPatternEncoderPacket
 	}
 
 	@Override
-	public void toBytes(FriendlyByteBuf buf) {
+	public void toBytes(RegistryFriendlyByteBuf buf) {
 		buf.writeInt(dirMap.size());
 		for (var entry : dirMap.entrySet()) {
 			writeKey(buf, entry.getKey());
@@ -40,7 +42,7 @@ public class AdvPatternEncoderPacket implements IMessage<AdvPatternEncoderPacket
 	}
 
 	@Override
-	public void fromBytes(FriendlyByteBuf buf) {
+	public void fromBytes(RegistryFriendlyByteBuf buf) {
 		dirMap = new HashMap<>();
 
 		int size = buf.readInt();
@@ -59,8 +61,8 @@ public class AdvPatternEncoderPacket implements IMessage<AdvPatternEncoderPacket
 	}
 
 	@Override
-	public Class<AdvPatternEncoderPacket> getPacketClass() {
-		return AdvPatternEncoderPacket.class;
+	public ResourceLocation id() {
+		return AdvancedAE.id("pattern_encoder_update");
 	}
 
 	@Override

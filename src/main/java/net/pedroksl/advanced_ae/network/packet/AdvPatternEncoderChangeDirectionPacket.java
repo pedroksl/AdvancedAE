@@ -3,15 +3,17 @@ package net.pedroksl.advanced_ae.network.packet;
 import appeng.api.stacks.AEKey;
 import com.glodblock.github.glodium.network.packet.IMessage;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
 
 import javax.annotation.Nullable;
 
 import static appeng.api.stacks.AEKey.writeKey;
 
-public class AdvPatternEncoderChangeDirectionPacket implements IMessage<AdvPatternEncoderChangeDirectionPacket> {
+public class AdvPatternEncoderChangeDirectionPacket implements IMessage {
 
 	private AEKey key;
 	private Direction dir;
@@ -25,7 +27,7 @@ public class AdvPatternEncoderChangeDirectionPacket implements IMessage<AdvPatte
 	}
 
 	@Override
-	public void toBytes(FriendlyByteBuf buf) {
+	public void toBytes(RegistryFriendlyByteBuf buf) {
 		writeKey(buf, this.key);
 		if (this.dir == null) {
 			buf.writeBoolean(false);
@@ -36,7 +38,7 @@ public class AdvPatternEncoderChangeDirectionPacket implements IMessage<AdvPatte
 	}
 
 	@Override
-	public void fromBytes(FriendlyByteBuf buf) {
+	public void fromBytes(RegistryFriendlyByteBuf buf) {
 		this.key = AEKey.readKey(buf);
 		this.dir = buf.readBoolean() ? buf.readEnum(Direction.class) : null;
 	}
@@ -49,8 +51,8 @@ public class AdvPatternEncoderChangeDirectionPacket implements IMessage<AdvPatte
 	}
 
 	@Override
-	public Class<AdvPatternEncoderChangeDirectionPacket> getPacketClass() {
-		return AdvPatternEncoderChangeDirectionPacket.class;
+	public ResourceLocation id() {
+		return AdvancedAE.id("encoder_change_direction_update");
 	}
 
 	@Override

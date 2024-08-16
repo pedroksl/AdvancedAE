@@ -1,36 +1,31 @@
 package net.pedroksl.advanced_ae.common.parts;
 
+import appeng.api.AECapabilities;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNodeListener;
 import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.IPartModel;
+import appeng.api.parts.RegisterPartCapabilitiesEvent;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.util.AECableType;
 import appeng.core.AppEngBase;
-import appeng.menu.ISubMenu;
-import appeng.menu.MenuOpener;
-import appeng.menu.locator.MenuLocator;
-import appeng.menu.locator.MenuLocators;
 import appeng.parts.AEBasePart;
 import appeng.parts.PartModel;
 import appeng.util.SettingsFrom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
+import net.pedroksl.advanced_ae.common.AAESingletons;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -40,10 +35,10 @@ import java.util.List;
 public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProviderLogicHost {
 
 	public static List<ResourceLocation> MODELS = Arrays.asList(
-			new ResourceLocation(AdvancedAE.MOD_ID, "part/adv_pattern_provider_base"),
-			new ResourceLocation(AppEngBase.MOD_ID, "part/interface_on"),
-			new ResourceLocation(AppEngBase.MOD_ID, "part/interface_off"),
-			new ResourceLocation(AppEngBase.MOD_ID, "part/interface_has_channel")
+			ResourceLocation.fromNamespaceAndPath(AdvancedAE.MOD_ID, "part/adv_pattern_provider_base"),
+			ResourceLocation.fromNamespaceAndPath(AppEngBase.MOD_ID, "part/interface_on"),
+			ResourceLocation.fromNamespaceAndPath(AppEngBase.MOD_ID, "part/interface_off"),
+			ResourceLocation.fromNamespaceAndPath(AppEngBase.MOD_ID, "part/interface_has_channel")
 	);
 
 	public static final PartModel MODELS_OFF = new PartModel(MODELS.get(0), MODELS.get(2));
@@ -70,15 +65,15 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 	}
 
 	@Override
-	public void readFromNBT(CompoundTag data) {
-		super.readFromNBT(data);
-		this.logic.readFromNBT(data);
+	public void readFromNBT(CompoundTag data, HolderLookup.Provider registries) {
+		super.readFromNBT(data, registries);
+		this.logic.readFromNBT(data, registries);
 	}
 
 	@Override
-	public void writeToNBT(CompoundTag data) {
-		super.writeToNBT(data);
-		this.logic.writeToNBT(data);
+	public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
+		super.writeToNBT(data, registries);
+		this.logic.writeToNBT(data, registries);
 	}
 
 	@Override
@@ -98,15 +93,15 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 	}
 
 	@Override
-	public void exportSettings(SettingsFrom mode, CompoundTag output) {
-		super.exportSettings(mode, output);
+	public void exportSettings(SettingsFrom mode, DataComponentMap.Builder builder) {
+		super.exportSettings(mode, builder);
 		if (mode == SettingsFrom.MEMORY_CARD) {
-			this.logic.exportSettings(output);
+			this.logic.exportSettings(builder);
 		}
 	}
 
 	@Override
-	public void importSettings(SettingsFrom mode, CompoundTag input, @Nullable Player player) {
+	public void importSettings(SettingsFrom mode, DataComponentMap input, @Nullable Player player) {
 		super.importSettings(mode, input, player);
 		if (mode == SettingsFrom.MEMORY_CARD) {
 			this.logic.importSettings(input, player);
@@ -116,24 +111,6 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 	@Override
 	public void onNeighborChanged(BlockGetter level, BlockPos pos, BlockPos neighbor) {
 		this.logic.updateRedstoneState();
-	}
-
-	@Override
-	public boolean onPartActivate(Player p, InteractionHand hand, Vec3 pos) {
-		if (!p.getCommandSenderWorld().isClientSide()) {
-			this.openMenu(p, MenuLocators.forPart(this));
-		}
-		return true;
-	}
-
-	@Override
-	public void openMenu(Player player, MenuLocator locator) {
-		MenuOpener.open(AdvPatternProviderContainer.TYPE, player, locator);
-	}
-
-	@Override
-	public void returnToMainMenu(Player player, ISubMenu subMenu) {
-		MenuOpener.returnTo(AdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
 	}
 
 	protected AdvPatternProviderLogic createLogic() {
@@ -169,13 +146,17 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 		}
 	}
 
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capabilityClass) {
-		return this.logic.getCapability(capabilityClass);
+	@SuppressWarnings("UnstableApiUsage")
+	public static void registerCapability(RegisterPartCapabilitiesEvent event) {
+		event.register(
+				AECapabilities.GENERIC_INTERNAL_INV,
+				(part, context) -> part.logic.getReturnInv(),
+				AdvPatternProviderPart.class
+		);
 	}
 
 	@Override
 	public ItemStack getMainMenuIcon() {
-		return new ItemStack(AAEItemAndBlock.ADV_PATTERN_PROVIDER_PART);
+		return new ItemStack(AAESingletons.ADV_PATTERN_PROVIDER_PART);
 	}
 }
