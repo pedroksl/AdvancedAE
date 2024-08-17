@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
+import appeng.block.crafting.PatternProviderBlock;
 import appeng.block.crafting.PushDirection;
 import appeng.menu.locator.MenuLocators;
 import appeng.util.InteractionUtil;
@@ -15,19 +16,21 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
+import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("deprecation")
+import static appeng.block.crafting.PatternProviderBlock.PUSH_DIRECTION;
+
+import javax.annotation.Nonnull;
+
 public class AdvPatternProviderBlock extends BlockBaseGui<AdvPatternProviderEntity> {
-	public static final EnumProperty<PushDirection> PUSH_DIRECTION = EnumProperty.create("push_direction",
-			PushDirection.class);
+
 	public static final BooleanProperty CONNECTION_STATE = BooleanProperty.create("connection_state");
 
 	public AdvPatternProviderBlock() {
 		super(metalProps());
-		registerDefaultState(defaultBlockState().setValue(PUSH_DIRECTION, PushDirection.ALL).setValue(CONNECTION_STATE, false));
+		this.registerDefaultState(this.defaultBlockState().setValue(PatternProviderBlock.PUSH_DIRECTION, PushDirection.ALL).setValue(CONNECTION_STATE, false));
 	}
 
 	@Override
@@ -36,15 +39,15 @@ public class AdvPatternProviderBlock extends BlockBaseGui<AdvPatternProviderEnti
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(@Nonnull StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(PUSH_DIRECTION);
 		builder.add(CONNECTION_STATE);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos,
-	                            boolean isMoving) {
+	public void neighborChanged(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos,
+	                            @NotNull Block block, @NotNull BlockPos fromPos, boolean isMoving) {
 		var be = this.getBlockEntity(level, pos);
 		if (be != null) {
 			be.getLogic().updateRedstoneState();

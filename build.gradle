@@ -22,7 +22,7 @@ base {
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
-    version = project.neo_version
+    version = project.neoforge_version
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -105,46 +105,41 @@ dependencies {
     implementation "curse.maven:glodium-957920:5614731"
     implementation "curse.maven:applied-energistics-2-223794:5610903"
     implementation "curse.maven:ex-pattern-provider-892005:5617630"
+    jarJar(implementation "de.mari_023:ae2wtlib_api:19.1.0-alpha.1")
     compileOnly "curse.maven:emi-580555:5619579"
     compileOnly "curse.maven:applied-flux-965012:5614830"
-    //compileOnly "curse.maven:jade-324717:5427817"
-    //compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.729"
+    compileOnly "curse.maven:jade-324717:5427817"
+    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.729"
     // runtime test
-    //runtimeOnly "curse.maven:applied-flux-965012:5614830"
-    //runtimeOnly "de.mari_023:ae2wtlib:19.1.0-alpha.1"
-    //runtimeOnly "curse.maven:mega-cells-622112:5575776"
-    //runtimeOnly "curse.maven:jade-324717:5427817"
+    runtimeOnly "curse.maven:applied-flux-965012:5614830"
+    runtimeOnly "de.mari_023:ae2wtlib:19.1.0-alpha.1"
+    runtimeOnly "curse.maven:jade-324717:5427817"
     // setup Xei
     switch (use_Xei) {
         case "emi":
-            //runtimeOnly "dev.emi:emi-neoforge:1.1.10+1.21"
+            runtimeOnly "dev.emi:emi-neoforge:1.1.10+1.21"
             break
         case "rei":
-            //runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.729"
-            //runtimeOnly "dev.architectury:architectury-neoforge:13.0.1"
-            //runtimeOnly "curse.maven:cloth-config-348521:5424576"
+            runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.729"
+            runtimeOnly "dev.architectury:architectury-neoforge:13.0.1"
+            runtimeOnly "curse.maven:cloth-config-348521:5424576"
             break
     }
 }
 
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
-            loader_version_range   : loader_version_range,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : mod_license,
-            mod_version            : mod_version,
-            mod_authors            : mod_authors,
-            mod_description        : mod_description
+            minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+            neo_version         : neoforge_version, neo_version_range: neoforge_version_range,
+            loader_version_range: loader_version_range,
+            mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors         : mod_authors, mod_description: mod_description,
     ]
     inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
 }
 
 publishing {

@@ -10,6 +10,7 @@ import appeng.api.parts.RegisterPartCapabilitiesEvent;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.util.AECableType;
 import appeng.core.AppEngBase;
+import appeng.menu.locator.MenuLocators;
 import appeng.parts.AEBasePart;
 import appeng.parts.PartModel;
 import appeng.util.SettingsFrom;
@@ -22,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.phys.Vec3;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.AAESingletons;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
@@ -111,6 +113,14 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 	@Override
 	public void onNeighborChanged(BlockGetter level, BlockPos pos, BlockPos neighbor) {
 		this.logic.updateRedstoneState();
+	}
+
+	@Override
+	public boolean onUseWithoutItem(Player p, Vec3 pos) {
+		if (!p.getCommandSenderWorld().isClientSide()) {
+			this.openMenu(p, MenuLocators.forPart(this));
+		}
+		return true;
 	}
 
 	protected AdvPatternProviderLogic createLogic() {

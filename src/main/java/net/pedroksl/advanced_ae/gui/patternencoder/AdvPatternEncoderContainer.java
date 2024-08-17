@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetailsEncoder;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 public class AdvPatternEncoderContainer extends AEBaseMenu {
 	public static final MenuType<AdvPatternEncoderContainer> TYPE = MenuTypeBuilder
 			.create(AdvPatternEncoderContainer::new, AdvPatternEncoderHost.class)
-			.build("adv_pattern_encoder");
+			.build(AdvancedAE.id("adv_pattern_encoder"));
 
 	private final RestrictedInputSlot inputSlot;
 	private final OutputSlot outputSlot;

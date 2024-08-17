@@ -4,11 +4,12 @@ import appeng.api.stacks.GenericStack;
 import appeng.core.definitions.AEItems;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.pedroksl.advanced_ae.common.helpers.NullableDirection;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -16,7 +17,7 @@ import java.util.stream.Stream;
 public record EncodedAdvProcessingPattern(
 		List<GenericStack> sparseInputs,
 		List<GenericStack> sparseOutputs,
-		List<Direction> directionList) {
+		List<NullableDirection> directionList) {
 	public EncodedAdvProcessingPattern {
 		sparseInputs = Collections.unmodifiableList(sparseInputs);
 		sparseOutputs = Collections.unmodifiableList(sparseOutputs);
@@ -28,7 +29,7 @@ public record EncodedAdvProcessingPattern(
 							.forGetter(EncodedAdvProcessingPattern::sparseInputs),
 					GenericStack.FAULT_TOLERANT_NULLABLE_LIST_CODEC.fieldOf("sparseOutputs")
 							.forGetter(EncodedAdvProcessingPattern::sparseOutputs),
-					Codec.list(Direction.CODEC).fieldOf("directionMap")
+					NullableDirection.FAULT_TOLERANT_NULLABLE_LIST_CODEC.fieldOf("directionMap")
 							.forGetter(EncodedAdvProcessingPattern::directionList))
 			.apply(builder, EncodedAdvProcessingPattern::new));
 
@@ -38,7 +39,7 @@ public record EncodedAdvProcessingPattern(
 					EncodedAdvProcessingPattern::sparseInputs,
 					GenericStack.STREAM_CODEC.apply(ByteBufCodecs.list()),
 					EncodedAdvProcessingPattern::sparseOutputs,
-					Direction.STREAM_CODEC.apply(ByteBufCodecs.list()),
+					NullableDirection.STREAM_CODEC.apply(ByteBufCodecs.list()),
 					EncodedAdvProcessingPattern::directionList,
 					EncodedAdvProcessingPattern::new);
 

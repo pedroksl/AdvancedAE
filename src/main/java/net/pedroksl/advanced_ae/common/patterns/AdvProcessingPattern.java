@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.AAESingletons;
+import net.pedroksl.advanced_ae.common.helpers.NullableDirection;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -54,7 +56,7 @@ public class AdvProcessingPattern implements IPatternDetails, AdvPatternDetails 
 			var direction = directions.get(x);
 
 			if (input != null) {
-				this.dirMap.put(input.what(), direction);
+				this.dirMap.put(input.what(), direction.getDirection());
 			}
 		}
 	}
@@ -66,13 +68,14 @@ public class AdvProcessingPattern implements IPatternDetails, AdvPatternDetails 
 		} else {
 			Objects.requireNonNull(sparseOutputs.get(0), "The first (primary) output must be non-null.");
 
-			List<Direction> directionList = new ArrayList<>(sparseInputs.size());
+			NullableDirection[] nullDirArray = new NullableDirection[sparseInputs.size()];
+			Arrays.fill(nullDirArray, NullableDirection.NULLDIR);
+			List<NullableDirection> directionList = Arrays.asList(nullDirArray);
 			if (dirMap != null) {
-				for (var input : sparseInputs) {
-					if (input == null) {
-						directionList.add(null);
-					} else {
-						directionList.add(dirMap.get(input.what()));
+				for (var x = 0; x < sparseInputs.size(); x++) {
+					var input = sparseInputs.get(x);
+					if (input != null) {
+						directionList.set(x, NullableDirection.fromDirection(dirMap.get(input.what())));
 					}
 				}
 			}

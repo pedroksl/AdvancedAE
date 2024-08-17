@@ -1,17 +1,29 @@
 package net.pedroksl.advanced_ae.common;
 
+import appeng.api.AECapabilities;
+import appeng.api.implementations.blockentities.ICraftingMachine;
+import appeng.api.implementations.items.IAEItemPowerStorage;
+import appeng.api.networking.IInWorldGridNodeHost;
 import appeng.api.parts.PartModels;
 import appeng.api.parts.RegisterPartCapabilitiesEvent;
 import appeng.block.AEBaseBlockItem;
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
+import appeng.blockentity.AEBaseInvBlockEntity;
 import appeng.blockentity.ClientTickingBlockEntity;
 import appeng.blockentity.ServerTickingBlockEntity;
+import appeng.blockentity.powersink.AEBasePoweredBlockEntity;
 import appeng.items.AEBaseItem;
+import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
+import com.glodblock.github.extendedae.api.caps.ICrankPowered;
+import com.glodblock.github.extendedae.api.caps.IGenericInvHost;
+import com.glodblock.github.extendedae.api.caps.IMEStorageAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
 import net.pedroksl.advanced_ae.xmod.appflux.AFCommonLoad;
 import com.glodblock.github.glodium.registry.RegistryHandler;
 import com.glodblock.github.glodium.util.GlodUtil;
@@ -29,12 +41,25 @@ import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContain
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Collection;
+
 public class AAERegistryHandler extends RegistryHandler {
 
 	public static final AAERegistryHandler INSTANCE = new AAERegistryHandler();
 
+	@SuppressWarnings("UnstableApiUsage")
 	public AAERegistryHandler() {
 		super(AdvancedAE.MOD_ID);
+		this.cap(AEBaseInvBlockEntity.class, Capabilities.ItemHandler.BLOCK, AEBaseInvBlockEntity::getExposedItemHandler);
+		this.cap(AEBasePoweredBlockEntity.class, Capabilities.EnergyStorage.BLOCK, AEBasePoweredBlockEntity::getEnergyStorage);
+		this.cap(IInWorldGridNodeHost.class, AECapabilities.IN_WORLD_GRID_NODE_HOST, (object, context) -> object);
+		this.cap(IAEItemPowerStorage.class, Capabilities.EnergyStorage.ITEM, (object, context) -> new PoweredItemCapabilities(object, (IAEItemPowerStorage) object.getItem()));
+		this.cap(ICrankPowered.class, AECapabilities.CRANKABLE, ICrankPowered::getCrankable);
+		this.cap(ICraftingMachine.class, AECapabilities.CRAFTING_MACHINE, (object, context) -> object);
+		this.cap(IGenericInvHost.class, AECapabilities.GENERIC_INTERNAL_INV, IGenericInvHost::getGenericInv);
+		this.cap(IMEStorageAccess.class, AECapabilities.ME_STORAGE, IMEStorageAccess::getMEStorage);
+		this.cap(AdvPatternProviderEntity.class, AECapabilities.GENERIC_INTERNAL_INV,
+				(blockEntity, context) -> blockEntity.getLogic().getReturnInv());
 	}
 
 	public <T extends AEBaseBlockEntity> void block(String name, AEBaseEntityBlock<T> block, Class<T> clazz,
@@ -49,6 +74,10 @@ public class AAERegistryHandler extends RegistryHandler {
 		super.runRegister();
 		this.onRegisterContainer();
 		this.onRegisterModels(); // Parts
+	}
+
+	public Collection<Block> getBlocks() {
+		return this.blocks.stream().map(Pair::getRight).toList();
 	}
 
 	@SubscribeEvent
