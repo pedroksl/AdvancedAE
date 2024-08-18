@@ -43,9 +43,9 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 			ResourceLocation.fromNamespaceAndPath(AppEngBase.MOD_ID, "part/interface_has_channel")
 	);
 
-	public static final PartModel MODELS_OFF = new PartModel(MODELS.get(0), MODELS.get(2));
-	public static final PartModel MODELS_ON = new PartModel(MODELS.get(0), MODELS.get(1));
-	public static final PartModel MODELS_HAS_CHANNEL = new PartModel(MODELS.get(0), MODELS.get(3));
+	public static final PartModel MODELS_OFF = new PartModel(MODELS.getFirst(), MODELS.get(2));
+	public static final PartModel MODELS_ON = new PartModel(MODELS.getFirst(), MODELS.get(1));
+	public static final PartModel MODELS_HAS_CHANNEL = new PartModel(MODELS.getFirst(), MODELS.get(3));
 
 	protected final AdvPatternProviderLogic logic = this.createLogic();
 

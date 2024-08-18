@@ -81,6 +81,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 	public static final String NBT_SEND_DIRECTION = "sendDirection";
 	public static final String NBT_DIRECTION_MAP = "directionMap";
 	public static final String NBT_RETURN_INV = "returnInv";
+	public static final String NBT_UPGRADES = "upgrades";
 
 	private final AdvPatternProviderLogicHost host;
 	private final IManagedGridNode mainNode;
@@ -188,28 +189,30 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			sendListTag.add(GenericStack.writeTag(registries, toSend));
 		}
 		tag.put(NBT_SEND_LIST, sendListTag);
+
 		if (sendDirection != null) {
 			tag.putByte(NBT_SEND_DIRECTION, (byte) sendDirection.get3DDataValue());
 		}
 
+		ListTag dirListTag = new ListTag();
 		if (directionMap != null) {
-			ListTag listTag = new ListTag();
 			for (var entry : this.directionMap.entrySet()) {
 				CompoundTag dirTag = new CompoundTag();
 				dirTag.put("aekey", entry.getKey().toTagGeneric(registries));
 				Direction dir = entry.getValue();
 				if (dir == null) {
-					dirTag.put("dir", IntTag.valueOf(-1));
+					dirTag.putByte("dir", (byte) -1);
 				} else {
-					dirTag.put("dir", IntTag.valueOf(dir.get3DDataValue()));
+					dirTag.putByte("dir", (byte) dir.get3DDataValue());
 				}
-				listTag.add(dirTag);
+				dirListTag.add(dirTag);
 			}
-			tag.put(NBT_DIRECTION_MAP, listTag);
+
 		}
+		tag.put(NBT_DIRECTION_MAP, dirListTag);
 
 		tag.put(NBT_RETURN_INV, this.returnInv.writeToTag(registries));
-		this.upgrades.writeToNBT(tag, "upgrades", registries);
+		this.upgrades.writeToNBT(tag, NBT_UPGRADES, registries);
 	}
 
 	public void readFromNBT(CompoundTag tag, HolderLookup.Provider registries) {
@@ -236,7 +239,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			this.unlockStack = null;
 		}
 
-		var sendListTag = tag.getList("sendList", Tag.TAG_COMPOUND);
+		var sendListTag = tag.getList(NBT_SEND_LIST, Tag.TAG_COMPOUND);
 		for (int i = 0; i < sendListTag.size(); ++i) {
 			var stack = GenericStack.readTag(registries, sendListTag.getCompound(i));
 			if (stack != null) {
@@ -257,15 +260,15 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 				CompoundTag compTag = listTag.getCompound(x);
 				AEKey key = AEKey.fromTagGeneric(registries, compTag.getCompound("aekey"));
 
-				var intTag = compTag.getInt("dir");
-				Direction dir = intTag == -1 ? null : Direction.from3DDataValue(intTag);
+				var dirTag = compTag.getByte("dir");
+				Direction dir = dirTag == -1 ? null : Direction.from3DDataValue(dirTag);
 
 				this.directionMap.put(key, dir);
 			}
 		}
 
-		this.returnInv.readFromTag(tag.getList("returnInv", Tag.TAG_COMPOUND), registries);
-		this.upgrades.readFromNBT(tag, "upgrades", registries);
+		this.returnInv.readFromTag(tag.getList(NBT_RETURN_INV, Tag.TAG_COMPOUND), registries);
+		this.upgrades.readFromNBT(tag, NBT_UPGRADES, registries);
 	}
 
 	public IConfigManager getConfigManager() {

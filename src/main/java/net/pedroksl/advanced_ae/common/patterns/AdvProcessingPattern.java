@@ -1,12 +1,14 @@
 package net.pedroksl.advanced_ae.common.patterns;
 
 import appeng.api.crafting.IPatternDetails;
+import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.crafting.PatternDetailsTooltip;
 import appeng.api.ids.AEComponents;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
 import appeng.api.stacks.KeyCounter;
+import appeng.crafting.pattern.AEProcessingPattern;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -16,7 +18,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.AAESingletons;
 import net.pedroksl.advanced_ae.common.helpers.NullableDirection;
-import org.apache.commons.lang3.ObjectUtils;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -66,7 +67,7 @@ public class AdvProcessingPattern implements IPatternDetails, AdvPatternDetails 
 		if (sparseInputs.stream().noneMatch(Objects::nonNull)) {
 			throw new IllegalArgumentException("At least one input must be non-null.");
 		} else {
-			Objects.requireNonNull(sparseOutputs.get(0), "The first (primary) output must be non-null.");
+			Objects.requireNonNull(sparseOutputs.getFirst(), "The first (primary) output must be non-null.");
 
 			NullableDirection[] nullDirArray = new NullableDirection[sparseInputs.size()];
 			Arrays.fill(nullDirArray, NullableDirection.NULLDIR);
@@ -82,6 +83,19 @@ public class AdvProcessingPattern implements IPatternDetails, AdvPatternDetails 
 			stack.set(AAESingletons.ENCODED_ADV_PROCESSING_PATTERN, new EncodedAdvProcessingPattern(sparseInputs,
 					sparseOutputs, directionList));
 		}
+	}
+
+	public AEProcessingPattern getAEProcessingPattern(Level level) {
+		var stack = PatternDetailsHelper.encodeProcessingPattern(this.getSparseInputs(), this.getSparseOutputs());
+		if (stack == null)
+			return null;
+
+		var pattern = PatternDetailsHelper.decodePattern(stack, level);
+		if (!(pattern instanceof AEProcessingPattern aePattern)) {
+			return null;
+		}
+
+		return aePattern;
 	}
 
 	@Override
