@@ -21,25 +21,25 @@
       0,
       0,
       176,
-      204
+      192
     ]
   },
   "slots": {
     "ENCODED_PATTERN": {
-      "left": 53,
-      "top": 15,
+      "left": 147,
+      "top": 27,
       "grid": "HORIZONTAL"
     },
     "MACHINE_OUTPUT": {
-      "left": 107,
-      "top": 15,
+      "left": 147,
+      "top": 74,
       "grid": "HORIZONTAL"
     }
   },
   "widgets": {
     "scrollbar": {
-      "left": 149,
-      "top": 35
+      "left": 10,
+      "top": 33
     }
   }
 }

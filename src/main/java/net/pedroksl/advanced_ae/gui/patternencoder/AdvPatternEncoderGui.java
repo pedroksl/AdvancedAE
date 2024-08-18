@@ -8,6 +8,7 @@ import appeng.client.guidebook.document.LytRect;
 import appeng.client.guidebook.render.SimpleRenderContext;
 import appeng.core.AppEng;
 import appeng.menu.slot.FakeSlot;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
@@ -27,19 +28,18 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	private static final int ROW_HEIGHT = 18;
 	private static final int SLOT_SIZE = ROW_HEIGHT;
-	private static final int VISIBLE_ROWS = 4;
+	private static final int ROW_SPACING = 2;
+	private static final int VISIBLE_ROWS = 3;
 
-	private static final int LIST_ANCHOR_X = 20;
-	private static final int LIST_ANCHOR_Y = 35;
-	private static final int DIRECTION_BUTTONS_OFFSET_X = 2;
-	private static final int DIRECTION_BUTTONS_WIDTH = 13;
-	private static final int DIRECTION_BUTTONS_HEIGHT = 15;
+	private static final int LIST_ANCHOR_X = 18;
+	private static final int LIST_ANCHOR_Y = 32;
+	private static final int DIRECTION_BUTTONS_OFFSET_X = 1;
+	private static final int DIRECTION_BUTTONS_WIDTH = 12;
+	private static final int DIRECTION_BUTTONS_HEIGHT = 14;
 
-	private static final Rect2i SLOT_BBOX = new Rect2i(7, 121, SLOT_SIZE, SLOT_SIZE);
-	private static final Rect2i HIGHLIGHT_BBOX = new Rect2i(0, 0, 15, 17);
+	private static final Rect2i SLOT_BBOX = new Rect2i(146, 26, SLOT_SIZE, SLOT_SIZE);
 
 	private final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/adv_pattern_encoder.png");
-	private final ResourceLocation HIGHLIGHT_TEXTURE = AdvancedAE.id("textures/guis/selection_ring.png");
 
 	private final Scrollbar scrollbar;
 	private HashMap<AEKey, Direction> inputList = new HashMap<>();
@@ -73,7 +73,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 			var renderContext = new SimpleRenderContext(LytRect.empty(), guiGraphics);
 			renderContext.renderItem(
 					row.key().wrapForDisplayOrFilter(),
-					LIST_ANCHOR_X + 1, LIST_ANCHOR_Y + 1 + i * ROW_HEIGHT,
+					LIST_ANCHOR_X + 1, LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING),
 					16, 16
 			);
 
@@ -82,9 +82,10 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 			for (var col = 0; col < 7; col++) {
 				var button = buttons[col];
 				button.setPosition(
-						this.leftPos +
-								LIST_ANCHOR_X + 1 + SLOT_SIZE + (col + 1) * DIRECTION_BUTTONS_OFFSET_X + col * DIRECTION_BUTTONS_WIDTH,
-						this.topPos + LIST_ANCHOR_Y + 1 + i * ROW_HEIGHT
+						this.leftPos + LIST_ANCHOR_X + 2 + SLOT_SIZE +
+								(col + 1) * DIRECTION_BUTTONS_OFFSET_X +
+								col * DIRECTION_BUTTONS_WIDTH,
+						this.topPos + LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING)
 				);
 				button.setHighlighted(col == highlight);
 				button.visible = true;
@@ -104,7 +105,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 		for (int i = 0; i < visibleRows; ++i) {
 			guiGraphics.blit(DEFAULT_TEXTURE, currentX, currentY, SLOT_BBOX.getX(), SLOT_BBOX.getY(), SLOT_BBOX.getWidth(),
 					SLOT_BBOX.getHeight());
-			currentY += ROW_HEIGHT;
+			currentY += ROW_HEIGHT + ROW_SPACING;
 		}
 	}
 
@@ -135,10 +136,8 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 			DirectionInputButton[] buttons = new DirectionInputButton[7];
 			for (var x = 0; x < 7; x++) {
 				var button = new DirectionInputButton(0, 0, DIRECTION_BUTTONS_WIDTH, DIRECTION_BUTTONS_HEIGHT,
-						getDirButtonTexture(x),
+						getDirButtonTextures(x),
 						this::directionButtonPressed);
-				button.setHighlight(HIGHLIGHT_TEXTURE, 0, 0, HIGHLIGHT_BBOX.getWidth(), HIGHLIGHT_BBOX.getHeight(), 32,
-						32);
 				button.setKey(key);
 				button.setIndex(x);
 				button.visible = false;
@@ -169,20 +168,27 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 		};
 	}
 
-	private ResourceLocation getDirButtonTexture(int index) {
+	private Pair<ResourceLocation, ResourceLocation> getDirButtonTextures(int index) {
 		return switch (index) {
-			case 1 -> AdvancedAE.id("textures/guis/north_button.png");
-			case 2 -> AdvancedAE.id("textures/guis/east_button.png");
-			case 3 -> AdvancedAE.id("textures/guis/south_button.png");
-			case 4 -> AdvancedAE.id("textures/guis/west_button.png");
-			case 5 -> AdvancedAE.id("textures/guis/up_button.png");
-			case 6 -> AdvancedAE.id("textures/guis/down_button.png");
-			default -> AdvancedAE.id("textures/guis/any_button.png");
+			case 1 -> new Pair<>(AdvancedAE.id("textures/guis/north_button.png"),
+					AdvancedAE.id("textures/guis/north_button_selected.png"));
+			case 2 -> new Pair<>(AdvancedAE.id("textures/guis/east_button.png"),
+					AdvancedAE.id("textures/guis/east_button_selected.png"));
+			case 3 -> new Pair<>(AdvancedAE.id("textures/guis/south_button.png"),
+					AdvancedAE.id("textures/guis/south_button_selected.png"));
+			case 4 -> new Pair<>(AdvancedAE.id("textures/guis/west_button.png"),
+					AdvancedAE.id("textures/guis/west_button_selected.png"));
+			case 5 -> new Pair<>(AdvancedAE.id("textures/guis/up_button.png"),
+					AdvancedAE.id("textures/guis/up_button_selected.png"));
+			case 6 -> new Pair<>(AdvancedAE.id("textures/guis/down_button.png"),
+					AdvancedAE.id("textures/guis/down_button_selected.png"));
+			default -> new Pair<>(AdvancedAE.id("textures/guis/any_button.png"),
+					AdvancedAE.id("textures/guis/any_button_selected.png"));
 		};
 	}
 
 	private void resetScrollbar() {
-		scrollbar.setHeight(VISIBLE_ROWS * ROW_HEIGHT);
+		scrollbar.setHeight(VISIBLE_ROWS * ROW_HEIGHT + (VISIBLE_ROWS - 1) * ROW_SPACING - 2);
 		scrollbar.setRange(0, this.inputList.size() - VISIBLE_ROWS, 2);
 	}
 

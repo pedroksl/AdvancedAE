@@ -2,42 +2,26 @@ package net.pedroksl.advanced_ae.gui.patternencoder;
 
 import appeng.api.stacks.AEKey;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 public class DirectionInputButton extends Button {
 
-	ResourceLocation texture;
-	ResourceLocation highlightTexture;
+	Pair<ResourceLocation, ResourceLocation> textures;
 	private AEKey key;
 	private int index;
 	private boolean highlighted;
 
-	private int hX;
-	private int hY;
-	private int hW;
-	private int hH;
-	private int hSW;
-	private int hSH;
-
-	public DirectionInputButton(int x, int y, int width, int height, ResourceLocation texture, OnPress onPress) {
+	public DirectionInputButton(int x, int y, int width, int height, Pair<ResourceLocation, ResourceLocation> textures, OnPress onPress) {
 		super(x, y, width, height, Component.empty(), onPress, Button.DEFAULT_NARRATION);
 
-		this.texture = texture;
-	}
-
-	public void setHighlight(ResourceLocation highlightTexture, int x, int y, int width, int height, int sourceWidth, int sourceHeight) {
-		this.highlightTexture = highlightTexture;
-		this.hX = x;
-		this.hY = y;
-		this.hW = width;
-		this.hH = height;
-		this.hSW = sourceWidth;
-		this.hSH = sourceHeight;
+		this.textures = textures;
 	}
 
 	public void setHighlighted(boolean isHighlighted) {
@@ -69,14 +53,15 @@ public class DirectionInputButton extends Button {
 	}
 
 	@Override
-	protected void renderWidget(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+	protected void renderWidget(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-		RenderSystem.setShaderTexture(0, texture);
-		pGuiGraphics.blit(texture, this.getX(), this.getY(), 0, 0, width, height, 16, 16);
-
 		if (highlighted) {
-			pGuiGraphics.blit(highlightTexture, this.getX() - 1, this.getY() - 1, this.hX, this.hY, this.hW, this.hH, this.hSW, this.hSH);
+			RenderSystem.setShaderTexture(0, textures.getSecond());
+			pGuiGraphics.blit(textures.getSecond(), this.getX(), this.getY(), 0, 0, width, height, 16, 16);
+		} else {
+			RenderSystem.setShaderTexture(0, textures.getFirst());
+			pGuiGraphics.blit(textures.getFirst(), this.getX(), this.getY(), 0, 0, width, height, 16, 16);
 		}
 	}
 
