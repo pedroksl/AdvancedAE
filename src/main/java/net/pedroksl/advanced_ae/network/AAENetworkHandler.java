@@ -4,6 +4,7 @@ import com.glodblock.github.glodium.network.NetworkHandler;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionPacket;
 import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderPacket;
+import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderUpdateRequestPacket;
 
 public class AAENetworkHandler extends NetworkHandler {
 
@@ -11,6 +12,7 @@ public class AAENetworkHandler extends NetworkHandler {
 
 	public AAENetworkHandler() {
 		super(AdvancedAE.MOD_ID);
+		registerPacket(AdvPatternEncoderUpdateRequestPacket::new);
 		registerPacket(AdvPatternEncoderPacket::new);
 		registerPacket(AdvPatternEncoderChangeDirectionPacket::new);
 	}

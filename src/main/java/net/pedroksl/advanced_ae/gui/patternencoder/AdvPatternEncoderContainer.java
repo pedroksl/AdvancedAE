@@ -49,10 +49,16 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 		}
 	}
 
+	public void onUpdateRequested() {
+		if (this.inputSlot.hasItem()) {
+			decodeInputPattern();
+		}
+	}
+
 	public void onChangeInventory(InternalInventory inv, int slot) {
 		if (inv == host.getInventory()) {
 			if (slot == 0) {
-				if (this.inputSlot.hasItem() && !this.outputSlot.hasItem()) {
+				if (this.inputSlot.hasItem()) {
 					decodeInputPattern();
 				} else if (!this.inputSlot.hasItem()) {
 					clearDecodedPattern();

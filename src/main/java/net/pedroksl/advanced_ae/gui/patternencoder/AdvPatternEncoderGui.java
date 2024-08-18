@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionPacket;
+import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderUpdateRequestPacket;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 	public AdvPatternEncoderGui(AdvPatternEncoderContainer menu, Inventory playerInventory, Component title, ScreenStyle style) {
 		super(menu, playerInventory, title, style);
 		this.scrollbar = widgets.addScrollBar("scrollbar", Scrollbar.SMALL);
+
+		AAENetworkHandler.INSTANCE.sendToServer(new AdvPatternEncoderUpdateRequestPacket());
 	}
 
 	@Override
