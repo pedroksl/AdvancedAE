@@ -16,8 +16,6 @@ information. You can use a right-click with it in hand to open its GUI.
 
 <ItemImage id="advanced_ae:adv_pattern_encoder" scale="4"></ItemImage>
 
-![PEGui](../pic/ape_gui.png)
-
 Encoded Processing Patterns can be inserted into the left slot, which will be decoded and all raw ingredients then
 displayed in a list.
 

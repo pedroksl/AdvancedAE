@@ -21,18 +21,18 @@
       0,
       0,
       176,
-      192
+      182
     ]
   },
   "slots": {
     "ENCODED_PATTERN": {
       "left": 147,
-      "top": 27,
+      "top": 17,
       "grid": "HORIZONTAL"
     },
     "MACHINE_OUTPUT": {
       "left": 147,
-      "top": 74,
+      "top": 64,
       "grid": "HORIZONTAL"
     }
   },

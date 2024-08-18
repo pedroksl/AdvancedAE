@@ -18,7 +18,8 @@ public class DirectionInputButton extends Button {
 	private int index;
 	private boolean highlighted;
 
-	public DirectionInputButton(int x, int y, int width, int height, Pair<ResourceLocation, ResourceLocation> textures, OnPress onPress) {
+	public DirectionInputButton(int x, int y, int width, int height,
+	                            Pair<ResourceLocation, ResourceLocation> textures, OnPress onPress) {
 		super(x, y, width, height, Component.empty(), onPress, Button.DEFAULT_NARRATION);
 
 		this.textures = textures;

@@ -5,5 +5,12 @@
   "item.advanced_ae.adv_processing_pattern": "Advanced Processing Pattern",
   "item.advanced_ae.adv_pattern_encoder": "Advanced Pattern Encoder",
   "gui.advanced_ae.adv_pattern_provider": "ME Adv. Pattern Provider",
-  "gui.advanced_ae.adv_pattern_encoder": "Advanced Pattern Encoder"
+  "gui.advanced_ae.adv_pattern_encoder": "Advanced Pattern Encoder",
+  "gui.advanced_ae.any_button_tooltip": "Target the face adjacent to the adv. pattern provider",
+  "gui.advanced_ae.north_button_tooltip": "Target the NORTH face of the machine.",
+  "gui.advanced_ae.east_button_tooltip": "Target the EAST face of the machine.",
+  "gui.advanced_ae.south_button_tooltip": "Target the SOUTH face of the machine.",
+  "gui.advanced_ae.west_button_tooltip": "Target the WEST face of the machine.",
+  "gui.advanced_ae.up_button_tooltip": "Target the UP face of the machine.",
+  "gui.advanced_ae.down_button_tooltip": "Target the DOWN face of the machine."
 }

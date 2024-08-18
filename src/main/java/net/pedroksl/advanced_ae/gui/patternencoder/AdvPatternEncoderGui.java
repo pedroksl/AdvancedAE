@@ -11,6 +11,7 @@ import appeng.menu.slot.FakeSlot;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -32,12 +33,12 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 	private static final int VISIBLE_ROWS = 3;
 
 	private static final int LIST_ANCHOR_X = 18;
-	private static final int LIST_ANCHOR_Y = 32;
+	private static final int LIST_ANCHOR_Y = 22;
 	private static final int DIRECTION_BUTTONS_OFFSET_X = 1;
 	private static final int DIRECTION_BUTTONS_WIDTH = 12;
 	private static final int DIRECTION_BUTTONS_HEIGHT = 14;
 
-	private static final Rect2i SLOT_BBOX = new Rect2i(146, 26, SLOT_SIZE, SLOT_SIZE);
+	private static final Rect2i SLOT_BBOX = new Rect2i(146, 16, SLOT_SIZE, SLOT_SIZE);
 
 	private final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/adv_pattern_encoder.png");
 
@@ -136,8 +137,8 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 			DirectionInputButton[] buttons = new DirectionInputButton[7];
 			for (var x = 0; x < 7; x++) {
 				var button = new DirectionInputButton(0, 0, DIRECTION_BUTTONS_WIDTH, DIRECTION_BUTTONS_HEIGHT,
-						getDirButtonTextures(x),
-						this::directionButtonPressed);
+						getDirButtonTextures(x), this::directionButtonPressed);
+				button.setTooltip(Tooltip.create(getDirButtonText(x)));
 				button.setKey(key);
 				button.setIndex(x);
 				button.visible = false;
@@ -184,6 +185,18 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 					AdvancedAE.id("textures/guis/down_button_selected.png"));
 			default -> new Pair<>(AdvancedAE.id("textures/guis/any_button.png"),
 					AdvancedAE.id("textures/guis/any_button_selected.png"));
+		};
+	}
+
+	private Component getDirButtonText(int index) {
+		return switch (index) {
+			case 1 -> Component.translatable("gui.advanced_ae.north_button_tooltip");
+			case 2 -> Component.translatable("gui.advanced_ae.east_button_tooltip");
+			case 3 -> Component.translatable("gui.advanced_ae.south_button_tooltip");
+			case 4 -> Component.translatable("gui.advanced_ae.west_button_tooltip");
+			case 5 -> Component.translatable("gui.advanced_ae.up_button_tooltip");
+			case 6 -> Component.translatable("gui.advanced_ae.down_button_tooltip");
+			default -> Component.translatable("gui.advanced_ae.any_button_tooltip");
 		};
 	}
 
