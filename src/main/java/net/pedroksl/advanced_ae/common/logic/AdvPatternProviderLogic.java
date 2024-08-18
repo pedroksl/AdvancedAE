@@ -12,7 +12,6 @@ import com.glodblock.github.appflux.common.me.energy.EnergyTicker;
 import com.glodblock.github.appflux.common.me.service.IEnergyDistributor;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.fml.ModList;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetails;
@@ -103,7 +102,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 	// Pattern sending logic
 	private final List<GenericStack> sendList = new ArrayList<>();
 	private Direction sendDirection;
-	private HashMap<AEKey, Direction> directionMap;
+	private HashMap<AEKey, Direction> directionMap = new HashMap<>();
 	// Stack returning logic
 	private final PatternProviderReturnInventory returnInv;
 
@@ -250,21 +249,15 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			sendDirection = Direction.from3DDataValue(tag.getByte(NBT_SEND_DIRECTION));
 		}
 
-		if (tag.contains(NBT_DIRECTION_MAP)) {
-			if (this.directionMap == null) {
-				this.directionMap = new HashMap<>();
-			}
+		ListTag listTag = tag.getList(NBT_DIRECTION_MAP, Tag.TAG_COMPOUND);
+		for (int x = 0; x < listTag.size(); x++) {
+			CompoundTag compTag = listTag.getCompound(x);
+			AEKey key = AEKey.fromTagGeneric(registries, compTag.getCompound("aekey"));
 
-			ListTag listTag = tag.getList(NBT_SEND_DIRECTION, Tag.TAG_COMPOUND);
-			for (int x = 0; x < listTag.size(); x++) {
-				CompoundTag compTag = listTag.getCompound(x);
-				AEKey key = AEKey.fromTagGeneric(registries, compTag.getCompound("aekey"));
+			var dirTag = compTag.getByte("dir");
+			Direction dir = dirTag == -1 ? null : Direction.from3DDataValue(dirTag);
 
-				var dirTag = compTag.getByte("dir");
-				Direction dir = dirTag == -1 ? null : Direction.from3DDataValue(dirTag);
-
-				this.directionMap.put(key, dir);
-			}
+			this.directionMap.put(key, dir);
 		}
 
 		this.returnInv.readFromTag(tag.getList(NBT_RETURN_INV, Tag.TAG_COMPOUND), registries);
