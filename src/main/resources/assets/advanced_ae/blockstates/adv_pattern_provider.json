@@ -4,7 +4,7 @@
       "model": "advanced_ae:block/adv_pattern_provider_all"
     },
     "push_direction=all,connection_state=true": {
-      "model": "advanced_ae:block/adv_pattern_provider_on"
+      "model": "advanced_ae:block/adv_pattern_provider_all"
     },
     "push_direction=east,connection_state=false": {
       "model": "advanced_ae:block/adv_pattern_provider_oriented",
@@ -12,7 +12,7 @@
       "y": 90
     },
     "push_direction=east,connection_state=true": {
-      "model": "advanced_ae:block/adv_pattern_provider_oriented_on",
+      "model": "advanced_ae:block/adv_pattern_provider_oriented",
       "x": 90,
       "y": 90
     },
@@ -22,7 +22,7 @@
       "y": 270
     },
     "push_direction=west,connection_state=true": {
-      "model": "advanced_ae:block/adv_pattern_provider_oriented_on",
+      "model": "advanced_ae:block/adv_pattern_provider_oriented",
       "x": 90,
       "y": 270
     },
@@ -31,7 +31,7 @@
       "x": 270
     },
     "push_direction=south,connection_state=true": {
-      "model": "advanced_ae:block/adv_pattern_provider_oriented_on",
+      "model": "advanced_ae:block/adv_pattern_provider_oriented",
       "x": 270
     },
     "push_direction=north,connection_state=false": {
@@ -39,7 +39,7 @@
       "x": 90
     },
     "push_direction=north,connection_state=true": {
-      "model": "advanced_ae:block/adv_pattern_provider_oriented_on",
+      "model": "advanced_ae:block/adv_pattern_provider_oriented",
       "x": 90
     },
     "push_direction=up,connection_state=false": {
@@ -47,7 +47,7 @@
       "x": 0
     },
     "push_direction=up,connection_state=true": {
-      "model": "advanced_ae:block/adv_pattern_provider_oriented_on",
+      "model": "advanced_ae:block/adv_pattern_provider_oriented",
       "x": 0
     },
     "push_direction=down,connection_state=false": {
@@ -55,7 +55,7 @@
       "x": 180
     },
     "push_direction=down,connection_state=true": {
-      "model": "advanced_ae:block/adv_pattern_provider_oriented_on",
+      "model": "advanced_ae:block/adv_pattern_provider_oriented",
       "x": 180
     }
   }
