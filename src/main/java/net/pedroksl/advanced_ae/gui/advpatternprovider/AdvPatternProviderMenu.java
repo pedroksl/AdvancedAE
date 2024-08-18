@@ -1,9 +1,5 @@
 package net.pedroksl.advanced_ae.gui.advpatternprovider;
 
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.IUpgradeableObject;
-import appeng.menu.ToolboxMenu;
-import com.glodblock.github.appflux.util.helpers.IUpgradableMenu;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
@@ -18,18 +14,15 @@ import appeng.menu.SlotSemantics;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.RestrictedInputSlot;
-import net.minecraft.world.level.ItemLike;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 
 /**
  * @see appeng.client.gui.implementations.PatternProviderScreen
  */
-public class AdvPatternProviderMenu extends AEBaseMenu implements IUpgradableMenu {
+public class AdvPatternProviderMenu extends AEBaseMenu {
 
 	protected final AdvPatternProviderLogic logic;
-
-	private final ToolboxMenu toolbox;
 
 	@GuiSync(3)
 	public YesNo blockingMode = YesNo.NO;
@@ -64,9 +57,6 @@ public class AdvPatternProviderMenu extends AEBaseMenu implements IUpgradableMen
 				this.addSlot(new AppEngSlot(returnInv, i), SlotSemantics.STORAGE);
 			}
 		}
-
-		this.toolbox = new ToolboxMenu(this);
-		this.setupUpgrades(((IUpgradeableObject) host).getUpgrades());
 	}
 
 	@Override
@@ -79,25 +69,11 @@ public class AdvPatternProviderMenu extends AEBaseMenu implements IUpgradableMen
 			unlockStack = logic.getUnlockStack();
 		}
 
-		toolbox.tick();
-
 		super.broadcastChanges();
 	}
 
 	public GenericStackInv getReturnInv() {
 		return logic.getReturnInv();
-	}
-
-	public ToolboxMenu getToolbox() {
-		return this.toolbox;
-	}
-
-	public IUpgradeInventory getUpgrades() {
-		return ((IUpgradeableObject) this.logic).getUpgrades();
-	}
-
-	public boolean hasUpgrade(ItemLike upgradeCard) {
-		return this.getUpgrades().isInstalled(upgradeCard);
 	}
 
 	public YesNo getBlockingMode() {

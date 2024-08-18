@@ -1,7 +1,8 @@
 {
-  "required": false,
+  "required": true,
   "minVersion": "0.8",
   "package": "net.pedroksl.advanced_ae.mixins",
+  "plugin": "net.pedroksl.advanced_ae.mixins.AAEMixinPlugin",
   "refmap": "mixins.aae.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
@@ -9,10 +10,12 @@
     "MixinContainerPatternModifier",
     "MixinPatternProviderLogic",
     "MixinPatternEncodingLogic",
-    "MixinEncodedPatternItem"
+    "MixinEncodedPatternItem",
+    "appflux.MixinAdvPatternProviderMenu",
+    "appflux.MixinAdvPatternProviderLogic",
+    "appflux.MixinAdvPatternProviderLogicHost"
   ],
   "client": [
-  ],
-  "server": [
+    "appflux.MixinAdvPatternProviderGui"
   ]
 }

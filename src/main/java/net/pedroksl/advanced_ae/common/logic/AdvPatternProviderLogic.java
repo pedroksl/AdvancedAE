@@ -3,17 +3,10 @@ package net.pedroksl.advanced_ae.common.logic;
 import java.util.*;
 
 import appeng.api.ids.AEComponents;
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.IUpgradeableObject;
-import appeng.api.upgrades.UpgradeInventories;
 import appeng.helpers.patternprovider.*;
-import com.glodblock.github.appflux.common.AFSingletons;
-import com.glodblock.github.appflux.common.me.energy.EnergyTicker;
-import com.glodblock.github.appflux.common.me.service.IEnergyDistributor;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.neoforged.fml.ModList;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetails;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -69,7 +62,7 @@ import appeng.util.inv.PlayerInternalInventory;
 /**
  * Shared code between the pattern provider block and part.
  */
-public class AdvPatternProviderLogic implements InternalInventoryHost, ICraftingProvider, IUpgradeableObject {
+public class AdvPatternProviderLogic implements InternalInventoryHost, ICraftingProvider {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdvPatternProviderLogic.class);
 
 	public static final String NBT_MEMORY_CARD_PATTERNS = "patterns";
@@ -80,14 +73,11 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 	public static final String NBT_SEND_DIRECTION = "sendDirection";
 	public static final String NBT_DIRECTION_MAP = "directionMap";
 	public static final String NBT_RETURN_INV = "returnInv";
-	public static final String NBT_UPGRADES = "upgrades";
 
 	private final AdvPatternProviderLogicHost host;
 	private final IManagedGridNode mainNode;
 	private final IActionSource actionSource;
 	private final IConfigManager configManager;
-	private final IUpgradeInventory upgrades;
-	private EnergyTicker afTicker;
 
 	private int priority;
 
@@ -140,10 +130,6 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			this.mainNode.ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
 			this.host.saveChanges();
 		});
-		int upgradeCount = ModList.get().isLoaded("appflux") ? 2 : 1;
-		this.upgrades = UpgradeInventories.forMachine(host.getTerminalIcon().getItem(), upgradeCount, this::onUpgradesChanged);
-		this.afTicker = new EnergyTicker(this.host::getBlockEntity, this.host, () -> this.upgrades.isInstalled(AFSingletons.INDUCTION_CARD), this.mainNode, this.actionSource);
-		this.mainNode.addService(IEnergyDistributor.class, this.afTicker);
 	}
 
 	public int getPriority() {
@@ -155,17 +141,6 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		this.host.saveChanges();
 
 		ICraftingProvider.requestUpdate(mainNode);
-	}
-
-	@Override
-	public IUpgradeInventory getUpgrades() {
-		return this.upgrades;
-	}
-
-	private void onUpgradesChanged() {
-		this.host.saveChanges();
-		this.host.getBlockEntity().invalidateCapabilities();
-		this.afTicker.updateSleep();
 	}
 
 	public void writeToNBT(CompoundTag tag, HolderLookup.Provider registries) {
@@ -211,7 +186,6 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		tag.put(NBT_DIRECTION_MAP, dirListTag);
 
 		tag.put(NBT_RETURN_INV, this.returnInv.writeToTag(registries));
-		this.upgrades.writeToNBT(tag, NBT_UPGRADES, registries);
 	}
 
 	public void readFromNBT(CompoundTag tag, HolderLookup.Provider registries) {
@@ -261,7 +235,6 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		}
 
 		this.returnInv.readFromTag(tag.getList(NBT_RETURN_INV, Tag.TAG_COMPOUND), registries);
-		this.upgrades.readFromNBT(tag, NBT_UPGRADES, registries);
 	}
 
 	public IConfigManager getConfigManager() {
@@ -660,19 +633,12 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 		}
 
 		this.returnInv.addDrops(drops, this.host.getBlockEntity().getLevel(), this.host.getBlockEntity().getBlockPos());
-
-		for (var is : this.upgrades) {
-			if (!is.isEmpty()) {
-				drops.add(is);
-			}
-		}
 	}
 
 	public void clearContent() {
 		this.patternInventory.clear();
 		this.sendList.clear();
 		this.returnInv.clear();
-		this.upgrades.clear();
 	}
 
 	public PatternProviderReturnInventory getReturnInv() {

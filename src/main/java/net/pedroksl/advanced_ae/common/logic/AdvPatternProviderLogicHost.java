@@ -2,8 +2,6 @@ package net.pedroksl.advanced_ae.common.logic;
 
 import java.util.EnumSet;
 
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.IUpgradeableObject;
 import appeng.menu.locator.MenuHostLocator;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +23,7 @@ import appeng.helpers.IPriorityHost;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 
-public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPriorityHost, PatternContainer, IUpgradeableObject {
+public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPriorityHost, PatternContainer {
 	AdvPatternProviderLogic getLogic();
 
 	/**
@@ -85,9 +83,5 @@ public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPrior
 
 	default PatternContainerGroup getTerminalGroup() {
 		return getLogic().getTerminalGroup();
-	}
-
-	default IUpgradeInventory getUpgrades() {
-		return ((IUpgradeableObject) this.getLogic()).getUpgrades();
 	}
 }
