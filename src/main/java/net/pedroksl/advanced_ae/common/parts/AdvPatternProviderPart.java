@@ -86,6 +86,7 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 
 	@Override
 	public void addAdditionalDrops(List<ItemStack> drops, boolean wrenched) {
+		super.addAdditionalDrops(drops, wrenched);
 		this.logic.addDrops(drops);
 	}
 
