@@ -23,6 +23,7 @@ run
 run-data/
 src/generated
 mcmodsrepo
+repo
 
 # Files from Forge MDK
 forge*changelog.txt
