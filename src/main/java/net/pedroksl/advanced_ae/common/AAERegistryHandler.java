@@ -24,6 +24,8 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
+import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderContainer;
 import net.pedroksl.advanced_ae.xmod.appflux.AFCommonLoad;
 import com.glodblock.github.glodium.registry.RegistryHandler;
 import com.glodblock.github.glodium.util.GlodUtil;
@@ -92,6 +94,7 @@ public class AAERegistryHandler extends RegistryHandler {
 
 	private void onRegisterContainer() {
 		Registry.register(BuiltInRegistries.MENU, AdvancedAE.id("adv_pattern_provider"), AdvPatternProviderContainer.TYPE);
+		Registry.register(BuiltInRegistries.MENU, AdvancedAE.id("small_adv_pattern_provider"), SmallAdvPatternProviderContainer.TYPE);
 		Registry.register(BuiltInRegistries.MENU, AdvancedAE.id("adv_pattern_encoder"), AdvPatternEncoderContainer.TYPE);
 	}
 
@@ -129,6 +132,7 @@ public class AAERegistryHandler extends RegistryHandler {
 
 	private void onRegisterModels() {
 		PartModels.registerModels(AdvPatternProviderPart.MODELS);
+		PartModels.registerModels(SmallAdvPatternProviderPart.MODELS);
 	}
 
 	private void registerPackagedItems() {

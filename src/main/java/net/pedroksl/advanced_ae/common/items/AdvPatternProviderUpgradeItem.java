@@ -2,12 +2,12 @@ package net.pedroksl.advanced_ae.common.items;
 
 import appeng.blockentity.crafting.PatternProviderBlockEntity;
 import appeng.blockentity.networking.CableBusBlockEntity;
-import appeng.items.parts.PartItem;
 import appeng.parts.AEBasePart;
 import appeng.parts.crafting.PatternProviderPart;
 import com.glodblock.github.extendedae.common.parts.PartExPatternProvider;
 import com.glodblock.github.extendedae.common.tileentities.TileExPatternProvider;
 import com.glodblock.github.extendedae.util.FCUtil;
+import com.glodblock.github.glodium.util.GlodUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -17,11 +17,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 import net.pedroksl.advanced_ae.common.AAESingletons;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
-import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
+import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -45,7 +46,11 @@ public class AdvPatternProviderUpgradeItem extends Item {
 					tClazz == TileExPatternProvider.class) {
 
 				var originState = world.getBlockState(pos);
-				var state = AAESingletons.ADV_PATTERN_PROVIDER.getStateForPlacement(ctx);
+				var isSmall = tClazz == PatternProviderBlockEntity.class;
+
+				var state = isSmall ?
+						AAESingletons.SMALL_ADV_PATTERN_PROVIDER.getStateForPlacement(ctx) :
+						AAESingletons.ADV_PATTERN_PROVIDER.getStateForPlacement(ctx);
 				if (state == null) {
 					return InteractionResult.PASS;
 				}
@@ -60,8 +65,11 @@ public class AdvPatternProviderUpgradeItem extends Item {
 						// NO-OP
 					}
 				}
-				BlockEntity te = new AdvPatternProviderEntity(pos, state,
-						tClazz == PatternProviderBlockEntity.class ? 9 : 36);
+
+				BlockEntityType<?> tileType = isSmall ?
+						GlodUtil.getTileType(SmallAdvPatternProviderEntity.class) :
+						GlodUtil.getTileType(AdvPatternProviderEntity.class);
+				BlockEntity te = tileType.create(pos, state);
 				FCUtil.replaceTile(world, pos, entity, te, state);
 				context.getItemInHand().shrink(1);
 				return InteractionResult.CONSUME;
@@ -73,8 +81,12 @@ public class AdvPatternProviderUpgradeItem extends Item {
 				if (part instanceof AEBasePart basePart && (part.getClass() == PatternProviderPart.class || part.getClass() == PartExPatternProvider.class)) {
 					var side = basePart.getSide();
 					var contents = new CompoundTag();
-					var partItem = new PartItem<>(new Item.Properties(), AdvPatternProviderPart.class,
-							p -> new AdvPatternProviderPart(p, part.getClass() == PatternProviderPart.class ? 9 : 36));
+
+					var isSmall = part.getClass() == PatternProviderPart.class;
+
+					var partItem = isSmall ? AAESingletons.SMALL_ADV_PATTERN_PROVIDER_PART :
+							AAESingletons.ADV_PATTERN_PROVIDER_PART;
+
 					part.writeToNBT(contents, world.registryAccess());
 					var p = cable.replacePart(partItem, side, context.getPlayer(), null);
 					if (p != null) {
@@ -94,7 +106,7 @@ public class AdvPatternProviderUpgradeItem extends Item {
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
 		super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
 
-		tooltipComponents.add(Component.empty().append("Using this on a normal or extended pattern provider " +
-				"will upgrade them to the advanced version with the same amount of pattern slots"));
+		tooltipComponents.add(Component.empty().append("§7Upgrades a normal or extended pattern provider to the " +
+				"advanced version with the same amount of pattern slots"));
 	}
 }

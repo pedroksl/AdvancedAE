@@ -1,8 +1,10 @@
 {
   "itemGroup.app": "Advanced AE",
   "block.advanced_ae.adv_pattern_provider": "ME Advanced Pattern Provider",
+  "block.advanced_ae.small_adv_pattern_provider": "ME Advanced Pattern Provider (9 Slots)",
   "block.advanced_ae.reaction_chamber": "Reaction Chamber",
   "item.advanced_ae.adv_pattern_provider_part": "ME Advanced Pattern Provider",
+  "item.advanced_ae.small_adv_pattern_provider_part": "ME Advanced Pattern Provider (9 Slots)",
   "item.advanced_ae.adv_processing_pattern": "Advanced Processing Pattern",
   "item.advanced_ae.adv_pattern_encoder": "Advanced Pattern Encoder",
   "item.advanced_ae.adv_pattern_provider_upgrade": "Adv. Pattern Provider Upgrade",

@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pedroksl.advanced_ae.common.AAESingletons;
 import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
@@ -40,8 +41,9 @@ public class AdvPatternProviderEntity extends AENetworkedBlockEntity implements 
 		this.logic = createLogic();
 	}
 
-	public AdvPatternProviderEntity(BlockPos pos, BlockState blockState, int slots) {
-		super(GlodUtil.getTileType(AdvPatternProviderEntity.class, AdvPatternProviderEntity::new, AAESingletons.ADV_PATTERN_PROVIDER),
+	protected AdvPatternProviderEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState,
+	                                   int slots) {
+		super(blockEntityType,
 				pos,
 				blockState);
 

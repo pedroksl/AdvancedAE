@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.datagen;
 
+import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
 import appeng.datagen.providers.tags.ConventionTags;
 import com.glodblock.github.extendedae.common.EAESingletons;
@@ -32,6 +33,16 @@ public class AAERecipeProvider extends RecipeProvider {
 				.define('L', AEItems.LOGIC_PROCESSOR)
 				.unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
 				.save(c, "advpatpro");
+		ShapedRecipeBuilder
+				.shaped(RecipeCategory.MISC, AAESingletons.SMALL_ADV_PATTERN_PROVIDER)
+				.pattern("PR")
+				.pattern("EL")
+				.define('P', AEBlocks.PATTERN_PROVIDER)
+				.define('R', Items.REDSTONE)
+				.define('E', Items.ENDER_PEARL)
+				.define('L', AEItems.LOGIC_PROCESSOR)
+				.unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
+				.save(c, "smalladvpatpro");
 		ShapelessRecipeBuilder
 				.shapeless(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_PROVIDER)
 				.requires(AAESingletons.ADV_PATTERN_PROVIDER_PART)

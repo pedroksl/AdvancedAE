@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import appeng.menu.locator.MenuHostLocator;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderContainer;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
@@ -55,12 +56,20 @@ public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPrior
 	}
 
 	default void openMenu(Player player, MenuHostLocator locator) {
-		MenuOpener.open(AdvPatternProviderContainer.TYPE, player, locator);
+		if (numberOfPatternSlots() == 36) {
+			MenuOpener.open(AdvPatternProviderContainer.TYPE, player, locator);
+		} else {
+			MenuOpener.open(SmallAdvPatternProviderContainer.TYPE, player, locator);
+		}
 	}
 
 	@Override
 	default void returnToMainMenu(Player player, ISubMenu subMenu) {
-		MenuOpener.returnTo(AdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
+		if (numberOfPatternSlots() == 36) {
+			MenuOpener.returnTo(AdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
+		} else {
+			MenuOpener.returnTo(SmallAdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
+		}
 	}
 
 	@Override

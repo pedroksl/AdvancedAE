@@ -16,6 +16,7 @@
     "appflux.MixinAdvPatternProviderLogicHost"
   ],
   "client": [
-    "appflux.MixinAdvPatternProviderGui"
+    "appflux.MixinAdvPatternProviderGui",
+    "appflux.MixinSmallAdvPatternProviderGui"
   ]
 }
