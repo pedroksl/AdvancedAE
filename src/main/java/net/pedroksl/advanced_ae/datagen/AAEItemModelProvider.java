@@ -14,6 +14,8 @@ public class AAEItemModelProvider extends net.neoforged.neoforge.client.model.ge
 	protected void registerModels() {
 		flatSingleLayer("adv_processing_pattern");
 		flatSingleLayer(AAESingletons.ADV_PATTERN_ENCODER.getRegistryName().getPath());
+		flatSingleLayer("adv_pattern_provider_upgrade");
+		flatSingleLayer("adv_pattern_provider_capacity_upgrade");
 	}
 
 	private void flatSingleLayer(String item) {

@@ -30,16 +30,30 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class AdvPatternProviderEntity extends AENetworkedBlockEntity implements AdvPatternProviderLogicHost {
-	protected final AdvPatternProviderLogic logic = createLogic();
+	protected final AdvPatternProviderLogic logic;
 
 	public AdvPatternProviderEntity(BlockPos pos, BlockState blockState) {
 		super(GlodUtil.getTileType(AdvPatternProviderEntity.class, AdvPatternProviderEntity::new, AAESingletons.ADV_PATTERN_PROVIDER),
 				pos,
 				blockState);
+
+		this.logic = createLogic();
+	}
+
+	public AdvPatternProviderEntity(BlockPos pos, BlockState blockState, int slots) {
+		super(GlodUtil.getTileType(AdvPatternProviderEntity.class, AdvPatternProviderEntity::new, AAESingletons.ADV_PATTERN_PROVIDER),
+				pos,
+				blockState);
+
+		this.logic = createLogic(slots);
 	}
 
 	protected AdvPatternProviderLogic createLogic() {
-		return new AdvPatternProviderLogic(this.getMainNode(), this);
+		return createLogic(36);
+	}
+
+	protected AdvPatternProviderLogic createLogic(int slots) {
+		return new AdvPatternProviderLogic(this.getMainNode(), this, slots);
 	}
 
 	@Override

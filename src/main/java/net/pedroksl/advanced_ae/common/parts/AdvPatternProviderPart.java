@@ -47,11 +47,20 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 	public static final PartModel MODELS_ON = new PartModel(MODELS.getFirst(), MODELS.get(1));
 	public static final PartModel MODELS_HAS_CHANNEL = new PartModel(MODELS.getFirst(), MODELS.get(3));
 
-	protected final AdvPatternProviderLogic logic = this.createLogic();
+	protected final AdvPatternProviderLogic logic;
 
 	public AdvPatternProviderPart(IPartItem<?> partItem) {
 		super(partItem);
 		this.getMainNode().setFlags(GridFlags.REQUIRE_CHANNEL);
+
+		this.logic = this.createLogic();
+	}
+
+	public AdvPatternProviderPart(IPartItem<?> partItem, int slots) {
+		super(partItem);
+		this.getMainNode().setFlags(GridFlags.REQUIRE_CHANNEL);
+
+		this.logic = this.createLogic(slots);
 	}
 
 	@Override
@@ -125,7 +134,11 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 	}
 
 	protected AdvPatternProviderLogic createLogic() {
-		return new AdvPatternProviderLogic(this.getMainNode(), this, 36);
+		return createLogic(36);
+	}
+
+	protected AdvPatternProviderLogic createLogic(int slots) {
+		return new AdvPatternProviderLogic(this.getMainNode(), this, slots);
 	}
 
 	@Override

@@ -35,6 +35,10 @@ public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPrior
 
 	void saveChanges();
 
+	default int numberOfPatternSlots() {
+		return getLogic().getPatternInv().size();
+	}
+
 	@Override
 	default IConfigManager getConfigManager() {
 		return getLogic().getConfigManager();
