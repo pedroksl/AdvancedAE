@@ -6,6 +6,8 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
+import net.pedroksl.advanced_ae.util.AAETags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,14 +18,10 @@ public class AAEItemTagProvider extends ItemTagsProvider {
 		super(pOutput, pLookupProvider, pBlockTags, AdvancedAE.MOD_ID, existingFileHelper);
 	}
 
-	@SuppressWarnings("DataFlowIssue")
 	@Override
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
-//		tag(AAETags.EX_PATTERN_PROVIDER)
-//				.add(AAEItemAndBlock.ADV_PATTERN_PROVIDER_PART)
-//				.add(AAEItemAndBlock.ADV_PATTERN_PROVIDER.asItem());
-//		tag(AAETags.EX_INTERFACE)
-//				.add(AAEItemAndBlock.ADV_INTERFACE_PART)
-//				.add(AAEItemAndBlock.ADV_INTERFACE.asItem());
+		tag(AAETags.ADV_PATTERN_PROVIDER)
+				.add(AAEItemAndBlock.ADV_PATTERN_PROVIDER_PART)
+				.add(AAEItemAndBlock.ADV_PATTERN_PROVIDER.asItem());
 	}
 }

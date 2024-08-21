@@ -28,6 +28,8 @@ import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContain
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Collection;
+
 public class AAERegistryHandler extends RegistryHandler {
 
 	public static final AAERegistryHandler INSTANCE = new AAERegistryHandler();
@@ -48,6 +50,10 @@ public class AAERegistryHandler extends RegistryHandler {
 		super.register(event);
 		this.onRegisterContainer();
 		this.onRegisterModels(); // Parts
+	}
+
+	public Collection<Block> getBlocks() {
+		return this.blocks.stream().map(Pair::getRight).toList();
 	}
 
 	private void onRegisterContainer() {
