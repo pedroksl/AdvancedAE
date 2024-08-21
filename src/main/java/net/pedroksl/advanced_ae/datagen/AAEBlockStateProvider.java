@@ -5,6 +5,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.AAESingletons;
 
 public class AAEBlockStateProvider extends BlockStateProvider {
 	public AAEBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -13,6 +14,7 @@ public class AAEBlockStateProvider extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
+		//blockWithItem(AAESingletons.ADV_CO_PROCESSING_UNIT);
 	}
 
 	private void blockWithItem(Block blockRegistryObject) {

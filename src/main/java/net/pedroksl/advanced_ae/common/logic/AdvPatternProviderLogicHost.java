@@ -2,16 +2,14 @@ package net.pedroksl.advanced_ae.common.logic;
 
 import java.util.EnumSet;
 
-import appeng.menu.locator.MenuHostLocator;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderContainer;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderContainer;
 
-import appeng.helpers.patternprovider.PatternContainer;
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
 import appeng.api.implementations.blockentities.PatternContainerGroup;
@@ -21,80 +19,82 @@ import appeng.api.stacks.AEItemKey;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import appeng.helpers.IPriorityHost;
+import appeng.helpers.patternprovider.PatternContainer;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuHostLocator;
 
 public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPriorityHost, PatternContainer {
-	AdvPatternProviderLogic getLogic();
+    AdvPatternProviderLogic getLogic();
 
-	/**
-	 * @return The block entity that is in-world and hosts the interface.
-	 */
-	BlockEntity getBlockEntity();
+    /**
+     * @return The block entity that is in-world and hosts the interface.
+     */
+    BlockEntity getBlockEntity();
 
-	EnumSet<Direction> getTargets();
+    EnumSet<Direction> getTargets();
 
-	void saveChanges();
+    void saveChanges();
 
-	default int numberOfPatternSlots() {
-		return getLogic().getPatternInv().size();
-	}
+    default int numberOfPatternSlots() {
+        return getLogic().getPatternInv().size();
+    }
 
-	@Override
-	default IConfigManager getConfigManager() {
-		return getLogic().getConfigManager();
-	}
+    @Override
+    default IConfigManager getConfigManager() {
+        return getLogic().getConfigManager();
+    }
 
-	@Override
-	default int getPriority() {
-		return getLogic().getPriority();
-	}
+    @Override
+    default int getPriority() {
+        return getLogic().getPriority();
+    }
 
-	@Override
-	default void setPriority(int newValue) {
-		getLogic().setPriority(newValue);
-	}
+    @Override
+    default void setPriority(int newValue) {
+        getLogic().setPriority(newValue);
+    }
 
-	default void openMenu(Player player, MenuHostLocator locator) {
-		if (numberOfPatternSlots() == 36) {
-			MenuOpener.open(AdvPatternProviderContainer.TYPE, player, locator);
-		} else {
-			MenuOpener.open(SmallAdvPatternProviderContainer.TYPE, player, locator);
-		}
-	}
+    default void openMenu(Player player, MenuHostLocator locator) {
+        if (numberOfPatternSlots() == 36) {
+            MenuOpener.open(AdvPatternProviderContainer.TYPE, player, locator);
+        } else {
+            MenuOpener.open(SmallAdvPatternProviderContainer.TYPE, player, locator);
+        }
+    }
 
-	@Override
-	default void returnToMainMenu(Player player, ISubMenu subMenu) {
-		if (numberOfPatternSlots() == 36) {
-			MenuOpener.returnTo(AdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
-		} else {
-			MenuOpener.returnTo(SmallAdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
-		}
-	}
+    @Override
+    default void returnToMainMenu(Player player, ISubMenu subMenu) {
+        if (numberOfPatternSlots() == 36) {
+            MenuOpener.returnTo(AdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
+        } else {
+            MenuOpener.returnTo(SmallAdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
+        }
+    }
 
-	@Override
-	default @Nullable IGrid getGrid() {
-		return getLogic().getGrid();
-	}
+    @Override
+    default @Nullable IGrid getGrid() {
+        return getLogic().getGrid();
+    }
 
-	AEItemKey getTerminalIcon();
+    AEItemKey getTerminalIcon();
 
-	@Override
-	default boolean isVisibleInTerminal() {
-		return getLogic().getConfigManager().getSetting(Settings.PATTERN_ACCESS_TERMINAL) == YesNo.YES;
-	}
+    @Override
+    default boolean isVisibleInTerminal() {
+        return getLogic().getConfigManager().getSetting(Settings.PATTERN_ACCESS_TERMINAL) == YesNo.YES;
+    }
 
-	@Override
-	default InternalInventory getTerminalPatternInventory() {
-		return getLogic().getPatternInv();
-	}
+    @Override
+    default InternalInventory getTerminalPatternInventory() {
+        return getLogic().getPatternInv();
+    }
 
-	@Override
-	default long getTerminalSortOrder() {
-		return getLogic().getSortValue();
-	}
+    @Override
+    default long getTerminalSortOrder() {
+        return getLogic().getSortValue();
+    }
 
-	default PatternContainerGroup getTerminalGroup() {
-		return getLogic().getTerminalGroup();
-	}
+    default PatternContainerGroup getTerminalGroup() {
+        return getLogic().getTerminalGroup();
+    }
 }

@@ -2,6 +2,8 @@ package net.pedroksl.advanced_ae.gui.advpatternprovider;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
+import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
+import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 
 import appeng.api.config.LockCraftingMode;
 import appeng.api.config.Settings;
@@ -14,85 +16,89 @@ import appeng.menu.SlotSemantics;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.RestrictedInputSlot;
-import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
-import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 
 /**
  * @see appeng.client.gui.implementations.PatternProviderScreen
  */
 public class AdvPatternProviderMenu extends AEBaseMenu {
 
-	protected final AdvPatternProviderLogic logic;
+    protected final AdvPatternProviderLogic logic;
 
-	@GuiSync(3)
-	public YesNo blockingMode = YesNo.NO;
-	@GuiSync(4)
-	public YesNo showInAccessTerminal = YesNo.YES;
-	@GuiSync(5)
-	public LockCraftingMode lockCraftingMode = LockCraftingMode.NONE;
-	@GuiSync(6)
-	public LockCraftingMode craftingLockedReason = LockCraftingMode.NONE;
-	@GuiSync(7)
-	public GenericStack unlockStack = null;
+    @GuiSync(3)
+    public YesNo blockingMode = YesNo.NO;
 
-	protected AdvPatternProviderMenu(MenuType<? extends AdvPatternProviderMenu> menuType,
-	                                 int id, Inventory playerInventory,
-	                                 AdvPatternProviderLogicHost host) {
-		super(menuType, id, playerInventory, host);
-		this.createPlayerInventorySlots(playerInventory);
+    @GuiSync(4)
+    public YesNo showInAccessTerminal = YesNo.YES;
 
-		this.logic = host.getLogic();
+    @GuiSync(5)
+    public LockCraftingMode lockCraftingMode = LockCraftingMode.NONE;
 
-		var patternInv = logic.getPatternInv();
-		for (int x = 0; x < patternInv.size(); x++) {
-			this.addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.ENCODED_PATTERN,
-							patternInv, x),
-					SlotSemantics.ENCODED_PATTERN);
-		}
+    @GuiSync(6)
+    public LockCraftingMode craftingLockedReason = LockCraftingMode.NONE;
 
-		// Show first few entries of the return inv
-		var returnInv = logic.getReturnInv().createMenuWrapper();
-		for (int i = 0; i < PatternProviderReturnInventory.NUMBER_OF_SLOTS; i++) {
-			if (i < returnInv.size()) {
-				this.addSlot(new AppEngSlot(returnInv, i), SlotSemantics.STORAGE);
-			}
-		}
-	}
+    @GuiSync(7)
+    public GenericStack unlockStack = null;
 
-	@Override
-	public void broadcastChanges() {
-		if (isServerSide()) {
-			blockingMode = logic.getConfigManager().getSetting(Settings.BLOCKING_MODE);
-			showInAccessTerminal = logic.getConfigManager().getSetting(Settings.PATTERN_ACCESS_TERMINAL);
-			lockCraftingMode = logic.getConfigManager().getSetting(Settings.LOCK_CRAFTING_MODE);
-			craftingLockedReason = logic.getCraftingLockedReason();
-			unlockStack = logic.getUnlockStack();
-		}
+    protected AdvPatternProviderMenu(
+            MenuType<? extends AdvPatternProviderMenu> menuType,
+            int id,
+            Inventory playerInventory,
+            AdvPatternProviderLogicHost host) {
+        super(menuType, id, playerInventory, host);
+        this.createPlayerInventorySlots(playerInventory);
 
-		super.broadcastChanges();
-	}
+        this.logic = host.getLogic();
 
-	public GenericStackInv getReturnInv() {
-		return logic.getReturnInv();
-	}
+        var patternInv = logic.getPatternInv();
+        for (int x = 0; x < patternInv.size(); x++) {
+            this.addSlot(
+                    new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.ENCODED_PATTERN, patternInv, x),
+                    SlotSemantics.ENCODED_PATTERN);
+        }
 
-	public YesNo getBlockingMode() {
-		return blockingMode;
-	}
+        // Show first few entries of the return inv
+        var returnInv = logic.getReturnInv().createMenuWrapper();
+        for (int i = 0; i < PatternProviderReturnInventory.NUMBER_OF_SLOTS; i++) {
+            if (i < returnInv.size()) {
+                this.addSlot(new AppEngSlot(returnInv, i), SlotSemantics.STORAGE);
+            }
+        }
+    }
 
-	public LockCraftingMode getLockCraftingMode() {
-		return lockCraftingMode;
-	}
+    @Override
+    public void broadcastChanges() {
+        if (isServerSide()) {
+            blockingMode = logic.getConfigManager().getSetting(Settings.BLOCKING_MODE);
+            showInAccessTerminal = logic.getConfigManager().getSetting(Settings.PATTERN_ACCESS_TERMINAL);
+            lockCraftingMode = logic.getConfigManager().getSetting(Settings.LOCK_CRAFTING_MODE);
+            craftingLockedReason = logic.getCraftingLockedReason();
+            unlockStack = logic.getUnlockStack();
+        }
 
-	public LockCraftingMode getCraftingLockedReason() {
-		return craftingLockedReason;
-	}
+        super.broadcastChanges();
+    }
 
-	public GenericStack getUnlockStack() {
-		return unlockStack;
-	}
+    public GenericStackInv getReturnInv() {
+        return logic.getReturnInv();
+    }
 
-	public YesNo getShowInAccessTerminal() {
-		return showInAccessTerminal;
-	}
+    public YesNo getBlockingMode() {
+        return blockingMode;
+    }
+
+    public LockCraftingMode getLockCraftingMode() {
+        return lockCraftingMode;
+    }
+
+    public LockCraftingMode getCraftingLockedReason() {
+        return craftingLockedReason;
+    }
+
+    public GenericStack getUnlockStack() {
+        return unlockStack;
+    }
+
+    public YesNo getShowInAccessTerminal() {
+        return showInAccessTerminal;
+    }
 }

@@ -1,6 +1,12 @@
 package net.pedroksl.advanced_ae;
 
 import com.mojang.logging.LogUtils;
+
+import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
+import org.slf4j.Logger;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -12,10 +18,9 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.client.AAEClientRegistryHandler;
-import net.pedroksl.advanced_ae.common.AAESingletons;
 import net.pedroksl.advanced_ae.common.AAERegistryHandler;
+import net.pedroksl.advanced_ae.common.AAESingletons;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
-import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(AdvancedAE.MOD_ID)
@@ -31,6 +36,11 @@ public class AdvancedAE {
 		if (!container.getModId().equals(MOD_ID)) {
 			throw new IllegalArgumentException("Invalid ID: " + MOD_ID);
 		}
+
+		AAEItems.DR.register(eventBus);
+		AAEBlocks.DR.register(eventBus);
+		AAEBlockEntities.DR.register(eventBus);
+
 		container.registerConfig(ModConfig.Type.COMMON, AAEConfig.SPEC);
 
 		eventBus.addListener((RegisterEvent e) -> {

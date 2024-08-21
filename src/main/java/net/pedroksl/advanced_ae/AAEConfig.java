@@ -8,13 +8,12 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 @EventBusSubscriber(modid = AdvancedAE.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class AAEConfig {
 
-	private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
-	public static final ModConfigSpec SPEC = BUILDER.build();
+    public static final ModConfigSpec SPEC = BUILDER.build();
 
-	@SubscribeEvent
-	static void onLoad(final ModConfigEvent event) {
-		if (event.getConfig().getSpec() == SPEC) {
-		}
-	}
+    @SubscribeEvent
+    static void onLoad(final ModConfigEvent event) {
+        if (event.getConfig().getSpec() == SPEC) {}
+    }
 }

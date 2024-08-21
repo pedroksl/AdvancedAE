@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '1.0.17'
+    id 'com.diffplug.spotless'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -163,5 +164,34 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+spotless {
+//    kotlinGradle {
+//        target("*.kts")
+//        diktat()
+//        indentWithTabs(1)
+//        endWithNewline()
+//    }
+
+    java {
+        target("/src/**/java/**/*.java")
+        endWithNewline()
+        indentWithTabs(1)
+        removeUnusedImports()
+        palantirJavaFormat()
+        importOrderFile(file("aae.importorder"))
+        toggleOffOn()
+
+        bumpThisNumberIfACustomStepChanges(1)
+    }
+
+    json {
+        target("src/**/resources/**/*.json")
+        targetExclude("src/generated/resources/**")
+        biome()
+        indentWithTabs(1)
+        endWithNewline()
     }
 }
