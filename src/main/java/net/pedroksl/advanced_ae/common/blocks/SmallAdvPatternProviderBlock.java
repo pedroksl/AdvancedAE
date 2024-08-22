@@ -4,13 +4,12 @@ import static appeng.block.crafting.PatternProviderBlock.PUSH_DIRECTION;
 import static net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock.CONNECTION_STATE;
 
 import javax.annotation.Nonnull;
-
-import com.glodblock.github.extendedae.common.blocks.BlockBaseGui;
-
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,23 +20,19 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 
+import appeng.block.AEBaseEntityBlock;
 import appeng.block.crafting.PatternProviderBlock;
 import appeng.block.crafting.PushDirection;
 import appeng.menu.locator.MenuLocators;
 import appeng.util.InteractionUtil;
 import appeng.util.Platform;
 
-public class SmallAdvPatternProviderBlock extends BlockBaseGui<SmallAdvPatternProviderEntity> {
+public class SmallAdvPatternProviderBlock extends AEBaseEntityBlock<SmallAdvPatternProviderEntity> {
     public SmallAdvPatternProviderBlock() {
         super(metalProps());
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(PatternProviderBlock.PUSH_DIRECTION, PushDirection.ALL)
                 .setValue(AdvPatternProviderBlock.CONNECTION_STATE, false));
-    }
-
-    @Override
-    public void openGui(SmallAdvPatternProviderEntity advPatternProviderEntity, Player player) {
-        advPatternProviderEntity.openMenu(player, MenuLocators.forBlockEntity(advPatternProviderEntity));
     }
 
     @Override
@@ -47,14 +42,10 @@ public class SmallAdvPatternProviderBlock extends BlockBaseGui<SmallAdvPatternPr
         builder.add(CONNECTION_STATE);
     }
 
+    @ParametersAreNonnullByDefault
     @Override
     public void neighborChanged(
-            @NotNull BlockState state,
-            @NotNull Level level,
-            @NotNull BlockPos pos,
-            @NotNull Block block,
-            @NotNull BlockPos fromPos,
-            boolean isMoving) {
+            BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         var be = this.getBlockEntity(level, pos);
         if (be != null) {
             be.getLogic().updateRedstoneState();
@@ -62,18 +53,40 @@ public class SmallAdvPatternProviderBlock extends BlockBaseGui<SmallAdvPatternPr
     }
 
     @Override
-    public ItemInteractionResult check(
-            SmallAdvPatternProviderEntity tile,
-            ItemStack stack,
-            Level world,
-            BlockPos pos,
-            BlockHitResult hit,
-            Player p) {
-        if (stack != null && InteractionUtil.canWrenchRotate(stack)) {
-            this.setSide(world, pos, hit.getDirection());
-            return ItemInteractionResult.sidedSuccess(world.isClientSide);
+    protected InteractionResult useWithoutItem(
+            BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
+        if (InteractionUtil.isInAlternateUseMode(player)) {
+            return InteractionResult.PASS;
         }
-        return null;
+
+        var be = getBlockEntity(level, pos);
+
+        if (be != null) {
+            if (!level.isClientSide()) {
+                be.openMenu(player, MenuLocators.forBlockEntity(be));
+            }
+
+            return InteractionResult.sidedSuccess(level.isClientSide());
+        }
+
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(
+            ItemStack heldItem,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit) {
+        if (InteractionUtil.canWrenchRotate(heldItem)) {
+            setSide(level, pos, hit.getDirection());
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
+        }
+
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     public void setSide(Level level, BlockPos pos, Direction facing) {

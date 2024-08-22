@@ -7,12 +7,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
-import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
 
 import appeng.api.implementations.menuobjects.IMenuItem;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
@@ -23,15 +22,15 @@ import appeng.menu.locator.MenuLocators;
 
 public class AdvPatternEncoderItem extends AEBaseItem implements IMenuItem {
 
-    public AdvPatternEncoderItem() {
-        super(new Item.Properties().stacksTo(1));
+    public AdvPatternEncoderItem(Properties properties) {
+        super(properties);
     }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(
             @NotNull Level level, @NotNull Player p, @NotNull InteractionHand hand) {
         if (!level.isClientSide()) {
-            MenuOpener.open(AdvPatternEncoderContainer.TYPE, p, MenuLocators.forHand(p, hand));
+            MenuOpener.open(AAEMenus.ADV_PATTERN_ENCODER, p, MenuLocators.forHand(p, hand));
         }
         return new InteractionResultHolder<>(
                 InteractionResult.sidedSuccess(level.isClientSide()), p.getItemInHand(hand));

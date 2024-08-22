@@ -53,7 +53,7 @@ public class AdvPatternEncoderChangeDirectionPacket implements IMessage {
 
     @Override
     public ResourceLocation id() {
-        return AdvancedAE.id("encoder_change_direction_update");
+        return AdvancedAE.makeId("encoder_change_direction_update");
     }
 
     @Override

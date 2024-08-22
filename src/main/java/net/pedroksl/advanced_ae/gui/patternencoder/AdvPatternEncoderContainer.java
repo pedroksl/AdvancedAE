@@ -5,9 +5,8 @@ import java.util.HashMap;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetailsEncoder;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
@@ -22,21 +21,16 @@ import appeng.api.stacks.GenericStack;
 import appeng.crafting.pattern.AEProcessingPattern;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantics;
-import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.OutputSlot;
 import appeng.menu.slot.RestrictedInputSlot;
 
 public class AdvPatternEncoderContainer extends AEBaseMenu {
-    public static final MenuType<AdvPatternEncoderContainer> TYPE = MenuTypeBuilder.create(
-                    AdvPatternEncoderContainer::new, AdvPatternEncoderHost.class)
-            .build(AdvancedAE.id("adv_pattern_encoder"));
-
     private final RestrictedInputSlot inputSlot;
     private final OutputSlot outputSlot;
     private final AdvPatternEncoderHost host;
 
     public AdvPatternEncoderContainer(int id, Inventory playerInventory, AdvPatternEncoderHost host) {
-        super(TYPE, id, playerInventory, host);
+        super(AAEMenus.ADV_PATTERN_ENCODER, id, playerInventory, host);
         this.createPlayerInventorySlots(playerInventory);
         this.host = host;
 

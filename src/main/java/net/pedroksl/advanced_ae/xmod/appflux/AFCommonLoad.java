@@ -2,7 +2,9 @@ package net.pedroksl.advanced_ae.xmod.appflux;
 
 import com.glodblock.github.appflux.common.AFSingletons;
 
-import net.pedroksl.advanced_ae.common.AAESingletons;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 
 import appeng.api.upgrades.Upgrades;
 
@@ -12,14 +14,16 @@ public class AFCommonLoad {
         try {
             Upgrades.add(
                     AFSingletons.INDUCTION_CARD,
-                    AAESingletons.ADV_PATTERN_PROVIDER,
+                    AAEBlocks.ADV_PATTERN_PROVIDER,
                     1,
-                    "gui" + ".advanced_ae.adv_pattern_provider");
+                    AAEText.AdvPatternProvider.getTranslationKey());
             Upgrades.add(
                     AFSingletons.INDUCTION_CARD,
-                    AAESingletons.ADV_PATTERN_PROVIDER_PART,
+                    AAEItems.ADV_PATTERN_PROVIDER,
                     1,
-                    "gui" + ".advanced_ae.adv_pattern_provider");
+                    AAEText.AdvPatternProvider.getTranslationKey());
+            Upgrades.add(AFSingletons.INDUCTION_CARD, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER, 1);
+            Upgrades.add(AFSingletons.INDUCTION_CARD, AAEItems.SMALL_ADV_PATTERN_PROVIDER, 1);
         } catch (Throwable ignored) {
             // NO-OP
         }

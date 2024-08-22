@@ -11,7 +11,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.pedroksl.advanced_ae.common.AAESingletons;
+import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.helpers.NullableDirection;
 
 import appeng.api.crafting.IPatternDetails;
@@ -35,7 +35,7 @@ public class AdvProcessingPattern implements IPatternDetails, AdvPatternDetails 
     public AdvProcessingPattern(AEItemKey definition) {
         this.definition = definition;
 
-        EncodedAdvProcessingPattern encodedPattern = definition.get(AAESingletons.ENCODED_ADV_PROCESSING_PATTERN);
+        EncodedAdvProcessingPattern encodedPattern = definition.get(AAEComponents.ENCODED_ADV_PROCESSING_PATTERN);
         if (encodedPattern == null) {
             throw new IllegalArgumentException(
                     "Given item does not encode an advanced processing pattern: " + definition);
@@ -87,7 +87,7 @@ public class AdvProcessingPattern implements IPatternDetails, AdvPatternDetails 
                 }
             }
             stack.set(
-                    AAESingletons.ENCODED_ADV_PROCESSING_PATTERN,
+                    AAEComponents.ENCODED_ADV_PROCESSING_PATTERN,
                     new EncodedAdvProcessingPattern(sparseInputs, sparseOutputs, directionList));
         }
     }

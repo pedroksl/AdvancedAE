@@ -13,7 +13,8 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.AAESingletons;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 
 import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
@@ -26,7 +27,7 @@ public class AAERecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput c) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_PROVIDER)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.ADV_PATTERN_PROVIDER)
                 .pattern("PR")
                 .pattern("EL")
                 .define('P', EAESingletons.EX_PATTERN_PROVIDER)
@@ -35,7 +36,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
                 .save(c, "advpatpro");
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAESingletons.SMALL_ADV_PATTERN_PROVIDER)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
                 .pattern("PR")
                 .pattern("EL")
                 .define('P', AEBlocks.PATTERN_PROVIDER)
@@ -44,15 +45,15 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
                 .save(c, "smalladvpatpro");
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_PROVIDER)
-                .requires(AAESingletons.ADV_PATTERN_PROVIDER_PART)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.ADV_PATTERN_PROVIDER)
+                .requires(AAEItems.ADV_PATTERN_PROVIDER)
                 .unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
                 .save(c, "advpatpro2");
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_PROVIDER_PART)
-                .requires(AAESingletons.ADV_PATTERN_PROVIDER)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER)
+                .requires(AAEBlocks.ADV_PATTERN_PROVIDER)
                 .unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
                 .save(c, "advpatpropart");
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_ENCODER)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_ENCODER)
                 .pattern("QRQ")
                 .pattern("RER")
                 .pattern("QRQ")
@@ -61,7 +62,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('E', AEItems.ENGINEERING_PROCESSOR)
                 .unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
                 .save(c, "advpartenc");
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAESingletons.ADV_PATTERN_PROVIDER_UPGRADE)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER_UPGRADE)
                 .pattern("IR")
                 .pattern("EL")
                 .define('I', Tags.Items.INGOTS)
@@ -70,12 +71,12 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
                 .save(c, "smallappupgrade");
-        CrystalAssemblerRecipeBuilder.assemble(AAESingletons.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
+        CrystalAssemblerRecipeBuilder.assemble(AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
                 .input(Tags.Items.INGOTS)
                 .input(AEItems.CAPACITY_CARD, 3)
                 .input(Items.CRAFTING_TABLE, 3)
                 .input(EAESingletons.CONCURRENT_PROCESSOR)
                 .input(ConventionTags.GLASS_CABLE, 6)
-                .save(c, AdvancedAE.id("largeappupgrade"));
+                .save(c, AdvancedAE.makeId("largeappupgrade"));
     }
 }

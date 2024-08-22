@@ -17,6 +17,8 @@
   ],
   "client": [
     "appflux.MixinAdvPatternProviderGui",
-    "appflux.MixinSmallAdvPatternProviderGui"
+    "appflux.MixinSmallAdvPatternProviderGui",
+    "client.BuiltInModelHooksAccessor",
+    "client.ModelBakeryMixin"
   ]
 }

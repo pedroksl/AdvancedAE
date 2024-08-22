@@ -2,7 +2,7 @@ package net.pedroksl.advanced_ae.common.inventory;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.common.AAESingletons;
+import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
 
@@ -19,7 +19,7 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
     public AdvPatternEncoderHost(AdvPatternEncoderItem item, Player player, ItemMenuHostLocator locator) {
         super(item, player, locator);
 
-        var itemTag = this.getItemStack().get(AAESingletons.STACK_TAG);
+        var itemTag = this.getItemStack().get(AAEComponents.STACK_TAG);
         var registry = player.registryAccess();
         if (itemTag != null) {
             this.inOutInventory.readFromNBT(itemTag, "inOutInventory", registry);
@@ -33,24 +33,24 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
         this.inOutInventory.writeToNBT(itemTag, "inOutInventory", registry);
 
         if (!itemTag.isEmpty()) {
-            this.getItemStack().set(AAESingletons.STACK_TAG, itemTag);
+            this.getItemStack().set(AAEComponents.STACK_TAG, itemTag);
         } else {
-            this.getItemStack().remove(AAESingletons.STACK_TAG);
+            this.getItemStack().remove(AAEComponents.STACK_TAG);
         }
     }
 
     @Override
     public void onChangeInventory(AppEngInternalInventory inv, int slot) {
-        var itemTag = this.getItemStack().getOrDefault(AAESingletons.STACK_TAG, new CompoundTag());
+        var itemTag = this.getItemStack().getOrDefault(AAEComponents.STACK_TAG, new CompoundTag());
         var registry = this.getPlayer().registryAccess();
         if (this.inOutInventory == inv) {
             this.inOutInventory.writeToNBT(itemTag, "inOutInventory", registry);
         }
 
         if (!itemTag.isEmpty()) {
-            this.getItemStack().set(AAESingletons.STACK_TAG, itemTag);
+            this.getItemStack().set(AAEComponents.STACK_TAG, itemTag);
         } else {
-            this.getItemStack().remove(AAESingletons.STACK_TAG);
+            this.getItemStack().remove(AAEComponents.STACK_TAG);
         }
 
         invChangeHandler.handleChange(inv, slot);

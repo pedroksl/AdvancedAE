@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionPacket;
 import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderUpdateRequestPacket;
@@ -192,38 +193,38 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
     private Pair<ResourceLocation, ResourceLocation> getDirButtonTextures(int index) {
         return switch (index) {
             case 1 -> new Pair<>(
-                    AdvancedAE.id("textures/guis/north_button.png"),
-                    AdvancedAE.id("textures/guis/north_button_selected.png"));
+                    AdvancedAE.makeId("textures/guis/north_button.png"),
+                    AdvancedAE.makeId("textures/guis/north_button_selected.png"));
             case 2 -> new Pair<>(
-                    AdvancedAE.id("textures/guis/east_button.png"),
-                    AdvancedAE.id("textures/guis/east_button_selected.png"));
+                    AdvancedAE.makeId("textures/guis/east_button.png"),
+                    AdvancedAE.makeId("textures/guis/east_button_selected.png"));
             case 3 -> new Pair<>(
-                    AdvancedAE.id("textures/guis/south_button.png"),
-                    AdvancedAE.id("textures/guis/south_button_selected.png"));
+                    AdvancedAE.makeId("textures/guis/south_button.png"),
+                    AdvancedAE.makeId("textures/guis/south_button_selected.png"));
             case 4 -> new Pair<>(
-                    AdvancedAE.id("textures/guis/west_button.png"),
-                    AdvancedAE.id("textures/guis/west_button_selected.png"));
+                    AdvancedAE.makeId("textures/guis/west_button.png"),
+                    AdvancedAE.makeId("textures/guis/west_button_selected.png"));
             case 5 -> new Pair<>(
-                    AdvancedAE.id("textures/guis/up_button.png"),
-                    AdvancedAE.id("textures/guis/up_button_selected.png"));
+                    AdvancedAE.makeId("textures/guis/up_button.png"),
+                    AdvancedAE.makeId("textures/guis/up_button_selected.png"));
             case 6 -> new Pair<>(
-                    AdvancedAE.id("textures/guis/down_button.png"),
-                    AdvancedAE.id("textures/guis/down_button_selected.png"));
+                    AdvancedAE.makeId("textures/guis/down_button.png"),
+                    AdvancedAE.makeId("textures/guis/down_button_selected.png"));
             default -> new Pair<>(
-                    AdvancedAE.id("textures/guis/any_button.png"),
-                    AdvancedAE.id("textures/guis/any_button_selected.png"));
+                    AdvancedAE.makeId("textures/guis/any_button.png"),
+                    AdvancedAE.makeId("textures/guis/any_button_selected.png"));
         };
     }
 
     private Component getDirButtonText(int index) {
         return switch (index) {
-            case 1 -> Component.translatable("gui.advanced_ae.north_button_tooltip");
-            case 2 -> Component.translatable("gui.advanced_ae.east_button_tooltip");
-            case 3 -> Component.translatable("gui.advanced_ae.south_button_tooltip");
-            case 4 -> Component.translatable("gui.advanced_ae.west_button_tooltip");
-            case 5 -> Component.translatable("gui.advanced_ae.up_button_tooltip");
-            case 6 -> Component.translatable("gui.advanced_ae.down_button_tooltip");
-            default -> Component.translatable("gui.advanced_ae.any_button_tooltip");
+            case 1 -> Component.translatable(AAEText.NorthButton.getTranslationKey());
+            case 2 -> Component.translatable(AAEText.EastButton.getTranslationKey());
+            case 3 -> Component.translatable(AAEText.SouthButton.getTranslationKey());
+            case 4 -> Component.translatable(AAEText.WestButton.getTranslationKey());
+            case 5 -> Component.translatable(AAEText.UpButton.getTranslationKey());
+            case 6 -> Component.translatable(AAEText.DownButton.getTranslationKey());
+            default -> Component.translatable(AAEText.AnyButton.getTranslationKey());
         };
     }
 

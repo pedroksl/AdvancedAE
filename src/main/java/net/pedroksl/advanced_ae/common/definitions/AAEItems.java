@@ -8,7 +8,14 @@ import java.util.function.Function;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
+import net.pedroksl.advanced_ae.common.items.AdvPatternProviderCapacityUpgradeItem;
+import net.pedroksl.advanced_ae.common.items.AdvPatternProviderUpgradeItem;
+import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
+import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
+import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
 
+import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.PartModels;
@@ -24,6 +31,34 @@ public class AAEItems {
     public static List<ItemDefinition<?>> getItems() {
         return Collections.unmodifiableList(ITEMS);
     }
+
+    public static final ItemDefinition<PartItem<AdvPatternProviderPart>> ADV_PATTERN_PROVIDER = part(
+            "Advanced Pattern Provider",
+            "adv_pattern_provider_part",
+            AdvPatternProviderPart.class,
+            AdvPatternProviderPart::new);
+    public static final ItemDefinition<PartItem<SmallAdvPatternProviderPart>> SMALL_ADV_PATTERN_PROVIDER = part(
+            "Advanced Pattern Provider (9 Slots)",
+            "small_adv_pattern_provider_part",
+            SmallAdvPatternProviderPart.class,
+            SmallAdvPatternProviderPart::new);
+
+    public static final ItemDefinition<Item> ADV_PROCESSING_PATTERN = item(
+            "Advanced Processing Pattern",
+            "adv_processing_pattern",
+            p -> PatternDetailsHelper.encodedPatternItemBuilder(AdvProcessingPattern::new)
+                    .invalidPatternTooltip(AdvProcessingPattern::getInvalidPatternTooltip)
+                    .build());
+
+    public static final ItemDefinition<Item> ADV_PATTERN_PROVIDER_UPGRADE = item(
+            "Advanced Pattern Provider Upgrade", "adv_pattern_provider_upgrade", AdvPatternProviderUpgradeItem::new);
+    public static final ItemDefinition<Item> ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE = item(
+            "Advanced Pattern Provider Capacity Upgrade",
+            "adv_pattern_provider_capacity_upgrade",
+            AdvPatternProviderCapacityUpgradeItem::new);
+
+    public static final ItemDefinition<AdvPatternEncoderItem> ADV_PATTERN_ENCODER =
+            item("Advanced Pattern Encoder", "adv_pattern_encoder", p -> new AdvPatternEncoderItem(p.stacksTo(1)));
 
     private static <T extends Item> ItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {

@@ -15,7 +15,7 @@ import appeng.core.localization.GuiText;
 import appeng.core.network.ServerboundPacket;
 import appeng.core.network.serverbound.ConfigButtonPacket;
 
-public class AdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderContainer> {
+public class AdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderMenu> {
 
     private final SettingToggleButton<YesNo> blockingModeButton;
     private final SettingToggleButton<LockCraftingMode> lockCraftingModeButton;
@@ -23,7 +23,7 @@ public class AdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderContai
     private final AdvPatternProviderLockReason lockReason;
 
     public AdvPatternProviderGui(
-            AdvPatternProviderContainer menu, Inventory playerInventory, Component title, ScreenStyle style) {
+            AdvPatternProviderMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
 
         this.blockingModeButton = new ServerSettingToggleButton<>(Settings.BLOCKING_MODE, YesNo.NO);

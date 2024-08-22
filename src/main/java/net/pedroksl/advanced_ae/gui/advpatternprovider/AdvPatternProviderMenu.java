@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.gui.advpatternprovider;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 
@@ -38,6 +39,10 @@ public class AdvPatternProviderMenu extends AEBaseMenu {
 
     @GuiSync(7)
     public GenericStack unlockStack = null;
+
+    public AdvPatternProviderMenu(int id, Inventory playerInventory, AdvPatternProviderLogicHost host) {
+        this(AAEMenus.ADV_PATTERN_PROVIDER, id, playerInventory, host);
+    }
 
     protected AdvPatternProviderMenu(
             MenuType<? extends AdvPatternProviderMenu> menuType,

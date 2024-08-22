@@ -16,8 +16,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
-import net.pedroksl.advanced_ae.common.AAESingletons;
-import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 
@@ -25,8 +26,9 @@ import appeng.blockentity.networking.CableBusBlockEntity;
 import appeng.parts.AEBasePart;
 
 public class AdvPatternProviderCapacityUpgradeItem extends Item {
-    public AdvPatternProviderCapacityUpgradeItem() {
-        super(new Item.Properties());
+
+    public AdvPatternProviderCapacityUpgradeItem(Properties properties) {
+        super(properties);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -41,7 +43,7 @@ public class AdvPatternProviderCapacityUpgradeItem extends Item {
             var tClazz = entity.getClass();
             if (tClazz == SmallAdvPatternProviderEntity.class) {
                 var originState = world.getBlockState(pos);
-                var state = AAESingletons.ADV_PATTERN_PROVIDER.getStateForPlacement(ctx);
+                var state = AAEBlocks.ADV_PATTERN_PROVIDER.block().getStateForPlacement(ctx);
                 if (state == null) {
                     return InteractionResult.PASS;
                 }
@@ -56,7 +58,7 @@ public class AdvPatternProviderCapacityUpgradeItem extends Item {
                         // NO-OP
                     }
                 }
-                BlockEntity te = new AdvPatternProviderEntity(pos, state);
+                BlockEntity te = AAEBlockEntities.ADV_PATTERN_PROVIDER.get().create(pos, state);
                 FCUtil.replaceTile(world, pos, entity, te, state);
                 context.getItemInHand().shrink(1);
                 return InteractionResult.CONSUME;
@@ -69,7 +71,7 @@ public class AdvPatternProviderCapacityUpgradeItem extends Item {
                     var side = basePart.getSide();
                     var contents = new CompoundTag();
 
-                    var partItem = AAESingletons.ADV_PATTERN_PROVIDER_PART;
+                    var partItem = AAEItems.ADV_PATTERN_PROVIDER.get();
 
                     part.writeToNBT(contents, world.registryAccess());
                     var p = cable.replacePart(partItem, side, context.getPlayer(), null);

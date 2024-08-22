@@ -7,8 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderContainer;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
@@ -57,18 +56,18 @@ public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPrior
 
     default void openMenu(Player player, MenuHostLocator locator) {
         if (numberOfPatternSlots() == 36) {
-            MenuOpener.open(AdvPatternProviderContainer.TYPE, player, locator);
+            MenuOpener.open(AAEMenus.ADV_PATTERN_PROVIDER, player, locator);
         } else {
-            MenuOpener.open(SmallAdvPatternProviderContainer.TYPE, player, locator);
+            MenuOpener.open(AAEMenus.SMALL_ADV_PATTERN_PROVIDER, player, locator);
         }
     }
 
     @Override
     default void returnToMainMenu(Player player, ISubMenu subMenu) {
         if (numberOfPatternSlots() == 36) {
-            MenuOpener.returnTo(AdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
+            MenuOpener.returnTo(AAEMenus.ADV_PATTERN_PROVIDER, player, subMenu.getLocator());
         } else {
-            MenuOpener.returnTo(SmallAdvPatternProviderContainer.TYPE, player, subMenu.getLocator());
+            MenuOpener.returnTo(AAEMenus.SMALL_ADV_PATTERN_PROVIDER, player, subMenu.getLocator());
         }
     }
 

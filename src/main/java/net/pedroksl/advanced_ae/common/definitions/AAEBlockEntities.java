@@ -10,10 +10,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
+import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
-import appeng.blockentity.crafting.CraftingBlockEntity;
 import appeng.core.definitions.BlockDefinition;
 
 @SuppressWarnings("unused")
@@ -21,12 +22,27 @@ public final class AAEBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> DR =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AdvancedAE.MOD_ID);
 
-    public static final Supplier<BlockEntityType<CraftingBlockEntity>> ADV_CRAFTING_UNIT = create(
-            "adv_crafting_unit",
-            CraftingBlockEntity.class,
-            CraftingBlockEntity::new,
-            AAEBlocks.ADV_CRAFTING_UNIT,
-            AAEBlocks.ADV_CRAFTING_ACCELERATOR);
+    //	public static final Supplier<BlockEntityType<CraftingBlockEntity>> ADV_CRAFTING_UNIT = create(
+    //			"adv_crafting_unit",
+    //			CraftingBlockEntity.class,
+    //			CraftingBlockEntity::new,
+    //			AAEBlocks.ADV_CRAFTING_UNIT,
+    //			AAEBlocks.ADV_CRAFTING_ACCELERATOR);
+
+    public static final Supplier<BlockEntityType<AdvPatternProviderEntity>> ADV_PATTERN_PROVIDER = create(
+            "adv_pattern_provider",
+            AdvPatternProviderEntity.class,
+            AdvPatternProviderEntity::new,
+            AAEBlocks.ADV_PATTERN_PROVIDER);
+    public static final Supplier<BlockEntityType<SmallAdvPatternProviderEntity>> SMALL_ADV_PATTERN_PROVIDER = create(
+            "small_adv_pattern_provider",
+            SmallAdvPatternProviderEntity.class,
+            SmallAdvPatternProviderEntity::new,
+            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER);
+
+    //    public static final Supplier<BlockEntityType<ReactionChamberEntity>> REACTION_CHAMBER = create(
+    //            "reaction_chamber", ReactionChamberEntity.class, ReactionChamberEntity::new,
+    // AAEBlocks.REACTION_CHAMBER);
 
     @SuppressWarnings({"DataFlowIssue", "unchecked"})
     @SafeVarargs

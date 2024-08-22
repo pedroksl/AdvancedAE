@@ -4,15 +4,13 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import com.glodblock.github.glodium.util.GlodUtil;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.pedroksl.advanced_ae.common.AAESingletons;
 
 import appeng.api.config.Setting;
 import appeng.api.config.Settings;
@@ -23,9 +21,7 @@ import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.orientation.BlockOrientation;
-import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
-import appeng.api.upgrades.UpgradeInventories;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import appeng.blockentity.grid.AENetworkedPoweredBlockEntity;
@@ -34,22 +30,18 @@ import appeng.util.inv.AppEngInternalInventory;
 public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         implements IGridTickable, IUpgradeableObject, IConfigurableObject {
 
-    private final IUpgradeInventory upgrades;
+    // private final IUpgradeInventory upgrades;
     private final IConfigManager configManager;
 
     private final AppEngInternalInventory inputInv = new AppEngInternalInventory(this, 3, 64);
 
-    public ReactionChamberEntity(BlockPos pos, BlockState blockState) {
-        super(
-                GlodUtil.getTileType(
-                        ReactionChamberEntity.class, ReactionChamberEntity::new, AAESingletons.REACTION_CHAMBER),
-                pos,
-                blockState);
+    public ReactionChamberEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
+        super(type, pos, blockState);
 
         this.getMainNode().setIdlePowerUsage(0).addService(IGridTickable.class, this);
         this.setInternalMaxPower(1600);
 
-        this.upgrades = UpgradeInventories.forMachine(AAESingletons.REACTION_CHAMBER, 4, this::saveChanges);
+        // this.upgrades = UpgradeInventories.forMachine(AAEBlocks.REACTION_CHAMBER, 4, this::saveChanges);
         this.configManager = IConfigManager.builder(this::onConfigChanged)
                 .registerSetting(Settings.AUTO_EXPORT, YesNo.NO)
                 .build();
@@ -109,19 +101,19 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void addAdditionalDrops(Level level, BlockPos pos, List<ItemStack> drops) {
         super.addAdditionalDrops(level, pos, drops);
 
-        for (var upgrade : upgrades) {
-            drops.add(upgrade);
-        }
+        //		for (var upgrade : upgrades) {
+        //			drops.add(upgrade);
+        //		}
     }
 
     @Override
     public void clearContent() {
         super.clearContent();
-        upgrades.clear();
+        // upgrades.clear();
     }
 
-    @Override
-    public IUpgradeInventory getUpgrades() {
-        return upgrades;
-    }
+    //	@Override
+    //	public IUpgradeInventory getUpgrades() {
+    //		return upgrades;
+    //	}
 }

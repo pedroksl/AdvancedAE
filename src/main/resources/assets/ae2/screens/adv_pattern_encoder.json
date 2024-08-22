@@ -7,7 +7,7 @@
   "text": {
     "dialog_title": {
       "text": {
-        "translate": "gui.advanced_ae.adv_pattern_encoder"
+        "translate": "gui.advanced_ae.AdvPatternEncoder"
       },
       "position": {
         "left": 10,

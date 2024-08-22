@@ -27,7 +27,7 @@ public class AdvPatternEncoderUpdateRequestPacket implements IMessage {
 
     @Override
     public ResourceLocation id() {
-        return AdvancedAE.id("pattern_encoder_update_request");
+        return AdvancedAE.makeId("pattern_encoder_update_request");
     }
 
     @Override

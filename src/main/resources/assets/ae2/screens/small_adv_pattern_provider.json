@@ -28,7 +28,7 @@
   "text": {
     "dialog_title": {
       "text": {
-        "translate": "gui.advanced_ae.adv_pattern_provider"
+        "translate": "gui.advanced_ae.AdvPatternProvider"
       },
       "position": {
         "left": 8,

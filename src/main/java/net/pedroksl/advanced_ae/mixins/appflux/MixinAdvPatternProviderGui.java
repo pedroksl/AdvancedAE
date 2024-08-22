@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderGui;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 
 import appeng.api.upgrades.Upgrades;
 import appeng.client.gui.AEBaseScreen;
@@ -24,11 +24,11 @@ import appeng.core.localization.GuiText;
 import appeng.menu.SlotSemantics;
 
 @Mixin(AdvPatternProviderGui.class)
-public abstract class MixinAdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderContainer> {
+public abstract class MixinAdvPatternProviderGui extends AEBaseScreen<AdvPatternProviderMenu> {
 
     @Inject(method = "<init>", at = @At("TAIL"), remap = false)
     private void initUpgrade(
-            AdvPatternProviderContainer menu,
+            AdvPatternProviderMenu menu,
             Inventory playerInventory,
             Component title,
             ScreenStyle style,
@@ -47,7 +47,7 @@ public abstract class MixinAdvPatternProviderGui extends AEBaseScreen<AdvPattern
     }
 
     public MixinAdvPatternProviderGui(
-            AdvPatternProviderContainer menu, Inventory playerInventory, Component title, ScreenStyle style) {
+            AdvPatternProviderMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
     }
 }

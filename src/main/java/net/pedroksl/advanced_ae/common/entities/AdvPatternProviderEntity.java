@@ -2,8 +2,6 @@ package net.pedroksl.advanced_ae.common.entities;
 
 import java.util.*;
 
-import com.glodblock.github.glodium.util.GlodUtil;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -17,8 +15,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.pedroksl.advanced_ae.common.AAESingletons;
 import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 
@@ -36,14 +34,8 @@ import appeng.util.SettingsFrom;
 public class AdvPatternProviderEntity extends AENetworkedBlockEntity implements AdvPatternProviderLogicHost {
     protected final AdvPatternProviderLogic logic;
 
-    public AdvPatternProviderEntity(BlockPos pos, BlockState blockState) {
-        super(
-                GlodUtil.getTileType(
-                        AdvPatternProviderEntity.class,
-                        AdvPatternProviderEntity::new,
-                        AAESingletons.ADV_PATTERN_PROVIDER),
-                pos,
-                blockState);
+    public AdvPatternProviderEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
+        super(type, pos, blockState);
 
         this.logic = createLogic();
     }
@@ -168,7 +160,7 @@ public class AdvPatternProviderEntity extends AENetworkedBlockEntity implements 
 
     @Override
     public AEItemKey getTerminalIcon() {
-        return AEItemKey.of(AAESingletons.ADV_PATTERN_PROVIDER);
+        return AEItemKey.of(AAEBlocks.ADV_PATTERN_PROVIDER);
     }
 
     @Override
@@ -205,7 +197,7 @@ public class AdvPatternProviderEntity extends AENetworkedBlockEntity implements 
 
     @Override
     public ItemStack getMainMenuIcon() {
-        return new ItemStack(AAESingletons.ADV_PATTERN_PROVIDER);
+        return new ItemStack(AAEBlocks.ADV_PATTERN_PROVIDER);
     }
 
     @Override
