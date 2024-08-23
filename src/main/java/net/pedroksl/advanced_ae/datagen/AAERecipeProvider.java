@@ -53,6 +53,14 @@ public class AAERecipeProvider extends RecipeProvider {
                 .requires(AAEBlocks.ADV_PATTERN_PROVIDER)
                 .unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
                 .save(c, "advpatpropart");
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
+                .requires(AAEItems.SMALL_ADV_PATTERN_PROVIDER)
+                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
+                .save(c, "smalladvpatpro2");
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.SMALL_ADV_PATTERN_PROVIDER)
+                .requires(AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
+                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
+                .save(c, "smalladvpatpropart");
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_ENCODER)
                 .pattern("QRQ")
                 .pattern("RER")

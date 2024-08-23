@@ -4,16 +4,13 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 
 import appeng.api.orientation.BlockOrientation;
-import appeng.block.crafting.AbstractCraftingUnitBlock;
 import appeng.block.crafting.PatternProviderBlock;
 import appeng.core.AppEng;
 import appeng.core.definitions.BlockDefinition;
@@ -33,19 +30,21 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.ADV_PATTERN_ENCODER);
 
         // CRAFTING UNITS
-        for (var type : AAECraftingUnitType.values()) {
-            var craftingBlock = type.getDefinition().block();
-            var name = type.getAffix();
-            var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" + name));
-            getVariantBuilder(craftingBlock)
-                    .partialState()
-                    .with(AbstractCraftingUnitBlock.FORMED, false)
-                    .setModels(new ConfiguredModel(blockModel))
-                    .partialState()
-                    .with(AbstractCraftingUnitBlock.FORMED, true)
-                    .setModels(new ConfiguredModel(models().getBuilder("block/crafting/" + name + "_formed")));
-            simpleBlockItem(craftingBlock, blockModel);
-        }
+        //        for (var type : AAECraftingUnitType.values()) {
+        //            var craftingBlock = type.getDefinition().block();
+        //            var name = type.getAffix();
+        //            var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" +
+        // name));
+        //            getVariantBuilder(craftingBlock)
+        //                    .partialState()
+        //                    .with(AbstractCraftingUnitBlock.FORMED, false)
+        //                    .setModels(new ConfiguredModel(blockModel))
+        //                    .partialState()
+        //                    .with(AbstractCraftingUnitBlock.FORMED, true)
+        //                    .setModels(new ConfiguredModel(models().getBuilder("block/crafting/" + name +
+        // "_formed")));
+        //            simpleBlockItem(craftingBlock, blockModel);
+        //        }
 
         interfaceOrProviderPart(AAEItems.ADV_PATTERN_PROVIDER);
         interfaceOrProviderPart(AAEItems.SMALL_ADV_PATTERN_PROVIDER);
