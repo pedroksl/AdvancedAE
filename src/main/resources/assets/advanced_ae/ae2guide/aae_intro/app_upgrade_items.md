@@ -21,7 +21,7 @@ upgrades.
 
 These upgrades can be used on regular AE Pattern Providers and ExtendedAE's Extended Pattern Providers. Using it on
 these machines will upgrade them to the advanced version keeping the same amount of slots they had previously. This
-means you won't lose the ingredients used to upgrade regular providers to extended providers in the process.
+means you won't lose the materials used to upgrade regular providers to extended providers in the process.
 
 ## Advanced Pattern Provider Capacity Upgrade (36 Slots)
 

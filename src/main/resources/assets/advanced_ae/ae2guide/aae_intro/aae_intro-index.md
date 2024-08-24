@@ -7,7 +7,7 @@ navigation:
 # Advanced AE!
 
 Advanced AE focuses on convenience and improving user experience when handling your ME System.
-This mod allows you to upgrade the very powerful pattern providers of Extended AE with additional features.
+This mod allows you to upgrade pattern providers additional features.
 
 [Advanced AE GitHub](https://github.com/pedroksl/AdvancedAE)
 
