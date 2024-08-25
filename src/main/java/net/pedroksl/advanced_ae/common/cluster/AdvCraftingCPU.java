@@ -38,7 +38,7 @@ public class AdvCraftingCPU implements ICraftingCPU {
 
     @Override
     public boolean isBusy() {
-        return false;
+        return craftingLogic.hasJob();
     }
 
     @Override
