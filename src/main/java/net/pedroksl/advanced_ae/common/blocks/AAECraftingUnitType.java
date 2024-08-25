@@ -1,13 +1,22 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
 import net.minecraft.world.item.Item;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 
 import appeng.block.crafting.ICraftingUnitType;
 import appeng.core.definitions.BlockDefinition;
 
 public enum AAECraftingUnitType implements ICraftingUnitType {
     UNIT(0, "unit"),
-    ACCELERATOR(0, "accelerator");
+    QUANTUM_UNIT(0, "quantum_unit"),
+    QUANTUM_CORE(0, "quantum_core"),
+    STORAGE_128M(128, "quantum_storage_128"),
+    STORAGE_256M(256, "quantum_storage_256"),
+    STORAGE_MULTIPLIER(0, "data_entangler"),
+    ACCELERATOR(0, "accelerator"),
+    QUANTUM_ACCELERATOR(0, "quantum_accelerator"),
+    MULTI_THREADER(0, "quantum_multi_threader"),
+    STRUCTURE(0, "quantum_structure");
 
     private final int storageMb;
     private final String affix;
@@ -22,9 +31,17 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
         return 1024L * 1024 * storageMb;
     }
 
+    public int getStorageMultiplier() {
+        return this == STORAGE_MULTIPLIER ? 4 : 0;
+    }
+
     @Override
     public int getAcceleratorThreads() {
-        return this == ACCELERATOR ? 4 : 0;
+        return this == ACCELERATOR ? 4 : this == QUANTUM_ACCELERATOR ? 8 : 0;
+    }
+
+    public int getAccelerationMultiplier() {
+        return this == MULTI_THREADER ? 4 : 0;
     }
 
     public String getAffix() {
@@ -32,11 +49,18 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
     }
 
     public BlockDefinition<?> getDefinition() {
-        //        return switch (this) {
-        //            case UNIT -> AAEBlocks.ADV_CRAFTING_UNIT;
-        //            case ACCELERATOR -> AAEBlocks.ADV_CRAFTING_ACCELERATOR;
-        //        };
-        return null;
+        return switch (this) {
+            case UNIT -> AAEBlocks.ADV_CRAFTING_UNIT;
+            case QUANTUM_UNIT -> AAEBlocks.QUANTUM_UNIT;
+            case QUANTUM_CORE -> AAEBlocks.QUANTUM_CORE;
+            case STORAGE_128M -> AAEBlocks.QUANTUM_STORAGE_128M;
+            case STORAGE_256M -> AAEBlocks.QUANTUM_STORAGE_256M;
+            case STORAGE_MULTIPLIER -> AAEBlocks.DATA_ENTANGLER;
+            case ACCELERATOR -> AAEBlocks.ADV_CRAFTING_ACCELERATOR;
+            case QUANTUM_ACCELERATOR -> AAEBlocks.QUANTUM_ACCELERATOR;
+            case MULTI_THREADER -> AAEBlocks.QUANTUM_MULTI_THREADER;
+            case STRUCTURE -> AAEBlocks.QUANTUM_STRUCTURE;
+        };
     }
 
     @Override

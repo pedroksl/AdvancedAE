@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "advanced_ae:block/reaction_chamber"
-    }
-  }
+	"variants": {
+		"": {
+			"model": "advanced_ae:block/reaction_chamber"
+		}
+	}
 }

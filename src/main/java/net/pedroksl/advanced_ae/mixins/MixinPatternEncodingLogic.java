@@ -26,13 +26,15 @@ public class MixinPatternEncodingLogic {
     @Shadow
     private void loadProcessingPattern(AEProcessingPattern pattern) {}
 
-    @Inject(method = "loadEncodedPattern", at = @At(value = "INVOKE", ordinal = 7))
+    @Inject(method = "loadEncodedPattern", at = @At(value = "HEAD"))
     protected void onLoadEncodedPattern(ItemStack pattern, CallbackInfo ci) {
-        IPatternDetails details = PatternDetailsHelper.decodePattern(pattern, this.host.getLevel());
-        if (details instanceof AdvProcessingPattern advPattern) {
-            var aePattern = advPattern.getAEProcessingPattern(this.host.getLevel());
-            if (aePattern != null) {
-                loadProcessingPattern(aePattern);
+        if (!pattern.isEmpty()) {
+            IPatternDetails details = PatternDetailsHelper.decodePattern(pattern, this.host.getLevel());
+            if (details instanceof AdvProcessingPattern advPattern) {
+                var aePattern = advPattern.getAEProcessingPattern(this.host.getLevel());
+                if (aePattern != null) {
+                    loadProcessingPattern(aePattern);
+                }
             }
         }
     }

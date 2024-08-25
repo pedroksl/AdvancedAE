@@ -12,11 +12,16 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitBlock;
+import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
 import net.pedroksl.advanced_ae.common.blocks.SmallAdvPatternProviderBlock;
 import net.pedroksl.advanced_ae.common.items.AAECraftingBlockItem;
 
 import appeng.block.AEBaseBlockItem;
+import appeng.block.crafting.CraftingBlockItem;
+import appeng.block.crafting.CraftingUnitBlock;
+import appeng.core.definitions.AEItems;
 import appeng.core.definitions.BlockDefinition;
 import appeng.core.definitions.ItemDefinition;
 
@@ -29,16 +34,57 @@ public final class AAEBlocks {
         return Collections.unmodifiableList(BLOCKS);
     }
 
-    //	public static final BlockDefinition<CraftingUnitBlock> ADV_CRAFTING_UNIT = block(
-    //			"Advanced Crafting Unit",
-    //			"adv_crafting_unit",
-    //			() -> new CraftingUnitBlock(AAECraftingUnitType.UNIT),
-    //			AEBaseBlockItem::new);
-    //	public static final BlockDefinition<CraftingUnitBlock> ADV_CRAFTING_ACCELERATOR = craftingBlock(
-    //			"Advanced Crafting Co-Processing Unit",
-    //			"adv_crafting_accelerator",
-    //			() -> new CraftingUnitBlock(AAECraftingUnitType.ACCELERATOR),
-    //			() -> AEItems.ENGINEERING_PROCESSOR);
+    public static final BlockDefinition<CraftingUnitBlock> ADV_CRAFTING_UNIT = block(
+            "Advanced Crafting Unit",
+            "adv_crafting_unit",
+            () -> new CraftingUnitBlock(AAECraftingUnitType.UNIT),
+            AEBaseBlockItem::new);
+    public static final BlockDefinition<CraftingUnitBlock> ADV_CRAFTING_ACCELERATOR = craftingBlock(
+            "Advanced Crafting Co-Processing Unit",
+            "adv_crafting_accelerator",
+            () -> new CraftingUnitBlock(AAECraftingUnitType.ACCELERATOR),
+            () -> AEItems.ENGINEERING_PROCESSOR);
+
+    public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_UNIT = block(
+            "Quantum Crafting Unit",
+            "quantum_unit",
+            () -> new AAECraftingUnitBlock(AAECraftingUnitType.QUANTUM_UNIT),
+            AAECraftingBlockItem::new);
+    public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_CORE = block(
+            "Quantum Computer Core",
+            "quantum_core",
+            () -> new AAECraftingUnitBlock(AAECraftingUnitType.QUANTUM_CORE),
+            AAECraftingBlockItem::new);
+    public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_STORAGE_128M = block(
+            "128M Quantum Computer Storage",
+            "quantum_storage_128",
+            () -> new AAECraftingUnitBlock(AAECraftingUnitType.STORAGE_128M),
+            AAECraftingBlockItem::new);
+    public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_STORAGE_256M = block(
+            "256M Quantum Computer Storage",
+            "quantum_storage_256",
+            () -> new AAECraftingUnitBlock(AAECraftingUnitType.STORAGE_256M),
+            AAECraftingBlockItem::new);
+    public static final BlockDefinition<AAECraftingUnitBlock> DATA_ENTANGLER = block(
+            "Quantum Data Entangler",
+            "data_entangler",
+            () -> new AAECraftingUnitBlock(AAECraftingUnitType.STORAGE_MULTIPLIER),
+            AAECraftingBlockItem::new);
+    public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_ACCELERATOR = block(
+            "Quantum Computer Accelerator",
+            "quantum_accelerator",
+            () -> new AAECraftingUnitBlock(AAECraftingUnitType.ACCELERATOR),
+            AAECraftingBlockItem::new);
+    public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_MULTI_THREADER = block(
+            "Quantum Computer Multi-Threader",
+            "quantum_multi_threader",
+            () -> new AAECraftingUnitBlock(AAECraftingUnitType.MULTI_THREADER),
+            AAECraftingBlockItem::new);
+    public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_STRUCTURE = block(
+            "Quantum Computer Structure",
+            "quantum_structure",
+            () -> new AAECraftingUnitBlock(AAECraftingUnitType.STRUCTURE),
+            AAECraftingBlockItem::new);
 
     public static final BlockDefinition<AdvPatternProviderBlock> ADV_PATTERN_PROVIDER = block(
             "Advanced Pattern Provider", "adv_pattern_provider", AdvPatternProviderBlock::new, AEBaseBlockItem::new);
@@ -57,7 +103,7 @@ public final class AAEBlocks {
                 englishName,
                 id,
                 blockSupplier,
-                (block, props) -> new AAECraftingBlockItem(block, props, disassemblyExtra));
+                (block, props) -> new CraftingBlockItem(block, props, disassemblyExtra));
     }
 
     private static <T extends Block> BlockDefinition<T> block(

@@ -3,13 +3,14 @@ package net.pedroksl.advanced_ae.mixins;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import com.llamalad7.mixinextras.sugar.Local;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,10 +38,11 @@ public class MixinPatternEncodingTermMenu extends MEStorageMenu {
             method = "encodeProcessingPattern",
             at = @At(value = "RETURN", ordinal = 2),
             cancellable = true,
-            locals = LocalCapture.CAPTURE_FAILHARD,
             remap = false)
     private void onEncodeProcessingPattern(
-            CallbackInfoReturnable<ItemStack> cir, GenericStack[] in, boolean v, GenericStack[] out) {
+            CallbackInfoReturnable<ItemStack> cir,
+            @Local(ordinal = 0) GenericStack[] in,
+            @Local(ordinal = 1) GenericStack[] out) {
         if (this.encodedPatternSlot.hasItem()) {
             var encodedPattern = this.encodedPatternSlot.getItem();
 

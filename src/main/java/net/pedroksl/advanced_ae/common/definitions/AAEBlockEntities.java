@@ -10,11 +10,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
 import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
+import appeng.blockentity.crafting.CraftingBlockEntity;
 import appeng.core.definitions.BlockDefinition;
 
 @SuppressWarnings("unused")
@@ -22,12 +24,25 @@ public final class AAEBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> DR =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AdvancedAE.MOD_ID);
 
-    //	public static final Supplier<BlockEntityType<CraftingBlockEntity>> ADV_CRAFTING_UNIT = create(
-    //			"adv_crafting_unit",
-    //			CraftingBlockEntity.class,
-    //			CraftingBlockEntity::new,
-    //			AAEBlocks.ADV_CRAFTING_UNIT,
-    //			AAEBlocks.ADV_CRAFTING_ACCELERATOR);
+    public static final Supplier<BlockEntityType<CraftingBlockEntity>> ADV_CRAFTING_UNIT = create(
+            "adv_crafting_unit",
+            CraftingBlockEntity.class,
+            CraftingBlockEntity::new,
+            AAEBlocks.ADV_CRAFTING_UNIT,
+            AAEBlocks.ADV_CRAFTING_ACCELERATOR);
+
+    public static final Supplier<BlockEntityType<AdvCraftingBlockEntity>> QUANTUM_COMPUTER_CORE = create(
+            "quantum_core",
+            AdvCraftingBlockEntity.class,
+            AdvCraftingBlockEntity::new,
+            AAEBlocks.QUANTUM_UNIT,
+            AAEBlocks.QUANTUM_CORE,
+            AAEBlocks.DATA_ENTANGLER,
+            AAEBlocks.QUANTUM_STORAGE_128M,
+            AAEBlocks.QUANTUM_STORAGE_256M,
+            AAEBlocks.QUANTUM_ACCELERATOR,
+            AAEBlocks.QUANTUM_MULTI_THREADER,
+            AAEBlocks.QUANTUM_STRUCTURE);
 
     public static final Supplier<BlockEntityType<AdvPatternProviderEntity>> ADV_PATTERN_PROVIDER = create(
             "adv_pattern_provider",
