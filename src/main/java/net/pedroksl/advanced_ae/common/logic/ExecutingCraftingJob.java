@@ -36,11 +36,11 @@ public class ExecutingCraftingJob {
     final ListCraftingInventory waitingFor;
     final Map<IPatternDetails, TaskProgress> tasks = new HashMap<>();
     final ElapsedTimeTracker timeTracker;
-    GenericStack finalOutput;
+    final GenericStack finalOutput;
     long remainingAmount;
 
     @Nullable
-    Integer playerId;
+    final Integer playerId;
 
     @FunctionalInterface
     interface CraftingDifferenceListener {

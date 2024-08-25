@@ -21,19 +21,15 @@ public class AdvCraftingCPUCalculator extends MBCalculator<AdvCraftingBlockEntit
 
     @Override
     public boolean checkMultiblockScale(BlockPos min, BlockPos max) {
-        if (max.getX() - min.getX() > 7) {
+        if (max.getX() - min.getX() > 5) {
             return false;
         }
 
-        if (max.getY() - min.getY() > 7) {
+        if (max.getY() - min.getY() > 5) {
             return false;
         }
 
-        if (max.getZ() - min.getZ() > 7) {
-            return false;
-        }
-
-        return true;
+        return max.getZ() - min.getZ() <= 5;
     }
 
     @Override
@@ -94,6 +90,11 @@ public class AdvCraftingCPUCalculator extends MBCalculator<AdvCraftingBlockEntit
                             return false;
                         }
                         break;
+                    }
+                    default: {
+                        if (isBoundary) {
+                            return false;
+                        }
                     }
                 }
 

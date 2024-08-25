@@ -16,7 +16,7 @@ import appeng.api.stacks.AEKey;
 
 public class DirectionInputButton extends Button {
 
-    Pair<ResourceLocation, ResourceLocation> textures;
+    private final Pair<ResourceLocation, ResourceLocation> textures;
     private AEKey key;
     private int index;
     private boolean highlighted;

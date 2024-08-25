@@ -41,13 +41,11 @@ public abstract class MixinAdvPatternProviderMenu extends AEBaseMenu implements 
         this.setupUpgrades(((IUpgradeableObject) host).getUpgrades());
     }
 
-    @SuppressWarnings("AddedMixinMembersNamePattern")
     @Override
     public IUpgradeInventory getUpgrades() {
         return ((IUpgradeableObject) this.logic).getUpgrades();
     }
 
-    @SuppressWarnings("AddedMixinMembersNamePattern")
     @Override
     public boolean hasUpgrade(ItemLike upgradeCard) {
         return getUpgrades().isInstalled(upgradeCard);

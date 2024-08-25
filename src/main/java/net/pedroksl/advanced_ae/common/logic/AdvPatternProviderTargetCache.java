@@ -23,6 +23,7 @@ import appeng.helpers.patternprovider.PatternProviderTarget;
 import appeng.me.storage.CompositeStorage;
 import appeng.parts.automation.StackWorldBehaviors;
 
+@SuppressWarnings("UnstableApiUsage")
 class AdvPatternProviderTargetCache {
     private final BlockCapabilityCache<MEStorage, Direction> cache;
     private final Direction direction;

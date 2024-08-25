@@ -23,7 +23,7 @@ public class AdvCraftingCPU implements ICraftingCPU {
     private long fakeStorage = 0;
     private final AdvCraftingCPUCluster cluster;
     public final AdvCraftingCPULogic craftingLogic = new AdvCraftingCPULogic(this);
-    private ListCraftingInventory inventory;
+    public GenericStack finalOutput;
 
     public AdvCraftingCPU(AdvCraftingCPUCluster cluster, ICraftingPlan plan) {
         this.cluster = cluster;
@@ -101,10 +101,12 @@ public class AdvCraftingCPU implements ICraftingCPU {
         return cluster.getGrid();
     }
 
-    public void updateOutput(GenericStack stack) {}
+    public void updateOutput(GenericStack stack) {
+        finalOutput = stack;
+    }
 
     public ListCraftingInventory getInventory() {
-        return inventory;
+        return craftingLogic.getInventory();
     }
 
     public IActionSource getSrc() {
