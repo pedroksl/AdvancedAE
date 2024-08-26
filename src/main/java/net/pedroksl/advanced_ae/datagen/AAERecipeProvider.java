@@ -86,5 +86,70 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(EAESingletons.CONCURRENT_PROCESSOR)
                 .input(ConventionTags.GLASS_CABLE, 6)
                 .save(c, AdvancedAE.makeId("largeappupgrade"));
+
+        // Quantum Computer
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STRUCTURE)
+                .pattern("QSQ")
+                .pattern("S S")
+                .pattern("QSQ")
+                .define('Q', AEBlocks.QUARTZ_GLASS)
+                .define('S', AEBlocks.SKY_STONE_BLOCK)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(c, "quantumstructure");
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_UNIT)
+                .requires(AEBlocks.CRAFTING_UNIT)
+                .requires(AEItems.SINGULARITY)
+                .requires(EAESingletons.CONCURRENT_PROCESSOR)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(c, "quantumunit");
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_ACCELERATOR)
+                .pattern("ECE")
+                .pattern("CUC")
+                .pattern("ECE")
+                .define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+                .define('C', EAESingletons.CONCURRENT_PROCESSOR)
+                .define('U', AAEBlocks.QUANTUM_UNIT)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(c, "quantumaccel");
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STORAGE_128M)
+                .pattern("ECE")
+                .pattern("CUC")
+                .pattern("ECE")
+                .define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+                .define('C', AEItems.ITEM_CELL_256K)
+                .define('U', AAEBlocks.QUANTUM_UNIT)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(c, "quantumstorage128");
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_STORAGE_256M)
+                .requires(AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+                .requires(AAEBlocks.QUANTUM_STORAGE_128M)
+                .requires(AAEBlocks.QUANTUM_STORAGE_128M)
+                .requires(AAEBlocks.QUANTUM_UNIT)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(c, "quantumstorage256");
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_CORE)
+                .pattern("SES")
+                .pattern("AUT")
+                .pattern("SES")
+                .define('S', AEItems.SINGULARITY)
+                .define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+                .define('U', AAEBlocks.QUANTUM_UNIT)
+                .define('A', AAEBlocks.QUANTUM_ACCELERATOR)
+                .define('T', AAEBlocks.QUANTUM_STORAGE_256M)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(c, "quantumcore");
+        CrystalAssemblerRecipeBuilder.assemble(AAEBlocks.DATA_ENTANGLER)
+                .input(AAEBlocks.QUANTUM_UNIT)
+                .input(AAEBlocks.QUANTUM_CORE)
+                .input(AEItems.QUANTUM_ENTANGLED_SINGULARITY, 8)
+                .input(AAEBlocks.QUANTUM_STORAGE_256M, 4)
+                .save(c, AdvancedAE.makeId("quantumdataentangler"));
+        CrystalAssemblerRecipeBuilder.assemble(AAEBlocks.QUANTUM_MULTI_THREADER)
+                .input(AAEBlocks.QUANTUM_UNIT)
+                .input(AAEBlocks.QUANTUM_CORE)
+                .input(AEItems.QUANTUM_ENTANGLED_SINGULARITY, 8)
+                .input(AAEBlocks.QUANTUM_ACCELERATOR, 4)
+                .input(EAESingletons.CONCURRENT_PROCESSOR, 8)
+                .save(c, AdvancedAE.makeId("quantummultithreader"));
     }
 }

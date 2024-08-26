@@ -9,7 +9,7 @@ import appeng.core.definitions.BlockDefinition;
 public enum AAECraftingUnitType implements ICraftingUnitType {
     UNIT(0, "unit"),
     QUANTUM_UNIT(0, "quantum_unit"),
-    QUANTUM_CORE(0, "quantum_core"),
+    QUANTUM_CORE(256, "quantum_core"),
     STORAGE_128M(128, "quantum_storage_128"),
     STORAGE_256M(256, "quantum_storage_256"),
     STORAGE_MULTIPLIER(0, "data_entangler"),
@@ -37,7 +37,11 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
 
     @Override
     public int getAcceleratorThreads() {
-        return this == ACCELERATOR ? 4 : this == QUANTUM_ACCELERATOR ? 8 : 0;
+        return switch (this) {
+            case ACCELERATOR -> 4;
+            case QUANTUM_ACCELERATOR, QUANTUM_CORE -> 8;
+            default -> 0;
+        };
     }
 
     public int getAccelerationMultiplier() {

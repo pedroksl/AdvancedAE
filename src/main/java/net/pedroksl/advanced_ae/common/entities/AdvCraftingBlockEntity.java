@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.pedroksl.advanced_ae.common.blocks.AAEAbstractCraftingUnitBlock;
+import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitBlock;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCalculator;
 import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCluster;
@@ -128,13 +129,15 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
 
         final boolean formed = this.isFormed();
         boolean power = this.getMainNode().isOnline();
+        int lightLevel = formed && power && this.getUnitBlock().type == AAECraftingUnitType.QUANTUM_CORE ? 10 : 0;
 
         final BlockState current = this.level.getBlockState(this.worldPosition);
 
         // The block entity might try to update while being destroyed
         if (current.getBlock() instanceof AAEAbstractCraftingUnitBlock) {
             final BlockState newState = current.setValue(AAEAbstractCraftingUnitBlock.POWERED, power)
-                    .setValue(AAEAbstractCraftingUnitBlock.FORMED, formed);
+                    .setValue(AAEAbstractCraftingUnitBlock.FORMED, formed)
+                    .setValue(AAECraftingUnitBlock.LIGHT_LEVEL, lightLevel);
 
             if (current != newState) {
                 // Not using flag 2 here (only send to clients, prevent block update) will cause
@@ -152,7 +155,9 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
     @Override
     public Set<Direction> getGridConnectableSides(BlockOrientation orientation) {
         if (isFormed()) {
-            return EnumSet.allOf(Direction.class);
+            return getUnitBlock().type == AAECraftingUnitType.QUANTUM_CORE
+                    ? EnumSet.of(Direction.UP, Direction.DOWN)
+                    : EnumSet.allOf(Direction.class);
         } else {
             return EnumSet.noneOf(Direction.class);
         }

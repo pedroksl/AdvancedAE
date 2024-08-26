@@ -62,6 +62,10 @@ public class AdvCraftingCPUCalculator extends MBCalculator<AdvCraftingBlockEntit
 
                 switch ((AAECraftingUnitType) advEntity.getUnitBlock().type) {
                     case QUANTUM_CORE: {
+                        if (min.equals(max)) {
+                            return true;
+                        }
+
                         if (!isBoundary && !core) {
                             core = true;
                         } else {
