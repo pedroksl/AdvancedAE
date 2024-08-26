@@ -18,6 +18,9 @@
 
 package net.pedroksl.advanced_ae.common.blocks;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.BlockState;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 
 import appeng.block.crafting.ICraftingUnitType;
@@ -25,6 +28,14 @@ import appeng.block.crafting.ICraftingUnitType;
 public class AAECraftingUnitBlock extends AAEAbstractCraftingUnitBlock<AdvCraftingBlockEntity> {
 
     public AAECraftingUnitBlock(ICraftingUnitType type) {
-        super(metalProps(), type);
+        super(
+                type == AAECraftingUnitType.QUANTUM_CORE
+                        ? metalProps().noOcclusion().lightLevel(l -> 15).emissiveRendering(AAECraftingUnitBlock::always)
+                        : metalProps(),
+                type);
+    }
+
+    private static boolean always(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        return true;
     }
 }

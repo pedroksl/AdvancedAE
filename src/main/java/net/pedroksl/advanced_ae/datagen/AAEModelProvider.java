@@ -36,6 +36,9 @@ public class AAEModelProvider extends AE2BlockStateProvider {
 
         // CRAFTING UNITS
         for (var type : AAECraftingUnitType.values()) {
+            if (type == AAECraftingUnitType.QUANTUM_CORE) {
+                continue;
+            }
             var craftingBlock = type.getDefinition().block();
             var name = type.getAffix();
             var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" + name));

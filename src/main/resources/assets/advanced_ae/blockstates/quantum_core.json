@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "advanced_ae:block/quantum_core"
+    },
+    "formed=true": {
+      "model": "advanced_ae:block/quantum_core_formed"
+    }
+  }
+}
