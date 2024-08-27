@@ -16,20 +16,12 @@ import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
-import appeng.blockentity.crafting.CraftingBlockEntity;
 import appeng.core.definitions.BlockDefinition;
 
 @SuppressWarnings("unused")
 public final class AAEBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> DR =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AdvancedAE.MOD_ID);
-
-    public static final Supplier<BlockEntityType<CraftingBlockEntity>> ADV_CRAFTING_UNIT = create(
-            "adv_crafting_unit",
-            CraftingBlockEntity.class,
-            CraftingBlockEntity::new,
-            AAEBlocks.ADV_CRAFTING_UNIT,
-            AAEBlocks.ADV_CRAFTING_ACCELERATOR);
 
     public static final Supplier<BlockEntityType<AdvCraftingBlockEntity>> QUANTUM_COMPUTER_CORE = create(
             "quantum_core",

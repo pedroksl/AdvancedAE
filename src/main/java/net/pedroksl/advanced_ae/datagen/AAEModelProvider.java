@@ -4,18 +4,17 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.blocks.AAEAbstractCraftingUnitBlock;
-import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitBlock;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 
 import appeng.api.orientation.BlockOrientation;
-import appeng.block.crafting.AbstractCraftingUnitBlock;
 import appeng.block.crafting.PatternProviderBlock;
 import appeng.core.AppEng;
 import appeng.core.definitions.BlockDefinition;
@@ -36,25 +35,24 @@ public class AAEModelProvider extends AE2BlockStateProvider {
 
         // CRAFTING UNITS
         for (var type : AAECraftingUnitType.values()) {
-            if (type == AAECraftingUnitType.QUANTUM_CORE) {
+            if (type == AAECraftingUnitType.QUANTUM_CORE || type == AAECraftingUnitType.STRUCTURE) {
                 continue;
             }
-            var craftingBlock = type.getDefinition().block();
-            var name = type.getAffix();
-            var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" + name));
-
-            var formedState = craftingBlock instanceof AAECraftingUnitBlock
-                    ? AAEAbstractCraftingUnitBlock.FORMED
-                    : AbstractCraftingUnitBlock.FORMED;
-            getVariantBuilder(craftingBlock)
-                    .partialState()
-                    .with(formedState, false)
-                    .setModels(new ConfiguredModel(blockModel))
-                    .partialState()
-                    .with(formedState, true)
-                    .setModels(new ConfiguredModel(models().getBuilder("block/crafting/" + name + "_formed")));
-            simpleBlockItem(craftingBlock, blockModel);
+            basicCraftingBlockModel(type);
         }
+
+        var type = AAECraftingUnitType.STRUCTURE;
+        var craftingBlock = type.getDefinition().block();
+        var name = type.getAffix();
+        var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" + name));
+        getVariantBuilder(craftingBlock)
+                .partialState()
+                .with(AAEAbstractCraftingUnitBlock.FORMED, false)
+                .setModels(new ConfiguredModel(blockModel))
+                .partialState()
+                .with(AAEAbstractCraftingUnitBlock.FORMED, true)
+                .setModels(new ConfiguredModel(models().getBuilder("block/crafting/" + name + "_formed")));
+        simpleBlockItem(craftingBlock, blockModel);
 
         interfaceOrProviderPart(AAEItems.ADV_PATTERN_PROVIDER);
         interfaceOrProviderPart(AAEItems.SMALL_ADV_PATTERN_PROVIDER);
@@ -66,6 +64,32 @@ public class AAEModelProvider extends AE2BlockStateProvider {
 
     private void basicItem(ItemDefinition<?> item) {
         itemModels().basicItem(item.asItem());
+    }
+
+    private void basicCraftingBlockModel(AAECraftingUnitType type) {
+        var craftingBlock = type.getDefinition().block();
+        var blockModel = models().cubeAll(
+                        "block/crafting/" + type.getAffix(), AdvancedAE.makeId("block/crafting/" + type.getAffix()));
+        simpleBlockItem(craftingBlock, blockModel);
+        simpleBlock(craftingBlock, blockModel);
+    }
+
+    private void builtInModel(BlockDefinition<?> block) {
+        builtInModel(block, false);
+    }
+
+    private void builtInModel(BlockDefinition<?> block, boolean skipItem) {
+        var model = builtInBlockModel(block.id().getPath());
+        getVariantBuilder(block.block()).partialState().setModels(new ConfiguredModel(model));
+
+        if (!skipItem) {
+            // The item model should not reference the block model since that will be replaced in-code
+            itemModels().getBuilder(block.id().getPath());
+        }
+    }
+
+    private BlockModelBuilder builtInBlockModel(String name) {
+        return models().getBuilder("block/" + name);
     }
 
     private void interfaceOrProviderPart(ItemDefinition<?> part) {

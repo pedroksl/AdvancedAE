@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
@@ -19,9 +18,6 @@ import net.pedroksl.advanced_ae.common.blocks.SmallAdvPatternProviderBlock;
 import net.pedroksl.advanced_ae.common.items.AAECraftingBlockItem;
 
 import appeng.block.AEBaseBlockItem;
-import appeng.block.crafting.CraftingBlockItem;
-import appeng.block.crafting.CraftingUnitBlock;
-import appeng.core.definitions.AEItems;
 import appeng.core.definitions.BlockDefinition;
 import appeng.core.definitions.ItemDefinition;
 
@@ -33,17 +29,6 @@ public final class AAEBlocks {
     public static List<BlockDefinition<?>> getBlocks() {
         return Collections.unmodifiableList(BLOCKS);
     }
-
-    public static final BlockDefinition<CraftingUnitBlock> ADV_CRAFTING_UNIT = block(
-            "Advanced Crafting Unit",
-            "adv_crafting_unit",
-            () -> new CraftingUnitBlock(AAECraftingUnitType.UNIT),
-            AEBaseBlockItem::new);
-    public static final BlockDefinition<CraftingUnitBlock> ADV_CRAFTING_ACCELERATOR = craftingBlock(
-            "Advanced Crafting Co-Processing Unit",
-            "adv_crafting_accelerator",
-            () -> new CraftingUnitBlock(AAECraftingUnitType.ACCELERATOR),
-            () -> AEItems.ENGINEERING_PROCESSOR);
 
     public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_UNIT = block(
             "Quantum Crafting Unit",
@@ -73,7 +58,7 @@ public final class AAEBlocks {
     public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_ACCELERATOR = block(
             "Quantum Computer Accelerator",
             "quantum_accelerator",
-            () -> new AAECraftingUnitBlock(AAECraftingUnitType.ACCELERATOR),
+            () -> new AAECraftingUnitBlock(AAECraftingUnitType.QUANTUM_ACCELERATOR),
             AAECraftingBlockItem::new);
     public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_MULTI_THREADER = block(
             "Quantum Computer Multi-Threader",
@@ -96,15 +81,6 @@ public final class AAEBlocks {
 
     //	public static final BlockDefinition<ReactionChamberBlock> REACTION_CHAMBER =
     //			block("Reaction Chamber", "reaction_chamber", ReactionChamberBlock::new, AEBaseBlockItem::new);
-
-    private static <T extends Block> BlockDefinition<T> craftingBlock(
-            String englishName, String id, Supplier<T> blockSupplier, Supplier<ItemLike> disassemblyExtra) {
-        return block(
-                englishName,
-                id,
-                blockSupplier,
-                (block, props) -> new CraftingBlockItem(block, props, disassemblyExtra));
-    }
 
     private static <T extends Block> BlockDefinition<T> block(
             String englishName,

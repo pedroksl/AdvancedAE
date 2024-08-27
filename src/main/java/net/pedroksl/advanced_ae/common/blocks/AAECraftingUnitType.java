@@ -7,13 +7,11 @@ import appeng.block.crafting.ICraftingUnitType;
 import appeng.core.definitions.BlockDefinition;
 
 public enum AAECraftingUnitType implements ICraftingUnitType {
-    UNIT(0, "unit"),
     QUANTUM_UNIT(0, "quantum_unit"),
     QUANTUM_CORE(256, "quantum_core"),
     STORAGE_128M(128, "quantum_storage_128"),
     STORAGE_256M(256, "quantum_storage_256"),
     STORAGE_MULTIPLIER(0, "data_entangler"),
-    ACCELERATOR(0, "accelerator"),
     QUANTUM_ACCELERATOR(0, "quantum_accelerator"),
     MULTI_THREADER(0, "quantum_multi_threader"),
     STRUCTURE(0, "quantum_structure");
@@ -38,7 +36,6 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
     @Override
     public int getAcceleratorThreads() {
         return switch (this) {
-            case ACCELERATOR -> 4;
             case QUANTUM_ACCELERATOR, QUANTUM_CORE -> 8;
             default -> 0;
         };
@@ -54,13 +51,11 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
 
     public BlockDefinition<?> getDefinition() {
         return switch (this) {
-            case UNIT -> AAEBlocks.ADV_CRAFTING_UNIT;
             case QUANTUM_UNIT -> AAEBlocks.QUANTUM_UNIT;
             case QUANTUM_CORE -> AAEBlocks.QUANTUM_CORE;
             case STORAGE_128M -> AAEBlocks.QUANTUM_STORAGE_128M;
             case STORAGE_256M -> AAEBlocks.QUANTUM_STORAGE_256M;
             case STORAGE_MULTIPLIER -> AAEBlocks.DATA_ENTANGLER;
-            case ACCELERATOR -> AAEBlocks.ADV_CRAFTING_ACCELERATOR;
             case QUANTUM_ACCELERATOR -> AAEBlocks.QUANTUM_ACCELERATOR;
             case MULTI_THREADER -> AAEBlocks.QUANTUM_MULTI_THREADER;
             case STRUCTURE -> AAEBlocks.QUANTUM_STRUCTURE;

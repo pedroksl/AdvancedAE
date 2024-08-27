@@ -116,7 +116,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .pattern("CUC")
                 .pattern("ECE")
                 .define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
-                .define('C', AEItems.ITEM_CELL_256K)
+                .define('C', AEItems.CELL_COMPONENT_256K)
                 .define('U', AAEBlocks.QUANTUM_UNIT)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
                 .save(c, "quantumstorage128");

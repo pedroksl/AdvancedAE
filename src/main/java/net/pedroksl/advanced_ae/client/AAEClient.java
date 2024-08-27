@@ -1,5 +1,7 @@
 package net.pedroksl.advanced_ae.client;
 
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -7,11 +9,15 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
+import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderGui;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderGui;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderGui;
 
+import appeng.client.render.crafting.CraftingCubeModel;
+import appeng.hooks.BuiltInModelHooks;
 import appeng.init.client.InitScreens;
 
 @SuppressWarnings("unused")
@@ -37,15 +43,14 @@ public class AAEClient {
 
     @SuppressWarnings("deprecation")
     private static void initCraftingUnitModels(FMLClientSetupEvent event) {
-        //		event.enqueueWork(() -> {
-        //			for (var type : AAECraftingUnitType.values()) {
-        //				BuiltInModelHooks.addBuiltInModel(
-        //						AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
-        //						new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
-        //
-        //				ItemBlockRenderTypes.setRenderLayer(type.getDefinition().block(), RenderType.cutout());
-        //			}
-        //		});
+        event.enqueueWork(() -> {
+            var type = AAECraftingUnitType.STRUCTURE;
+            BuiltInModelHooks.addBuiltInModel(
+                    AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
+                    new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
+
+            ItemBlockRenderTypes.setRenderLayer(type.getDefinition().block(), RenderType.cutout());
+        });
     }
 
     private static void initItemColours(RegisterColorHandlersEvent.Item event) {}
