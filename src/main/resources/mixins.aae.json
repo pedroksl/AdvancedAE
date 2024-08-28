@@ -14,7 +14,6 @@
     "appflux.MixinAdvPatternProviderLogic",
     "appflux.MixinAdvPatternProviderLogicHost",
     "appflux.MixinAdvPatternProviderMenu",
-    "cpu.MixinCpuSelectionList",
     "cpu.MixinCraftingCPUMenu",
     "cpu.MixinCraftingService",
     "cpu.MixinCraftingStatusMenu"
