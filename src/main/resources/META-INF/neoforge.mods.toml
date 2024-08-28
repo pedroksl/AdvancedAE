@@ -30,7 +30,7 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="ae2"
 type="required"
-versionRange="[19.0.20-beta,)"
+versionRange="[19.0.22-beta,)"
 ordering="AFTER"
 side="BOTH"
 [[dependencies.${mod_id}]]
@@ -42,6 +42,6 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="extendedae"
 type="required"
-versionRange="[1.21-2.0.1-neoforge,)"
+versionRange="[1.21-2.0.2-neoforge,)"
 ordering="AFTER"
 side="BOTH"
