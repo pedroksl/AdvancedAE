@@ -3,9 +3,9 @@
 	"parent": "block/block",
 	"ambientocclusion": false,
 	"textures": {
-		"0": "advanced_ae:block/quantum_core",
-		"3": "advanced_ae:block/quantum_core_out",
-		"particle": "advanced_ae:block/quantum_core_out"
+		"0": "advanced_ae:block/crafting/quantum_core",
+		"3": "advanced_ae:block/crafting/quantum_core_out",
+		"particle": "advanced_ae:block/crafting/quantum_core_out"
 	},
 	"elements": [
 		{
