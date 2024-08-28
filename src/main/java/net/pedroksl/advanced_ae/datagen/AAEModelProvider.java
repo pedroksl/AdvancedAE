@@ -4,7 +4,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
@@ -72,24 +71,6 @@ public class AAEModelProvider extends AE2BlockStateProvider {
                         "block/crafting/" + type.getAffix(), AdvancedAE.makeId("block/crafting/" + type.getAffix()));
         simpleBlockItem(craftingBlock, blockModel);
         simpleBlock(craftingBlock, blockModel);
-    }
-
-    private void builtInModel(BlockDefinition<?> block) {
-        builtInModel(block, false);
-    }
-
-    private void builtInModel(BlockDefinition<?> block, boolean skipItem) {
-        var model = builtInBlockModel(block.id().getPath());
-        getVariantBuilder(block.block()).partialState().setModels(new ConfiguredModel(model));
-
-        if (!skipItem) {
-            // The item model should not reference the block model since that will be replaced in-code
-            itemModels().getBuilder(block.id().getPath());
-        }
-    }
-
-    private BlockModelBuilder builtInBlockModel(String name) {
-        return models().getBuilder("block/" + name);
     }
 
     private void interfaceOrProviderPart(ItemDefinition<?> part) {

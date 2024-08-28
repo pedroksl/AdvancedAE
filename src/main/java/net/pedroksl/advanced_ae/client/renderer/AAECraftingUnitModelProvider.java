@@ -24,7 +24,7 @@ public class AAECraftingUnitModelProvider extends AbstractCraftingUnitModelProvi
     protected static final Material RING_CORNER = texture("ring_corner");
     protected static final Material RING_SIDE_HOR = texture("ring_side_hor");
     protected static final Material RING_SIDE_VER = texture("ring_side_ver");
-    protected static final Material STRUCTURE_BASE = texture("structure");
+    protected static final Material STRUCTURE_BASE = texture("quantum_structure_formed");
 
     public AAECraftingUnitModelProvider(AAECraftingUnitType type) {
         super(type);
