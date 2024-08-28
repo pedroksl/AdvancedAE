@@ -30,7 +30,7 @@ public class AAECraftingUnitBlock extends AAEAbstractCraftingUnitBlock<AdvCrafti
 
     private static Properties getProps(ICraftingUnitType type) {
         var props = metalProps();
-        if (type == AAECraftingUnitType.QUANTUM_CORE) {
+        if (type == AAECraftingUnitType.QUANTUM_CORE || type == AAECraftingUnitType.STRUCTURE) {
             props.noOcclusion().lightLevel(state -> state.getValue(AAEAbstractCraftingUnitBlock.LIGHT_LEVEL));
         }
         return props;

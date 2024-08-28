@@ -129,12 +129,15 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
 
         final boolean formed = this.isFormed();
         boolean power = this.getMainNode().isOnline();
-        int lightLevel = formed && power && this.getUnitBlock().type == AAECraftingUnitType.QUANTUM_CORE ? 10 : 0;
 
         final BlockState current = this.level.getBlockState(this.worldPosition);
 
         // The block entity might try to update while being destroyed
         if (current.getBlock() instanceof AAEAbstractCraftingUnitBlock) {
+            int lightLevel = formed && power && this.getUnitBlock().type == AAECraftingUnitType.QUANTUM_CORE
+                    ? 10
+                    : this.getUnitBlock().type == AAECraftingUnitType.STRUCTURE ? 5 : 0;
+
             final BlockState newState = current.setValue(AAEAbstractCraftingUnitBlock.POWERED, power)
                     .setValue(AAEAbstractCraftingUnitBlock.FORMED, formed)
                     .setValue(AAECraftingUnitBlock.LIGHT_LEVEL, lightLevel);

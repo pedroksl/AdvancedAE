@@ -108,8 +108,8 @@ repositories {
 
 dependencies {
     implementation "curse.maven:glodium-957920:5614731"
-    implementation "curse.maven:applied-energistics-2-223794:5610903"
-    implementation "curse.maven:ex-pattern-provider-892005:5617630"
+    implementation "curse.maven:applied-energistics-2-223794:5662490"
+    implementation "curse.maven:ex-pattern-provider-892005:5637364"
     jarJar(implementation "de.mari_023:ae2wtlib_api:19.1.0-alpha.1")
     compileOnly "curse.maven:emi-580555:5619579"
     compileOnly "curse.maven:applied-flux-965012:5614830"
