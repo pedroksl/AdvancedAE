@@ -72,6 +72,7 @@ multiplying their co-processing power by 4. Only one of these can be placed in e
 <Row gap="20">
 <BlockImage id="advanced_ae:quantum_structure" scale="4"></BlockImage>
 <BlockImage id="advanced_ae:quantum_structure" p:formed="true" scale="4"></BlockImage>
+<BlockImage id="advanced_ae:quantum_structure" p:formed="true" p:powered="true" scale="4"></BlockImage>
 </Row>
 
 These block provide the framing of the quantum computer. They are used as a building block for the quantum computer and
