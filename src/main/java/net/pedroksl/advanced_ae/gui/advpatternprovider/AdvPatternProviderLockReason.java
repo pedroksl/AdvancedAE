@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
+import net.pedroksl.advanced_ae.client.gui.AdvPatternProviderScreen;
 
 import appeng.api.client.AEKeyRendering;
 import appeng.api.config.LockCraftingMode;
@@ -23,9 +24,9 @@ public class AdvPatternProviderLockReason implements ICompositeWidget {
     protected int x;
     protected int y;
 
-    private final AdvPatternProviderGui gui;
+    private final AdvPatternProviderScreen gui;
 
-    public AdvPatternProviderLockReason(AdvPatternProviderGui gui) {
+    public AdvPatternProviderLockReason(AdvPatternProviderScreen gui) {
         this.gui = gui;
     }
 

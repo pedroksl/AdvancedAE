@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -8,10 +9,13 @@ import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
+import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
+import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
 import net.pedroksl.advanced_ae.xmod.appflux.AFCommonLoad;
 
 import appeng.api.AECapabilities;
@@ -24,7 +28,14 @@ import appeng.core.definitions.AEBlockEntities;
 public class AdvancedAE {
     public static final String MOD_ID = "advanced_ae";
 
+    static AdvancedAE INSTANCE;
+
     public AdvancedAE(IEventBus eventBus, ModContainer container) {
+        if (INSTANCE != null) {
+            throw new IllegalStateException();
+        }
+        INSTANCE = this;
+
         AAEBlocks.DR.register(eventBus);
         AAEItems.DR.register(eventBus);
         AAEBlockEntities.DR.register(eventBus);
@@ -38,7 +49,13 @@ public class AdvancedAE {
         container.registerConfig(ModConfig.Type.COMMON, AAEConfig.SPEC);
 
         eventBus.addListener(AAENetworkHandler.INSTANCE::onRegister);
-        // eventBus.register(AAERegistryHandler.INSTANCE);
+        eventBus.addListener((RegisterEvent event) -> {
+            if (event.getRegistryKey() == Registries.RECIPE_TYPE) {
+                InitRecipeTypes.init(event.getRegistry(Registries.RECIPE_TYPE));
+            } else if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER) {
+                InitRecipeSerializers.init(event.getRegistry(Registries.RECIPE_SERIALIZER));
+            }
+        });
     }
 
     private static void initUpgrades(RegisterCapabilitiesEvent event) {

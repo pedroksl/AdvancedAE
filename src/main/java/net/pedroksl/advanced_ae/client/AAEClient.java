@@ -9,12 +9,12 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.client.gui.AdvPatternEncoderScreen;
+import net.pedroksl.advanced_ae.client.gui.AdvPatternProviderScreen;
+import net.pedroksl.advanced_ae.client.gui.SmallAdvPatternProviderScreen;
 import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderGui;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderGui;
-import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderGui;
 
 import appeng.client.render.crafting.CraftingCubeModel;
 import appeng.hooks.BuiltInModelHooks;
@@ -31,14 +31,17 @@ public class AAEClient {
 
     private static void initScreens(RegisterMenuScreensEvent event) {
         InitScreens.register(
-                event, AAEMenus.ADV_PATTERN_PROVIDER, AdvPatternProviderGui::new, "/screens/adv_pattern_provider.json");
+                event,
+                AAEMenus.ADV_PATTERN_PROVIDER,
+                AdvPatternProviderScreen::new,
+                "/screens/adv_pattern_provider.json");
         InitScreens.register(
                 event,
                 AAEMenus.SMALL_ADV_PATTERN_PROVIDER,
-                SmallAdvPatternProviderGui::new,
+                SmallAdvPatternProviderScreen::new,
                 "/screens/small_adv_pattern_provider.json");
         InitScreens.register(
-                event, AAEMenus.ADV_PATTERN_ENCODER, AdvPatternEncoderGui::new, "/screens/adv_pattern_encoder.json");
+                event, AAEMenus.ADV_PATTERN_ENCODER, AdvPatternEncoderScreen::new, "/screens/adv_pattern_encoder.json");
     }
 
     @SuppressWarnings("deprecation")

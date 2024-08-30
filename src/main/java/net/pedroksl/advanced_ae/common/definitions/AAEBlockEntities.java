@@ -12,6 +12,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
+import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 
 import appeng.block.AEBaseEntityBlock;
@@ -47,9 +48,8 @@ public final class AAEBlockEntities {
             SmallAdvPatternProviderEntity::new,
             AAEBlocks.SMALL_ADV_PATTERN_PROVIDER);
 
-    //    public static final Supplier<BlockEntityType<ReactionChamberEntity>> REACTION_CHAMBER = create(
-    //            "reaction_chamber", ReactionChamberEntity.class, ReactionChamberEntity::new,
-    // AAEBlocks.REACTION_CHAMBER);
+    public static final Supplier<BlockEntityType<ReactionChamberEntity>> REACTION_CHAMBER = create(
+            "reaction_chamber", ReactionChamberEntity.class, ReactionChamberEntity::new, AAEBlocks.REACTION_CHAMBER);
 
     @SuppressWarnings({"DataFlowIssue", "unchecked"})
     @SafeVarargs

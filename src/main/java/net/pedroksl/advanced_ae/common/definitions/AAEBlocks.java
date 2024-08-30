@@ -11,10 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitBlock;
-import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
-import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
-import net.pedroksl.advanced_ae.common.blocks.SmallAdvPatternProviderBlock;
+import net.pedroksl.advanced_ae.common.blocks.*;
 import net.pedroksl.advanced_ae.common.items.AAECraftingBlockItem;
 
 import appeng.block.AEBaseBlockItem;
@@ -79,8 +76,8 @@ public final class AAEBlocks {
             SmallAdvPatternProviderBlock::new,
             AEBaseBlockItem::new);
 
-    //	public static final BlockDefinition<ReactionChamberBlock> REACTION_CHAMBER =
-    //			block("Reaction Chamber", "reaction_chamber", ReactionChamberBlock::new, AEBaseBlockItem::new);
+    public static final BlockDefinition<ReactionChamberBlock> REACTION_CHAMBER =
+            block("Reaction Chamber", "reaction_chamber", ReactionChamberBlock::new, AEBaseBlockItem::new);
 
     private static <T extends Block> BlockDefinition<T> block(
             String englishName,

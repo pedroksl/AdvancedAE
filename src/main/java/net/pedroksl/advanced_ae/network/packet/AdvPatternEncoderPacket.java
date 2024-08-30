@@ -12,7 +12,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderGui;
+import net.pedroksl.advanced_ae.client.gui.AdvPatternEncoderScreen;
 
 import appeng.api.stacks.AEKey;
 
@@ -57,7 +57,7 @@ public class AdvPatternEncoderPacket implements IMessage {
 
     @Override
     public void onMessage(Player player) {
-        if (Minecraft.getInstance().screen instanceof AdvPatternEncoderGui encoderGui) {
+        if (Minecraft.getInstance().screen instanceof AdvPatternEncoderScreen encoderGui) {
             encoderGui.update(this.dirMap);
         }
     }

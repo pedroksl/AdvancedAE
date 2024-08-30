@@ -1,8 +1,10 @@
-package net.pedroksl.advanced_ae.gui.advpatternprovider;
+package net.pedroksl.advanced_ae.client.gui;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderLockReason;
+import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
 
 import appeng.api.config.LockCraftingMode;
 import appeng.api.config.Settings;
@@ -17,14 +19,14 @@ import appeng.core.localization.GuiText;
 import appeng.core.network.ServerboundPacket;
 import appeng.core.network.serverbound.ConfigButtonPacket;
 
-public class SmallAdvPatternProviderGui extends AEBaseScreen<SmallAdvPatternProviderMenu> {
+public class SmallAdvPatternProviderScreen extends AEBaseScreen<SmallAdvPatternProviderMenu> {
 
     private final SettingToggleButton<YesNo> blockingModeButton;
     private final SettingToggleButton<LockCraftingMode> lockCraftingModeButton;
     private final ToggleButton showInPatternAccessTerminalButton;
     private final SmallAdvPatternProviderLockReason lockReason;
 
-    public SmallAdvPatternProviderGui(
+    public SmallAdvPatternProviderScreen(
             SmallAdvPatternProviderMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
 
