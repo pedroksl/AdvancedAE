@@ -11,6 +11,8 @@ end-game systems. This mod allows you to upgrade pattern providers with the capa
 of the target machines and create multiblock computers that can run an unlimited amount of crafts, sharing
 co-processors, while it has crafting storage left.
 
+![PEGui1](../pic/aae_intro.png)
+
 For a full list of the blocks and items provided, check these guide pages:
 
 ## Advanced Devices
