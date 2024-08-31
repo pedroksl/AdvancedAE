@@ -10,11 +10,8 @@ import appeng.api.stacks.AEKey;
 import appeng.crafting.CraftingLink;
 import appeng.crafting.execution.CraftingSubmitResult;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
-import appeng.me.helpers.InterestManager;
-import appeng.me.helpers.StackWatcher;
 import appeng.me.service.CraftingService;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import net.minecraft.nbt.CompoundTag;
 import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
 import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCluster;
@@ -22,7 +19,9 @@ import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
@@ -44,6 +43,12 @@ public class MixinCraftingService {
     @Unique
     private final Set<AdvCraftingCPUCluster> advancedAE$advCraftingCPUClusters = new HashSet<>();
 
+    @Unique
+    private long advancedAE$latestChange;
+
+    @Shadow
+    private long lastProcessedCraftingLogicChangeTick;
+
     @Final
     @Shadow
     private Set<CraftingCPUCluster> craftingCPUClusters;
@@ -54,15 +59,7 @@ public class MixinCraftingService {
 
     @Final
     @Shadow
-    private InterestManager<StackWatcher<ICraftingWatcherNode>> interestManager;
-
-    @Final
-    @Shadow
     private IEnergyService energyGrid;
-
-    @Final
-    @Shadow
-    private Set<AEKey> currentlyCrafting;
 
     @Shadow
     private boolean updateList;
@@ -70,26 +67,32 @@ public class MixinCraftingService {
     @Shadow
     public void addLink(CraftingLink link) {}
 
-    @Inject(method = "onServerEndTick", at = @At("TAIL"))
+    @Shadow
+    private void updateCPUClusters() {}
+
+    @ModifyConstant(
+            method = "onServerEndTick",
+            constant = @Constant(longValue = 0, ordinal = 0)
+    )
+    private long injectLatestChanged(long value) {
+        return advancedAE$latestChange;
+    }
+
+    @Inject(method = "onServerEndTick", at = @At("HEAD"))
     private void tickAdvClusters(CallbackInfo ci) {
-        var previouslyCrafting = this.currentlyCrafting;
+        if (this.updateList) {
+            this.updateList = false;
+            this.updateCPUClusters();
+            lastProcessedCraftingLogicChangeTick = -1; // Ensure caches below are also updated
+        }
+
+        advancedAE$latestChange = 0;
         for (var cluster : this.advancedAE$advCraftingCPUClusters) {
             for (var cpu : cluster.getActiveCPUs()) {
                 cpu.craftingLogic.tickCraftingLogic(energyGrid, (CraftingService) (Object) this);
-                cpu.craftingLogic.getAllWaitingFor(this.currentlyCrafting);
-            }
-        }
-
-        // Notify watchers about items no longer being crafted
-        var changed = new HashSet<AEKey>();
-        changed.addAll(Sets.difference(previouslyCrafting, currentlyCrafting));
-        changed.addAll(Sets.difference(currentlyCrafting, previouslyCrafting));
-        for (var what : changed) {
-            for (var watcher : interestManager.get(what)) {
-                watcher.getHost().onRequestChange(what);
-            }
-            for (var watcher : interestManager.getAllStacksWatchers()) {
-                watcher.getHost().onRequestChange(what);
+                advancedAE$latestChange = Math.max(
+                        advancedAE$latestChange,
+                        cpu.craftingLogic.getLastModifiedOnTick());
             }
         }
     }
