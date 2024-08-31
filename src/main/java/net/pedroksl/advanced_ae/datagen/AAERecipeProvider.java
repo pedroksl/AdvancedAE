@@ -67,11 +67,12 @@ public class AAERecipeProvider extends RecipeProvider {
 				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
 				.save(consumer, "quantumunit");
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_ACCELERATOR)
-				.pattern("ENE")
-				.pattern("NUN")
+				.pattern("ESE")
+				.pattern("SUS")
 				.pattern("ENE")
 				.define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
 				.define('U', AAEItemAndBlock.QUANTUM_UNIT)
+				.define('S', AEItems.SINGULARITY)
 				.define('N', Items.NETHER_STAR)
 				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
 				.save(consumer, "quantumaccel");
