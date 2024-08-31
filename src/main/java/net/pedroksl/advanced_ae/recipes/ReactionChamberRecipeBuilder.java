@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.recipes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.glodblock.github.glodium.recipe.stack.IngredientStack;
@@ -14,9 +15,10 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
+import net.pedroksl.advanced_ae.AdvancedAE;
 
 public class ReactionChamberRecipeBuilder {
-    private List<IngredientStack.Item> inputs;
+    private final List<IngredientStack.Item> inputs = new ArrayList<>();
     private IngredientStack.Fluid fluid = null;
     private final ItemStack output;
 
@@ -79,5 +81,9 @@ public class ReactionChamberRecipeBuilder {
     public void save(RecipeOutput consumer, ResourceLocation id) {
         var recipe = new ReactionChamberRecipe(this.output, this.inputs, this.fluid);
         consumer.accept(id, recipe, null);
+    }
+
+    public void save(RecipeOutput consumer, String id) {
+        this.save(consumer, AdvancedAE.makeId(id));
     }
 }

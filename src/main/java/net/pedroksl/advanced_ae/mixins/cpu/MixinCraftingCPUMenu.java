@@ -38,7 +38,7 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
     private IncrementalUpdateHelper incrementalUpdateHelper;
 
     @Unique
-    private AdvCraftingCPU advCpu = null;
+    private AdvCraftingCPU advancedAE$advCpu = null;
 
     @Final
     @Shadow
@@ -71,47 +71,47 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
 
     @Inject(method = "setCPU(Lappeng/api/networking/crafting/ICraftingCPU;)V", at = @At("HEAD"), cancellable = true)
     private void onSetCPU(ICraftingCPU c, CallbackInfo ci) {
-        if (c == this.advCpu) {
+        if (c == this.advancedAE$advCpu) {
             ci.cancel();
         }
 
-        if (this.advCpu != null) {
-            this.advCpu.craftingLogic.removeListener(cpuChangeListener);
+        if (this.advancedAE$advCpu != null) {
+            this.advancedAE$advCpu.craftingLogic.removeListener(cpuChangeListener);
         }
 
         if (c instanceof AdvCraftingCPU advCPU) {
             incrementalUpdateHelper.reset();
 
-            this.advCpu = advCPU;
+            this.advancedAE$advCpu = advCPU;
 
             // Initially send all items as a full-update to the client when the CPU changes
             var allItems = new KeyCounter();
-            this.advCpu.craftingLogic.getAllItems(allItems);
+            this.advancedAE$advCpu.craftingLogic.getAllItems(allItems);
             for (var entry : allItems) {
                 incrementalUpdateHelper.addChange(entry.getKey());
             }
 
-            this.advCpu.craftingLogic.addListener(cpuChangeListener);
+            this.advancedAE$advCpu.craftingLogic.addListener(cpuChangeListener);
 
             ci.cancel();
         } else {
-            this.advCpu = null;
+            this.advancedAE$advCpu = null;
         }
     }
 
     @Inject(method = "cancelCrafting", at = @At("TAIL"))
     public void cancelCrafting(CallbackInfo ci) {
         if (!isClientSide()) {
-            if (this.advCpu != null) {
-                this.advCpu.cancelJob();
+            if (this.advancedAE$advCpu != null) {
+                this.advancedAE$advCpu.cancelJob();
             }
         }
     }
 
     @Inject(method = "removed", at = @At("TAIL"))
     public void removed(Player player, CallbackInfo ci) {
-        if (this.advCpu != null) {
-            this.advCpu.craftingLogic.removeListener(cpuChangeListener);
+        if (this.advancedAE$advCpu != null) {
+            this.advancedAE$advCpu.craftingLogic.removeListener(cpuChangeListener);
         }
     }
 
@@ -119,12 +119,12 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
             method = "broadcastChanges",
             at = @At(value = "INVOKE", target = "appeng/menu/AEBaseMenu.broadcastChanges ()V"))
     public void broadcastChanges(CallbackInfo ci) {
-        if (isServerSide() && this.advCpu != null) {
-            this.schedulingMode = this.advCpu.getSelectionMode();
-            this.cantStoreItems = this.advCpu.craftingLogic.isCantStoreItems();
+        if (isServerSide() && this.advancedAE$advCpu != null) {
+            this.schedulingMode = this.advancedAE$advCpu.getSelectionMode();
+            this.cantStoreItems = this.advancedAE$advCpu.craftingLogic.isCantStoreItems();
 
             if (this.incrementalUpdateHelper.hasChanges()) {
-                CraftingStatus status = create(this.incrementalUpdateHelper, this.advCpu.craftingLogic);
+                CraftingStatus status = advancedAE$create(this.incrementalUpdateHelper, this.advancedAE$advCpu.craftingLogic);
                 this.incrementalUpdateHelper.commitChanges();
 
                 sendPacketToClient(new CraftingStatusPacket(status));
@@ -133,7 +133,7 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
     }
 
     @Unique
-    private static CraftingStatus create(IncrementalUpdateHelper changes, AdvCraftingCPULogic logic) {
+    private static CraftingStatus advancedAE$create(IncrementalUpdateHelper changes, AdvCraftingCPULogic logic) {
         boolean full = changes.isFullUpdate();
 
         ImmutableList.Builder<CraftingStatusEntry> newEntries = ImmutableList.builder();

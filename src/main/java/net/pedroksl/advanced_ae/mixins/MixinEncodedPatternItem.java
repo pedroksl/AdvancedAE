@@ -34,6 +34,7 @@ public class MixinEncodedPatternItem<T extends IPatternDetails> {
 
     @Final
     @Nullable
+    @Shadow
     private InvalidPatternTooltipStrategy invalidPatternTooltip;
 
     @Shadow

@@ -15,6 +15,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
+import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipeBuilder;
 
 import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
@@ -35,7 +36,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('E', Items.ENDER_PEARL)
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
-                .save(c, "advpatpro");
+                .save(c, AdvancedAE.makeId("advpatpro"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
                 .pattern("PR")
                 .pattern("EL")
@@ -44,23 +45,23 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('E', Items.ENDER_PEARL)
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
-                .save(c, "smalladvpatpro");
+                .save(c, AdvancedAE.makeId("smalladvpatpro"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.ADV_PATTERN_PROVIDER)
                 .requires(AAEItems.ADV_PATTERN_PROVIDER)
                 .unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
-                .save(c, "advpatpro2");
+                .save(c, AdvancedAE.makeId("advpatpro2"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER)
                 .requires(AAEBlocks.ADV_PATTERN_PROVIDER)
                 .unlockedBy("hasItem", has(EAESingletons.EX_PATTERN_PROVIDER))
-                .save(c, "advpatpropart");
+                .save(c, AdvancedAE.makeId("advpatpropart"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
                 .requires(AAEItems.SMALL_ADV_PATTERN_PROVIDER)
                 .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
-                .save(c, "smalladvpatpro2");
+                .save(c, AdvancedAE.makeId("smalladvpatpro2"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.SMALL_ADV_PATTERN_PROVIDER)
                 .requires(AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
                 .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
-                .save(c, "smalladvpatpropart");
+                .save(c, AdvancedAE.makeId("smalladvpatpropart"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_ENCODER)
                 .pattern("QRQ")
                 .pattern("RER")
@@ -69,7 +70,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('R', Items.REDSTONE)
                 .define('E', AEItems.ENGINEERING_PROCESSOR)
                 .unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
-                .save(c, "advpartenc");
+                .save(c, AdvancedAE.makeId("advpartenc"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER_UPGRADE)
                 .pattern("IR")
                 .pattern("EL")
@@ -78,7 +79,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('E', Items.ENDER_PEARL)
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
-                .save(c, "smallappupgrade");
+                .save(c, AdvancedAE.makeId("smallappupgrade"));
         CrystalAssemblerRecipeBuilder.assemble(AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
                 .input(Tags.Items.INGOTS)
                 .input(AEItems.CAPACITY_CARD, 3)
@@ -95,13 +96,13 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('Q', AEBlocks.QUARTZ_GLASS)
                 .define('S', AEBlocks.SKY_STONE_BLOCK)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-                .save(c, "quantumstructure");
+                .save(c, AdvancedAE.makeId("quantumstructure"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_UNIT)
                 .requires(AEBlocks.CRAFTING_UNIT)
                 .requires(AEItems.SINGULARITY)
                 .requires(EAESingletons.CONCURRENT_PROCESSOR)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-                .save(c, "quantumunit");
+                .save(c, AdvancedAE.makeId("quantumunit"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_ACCELERATOR)
                 .pattern("ECE")
                 .pattern("CUC")
@@ -110,7 +111,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('C', EAESingletons.CONCURRENT_PROCESSOR)
                 .define('U', AAEBlocks.QUANTUM_UNIT)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-                .save(c, "quantumaccel");
+                .save(c, AdvancedAE.makeId("quantumaccel"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STORAGE_128M)
                 .pattern("ECE")
                 .pattern("CUC")
@@ -119,14 +120,14 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('C', AEItems.CELL_COMPONENT_256K)
                 .define('U', AAEBlocks.QUANTUM_UNIT)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-                .save(c, "quantumstorage128");
+                .save(c, AdvancedAE.makeId("quantumstorage128"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_STORAGE_256M)
                 .requires(AEItems.QUANTUM_ENTANGLED_SINGULARITY)
                 .requires(AAEBlocks.QUANTUM_STORAGE_128M)
                 .requires(AAEBlocks.QUANTUM_STORAGE_128M)
                 .requires(AAEBlocks.QUANTUM_UNIT)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-                .save(c, "quantumstorage256");
+                .save(c, AdvancedAE.makeId("quantumstorage256"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_CORE)
                 .pattern("SES")
                 .pattern("AUT")
@@ -137,7 +138,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', AAEBlocks.QUANTUM_ACCELERATOR)
                 .define('T', AAEBlocks.QUANTUM_STORAGE_256M)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-                .save(c, "quantumcore");
+                .save(c, AdvancedAE.makeId("quantumcore"));
         CrystalAssemblerRecipeBuilder.assemble(AAEBlocks.DATA_ENTANGLER)
                 .input(AAEBlocks.QUANTUM_UNIT)
                 .input(AAEBlocks.QUANTUM_CORE)
@@ -151,5 +152,15 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(AAEBlocks.QUANTUM_ACCELERATOR, 4)
                 .input(EAESingletons.CONCURRENT_PROCESSOR, 8)
                 .save(c, AdvancedAE.makeId("quantummultithreader"));
+
+        // Reaction Chamber
+        ReactionChamberRecipeBuilder.react(AEItems.SINGULARITY)
+                .input(AEItems.MATTER_BALL, 64)
+                .save(c, "singularity");
+        ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 64)
+                .input(Items.REDSTONE, 64)
+                .input(Items.NETHER_QUARTZ_ORE, 64)
+                .save(c, "fluixcrystals");
     }
 }
