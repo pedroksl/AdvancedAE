@@ -124,7 +124,8 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
             this.cantStoreItems = this.advancedAE$advCpu.craftingLogic.isCantStoreItems();
 
             if (this.incrementalUpdateHelper.hasChanges()) {
-                CraftingStatus status = advancedAE$create(this.incrementalUpdateHelper, this.advancedAE$advCpu.craftingLogic);
+                CraftingStatus status =
+                        advancedAE$create(this.incrementalUpdateHelper, this.advancedAE$advCpu.craftingLogic);
                 this.incrementalUpdateHelper.commitChanges();
 
                 sendPacketToClient(new CraftingStatusPacket(status));
