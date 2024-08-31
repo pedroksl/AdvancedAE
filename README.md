@@ -24,8 +24,8 @@ This enables insane setups like this:
 ### Quantum Computer
 
 Quantum Computer is a special type of Crafting Unit. It is capable of running an unlimited amount of crafting tasks, as long as it has enough crafting storage.
-Furthermore, all of these concurrent tasks are able to share all co-processor present in the Quantum Computer Multiblock!
-The Quantum Core can be used as a standalone crafting unit with 256M and 8 co-processors. Byu creating a multiblock with one of them, you can extend those capabilities by a large amount.
+Furthermore, all of these concurrent tasks are able to share all co-processors present in the Quantum Computer Multiblock!
+The Quantum Core can be used as a standalone crafting unit with 256M storage and 8 co-processors. By creating a multiblock with one of them, you can extend those capabilities by a large amount.
 Specially when using two special block types: The Quantum Data Entangler and the Quantum Multi-Threader, which multiply storage and co-processors present in the multiblock by 4, respectively.
 The multiblock can be scaled up to a 5x5x5, and consumes a single channel for all of this computing power!
 
