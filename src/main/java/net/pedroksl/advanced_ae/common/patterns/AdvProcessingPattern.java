@@ -24,7 +24,7 @@ import appeng.api.stacks.GenericStack;
 import appeng.api.stacks.KeyCounter;
 import appeng.crafting.pattern.AEProcessingPattern;
 
-public class AdvProcessingPattern implements IPatternDetails, AdvPatternDetails {
+public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails {
 
     private final AEItemKey definition;
     private final List<GenericStack> sparseInputs, sparseOutputs;
@@ -187,7 +187,7 @@ public class AdvProcessingPattern implements IPatternDetails, AdvPatternDetails 
     }
 
     public static PatternDetailsTooltip getInvalidPatternTooltip(
-            ItemStack stack, Level level, @org.jetbrains.annotations.Nullable Exception cause, TooltipFlag flags) {
+            ItemStack stack, Level level, @Nullable Exception cause, TooltipFlag flags) {
         var tooltip = new PatternDetailsTooltip(PatternDetailsTooltip.OUTPUT_TEXT_PRODUCES);
 
         var encodedPattern = stack.get(AEComponents.ENCODED_PROCESSING_PATTERN);

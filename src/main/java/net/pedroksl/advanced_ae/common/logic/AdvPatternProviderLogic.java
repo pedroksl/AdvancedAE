@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetails;
+import net.pedroksl.advanced_ae.common.patterns.IAdvPatternDetails;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.LockCraftingMode;
@@ -316,7 +316,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
         var be = host.getBlockEntity();
         var level = be.getLevel();
-        var advPattern = patternDetails instanceof AdvPatternDetails;
+        var advPattern = patternDetails instanceof IAdvPatternDetails;
 
         if (getCraftingLockedReason() != LockCraftingMode.NONE) {
             return false;
@@ -363,8 +363,8 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
                 continue;
             }
 
-            if (advPattern && ((AdvPatternDetails) patternDetails).directionalInputsSet()) {
-                if (this.pushInputsDirectionally(direction, inputHolder, (AdvPatternDetails) patternDetails)) {
+            if (advPattern && ((IAdvPatternDetails) patternDetails).directionalInputsSet()) {
+                if (this.pushInputsDirectionally(direction, inputHolder, (IAdvPatternDetails) patternDetails)) {
                     return true;
                 }
             }
@@ -389,7 +389,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     }
 
     private boolean pushInputsDirectionally(
-            Direction direction, KeyCounter[] inputHolder, AdvPatternDetails patternDetails) {
+            Direction direction, KeyCounter[] inputHolder, IAdvPatternDetails patternDetails) {
         HashMap<AEKey, PatternProviderTarget> adapterMap = new HashMap<>();
         for (KeyCounter inputList : inputHolder) {
             Direction fromSide = patternDetails.getDirectionSideForInputKey(inputList.getFirstKey());

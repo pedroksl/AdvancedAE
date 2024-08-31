@@ -8,7 +8,7 @@ import appeng.api.crafting.IPatternDetails;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.KeyCounter;
 
-public interface AdvPatternDetails {
+public interface IAdvPatternDetails {
     boolean directionalInputsSet();
 
     HashMap<AEKey, Direction> getDirectionMap();

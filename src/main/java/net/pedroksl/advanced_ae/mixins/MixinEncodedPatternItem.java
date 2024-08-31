@@ -67,12 +67,7 @@ public class MixinEncodedPatternItem<T extends IPatternDetails> {
 
             tooltip = details.getTooltip(clientLevel, flags);
         } catch (Exception e) {
-            lines.add(GuiText.InvalidPattern.text().copy().withStyle(ChatFormatting.RED));
-            if (invalidPatternTooltip != null) {
-                tooltip = invalidPatternTooltip.getTooltip(stack, clientLevel, e, flags);
-            } else {
-                tooltip = null;
-            }
+            return;
         }
 
         if (tooltip != null) {
