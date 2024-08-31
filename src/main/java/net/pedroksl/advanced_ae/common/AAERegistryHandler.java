@@ -42,6 +42,11 @@ public class AAERegistryHandler extends RegistryHandler {
 	                                                BlockEntityType.BlockEntitySupplier<T> supplier) {
 		bindTileEntity(clazz, block, supplier);
 		block(name, block, b -> new AEBaseBlockItem(b, new Item.Properties()));
+		for (var pair : tiles) {
+			if (pair.getValue() == block.getBlockEntityType()) {
+				return;
+			}
+		}
 		tile(name, block.getBlockEntityType());
 	}
 

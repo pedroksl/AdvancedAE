@@ -1,10 +1,12 @@
 package net.pedroksl.advanced_ae.datagen;
 
+import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
 import com.glodblock.github.extendedae.common.EPPItemAndBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
+import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,5 +49,78 @@ public class AAERecipeProvider extends RecipeProvider {
 				.define('E', AEItems.ENGINEERING_PROCESSOR)
 				.unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
 				.save(consumer, "advpartenc");
+
+		// Quantum Computer
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_STRUCTURE)
+				.pattern("QSQ")
+				.pattern("S S")
+				.pattern("QSQ")
+				.define('Q', AEBlocks.QUARTZ_GLASS)
+				.define('S', AEBlocks.SKY_STONE_BLOCK)
+				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
+				.save(consumer, "quantumstructure");
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_UNIT)
+				.requires(AEBlocks.CRAFTING_UNIT)
+				.requires(AEItems.SINGULARITY)
+				.requires(Items.REDSTONE)
+				.requires(Items.GLOWSTONE)
+				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
+				.save(consumer, "quantumunit");
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_ACCELERATOR)
+				.pattern("ENE")
+				.pattern("NUN")
+				.pattern("ENE")
+				.define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+				.define('U', AAEItemAndBlock.QUANTUM_UNIT)
+				.define('N', Items.NETHER_STAR)
+				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
+				.save(consumer, "quantumaccel");
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_STORAGE_128M)
+				.pattern("ECE")
+				.pattern("CUC")
+				.pattern("ECE")
+				.define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+				.define('C', AEItems.CELL_COMPONENT_256K)
+				.define('U', AAEItemAndBlock.QUANTUM_UNIT)
+				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
+				.save(consumer, "quantumstorage128");
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_STORAGE_256M)
+				.requires(AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+				.requires(AAEItemAndBlock.QUANTUM_STORAGE_128M)
+				.requires(AAEItemAndBlock.QUANTUM_STORAGE_128M)
+				.requires(AAEItemAndBlock.QUANTUM_UNIT)
+				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
+				.save(consumer, "quantumstorage256");
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_CORE)
+				.pattern("SES")
+				.pattern("AUT")
+				.pattern("SES")
+				.define('S', AEItems.SINGULARITY)
+				.define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+				.define('U', AAEItemAndBlock.QUANTUM_UNIT)
+				.define('A', AAEItemAndBlock.QUANTUM_ACCELERATOR)
+				.define('T', AAEItemAndBlock.QUANTUM_STORAGE_256M)
+				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
+				.save(consumer, "quantumcore");
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItemAndBlock.DATA_ENTANGLER)
+				.pattern("SCS")
+				.pattern("QUQ")
+				.pattern("QSQ")
+				.define('U', AAEItemAndBlock.QUANTUM_UNIT)
+				.define('C', AAEItemAndBlock.QUANTUM_CORE)
+				.define('S', AEItems.SINGULARITY)
+				.define('Q', AAEItemAndBlock.QUANTUM_STORAGE_256M)
+				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
+				.save(consumer, AdvancedAE.id("quantumdataentangler"));
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_MULTI_THREADER)
+				.pattern("SCS")
+				.pattern("AUA")
+				.pattern("ASA")
+				.define('U', AAEItemAndBlock.QUANTUM_UNIT)
+				.define('C', AAEItemAndBlock.QUANTUM_CORE)
+				.define('S', AEItems.SINGULARITY)
+				.define('A', AAEItemAndBlock.QUANTUM_ACCELERATOR)
+				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
+				.save(consumer, AdvancedAE.id("quantummultithreader"));
 	}
 }

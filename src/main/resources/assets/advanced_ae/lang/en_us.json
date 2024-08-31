@@ -5,5 +5,13 @@
   "item.advanced_ae.adv_processing_pattern": "Advanced Processing Pattern",
   "item.advanced_ae.adv_pattern_encoder": "Advanced Pattern Encoder",
   "gui.advanced_ae.adv_pattern_provider": "ME Advanced Pattern Provider",
-  "gui.advanced_ae.adv_pattern_encoder": "Advanced Pattern Encoder"
+  "gui.advanced_ae.adv_pattern_encoder": "Advanced Pattern Encoder",
+  "block.advanced_ae.data_entangler": "Quantum Data Entangler",
+  "block.advanced_ae.quantum_accelerator": "Quantum Computer Accelerator",
+  "block.advanced_ae.quantum_core": "Quantum Computer Core",
+  "block.advanced_ae.quantum_multi_threader": "Quantum Computer Multi-Threader",
+  "block.advanced_ae.quantum_storage_128": "128M Quantum Computer Storage",
+  "block.advanced_ae.quantum_storage_256": "256M Quantum Computer Storage",
+  "block.advanced_ae.quantum_structure": "Quantum Computer Structure",
+  "block.advanced_ae.quantum_unit": "Quantum Crafting Unit"
 }

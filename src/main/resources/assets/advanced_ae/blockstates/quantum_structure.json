@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "advanced_ae:block/crafting/quantum_structure"
+    },
+    "formed=true": {
+      "model": "advanced_ae:block/crafting/quantum_structure_formed"
+    }
+  }
+}
