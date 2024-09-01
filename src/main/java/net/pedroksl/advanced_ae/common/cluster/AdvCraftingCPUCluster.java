@@ -203,7 +203,7 @@ public class AdvCraftingCPUCluster implements IAECluster {
 
     public void cancelJobs() {
         for (var plan : activeCpus.keySet()) {
-            killCpu(plan);
+            killCpu(plan, false);
         }
     }
 
@@ -232,11 +232,17 @@ public class AdvCraftingCPUCluster implements IAECluster {
         return submitResult;
     }
 
-    private void killCpu(ICraftingPlan plan) {
+    private void killCpu(ICraftingPlan plan, boolean updateGrid) {
         var cpu = this.activeCpus.remove(plan);
         cpu.craftingLogic.cancel();
         recalculateRemainingStorage();
-        updateGridForChangedCpu(this);
+        if (updateGrid) {
+            updateGridForChangedCpu(this);
+        }
+    }
+
+    private void killCpu(ICraftingPlan plan) {
+        killCpu(plan, true);
     }
 
     public List<AdvCraftingCPU> getActiveCPUs() {
