@@ -8,6 +8,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
@@ -22,6 +23,8 @@ import appeng.api.AECapabilities;
 import appeng.api.networking.IInWorldGridNodeHost;
 import appeng.api.parts.RegisterPartCapabilitiesEvent;
 import appeng.api.parts.RegisterPartCapabilitiesEventInternal;
+import appeng.blockentity.AEBaseInvBlockEntity;
+import appeng.blockentity.powersink.AEBasePoweredBlockEntity;
 import appeng.core.definitions.AEBlockEntities;
 
 @Mod(AdvancedAE.MOD_ID)
@@ -79,6 +82,19 @@ public class AdvancedAE {
                 AECapabilities.GENERIC_INTERNAL_INV,
                 AAEBlockEntities.SMALL_ADV_PATTERN_PROVIDER.get(),
                 (be, context) -> be.getLogic().getReturnInv());
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                AAEBlockEntities.REACTION_CHAMBER.get(),
+                AEBaseInvBlockEntity::getExposedItemHandler);
+        event.registerBlockEntity(
+                AECapabilities.GENERIC_INTERNAL_INV,
+                AAEBlockEntities.REACTION_CHAMBER.get(),
+                (be, context) -> be.getTank());
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                AAEBlockEntities.REACTION_CHAMBER.get(),
+                AEBasePoweredBlockEntity::getEnergyStorage);
 
         var partEvent = new RegisterPartCapabilitiesEvent();
         partEvent.addHostType(AEBlockEntities.CABLE_BUS.get());

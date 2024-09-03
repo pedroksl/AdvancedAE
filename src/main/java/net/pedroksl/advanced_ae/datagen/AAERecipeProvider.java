@@ -11,6 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
@@ -160,7 +161,8 @@ public class AAERecipeProvider extends RecipeProvider {
         ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 64)
                 .input(Items.REDSTONE, 64)
-                .input(Items.NETHER_QUARTZ_ORE, 64)
+                .input(Items.QUARTZ, 64)
+                .fluid(Fluids.WATER, 1000)
                 .save(c, "fluixcrystals");
     }
 }

@@ -3,6 +3,8 @@ package net.pedroksl.advanced_ae.recipes;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.glodblock.github.glodium.recipe.stack.IngredientStack;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.item.ItemStack;
@@ -32,16 +34,35 @@ public final class ReactionChamberRecipes {
         for (var holder : getRecipes(level)) {
             var recipe = holder.value();
 
-            var inputs = recipe.getInputs();
+            var inputs = recipe.getValidInputs();
 
             boolean failed = false;
             for (var input : inputs) {
                 boolean found = false;
                 for (var machineInput : machineInputs) {
-                    if (!input.getIngredient().test(machineInput) || input.getAmount() > machineInput.getCount())
+                    if (input.checkType(machineInput)) {
+                        if (((IngredientStack.Item) input).getIngredient().test(machineInput)
+                                && input.getAmount() >= machineInput.getCount()) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (input instanceof IngredientStack.Fluid fluidIn) {
+                    AEKey aeKey = fluid.what();
+                    if (!(aeKey instanceof AEFluidKey key)) {
                         continue;
+                    }
+
+                    FluidStack fluidStack = key.toStack((int) fluid.amount());
+                    if (!fluidIn.getIngredient().test(fluidStack)) {
+                        continue;
+                    }
+
                     found = true;
                 }
+
                 if (!found) {
                     failed = true;
                     break;
@@ -51,25 +72,29 @@ public final class ReactionChamberRecipes {
                 continue;
             }
 
-            if (!recipe.getFluid().isEmpty()) {
-                if (fluid == null) {
-                    continue;
-                }
-
-                AEKey aeKey = fluid.what();
-                if (!(aeKey instanceof AEFluidKey key)) {
-                    continue;
-                }
-
-                FluidStack fluidStack = key.toStack((int) fluid.amount());
-                if (!recipe.getFluid().getIngredient().test(fluidStack)) {
-                    continue;
-                }
-            }
-
             return recipe;
         }
 
         return null;
+    }
+
+    public static boolean isValidIngredient(ItemStack stack, Level level) {
+        for (var holder : getRecipes(level)) {
+            var recipe = holder.value();
+            if (recipe.containsIngredient(stack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isValidIngredient(FluidStack stack, Level level) {
+        for (var holder : getRecipes(level)) {
+            var recipe = holder.value();
+            if (recipe.containsIngredient(stack)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

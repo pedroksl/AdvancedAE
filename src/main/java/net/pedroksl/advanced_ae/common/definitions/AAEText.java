@@ -5,10 +5,13 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 import appeng.core.localization.LocalizationEnum;
 
 public enum AAEText implements LocalizationEnum {
-    AcceleratorThreads("Provides 4 co-processing threads per block.", Type.TOOLTIP),
     ModName("Advanced AE", Type.GUI),
+    AcceleratorThreads("Provides 8 co-processing threads per block.", Type.TOOLTIP),
+    CoreTooltip("Provides 256M crafting storage and 8 co-processing threads.", Type.TOOLTIP),
     AdvPatternProvider("ME Adv. Pattern Provider", Type.GUI),
     AdvPatternEncoder("Advanced Pattern Provider", Type.GUI),
+    ReactionChamber("Reaction Chamber", Type.GUI),
+    EmiReactionChamber("Reaction Chamber", Type.EMI_CATEGORY),
     AnyButton("Target the face adjacent to the adv. pattern provider", Type.TOOLTIP),
     NorthButton("Target the NORTH face of the machine.", Type.TOOLTIP),
     EastButton("Target the EAST face of the machine.", Type.TOOLTIP),
@@ -37,7 +40,8 @@ public enum AAEText implements LocalizationEnum {
 
     private enum Type {
         GUI("gui"),
-        TOOLTIP("gui.tooltips");
+        TOOLTIP("gui.tooltips"),
+        EMI_CATEGORY("emi.category");
 
         private final String root;
 

@@ -11,6 +11,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.AdvPatternEncoderScreen;
 import net.pedroksl.advanced_ae.client.gui.AdvPatternProviderScreen;
+import net.pedroksl.advanced_ae.client.gui.ReactionChamberScreen;
 import net.pedroksl.advanced_ae.client.gui.SmallAdvPatternProviderScreen;
 import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
@@ -42,6 +43,8 @@ public class AAEClient {
                 "/screens/small_adv_pattern_provider.json");
         InitScreens.register(
                 event, AAEMenus.ADV_PATTERN_ENCODER, AdvPatternEncoderScreen::new, "/screens/adv_pattern_encoder.json");
+        InitScreens.register(
+                event, AAEMenus.REACTION_CHAMBER, ReactionChamberScreen::new, "/screens/reaction_chamber.json");
     }
 
     @SuppressWarnings("deprecation")
