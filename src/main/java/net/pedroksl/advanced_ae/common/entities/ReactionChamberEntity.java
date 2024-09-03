@@ -304,7 +304,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                         }
 
                         for (var input : out.getValidInputs()) {
-                            for (var x = 0; x < this.inputInv.size(); x++) {
+                            for (int x = 0; x < this.inputInv.size(); x++) {
                                 var stack = this.inputInv.getStackInSlot(x);
                                 if (input.checkType(stack)) {
                                     input.consume(stack);
@@ -422,6 +422,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     protected void writeToStream(RegistryFriendlyByteBuf data) {
         super.writeToStream(data);
 
+        data.writeBoolean(isWorking());
         for (int i = 0; i < this.inv.size(); i++) {
             ItemStack.OPTIONAL_STREAM_CODEC.encode(data, this.inv.getStackInSlot(i));
         }

@@ -13,7 +13,6 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import appeng.api.stacks.AEFluidKey;
-import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
 
 public final class ReactionChamberRecipes {
@@ -50,17 +49,12 @@ public final class ReactionChamberRecipes {
                 }
 
                 if (input instanceof IngredientStack.Fluid fluidIn) {
-                    AEKey aeKey = fluid.what();
-                    if (!(aeKey instanceof AEFluidKey key)) {
-                        continue;
+                    if (fluid != null && fluid.what() instanceof AEFluidKey key) {
+                        FluidStack fluidStack = key.toStack((int) fluid.amount());
+                        if (fluidIn.getIngredient().test(fluidStack)) {
+                            found = true;
+                        }
                     }
-
-                    FluidStack fluidStack = key.toStack((int) fluid.amount());
-                    if (!fluidIn.getIngredient().test(fluidStack)) {
-                        continue;
-                    }
-
-                    found = true;
                 }
 
                 if (!found) {
