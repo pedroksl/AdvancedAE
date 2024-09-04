@@ -163,6 +163,18 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         return this.fluidInv;
     }
 
+    public FluidStack getFluidStack() {
+        var fluid = this.fluidInv.getStack(0);
+        FluidStack fluidStack = null;
+        if (fluid != null) {
+            AEKey aeKey = fluid.what();
+            if (aeKey instanceof AEFluidKey key) {
+                fluidStack = key.toStack((int) fluid.amount());
+            }
+        }
+        return fluidStack;
+    }
+
     @Nullable
     @Override
     public InternalInventory getSubInventory(ResourceLocation id) {
@@ -413,6 +425,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         for (int i = 0; i < this.inv.size(); i++) {
             this.inv.setItemDirect(i, ItemStack.OPTIONAL_STREAM_CODEC.decode(data));
         }
+        this.fluidInv.setStack(0, GenericStack.readBuffer(data));
         this.cachedTask = null;
 
         return c;
@@ -426,6 +439,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         for (int i = 0; i < this.inv.size(); i++) {
             ItemStack.OPTIONAL_STREAM_CODEC.encode(data, this.inv.getStackInSlot(i));
         }
+        GenericStack.writeBuffer(this.fluidInv.getStack(0), data);
     }
 
     private void onConfigChanged(IConfigManager manager, Setting<?> setting) {
