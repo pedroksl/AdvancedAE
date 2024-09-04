@@ -8,6 +8,7 @@
 		"3": "advanced_ae:block/reaction_chamber_top",
 		"4": "advanced_ae:block/reaction_chamber_details",
 		"5": "advanced_ae:block/reaction_chamber_sides"
+		"particle": "advanced_ae:block/reaction_chamber_sides"
 	},
 	"elements": [
 		{
