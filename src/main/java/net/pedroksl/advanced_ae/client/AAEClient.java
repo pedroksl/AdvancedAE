@@ -6,6 +6,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
@@ -14,7 +15,9 @@ import net.pedroksl.advanced_ae.client.gui.AdvPatternProviderScreen;
 import net.pedroksl.advanced_ae.client.gui.ReactionChamberScreen;
 import net.pedroksl.advanced_ae.client.gui.SmallAdvPatternProviderScreen;
 import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
+import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 
 import appeng.client.render.crafting.CraftingCubeModel;
@@ -28,6 +31,7 @@ public class AAEClient {
         eventBus.addListener(AAEClient::initScreens);
         eventBus.addListener(AAEClient::initCraftingUnitModels);
         eventBus.addListener(AAEClient::initItemColours);
+        eventBus.addListener(AAEClient::initRenderers);
     }
 
     private static void initScreens(RegisterMenuScreensEvent event) {
@@ -60,4 +64,8 @@ public class AAEClient {
     }
 
     private static void initItemColours(RegisterColorHandlersEvent.Item event) {}
+
+    private static void initRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(AAEBlockEntities.REACTION_CHAMBER.get(), ReactionChamberTESR::new);
+    }
 }
