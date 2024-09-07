@@ -112,11 +112,12 @@ dependencies {
     implementation "curse.maven:ex-pattern-provider-892005:5637364"
     jarJar(implementation "de.mari_023:ae2wtlib_api:19.1.0-alpha.1")
     compileOnly "curse.maven:emi-580555:5619579"
-    compileOnly "curse.maven:applied-flux-965012:5614830"
+    implementation "curse.maven:applied-flux-965012:5614830"
     compileOnly "curse.maven:jade-324717:5427817"
     compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.729"
+    implementation "curse.maven:mega-cells-622112:5662141"
+    implementation "curse.maven:mekanism-268560:5680395"
     // runtime test
-    runtimeOnly "curse.maven:applied-flux-965012:5614830"
     runtimeOnly "de.mari_023:ae2wtlib:19.1.0-alpha.1"
     runtimeOnly "curse.maven:jade-324717:5427817"
     // setup Xei

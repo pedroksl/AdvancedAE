@@ -7,7 +7,9 @@ import net.neoforged.fml.loading.moddiscovery.ModInfo;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 
 public enum Addons {
-    APPFLUX("Applied Flux");
+    APPFLUX("Applied Flux"),
+    MEGACELLS("MEGACells"),
+    MEKANISM("Mekanism");
 
     private final String modName;
 
