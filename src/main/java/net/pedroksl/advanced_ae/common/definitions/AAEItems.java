@@ -11,6 +11,7 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderCapacityUpgradeItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderUpgradeItem;
+import net.pedroksl.advanced_ae.common.items.ShatteredSingularityItem;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
@@ -33,12 +34,12 @@ public class AAEItems {
     }
 
     public static final ItemDefinition<PartItem<AdvPatternProviderPart>> ADV_PATTERN_PROVIDER = part(
-            "Advanced Pattern Provider",
+            "Advanced Extended Pattern Provider",
             "adv_pattern_provider_part",
             AdvPatternProviderPart.class,
             AdvPatternProviderPart::new);
     public static final ItemDefinition<PartItem<SmallAdvPatternProviderPart>> SMALL_ADV_PATTERN_PROVIDER = part(
-            "Advanced Pattern Provider (9 Slots)",
+            "Advanced Pattern Provider",
             "small_adv_pattern_provider_part",
             SmallAdvPatternProviderPart.class,
             SmallAdvPatternProviderPart::new);
@@ -56,6 +57,8 @@ public class AAEItems {
             "Advanced Pattern Provider Capacity Upgrade",
             "adv_pattern_provider_capacity_upgrade",
             AdvPatternProviderCapacityUpgradeItem::new);
+    public static final ItemDefinition<Item> SHATTERED_SINGULARITY =
+            item("Shattered Singulary", "shattered_singularity", ShatteredSingularityItem::new);
 
     public static final ItemDefinition<AdvPatternEncoderItem> ADV_PATTERN_ENCODER =
             item("Advanced Pattern Encoder", "adv_pattern_encoder", p -> new AdvPatternEncoderItem(p.stacksTo(1)));
