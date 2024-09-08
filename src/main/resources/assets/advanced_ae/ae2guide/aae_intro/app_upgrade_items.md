@@ -4,7 +4,7 @@ navigation:
   title: Advanced Pattern Provider Upgrade Items
   icon: advanced_ae:adv_pattern_provider_upgrade
 categories:
-  - advanced devices
+  - advanced items
 item_ids:
   - advanced_ae:adv_pattern_provider_upgrade
   - advanced_ae:adv_pattern_provider_capacity_upgrade
@@ -23,7 +23,7 @@ These upgrades can be used on regular AE Pattern Providers and ExtendedAE's Exte
 these machines will upgrade them to the advanced version keeping the same amount of slots they had previously. This
 means you won't lose the materials used to upgrade regular providers to extended providers in the process.
 
-## Advanced Pattern Provider Capacity Upgrade (36 Slots)
+## Advanced Pattern Provider Capacity Upgrade
 
 <ItemImage id="advanced_ae:adv_pattern_provider_capacity_upgrade" scale="3"></ItemImage>
 
