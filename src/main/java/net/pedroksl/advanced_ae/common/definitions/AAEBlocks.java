@@ -69,9 +69,12 @@ public final class AAEBlocks {
             AAECraftingBlockItem::new);
 
     public static final BlockDefinition<AdvPatternProviderBlock> ADV_PATTERN_PROVIDER = block(
-            "Advanced Pattern Provider", "adv_pattern_provider", AdvPatternProviderBlock::new, AEBaseBlockItem::new);
+            "Advanced Extended Pattern Provider",
+            "adv_pattern_provider",
+            AdvPatternProviderBlock::new,
+            AEBaseBlockItem::new);
     public static final BlockDefinition<SmallAdvPatternProviderBlock> SMALL_ADV_PATTERN_PROVIDER = block(
-            "Advanced Pattern Provider (9 Slots)",
+            "Advanced Pattern Provider",
             "small_adv_pattern_provider",
             SmallAdvPatternProviderBlock::new,
             AEBaseBlockItem::new);

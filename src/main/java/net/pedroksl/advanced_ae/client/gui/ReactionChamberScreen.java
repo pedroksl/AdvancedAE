@@ -3,14 +3,14 @@ package net.pedroksl.advanced_ae.client.gui;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.gui.reactionchamber.ReactionChamberMenu;
+import net.pedroksl.advanced_ae.gui.widgets.AAEActionButton;
+import net.pedroksl.advanced_ae.gui.widgets.AAEActionItems;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
 import appeng.client.gui.implementations.UpgradeableScreen;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.ProgressBar;
-import appeng.client.gui.widgets.ServerSettingToggleButton;
-import appeng.client.gui.widgets.SettingToggleButton;
+import appeng.client.gui.widgets.*;
 
 public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu> {
 
@@ -26,6 +26,11 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
 
         this.autoExportBtn = new ServerSettingToggleButton<>(Settings.AUTO_EXPORT, YesNo.NO);
         this.addToLeftToolbar(autoExportBtn);
+
+        AAEActionButton clearBtn = new AAEActionButton(AAEActionItems.F_FLUSH, btn -> menu.clearFluid());
+        clearBtn.setHalfSize(true);
+        clearBtn.setDisableBackground(true);
+        widgets.add("clearFluid", clearBtn);
     }
 
     @Override

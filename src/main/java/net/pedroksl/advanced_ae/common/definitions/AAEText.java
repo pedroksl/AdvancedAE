@@ -18,10 +18,26 @@ public enum AAEText implements LocalizationEnum {
     SouthButton("Target the SOUTH face of the machine.", Type.TOOLTIP),
     WestButton("Target the WEST face of the machine.", Type.TOOLTIP),
     UpButton("Target the UP face of the machine.", Type.TOOLTIP),
-    DownButton("Target the DOWN face of the machine.", Type.TOOLTIP);
+    DownButton("Target the DOWN face of the machine.", Type.TOOLTIP),
+    ClearButton("Clear", Type.TOOLTIP),
+    ClearFluidButtonHint("Flush the remaining fluid from the machine.", Type.TOOLTIP),
+    ClearSidesButtonHint("Disable output from all sides of the machine.", Type.TOOLTIP),
+    TankEmpty("Empty", Type.TOOLTIP),
+    TankAmount("%s mb / %s mb", Type.TOOLTIP),
+
+    ReactionChamberEnergy("Required Power: %d k FE", Type.EMI_TEXT),
+
+    PatternProviderUpgrade(
+            "Upgrades a normal or extended pattern provider to the advanced version with the same "
+                    + "amount of pattern slots",
+            Type.TOOLTIP),
+    PatternProviderCapacityUpgrade(
+            "Upgrades an Advanced Pattern Provider to the maximum amount of pattern slots", Type.TOOLTIP);
 
     private final String englishText;
     private final Type type;
+
+    public static final int TOOLTIP_DEFAULT_COLOR = 0x5E5E5E;
 
     AAEText(String englishText, Type type) {
         this.englishText = englishText;
@@ -41,7 +57,8 @@ public enum AAEText implements LocalizationEnum {
     private enum Type {
         GUI("gui"),
         TOOLTIP("gui.tooltips"),
-        EMI_CATEGORY("emi.category");
+        EMI_CATEGORY("emi.category"),
+        EMI_TEXT("emi.text");
 
         private final String root;
 

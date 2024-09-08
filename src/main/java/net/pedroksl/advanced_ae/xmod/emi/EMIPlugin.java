@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.function.Function;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
+import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.xmod.emi.recipes.EMIReactionChamberRecipe;
@@ -23,6 +25,7 @@ import dev.emi.emi.api.stack.EmiStack;
 
 @EmiEntrypoint
 public class EMIPlugin implements EmiPlugin {
+    public static final ResourceLocation TEXTURE = AdvancedAE.makeId("textures/guis/emi.png");
 
     @Override
     public void register(EmiRegistry registry) {

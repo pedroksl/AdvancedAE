@@ -38,6 +38,10 @@
 		}
 	},
 	"widgets": {
+		"clearFluid": {
+			"left": 70,
+			"top": 58
+		},
 		"progressBar": {
 		  "left": 142,
 		  "top": 27

@@ -8,6 +8,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -23,9 +24,11 @@ import appeng.api.AECapabilities;
 import appeng.api.networking.IInWorldGridNodeHost;
 import appeng.api.parts.RegisterPartCapabilitiesEvent;
 import appeng.api.parts.RegisterPartCapabilitiesEventInternal;
+import appeng.api.upgrades.Upgrades;
 import appeng.blockentity.AEBaseInvBlockEntity;
 import appeng.blockentity.powersink.AEBasePoweredBlockEntity;
 import appeng.core.definitions.AEBlockEntities;
+import appeng.core.definitions.AEItems;
 
 @Mod(AdvancedAE.MOD_ID)
 public class AdvancedAE {
@@ -61,10 +64,14 @@ public class AdvancedAE {
         });
     }
 
-    private static void initUpgrades(RegisterCapabilitiesEvent event) {
-        if (ModList.get().isLoaded("appflux")) {
-            AFCommonLoad.init();
-        }
+    private static void initUpgrades(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            Upgrades.add(AEItems.SPEED_CARD, AAEBlocks.REACTION_CHAMBER, 4);
+
+            if (ModList.get().isLoaded("appflux")) {
+                AFCommonLoad.init();
+            }
+        });
     }
 
     @SuppressWarnings("UnstableApiUsage")

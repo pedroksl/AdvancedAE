@@ -1,9 +1,7 @@
 package net.pedroksl.advanced_ae.common.entities;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -13,12 +11,16 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 
@@ -32,10 +34,12 @@ import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.orientation.BlockOrientation;
+import appeng.api.orientation.RelativeSide;
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AEKeyType;
 import appeng.api.stacks.GenericStack;
+import appeng.api.storage.ISubMenuHost;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.UpgradeInventories;
@@ -45,14 +49,18 @@ import appeng.api.util.IConfigurableObject;
 import appeng.blockentity.grid.AENetworkedPoweredBlockEntity;
 import appeng.core.definitions.AEItems;
 import appeng.helpers.externalstorage.GenericStackInv;
+import appeng.menu.ISubMenu;
+import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuLocators;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.CombinedInternalInventory;
 import appeng.util.inv.FilteredInternalInventory;
 import appeng.util.inv.filter.AEItemFilters;
 
 public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
-        implements IGridTickable, IUpgradeableObject, IConfigurableObject {
+        implements IGridTickable, IUpgradeableObject, IConfigurableObject, ISubMenuHost {
     private static final int MAX_PROCESSING_STEPS = 200;
+    private static final int MAX_POWER_STORAGE = 250000;
     private static final int MAX_TANK_CAPACITY = 16000;
 
     private final IUpgradeInventory upgrades;
@@ -78,11 +86,13 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     private ReactionChamberRecipe cachedTask = null;
 
+    private EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
+
     public ReactionChamberEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
 
         this.getMainNode().setIdlePowerUsage(0).addService(IGridTickable.class, this);
-        this.setInternalMaxPower(15000);
+        this.setInternalMaxPower(MAX_POWER_STORAGE);
 
         this.fluidInv.setCapacity(AEKeyType.fluids(), MAX_TANK_CAPACITY);
 
@@ -161,6 +171,10 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     public GenericStackInv getTank() {
         return this.fluidInv;
+    }
+
+    public EnumSet<RelativeSide> getAllowedOutputs() {
+        return this.allowedOutputs;
     }
 
     public FluidStack getFluidStack() {
@@ -269,20 +283,22 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
         if (this.hasCraftWork()) {
             this.setWorking(true);
+            AtomicBoolean gridEnergy = new AtomicBoolean(false);
+            final int speedFactor =
+                    switch (this.upgrades.getInstalledUpgrades(AEItems.SPEED_CARD)) {
+                        default -> 2; // 116 ticks
+                        case 1 -> 3; // 83 ticks
+                        case 2 -> 5; // 56 ticks
+                        case 3 -> 10; // 36 ticks
+                        case 4 -> 50; // 20 ticks
+                    };
             getMainNode().ifPresent(grid -> {
+                gridEnergy.set(true);
                 IEnergyService eg = grid.getEnergyService();
                 IEnergySource src = this;
 
-                // Note: required ticks = 16 + ceil(MAX_PROCESSING_STEPS / speedFactor)
-                final int speedFactor =
-                        switch (this.upgrades.getInstalledUpgrades(AEItems.SPEED_CARD)) {
-                            default -> 2; // 116 ticks
-                            case 1 -> 3; // 83 ticks
-                            case 2 -> 5; // 56 ticks
-                            case 3 -> 10; // 36 ticks
-                            case 4 -> 50; // 20 ticks
-                        };
-                final int powerConsumption = 10 * speedFactor;
+                final int requiredTicks = Mth.ceil((float) MAX_PROCESSING_STEPS / speedFactor);
+                final int powerConsumption = getTask().getEnergy() / requiredTicks;
                 final double powerThreshold = powerConsumption - 0.01;
                 double powerReq = this.extractAEPower(powerConsumption, Actionable.SIMULATE, PowerMultiplier.CONFIG);
 
@@ -296,6 +312,19 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                     this.setProcessingTime(this.getProcessingTime() + speedFactor);
                 }
             });
+            if (!gridEnergy.get()) {
+                var storage = this.getEnergyStorage(null);
+
+                final int requiredTicks = Mth.ceil((float) MAX_PROCESSING_STEPS / speedFactor);
+                final int powerConsumption = getTask().getEnergy() / requiredTicks;
+                final double powerThreshold = powerConsumption - 0.01;
+                double powerReq = storage.extractEnergy(powerConsumption, Actionable.SIMULATE.isSimulate());
+
+                if (powerReq > powerThreshold) {
+                    storage.extractEnergy(powerConsumption, Actionable.MODULATE.isSimulate());
+                    this.setProcessingTime(this.getProcessingTime() + speedFactor);
+                }
+            }
 
             if (this.getProcessingTime() >= this.getMaxProcessingTime()) {
                 this.setProcessingTime(0);
@@ -346,7 +375,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                         }
                     }
                 }
-
+                this.saveChanges();
                 this.cachedTask = null;
                 this.setWorking(false);
             }
@@ -366,9 +395,14 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
             return false;
         }
 
-        var pushSides = EnumSet.allOf(Direction.class);
+        var orientation = this.getOrientation();
 
-        for (var dir : pushSides) {
+        for (var side : allowedOutputs) {
+            var dir = orientation.getSide(side);
+            var targetPos = getBlockPos().relative(dir);
+            BlockEntity te = level.getBlockEntity(targetPos);
+            if (te instanceof ReactionChamberEntity) continue;
+
             var target = InternalInventory.wrapExternal(level, getBlockPos().relative(dir), dir.getOpposite());
 
             if (target != null) {
@@ -468,5 +502,43 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         super.clearContent();
         this.fluidInv.clear();
         this.upgrades.clear();
+    }
+
+    public void clearFluid() {
+        this.fluidInv.clear();
+    }
+
+    public void updateOutputSides(EnumSet<RelativeSide> allowedOutputs) {
+        this.allowedOutputs = allowedOutputs;
+    }
+
+    public ItemStack getAdjacentBlock(RelativeSide side) {
+        var dir = getOrientation().getSide(side);
+        BlockPos blockPos = getBlockPos().relative(dir);
+
+        Level level = getLevel();
+        if (level == null) {
+            return null;
+        }
+
+        BlockState blockState = level.getBlockState(blockPos);
+        ItemStack itemStack = blockState.getBlock().asItem().getDefaultInstance();
+        if (blockState.hasBlockEntity()) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity != null) {
+                blockEntity.saveToItem(itemStack, level.registryAccess());
+            }
+        }
+        return itemStack;
+    }
+
+    @Override
+    public void returnToMainMenu(Player player, ISubMenu iSubMenu) {
+        MenuOpener.returnTo(AAEMenus.REACTION_CHAMBER, player, MenuLocators.forBlockEntity(this));
+    }
+
+    @Override
+    public ItemStack getMainMenuIcon() {
+        return new ItemStack(AAEBlocks.REACTION_CHAMBER.asItem());
     }
 }

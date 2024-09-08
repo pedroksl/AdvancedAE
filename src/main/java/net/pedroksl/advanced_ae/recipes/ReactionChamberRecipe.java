@@ -27,19 +27,24 @@ public class ReactionChamberRecipe implements Recipe<RecipeInput> {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     protected final Optional<IngredientStack.Fluid> fluid;
 
+    protected final int energy;
+
     public final ItemStack output;
 
-    public ReactionChamberRecipe(ItemStack output, List<IngredientStack.Item> inputs, IngredientStack.Fluid fluid) {
+    public ReactionChamberRecipe(
+            ItemStack output, List<IngredientStack.Item> inputs, IngredientStack.Fluid fluid, int energy) {
         this.inputs = inputs;
         this.output = output;
         this.fluid = Optional.ofNullable(fluid);
+        this.energy = energy;
     }
 
     public ReactionChamberRecipe(
-            ItemStack output, List<IngredientStack.Item> inputs, Optional<IngredientStack.Fluid> fluid) {
+            ItemStack output, List<IngredientStack.Item> inputs, Optional<IngredientStack.Fluid> fluid, int energy) {
         this.output = output;
         this.inputs = inputs;
         this.fluid = fluid;
+        this.energy = energy;
     }
 
     @Override
@@ -96,6 +101,10 @@ public class ReactionChamberRecipe implements Recipe<RecipeInput> {
     @Nullable
     public IngredientStack.@Nullable Fluid getFluid() {
         return this.fluid.orElse(null);
+    }
+
+    public int getEnergy() {
+        return this.energy;
     }
 
     @Override

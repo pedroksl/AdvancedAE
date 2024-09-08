@@ -41,7 +41,7 @@ public final class ReactionChamberRecipes {
                 for (var machineInput : machineInputs) {
                     if (input.checkType(machineInput)) {
                         if (((IngredientStack.Item) input).getIngredient().test(machineInput)
-                                && input.getAmount() >= machineInput.getCount()) {
+                                && input.getAmount() <= machineInput.getCount()) {
                             found = true;
                             break;
                         }

@@ -14,6 +14,7 @@ import net.pedroksl.advanced_ae.client.gui.AdvPatternEncoderScreen;
 import net.pedroksl.advanced_ae.client.gui.AdvPatternProviderScreen;
 import net.pedroksl.advanced_ae.client.gui.ReactionChamberScreen;
 import net.pedroksl.advanced_ae.client.gui.SmallAdvPatternProviderScreen;
+import net.pedroksl.advanced_ae.client.gui.config.OutputDirectionScreen;
 import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
 import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
@@ -49,6 +50,9 @@ public class AAEClient {
                 event, AAEMenus.ADV_PATTERN_ENCODER, AdvPatternEncoderScreen::new, "/screens/adv_pattern_encoder.json");
         InitScreens.register(
                 event, AAEMenus.REACTION_CHAMBER, ReactionChamberScreen::new, "/screens/reaction_chamber.json");
+
+        InitScreens.register(
+                event, AAEMenus.OUTPUT_DIRECTION, OutputDirectionScreen::new, "/screens/output_direction.json");
     }
 
     @SuppressWarnings("deprecation")

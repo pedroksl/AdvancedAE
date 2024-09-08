@@ -20,22 +20,24 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 public class ReactionChamberRecipeBuilder {
     private final List<IngredientStack.Item> inputs = new ArrayList<>();
     private IngredientStack.Fluid fluid = null;
+    private final int energy;
     private final ItemStack output;
 
-    public ReactionChamberRecipeBuilder(ItemStack output) {
+    public ReactionChamberRecipeBuilder(ItemStack output, int energy) {
         this.output = output;
+        this.energy = energy;
     }
 
-    public static ReactionChamberRecipeBuilder react(ItemStack stack) {
-        return new ReactionChamberRecipeBuilder(stack);
+    public static ReactionChamberRecipeBuilder react(ItemStack stack, int energy) {
+        return new ReactionChamberRecipeBuilder(stack, energy);
     }
 
-    public static ReactionChamberRecipeBuilder react(ItemLike stack) {
-        return new ReactionChamberRecipeBuilder(new ItemStack(stack));
+    public static ReactionChamberRecipeBuilder react(ItemLike stack, int energy) {
+        return new ReactionChamberRecipeBuilder(new ItemStack(stack), energy);
     }
 
-    public static ReactionChamberRecipeBuilder react(ItemLike stack, int count) {
-        return new ReactionChamberRecipeBuilder(new ItemStack(stack, count));
+    public static ReactionChamberRecipeBuilder react(ItemLike stack, int count, int energy) {
+        return new ReactionChamberRecipeBuilder(new ItemStack(stack, count), energy);
     }
 
     public ReactionChamberRecipeBuilder fluid(FluidStack fluid) {
@@ -79,7 +81,7 @@ public class ReactionChamberRecipeBuilder {
     }
 
     public void save(RecipeOutput consumer, ResourceLocation id) {
-        var recipe = new ReactionChamberRecipe(this.output, this.inputs, this.fluid);
+        var recipe = new ReactionChamberRecipe(this.output, this.inputs, this.fluid, this.energy);
         consumer.accept(id, recipe, null);
     }
 
