@@ -1,0 +1,22 @@
+{
+	"$schema": "schema.json",
+	"includes": ["common/common.json"],
+	"background": {
+		"texture": "guis/output_direction.png",
+		"srcRect": [0, 0, 79, 78]
+	},
+	"widgets": {
+		"back": {
+			"left": 55,
+			"top": -5,
+			"width": 20,
+			"height": 20
+		},
+		"clearAll": {
+			"left": 67,
+			"top": 62,
+			"width": 8,
+			"height": 8
+		}
+	}
+}

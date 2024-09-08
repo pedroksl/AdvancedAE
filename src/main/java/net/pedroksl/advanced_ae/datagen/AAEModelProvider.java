@@ -31,6 +31,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.ADV_PATTERN_PROVIDER_UPGRADE);
         basicItem(AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE);
         basicItem(AAEItems.ADV_PATTERN_ENCODER);
+        basicItem(AAEItems.SHATTERED_SINGULARITY);
 
         // CRAFTING UNITS
         for (var type : AAECraftingUnitType.values()) {
