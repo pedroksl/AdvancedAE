@@ -31,6 +31,6 @@ specific sides for specific inputs to be done with a single block and no pipes!
 
 ![AAEGui](../pic/app_gui.png)
 
-To be able to use this feature, you'll need to insert an <ItemLink id="advanced_ae:adv_processing_pattern " /> created
+To be able to use this feature, you'll need to insert an <ItemLink id="advanced_ae:adv_processing_pattern" /> created
 by inserting an encoded pattern in a <ItemLink id="advanced_ae:adv_pattern_encoder" /> and taking out the advanced
 version.
