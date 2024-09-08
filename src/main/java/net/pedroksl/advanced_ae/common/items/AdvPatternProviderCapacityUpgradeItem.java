@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.common.items;
 
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.glodblock.github.extendedae.util.FCUtil;
 
@@ -19,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 
@@ -88,12 +90,13 @@ public class AdvPatternProviderCapacityUpgradeItem extends Item {
         return InteractionResult.PASS;
     }
 
+    @ParametersAreNonnullByDefault
     @Override
     public void appendHoverText(
             ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
 
         tooltipComponents.add(Component.empty()
-                .append("§7Upgrades an Advanced Pattern Provider to the maximum amount of pattern slots"));
+                .append(AAEText.PatternProviderCapacityUpgrade.text().withColor(AAEText.TOOLTIP_DEFAULT_COLOR)));
     }
 }

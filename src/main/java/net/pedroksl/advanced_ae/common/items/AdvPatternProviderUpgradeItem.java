@@ -23,6 +23,7 @@ import net.minecraft.world.phys.Vec3;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 
 import appeng.blockentity.crafting.PatternProviderBlockEntity;
 import appeng.blockentity.networking.CableBusBlockEntity;
@@ -112,8 +113,6 @@ public class AdvPatternProviderUpgradeItem extends Item {
             ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
 
-        tooltipComponents.add(Component.empty()
-                .append("§7Upgrades a normal or extended pattern provider to the "
-                        + "advanced version with the same amount of pattern slots"));
+        tooltipComponents.add(AAEText.PatternProviderUpgrade.text().withColor(AAEText.TOOLTIP_DEFAULT_COLOR));
     }
 }
