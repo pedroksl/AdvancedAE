@@ -1,7 +1,5 @@
 package net.pedroksl.advanced_ae.xmod.emi.recipes;
 
-import com.glodblock.github.extendedae.xmod.emi.recipes.EMIStackUtil;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -31,11 +29,11 @@ public class EMIReactionChamberRecipe extends BasicEmiRecipe {
         this.recipe = holder.value();
         for (var in : this.recipe.getInputs()) {
             if (!in.isEmpty()) {
-                this.inputs.add(EMIStackUtil.of(in));
+                this.inputs.add(EMIPlugin.stackOf(in));
             }
         }
         if (this.recipe.getFluid() != null) {
-            this.inputs.add(EMIStackUtil.of(this.recipe.getFluid()));
+            this.inputs.add(EMIPlugin.stackOf(this.recipe.getFluid()));
         }
         this.outputs.add(EmiStack.of(this.recipe.getResultItem()));
     }
@@ -60,12 +58,12 @@ public class EMIReactionChamberRecipe extends BasicEmiRecipe {
         int x = 11;
         for (var in : this.recipe.getInputs()) {
             if (!in.isEmpty()) {
-                widgets.addSlot(EMIStackUtil.of(in), x, 5).drawBack(false);
+                widgets.addSlot(EMIPlugin.stackOf(in), x, 5).drawBack(false);
                 x += 18;
             }
         }
         if (this.recipe.getFluid() != null) {
-            widgets.addSlot(EMIStackUtil.of(this.recipe.getFluid()), 29, 24).drawBack(false);
+            widgets.addSlot(EMIPlugin.stackOf(this.recipe.getFluid()), 29, 24).drawBack(false);
         }
         widgets.addSlot(EmiStack.of(recipe.getResultItem()), 99, 5)
                 .recipeContext(this)

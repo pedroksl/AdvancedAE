@@ -1,16 +1,18 @@
 package net.pedroksl.advanced_ae.xmod.emi;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
+import com.glodblock.github.glodium.recipe.stack.IngredientStack;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
@@ -21,6 +23,7 @@ import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiInfoRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
+import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 
 @EmiEntrypoint
@@ -44,5 +47,23 @@ public class EMIPlugin implements EmiPlugin {
     private static void addInfo(EmiRegistry registry, ItemLike item, Component... desc) {
         registry.addRecipe(new EmiInfoRecipe(
                 List.of(EmiStack.of(item)), Arrays.stream(desc).toList(), null));
+    }
+
+    public static EmiIngredient stackOf(IngredientStack.Item stack) {
+        return !stack.isEmpty() ? EmiIngredient.of(stack.getIngredient(), stack.getAmount()) : EmiStack.EMPTY;
+    }
+
+    public static EmiIngredient stackOf(IngredientStack.Fluid stack) {
+        FluidIngredient ingredient = stack.getIngredient();
+        List<EmiIngredient> list = new ArrayList();
+        FluidStack[] var3 = ingredient.getStacks();
+        int var4 = var3.length;
+
+        for (int var5 = 0; var5 < var4; ++var5) {
+            FluidStack fluid = var3[var5];
+            list.add(EmiStack.of(fluid.getFluid(), stack.getAmount()));
+        }
+
+        return EmiIngredient.of(list, stack.getAmount());
     }
 }
