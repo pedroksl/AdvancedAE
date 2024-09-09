@@ -7,7 +7,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -42,6 +41,8 @@ public class AdvancedAE {
         }
         INSTANCE = this;
 
+        AAEConfig.register(container);
+
         AAEBlocks.DR.register(eventBus);
         AAEItems.DR.register(eventBus);
         AAEBlockEntities.DR.register(eventBus);
@@ -51,8 +52,6 @@ public class AdvancedAE {
 
         eventBus.addListener(AdvancedAE::initUpgrades);
         eventBus.addListener(AdvancedAE::initCapabilities);
-
-        container.registerConfig(ModConfig.Type.COMMON, AAEConfig.SPEC);
 
         eventBus.addListener(AAENetworkHandler.INSTANCE::onRegister);
         eventBus.addListener((RegisterEvent event) -> {

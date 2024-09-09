@@ -1,10 +1,10 @@
 package net.pedroksl.advanced_ae.xmod.emi.recipes;
 
 import net.minecraft.network.chat.Component;
+import net.pedroksl.advanced_ae.AdvancedAE;
 
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiRenderable;
-import net.pedroksl.advanced_ae.AdvancedAE;
 
 public class AAERecipeCategory extends EmiRecipeCategory {
     private final Component name;

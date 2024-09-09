@@ -5,6 +5,7 @@ import java.util.Iterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.pedroksl.advanced_ae.AAEConfig;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 
@@ -21,15 +22,17 @@ public class AdvCraftingCPUCalculator extends MBCalculator<AdvCraftingBlockEntit
 
     @Override
     public boolean checkMultiblockScale(BlockPos min, BlockPos max) {
-        if (max.getX() - min.getX() > 4) {
+        var maxSize = AAEConfig.instance().getQuantumComputerMaxSize() - 1;
+
+        if (max.getX() - min.getX() > maxSize) {
             return false;
         }
 
-        if (max.getY() - min.getY() > 4) {
+        if (max.getY() - min.getY() > maxSize) {
             return false;
         }
 
-        return max.getZ() - min.getZ() <= 4;
+        return max.getZ() - min.getZ() <= maxSize;
     }
 
     @Override
@@ -41,8 +44,10 @@ public class AdvCraftingCPUCalculator extends MBCalculator<AdvCraftingBlockEntit
     public boolean verifyInternalStructure(ServerLevel level, BlockPos min, BlockPos max) {
         boolean core = false;
         boolean storage = false;
-        boolean entangler = false;
-        boolean multi = false;
+        int entangler = 0;
+        int entanglerLimit = AAEConfig.instance().getQuantumComputermaxDataEntanglers();
+        int multi = 0;
+        int multiLimit = AAEConfig.instance().getQuantumComputerMaxMultiThreaders();
 
         for (BlockPos blockPos : BlockPos.betweenClosed(min, max)) {
             final IAEMultiBlock<?> te = (IAEMultiBlock<?>) level.getBlockEntity(blockPos);
@@ -80,16 +85,16 @@ public class AdvCraftingCPUCalculator extends MBCalculator<AdvCraftingBlockEntit
                         break;
                     }
                     case STORAGE_MULTIPLIER: {
-                        if (!isBoundary && !entangler) {
-                            entangler = true;
+                        if (!isBoundary && entangler < entanglerLimit) {
+                            entangler++;
                         } else {
                             return false;
                         }
                         break;
                     }
                     case MULTI_THREADER: {
-                        if (!isBoundary && !multi) {
-                            multi = true;
+                        if (!isBoundary && multi < multiLimit) {
+                            multi++;
                         } else {
                             return false;
                         }

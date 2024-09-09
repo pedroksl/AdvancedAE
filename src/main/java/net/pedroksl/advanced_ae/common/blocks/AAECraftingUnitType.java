@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
 import net.minecraft.world.item.Item;
+import net.pedroksl.advanced_ae.AAEConfig;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 
 import appeng.block.crafting.ICraftingUnitType;
@@ -30,7 +31,7 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
     }
 
     public int getStorageMultiplier() {
-        return this == STORAGE_MULTIPLIER ? 4 : 0;
+        return this == STORAGE_MULTIPLIER ? AAEConfig.instance().getQuantumComputerDataEntanglerMultiplication() : 0;
     }
 
     @Override
@@ -42,7 +43,7 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
     }
 
     public int getAccelerationMultiplier() {
-        return this == MULTI_THREADER ? 4 : 0;
+        return this == MULTI_THREADER ? AAEConfig.instance().getQuantumComputerMultiThreaderMultiplication() : 0;
     }
 
     public String getAffix() {
