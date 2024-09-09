@@ -62,7 +62,7 @@ import appeng.util.inv.filter.AEItemFilters;
 public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         implements IGridTickable, IUpgradeableObject, IConfigurableObject, ISubMenuHost {
     private static final int MAX_PROCESSING_STEPS = 200;
-    private static final int MAX_POWER_STORAGE = 250000;
+    private static final int MAX_POWER_STORAGE = 500000;
     private static final int MAX_TANK_CAPACITY = 16000;
 
     private final IUpgradeInventory upgrades;
