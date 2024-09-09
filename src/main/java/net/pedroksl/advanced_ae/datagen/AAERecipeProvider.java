@@ -112,7 +112,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(EAESingletons.CONCURRENT_PROCESSOR)
                 .input(ConventionTags.GLASS_CABLE, 6)
                 .save(c, AdvancedAE.makeId("largeappupgrade"));
-        ReactionChamberRecipeBuilder.react(AAEItems.SHATTERED_SINGULARITY, 2, 20000)
+        ReactionChamberRecipeBuilder.react(AAEItems.SHATTERED_SINGULARITY, 2, 200000)
                 .input(AEItems.SINGULARITY)
                 .input(AEItems.ENDER_DUST, 4)
                 .input(AEItems.SKY_DUST, 4)
@@ -185,47 +185,47 @@ public class AAERecipeProvider extends RecipeProvider {
                 .save(c, AdvancedAE.makeId("quantummultithreader"));
 
         // Reaction Chamber
-        ReactionChamberRecipeBuilder.react(AEItems.SINGULARITY, 100000)
+        ReactionChamberRecipeBuilder.react(AEItems.SINGULARITY, 1000000)
                 .input(AEItems.MATTER_BALL, 64)
                 .fluid(Fluids.LAVA, 100)
                 .save(c, "singularity");
-        ReactionChamberRecipeBuilder.react(AEItems.CERTUS_QUARTZ_CRYSTAL, 64, 5000)
+        ReactionChamberRecipeBuilder.react(AEItems.CERTUS_QUARTZ_CRYSTAL, 64, 50000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
                 .input(AEItems.CERTUS_QUARTZ_DUST, 16)
                 .fluid(Fluids.WATER, 500)
                 .save(c, "quartzcrystal");
-        ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64, 20000)
+        ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64, 200000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
                 .input(Items.REDSTONE, 16)
                 .input(Items.QUARTZ, 16)
                 .fluid(Fluids.WATER, 500)
                 .save(c, "fluixcrystals");
-        ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64, 10000)
+        ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64, 100000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 32)
                 .input(AEItems.FLUIX_DUST, 32)
                 .fluid(Fluids.WATER, 500)
                 .save(c, "fluixcrystalfromdust");
-        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_CRYSTAL, 64, 10000)
+        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_CRYSTAL, 64, 100000)
                 .input(EAESingletons.ENTRO_DUST, 32)
                 .input(AEItems.FLUIX_CRYSTAL, 32)
                 .fluid(Fluids.WATER, 500)
                 .save(c, "entrocrystal");
-        ReactionChamberRecipeBuilder.react(AEBlocks.DAMAGED_BUDDING_QUARTZ, 8, 10000)
+        ReactionChamberRecipeBuilder.react(AEBlocks.DAMAGED_BUDDING_QUARTZ, 8, 100000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
                 .input(AEBlocks.QUARTZ_BLOCK, 8)
                 .fluid(Fluids.WATER, 1000)
                 .save(c, "damagedbudding");
-        ReactionChamberRecipeBuilder.react(AEBlocks.CHIPPED_BUDDING_QUARTZ, 8, 20000)
+        ReactionChamberRecipeBuilder.react(AEBlocks.CHIPPED_BUDDING_QUARTZ, 8, 200000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
                 .input(AEBlocks.DAMAGED_BUDDING_QUARTZ, 8)
                 .fluid(Fluids.WATER, 1000)
                 .save(c, "chippedbudding");
-        ReactionChamberRecipeBuilder.react(AEBlocks.FLAWED_BUDDING_QUARTZ, 8, 30000)
+        ReactionChamberRecipeBuilder.react(AEBlocks.FLAWED_BUDDING_QUARTZ, 8, 300000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
                 .input(AEBlocks.CHIPPED_BUDDING_QUARTZ, 8)
                 .fluid(Fluids.WATER, 1000)
                 .save(c, "flawedbudding");
-        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_INGOT, 64, 50000)
+        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_INGOT, 64, 500000)
                 .input(EAESingletons.ENTRO_DUST, 32)
                 .input(Items.GOLD_INGOT, 32)
                 .input(Items.LAPIS_LAZULI, 32)
