@@ -8,6 +8,7 @@
 		"3": "advanced_ae:block/reaction_chamber_top",
 		"4": "advanced_ae:block/reaction_chamber_details",
 		"5": "advanced_ae:block/reaction_chamber_sides",
+		"6": "advanced_ae:block/reaction_chamber_rod",
 		"particle": "advanced_ae:block/reaction_chamber_sides"
 	},
 	"elements": [
@@ -174,10 +175,10 @@
 			"to": [8.5, 15, 8.5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8.5]},
 			"faces": {
-				"north": {"uv": [15, 1, 16, 15], "rotation": 180, "texture": "#4"},
-				"east": {"uv": [15, 1, 16, 15], "rotation": 180, "texture": "#4"},
-				"south": {"uv": [15, 1, 16, 15], "rotation": 180, "texture": "#4"},
-				"west": {"uv": [15, 1, 16, 15], "rotation": 180, "texture": "#4"}
+				"north": {"uv": [0, 1, 4, 15], "texture": "#6"},
+				"east": {"uv": [0, 1, 4, 15], "rotation": 180, "texture": "#6"},
+				"south": {"uv": [0, 1, 4, 15], "rotation": 180, "texture": "#6"},
+				"west": {"uv": [0, 1, 4, 15], "rotation": 180, "texture": "#6"}
 			}
 		},
 		{

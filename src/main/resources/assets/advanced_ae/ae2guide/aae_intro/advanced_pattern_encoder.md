@@ -7,6 +7,7 @@ categories:
   - advanced items
 item_ids:
   - advanced_ae:adv_pattern_encoder
+  - advanced_ae:adv_processing_pattern
 ---
 
 # Advanced Pattern Encoder

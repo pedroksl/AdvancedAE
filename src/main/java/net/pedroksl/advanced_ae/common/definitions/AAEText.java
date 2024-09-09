@@ -25,7 +25,7 @@ public enum AAEText implements LocalizationEnum {
     TankEmpty("Empty", Type.TOOLTIP),
     TankAmount("%s mb / %s mb", Type.TOOLTIP),
 
-    ReactionChamberEnergy("Required Power: %d k FE", Type.EMI_TEXT),
+    ReactionChamberEnergy("Used Power: %d" + "k FE", Type.EMI_TEXT),
 
     PatternProviderUpgrade(
             "Upgrades a normal or extended pattern provider to the advanced version with the same "

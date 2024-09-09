@@ -8,17 +8,19 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.pedroksl.advanced_ae.common.blocks.ReactionChamberBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
@@ -82,7 +84,6 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     private boolean working = false;
     private int processingTime = 0;
     private boolean dirty = false;
-    private long clientStart;
 
     private ReactionChamberRecipe cachedTask = null;
 
@@ -105,24 +106,29 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         this.setPowerSides(getGridConnectableSides(getOrientation()));
     }
 
-    public long getClientStart() {
-        return this.clientStart;
-    }
-
-    private void setClientStart(long clientStart) {
-        this.clientStart = clientStart;
-    }
-
     public boolean isWorking() {
         return this.working;
     }
 
     public void setWorking(boolean working) {
-        if (working && !this.working) {
-            setClientStart(System.currentTimeMillis());
+        if (working != this.working) {
+            updateBlockState(working);
             this.markForUpdate();
         }
         this.working = working;
+    }
+
+    private void updateBlockState(boolean working) {
+        if (this.level == null || this.notLoaded() || this.isRemoved()) {
+            return;
+        }
+
+        final BlockState current = this.level.getBlockState(this.worldPosition);
+        final BlockState newState = current.setValue(ReactionChamberBlock.WORKING, working);
+
+        if (current != newState) {
+            this.level.setBlock(this.worldPosition, newState, Block.UPDATE_CLIENTS);
+        }
     }
 
     public int getMaxProcessingTime() {
@@ -141,14 +147,14 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     protected void saveVisualState(CompoundTag data) {
         super.saveVisualState(data);
 
-        data.putBoolean("isWorking", isWorking());
+        data.putBoolean("working", isWorking());
     }
 
     @Override
     protected void loadVisualState(CompoundTag data) {
         super.loadVisualState(data);
 
-        setWorking(data.getBoolean("isWorking"));
+        setWorking(data.getBoolean("working"));
     }
 
     @Override
@@ -433,6 +439,13 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
         super.saveAdditional(data, registries);
         this.fluidInv.writeToChildTag(data, "tank", registries);
+
+        ListTag outputTags = new ListTag();
+        for (var side : this.allowedOutputs) {
+            outputTags.add(StringTag.valueOf(side.name()));
+        }
+        data.put("outputs", outputTags);
+
         this.upgrades.writeToNBT(data, "upgrades", registries);
         this.configManager.writeToNBT(data, registries);
     }
@@ -441,6 +454,16 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
         super.loadTag(data, registries);
         this.fluidInv.readFromChildTag(data, "tank", registries);
+
+        this.allowedOutputs.clear();
+        ListTag outputTags = data.getList("outputs", Tag.TAG_STRING);
+        if (!outputTags.isEmpty()) {
+            for (var x = 0; x < outputTags.size(); x++) {
+                RelativeSide side = Enum.valueOf(RelativeSide.class, outputTags.getString(x));
+                this.allowedOutputs.add(side);
+            }
+        }
+
         this.upgrades.readFromNBT(data, "upgrades", registries);
         this.configManager.readFromNBT(data, registries);
     }
@@ -510,6 +533,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     public void updateOutputSides(EnumSet<RelativeSide> allowedOutputs) {
         this.allowedOutputs = allowedOutputs;
+        saveChanges();
     }
 
     public ItemStack getAdjacentBlock(RelativeSide side) {

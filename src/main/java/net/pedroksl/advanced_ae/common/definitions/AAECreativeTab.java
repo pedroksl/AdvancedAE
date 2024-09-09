@@ -20,7 +20,7 @@ public final class AAECreativeTab {
     static {
         DR.register("tab", () -> CreativeModeTab.builder()
                 .title(AAEText.ModName.text())
-                .icon(AAEItems.ADV_PATTERN_PROVIDER::stack)
+                .icon(AAEBlocks.ADV_PATTERN_PROVIDER::stack)
                 .displayItems(AAECreativeTab::populateTab)
                 .build());
     }

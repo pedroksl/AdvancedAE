@@ -77,7 +77,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .pattern("EME")
                 .pattern("FVF")
                 .pattern("GBG")
-                .define('E', AEItems.ENDER_DUST)
+                .define('E', AEItems.FLUIX_DUST)
                 .define('M', AEBlocks.CONDENSER)
                 .define('F', AEItems.FLUIX_DUST)
                 .define('G', Items.GLOWSTONE_DUST)

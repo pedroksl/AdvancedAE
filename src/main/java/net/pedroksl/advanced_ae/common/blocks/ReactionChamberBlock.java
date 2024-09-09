@@ -22,7 +22,7 @@ import appeng.menu.locator.MenuLocators;
 
 public class ReactionChamberBlock extends AEBaseEntityBlock<ReactionChamberEntity> {
 
-    private static final BooleanProperty WORKING = BooleanProperty.create("working");
+    public static final BooleanProperty WORKING = BooleanProperty.create("working");
 
     public ReactionChamberBlock() {
         super(metalProps().noOcclusion());
