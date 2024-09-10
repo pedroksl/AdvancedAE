@@ -60,6 +60,8 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
     private void onInit(MenuType<?> menuType, int id, Inventory ip, Object te, CallbackInfo ci) {
         if (te instanceof AdvCraftingBlockEntity advEntity) {
             var cluster = advEntity.getCluster();
+            if (cluster == null) return;
+
             var active = cluster.getActiveCPUs();
             if (!active.isEmpty()) {
                 this.setCPU(active.getFirst());

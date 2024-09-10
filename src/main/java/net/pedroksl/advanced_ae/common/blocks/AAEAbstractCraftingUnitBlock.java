@@ -31,14 +31,13 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 
 import appeng.block.AEBaseEntityBlock;
 import appeng.block.crafting.ICraftingUnitType;
-import appeng.blockentity.crafting.CraftingBlockEntity;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
-import appeng.menu.me.crafting.CraftingCPUMenu;
 
 public abstract class AAEAbstractCraftingUnitBlock<T extends AdvCraftingBlockEntity> extends AEBaseEntityBlock<T> {
     public static final BooleanProperty FORMED = BooleanProperty.create("formed");
@@ -105,9 +104,9 @@ public abstract class AAEAbstractCraftingUnitBlock<T extends AdvCraftingBlockEnt
     @Override
     protected InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof CraftingBlockEntity be && be.isFormed() && be.isActive()) {
+        if (level.getBlockEntity(pos) instanceof AdvCraftingBlockEntity be && be.isFormed() && be.isActive()) {
             if (!level.isClientSide()) {
-                MenuOpener.open(CraftingCPUMenu.TYPE, player, MenuLocators.forBlockEntity(be));
+                MenuOpener.open(AAEMenus.QUANTUM_COMPUTER, player, MenuLocators.forBlockEntity(be));
             }
 
             return InteractionResult.sidedSuccess(level.isClientSide());

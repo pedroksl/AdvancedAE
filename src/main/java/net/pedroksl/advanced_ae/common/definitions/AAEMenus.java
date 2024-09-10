@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
@@ -11,6 +12,7 @@ import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.config.OutputDirectionMenu;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
+import net.pedroksl.advanced_ae.gui.quantumcomputer.QuantumComputerMenu;
 import net.pedroksl.advanced_ae.gui.reactionchamber.ReactionChamberMenu;
 
 import appeng.api.storage.ISubMenuHost;
@@ -19,6 +21,9 @@ import appeng.menu.implementations.MenuTypeBuilder;
 
 public class AAEMenus {
     public static final DeferredRegister<MenuType<?>> DR = DeferredRegister.create(Registries.MENU, AdvancedAE.MOD_ID);
+
+    public static final MenuType<QuantumComputerMenu> QUANTUM_COMPUTER =
+            create("quantum_computer", QuantumComputerMenu::new, AdvCraftingBlockEntity.class);
 
     public static final MenuType<AdvPatternProviderMenu> ADV_PATTERN_PROVIDER =
             create("adv_pattern_provider", AdvPatternProviderMenu::new, AdvPatternProviderLogicHost.class);

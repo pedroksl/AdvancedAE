@@ -37,7 +37,7 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
     @Override
     public int getAcceleratorThreads() {
         return switch (this) {
-            case QUANTUM_ACCELERATOR, QUANTUM_CORE -> 8;
+            case QUANTUM_ACCELERATOR, QUANTUM_CORE -> AAEConfig.instance().getQuantumComputerAcceleratorThreads();
             default -> 0;
         };
     }

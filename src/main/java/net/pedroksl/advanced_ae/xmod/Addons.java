@@ -5,6 +5,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.fml.loading.moddiscovery.ModInfo;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
+import net.neoforged.neoforge.common.conditions.NotCondition;
 
 public enum Addons {
     APPFLUX("Applied Flux"),
@@ -33,5 +34,9 @@ public enum Addons {
 
     public RecipeOutput conditionalRecipe(RecipeOutput output) {
         return output.withConditions(new ModLoadedCondition(getModId()));
+    }
+
+    public RecipeOutput notConditionalRecipe(RecipeOutput output) {
+        return output.withConditions(new NotCondition(new ModLoadedCondition(getModId())));
     }
 }

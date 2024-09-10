@@ -10,10 +10,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.client.gui.AdvPatternEncoderScreen;
-import net.pedroksl.advanced_ae.client.gui.AdvPatternProviderScreen;
-import net.pedroksl.advanced_ae.client.gui.ReactionChamberScreen;
-import net.pedroksl.advanced_ae.client.gui.SmallAdvPatternProviderScreen;
+import net.pedroksl.advanced_ae.client.gui.*;
 import net.pedroksl.advanced_ae.client.gui.config.OutputDirectionScreen;
 import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
 import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
@@ -36,6 +33,9 @@ public class AAEClient {
     }
 
     private static void initScreens(RegisterMenuScreensEvent event) {
+        InitScreens.register(
+                event, AAEMenus.QUANTUM_COMPUTER, QuantumComputerScreen::new, "/screens/quantum_computer.json");
+
         InitScreens.register(
                 event,
                 AAEMenus.ADV_PATTERN_PROVIDER,

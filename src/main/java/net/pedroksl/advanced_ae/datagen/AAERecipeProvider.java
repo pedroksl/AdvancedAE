@@ -148,10 +148,19 @@ public class AAERecipeProvider extends RecipeProvider {
                 .pattern("CUC")
                 .pattern("ECE")
                 .define('E', AAEItems.SHATTERED_SINGULARITY)
+                .define('C', MEGAItems.BULK_CELL_COMPONENT)
+                .define('U', AAEBlocks.QUANTUM_UNIT)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(Addons.MEGACELLS.conditionalRecipe(c), AdvancedAE.makeId("megaquantumstorage128"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STORAGE_128M)
+                .pattern("ECE")
+                .pattern("CUC")
+                .pattern("ECE")
+                .define('E', AAEItems.SHATTERED_SINGULARITY)
                 .define('C', AEItems.CELL_COMPONENT_256K)
                 .define('U', AAEBlocks.QUANTUM_UNIT)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-                .save(c, AdvancedAE.makeId("quantumstorage128"));
+                .save(Addons.MEGACELLS.notConditionalRecipe(c), AdvancedAE.makeId("quantumstorage128"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_STORAGE_256M)
                 .requires(AAEItems.SHATTERED_SINGULARITY)
                 .requires(AAEBlocks.QUANTUM_STORAGE_128M)

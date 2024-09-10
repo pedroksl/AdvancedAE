@@ -20,12 +20,16 @@ public class AAEConfig {
         return common.quantumComputerMaxSize.get();
     }
 
+    public int getQuantumComputerAcceleratorThreads() {
+        return common.quantumComputerAcceleratorThreads.get();
+    }
+
     public int getQuantumComputerMaxMultiThreaders() {
         return common.quantumComputerMaxMultiThreaders.get();
     }
 
     public int getQuantumComputermaxDataEntanglers() {
-        return common.quantumComputermaxDataEntanglers.get();
+        return common.quantumComputerMaxDataEntanglers.get();
     }
 
     public int getQuantumComputerMultiThreaderMultiplication() {
@@ -66,8 +70,9 @@ public class AAEConfig {
         private final ModConfigSpec spec;
 
         public final ModConfigSpec.IntValue quantumComputerMaxSize;
+        public final ModConfigSpec.IntValue quantumComputerAcceleratorThreads;
         public final ModConfigSpec.IntValue quantumComputerMaxMultiThreaders;
-        public final ModConfigSpec.IntValue quantumComputermaxDataEntanglers;
+        public final ModConfigSpec.IntValue quantumComputerMaxDataEntanglers;
         public final ModConfigSpec.IntValue quantumComputerMultiThreaderMultiplication;
         public final ModConfigSpec.IntValue quantumComputerDataEntanglerMultiplication;
 
@@ -80,8 +85,15 @@ public class AAEConfig {
                     "quantumComputerMaxSize",
                     5,
                     5,
-                    16,
+                    12,
                     "Define the maximum dimensions of the Quantum Computer Multiblock.");
+            quantumComputerAcceleratorThreads = define(
+                    builder,
+                    "quantumComputerAcceleratorThreads",
+                    8,
+                    4,
+                    16,
+                    "Define the maximum amount of multi threaders per Quantum Computer Multiblock.");
             quantumComputerMaxMultiThreaders = define(
                     builder,
                     "quantumComputerMaxMultiThreaders",
@@ -89,7 +101,7 @@ public class AAEConfig {
                     0,
                     2,
                     "Define the maximum amount of multi threaders per Quantum Computer Multiblock.");
-            quantumComputermaxDataEntanglers = define(
+            quantumComputerMaxDataEntanglers = define(
                     builder,
                     "quantumComputermaxDataEntanglers",
                     1,
