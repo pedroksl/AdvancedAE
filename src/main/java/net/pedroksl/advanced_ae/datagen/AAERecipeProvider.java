@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.datagen;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.glodblock.github.appflux.common.AFSingletons;
@@ -15,6 +16,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.AndCondition;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
@@ -241,13 +244,8 @@ public class AAERecipeProvider extends RecipeProvider {
                 .fluid(Fluids.WATER, 500)
                 .save(c, "entroingot");
 
-        if (Addons.APPFLUX.isLoaded()) {
-            loadAppFluxRecipes(c);
-        }
-
-        if (Addons.MEGACELLS.isLoaded()) {
-            loadMegaCellsRecipes(c);
-        }
+        loadAppFluxRecipes(c);
+        loadMegaCellsRecipes(c);
     }
 
     private void loadAppFluxRecipes(@NotNull RecipeOutput c) {
@@ -256,7 +254,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(AEItems.FLUIX_CRYSTAL, 16)
                 .input(Items.GLOWSTONE_DUST, 16)
                 .fluid(Fluids.WATER, 500)
-                .save(c, "redstonecrystal");
+                .save(Addons.APPFLUX.conditionalRecipe(c), "redstonecrystal");
     }
 
     private void loadMegaCellsRecipes(@NotNull RecipeOutput c) {
@@ -265,21 +263,23 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(Items.IRON_INGOT, 16)
                 .input(AEBlocks.SKY_STONE_BLOCK, 16)
                 .fluid(Fluids.LAVA, 500)
-                .save(c, "skysteel");
+                .save(Addons.MEGACELLS.conditionalRecipe(c), "skysteel");
         ReactionChamberRecipeBuilder.react(MEGAItems.SKY_BRONZE_INGOT, 64, 20000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
                 .input(Items.COPPER_INGOT, 16)
                 .input(AEBlocks.SKY_STONE_BLOCK, 16)
                 .fluid(Fluids.LAVA, 500)
-                .save(c, "skybronze");
+                .save(Addons.MEGACELLS.conditionalRecipe(c), "skybronze");
 
-        if (Addons.MEKANISM.isLoaded()) {
-            ReactionChamberRecipeBuilder.react(MEGAItems.SKY_OSMIUM_INGOT, 64, 20000)
-                    .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
-                    .input(MekanismItems.PROCESSED_RESOURCES.get(ResourceType.INGOT, PrimaryResource.OSMIUM), 16)
-                    .input(AEBlocks.SKY_STONE_BLOCK, 16)
-                    .fluid(Fluids.LAVA, 500)
-                    .save(c, "skyosmium");
-        }
+        ReactionChamberRecipeBuilder.react(MEGAItems.SKY_OSMIUM_INGOT, 32, 20000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
+                .input(MekanismItems.PROCESSED_RESOURCES.get(ResourceType.INGOT, PrimaryResource.OSMIUM), 16)
+                .input(AEBlocks.SKY_STONE_BLOCK, 16)
+                .fluid(Fluids.LAVA, 500)
+                .save(
+                        c.withConditions(new AndCondition(List.of(
+                                new ModLoadedCondition(Addons.MEGACELLS.getModId()),
+                                new ModLoadedCondition(Addons.MEKANISM.getModId())))),
+                        "skyosmium");
     }
 }
