@@ -55,14 +55,11 @@ public class EMIPlugin implements EmiPlugin {
 
     public static EmiIngredient stackOf(IngredientStack.Fluid stack) {
         FluidIngredient ingredient = stack.getIngredient();
-        List<EmiIngredient> list = new ArrayList();
-        FluidStack[] var3 = ingredient.getStacks();
-        int var4 = var3.length;
-
-        for (int var5 = 0; var5 < var4; ++var5) {
-            FluidStack fluid = var3[var5];
-            list.add(EmiStack.of(fluid.getFluid(), stack.getAmount()));
-        }
+        List<EmiIngredient> list = new ArrayList<>();
+        FluidStack[] stacks = ingredient.getStacks();
+        for (FluidStack fluid : stacks) {
+		    list.add(EmiStack.of(fluid.getFluid(), stack.getAmount()));
+	    }
 
         return EmiIngredient.of(list, stack.getAmount());
     }

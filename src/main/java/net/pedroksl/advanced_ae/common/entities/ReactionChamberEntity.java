@@ -1,7 +1,6 @@
 package net.pedroksl.advanced_ae.common.entities;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -289,18 +288,18 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
         if (this.hasCraftWork()) {
             this.setWorking(true);
-            AtomicBoolean gridEnergy = new AtomicBoolean(false);
-            final int speedFactor =
-                    switch (this.upgrades.getInstalledUpgrades(AEItems.SPEED_CARD)) {
-                        default -> 2; // 116 ticks
-                        case 1 -> 3; // 83 ticks
-                        case 2 -> 5; // 56 ticks
-                        case 3 -> 10; // 36 ticks
-                        case 4 -> 50; // 20 ticks
-                    };
             getMainNode().ifPresent(grid -> {
                 IEnergyService eg = grid.getEnergyService();
                 IEnergySource src = this;
+
+                final int speedFactor =
+                        switch (this.upgrades.getInstalledUpgrades(AEItems.SPEED_CARD)) {
+                            default -> 2; // 116 ticks
+                            case 1 -> 3; // 83 ticks
+                            case 2 -> 5; // 56 ticks
+                            case 3 -> 10; // 36 ticks
+                            case 4 -> 50; // 20 ticks
+                        };
 
                 final int progressReq = MAX_PROCESSING_STEPS - this.getProcessingTime();
                 final float powerRatio = progressReq < speedFactor ? (float) progressReq / speedFactor : 1;
@@ -308,7 +307,6 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                 final int powerConsumption = Mth.floor(((float) getTask().getEnergy() / requiredTicks) * powerRatio);
                 final double powerThreshold = powerConsumption - 0.01;
                 double powerReq = this.extractAEPower(powerConsumption, Actionable.SIMULATE, PowerMultiplier.CONFIG);
-
 
                 if (powerReq <= powerThreshold) {
                     src = eg;
@@ -318,36 +316,17 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                 if (powerReq > powerThreshold) {
                     src.extractAEPower(powerConsumption, Actionable.MODULATE, PowerMultiplier.CONFIG);
                     this.setProcessingTime(this.getProcessingTime() + speedFactor);
-                } else if (powerReq != 0){
+                } else if (powerReq != 0) {
                     var factor = Mth.floor(speedFactor / (powerConsumption - powerReq));
                     if (factor > 1) {
-                        src.extractAEPower((double) (powerConsumption * factor) / speedFactor, Actionable.MODULATE,
+                        src.extractAEPower(
+                                (double) (powerConsumption * factor) / speedFactor,
+                                Actionable.MODULATE,
                                 PowerMultiplier.CONFIG);
                         this.setProcessingTime(this.getProcessingTime() + factor);
                     }
                 }
             });
-            if (!gridEnergy.get()) {
-                var storage = this.getEnergyStorage(null);
-
-                final int progressReq = MAX_PROCESSING_STEPS - this.getProcessingTime();
-                final float powerRatio = progressReq < speedFactor ? (float) progressReq / speedFactor : 1;
-                final int requiredTicks = Mth.ceil((float) MAX_PROCESSING_STEPS / speedFactor);
-                final int powerConsumption = Mth.floor(((float) getTask().getEnergy() / requiredTicks) * powerRatio);
-                final double powerThreshold = powerConsumption - 0.01;
-                double powerReq = storage.extractEnergy(powerConsumption, Actionable.SIMULATE.isSimulate());
-
-                if (powerReq > powerThreshold) {
-                    storage.extractEnergy(powerConsumption, Actionable.MODULATE.isSimulate());
-                    this.setProcessingTime(this.getProcessingTime() + speedFactor);
-                } else if (powerReq != 0) {
-                    var factor = Mth.floor(speedFactor / (powerConsumption - powerReq));
-                    if (factor > 1) {
-                        storage.extractEnergy(powerConsumption * factor / speedFactor, Actionable.MODULATE.isSimulate());
-                        this.setProcessingTime(this.getProcessingTime() + factor);
-                    }
-                }
-            }
 
             if (this.getProcessingTime() >= this.getMaxProcessingTime()) {
                 this.setProcessingTime(0);
