@@ -299,14 +299,16 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                         case 4 -> 50; // 20 ticks
                     };
             getMainNode().ifPresent(grid -> {
-                gridEnergy.set(true);
                 IEnergyService eg = grid.getEnergyService();
                 IEnergySource src = this;
 
+                final int progressReq = MAX_PROCESSING_STEPS - this.getProcessingTime();
+                final float powerRatio = progressReq < speedFactor ? (float) progressReq / speedFactor : 1;
                 final int requiredTicks = Mth.ceil((float) MAX_PROCESSING_STEPS / speedFactor);
-                final int powerConsumption = getTask().getEnergy() / requiredTicks;
+                final int powerConsumption = Mth.floor(((float) getTask().getEnergy() / requiredTicks) * powerRatio);
                 final double powerThreshold = powerConsumption - 0.01;
                 double powerReq = this.extractAEPower(powerConsumption, Actionable.SIMULATE, PowerMultiplier.CONFIG);
+
 
                 if (powerReq <= powerThreshold) {
                     src = eg;
@@ -316,19 +318,34 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                 if (powerReq > powerThreshold) {
                     src.extractAEPower(powerConsumption, Actionable.MODULATE, PowerMultiplier.CONFIG);
                     this.setProcessingTime(this.getProcessingTime() + speedFactor);
+                } else if (powerReq != 0){
+                    var factor = Mth.floor(speedFactor / (powerConsumption - powerReq));
+                    if (factor > 1) {
+                        src.extractAEPower((double) (powerConsumption * factor) / speedFactor, Actionable.MODULATE,
+                                PowerMultiplier.CONFIG);
+                        this.setProcessingTime(this.getProcessingTime() + factor);
+                    }
                 }
             });
             if (!gridEnergy.get()) {
                 var storage = this.getEnergyStorage(null);
 
+                final int progressReq = MAX_PROCESSING_STEPS - this.getProcessingTime();
+                final float powerRatio = progressReq < speedFactor ? (float) progressReq / speedFactor : 1;
                 final int requiredTicks = Mth.ceil((float) MAX_PROCESSING_STEPS / speedFactor);
-                final int powerConsumption = getTask().getEnergy() / requiredTicks;
+                final int powerConsumption = Mth.floor(((float) getTask().getEnergy() / requiredTicks) * powerRatio);
                 final double powerThreshold = powerConsumption - 0.01;
                 double powerReq = storage.extractEnergy(powerConsumption, Actionable.SIMULATE.isSimulate());
 
                 if (powerReq > powerThreshold) {
                     storage.extractEnergy(powerConsumption, Actionable.MODULATE.isSimulate());
                     this.setProcessingTime(this.getProcessingTime() + speedFactor);
+                } else if (powerReq != 0) {
+                    var factor = Mth.floor(speedFactor / (powerConsumption - powerReq));
+                    if (factor > 1) {
+                        storage.extractEnergy(powerConsumption * factor / speedFactor, Actionable.MODULATE.isSimulate());
+                        this.setProcessingTime(this.getProcessingTime() + factor);
+                    }
                 }
             }
 
