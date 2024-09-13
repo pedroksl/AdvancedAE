@@ -78,8 +78,10 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
         if (this.level == null || this.notLoaded() || this.isRemoved()) {
             return AAEBlocks.QUANTUM_UNIT.block();
         }
-        return (AAEAbstractCraftingUnitBlock<?>)
-                this.level.getBlockState(this.worldPosition).getBlock();
+        var block = this.level.getBlockState(this.worldPosition).getBlock();
+        return block instanceof AAEAbstractCraftingUnitBlock
+                ? (AAEAbstractCraftingUnitBlock<?>) block
+                : AAEBlocks.QUANTUM_UNIT.block();
     }
 
     public long getStorageBytes() {
