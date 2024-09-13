@@ -1,0 +1,49 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "megacells"
+        },
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "mekanism"
+        }
+      ]
+    }
+  ],
+  "type": "advanced_ae:reaction",
+  "input_energy": 20000,
+  "input_fluid": {
+    "amount": 500,
+    "ingredient": {
+      "fluid": "minecraft:lava"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 16,
+      "ingredient": {
+        "item": "ae2:charged_certus_quartz_crystal"
+      }
+    },
+    {
+      "amount": 16,
+      "ingredient": {
+        "item": "mekanism:ingot_osmium"
+      }
+    },
+    {
+      "amount": 16,
+      "ingredient": {
+        "item": "ae2:sky_stone_block"
+      }
+    }
+  ],
+  "output": {
+    "count": 32,
+    "id": "megacells:sky_osmium_ingot"
+  }
+}

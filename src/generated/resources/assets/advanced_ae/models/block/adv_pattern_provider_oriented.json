@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "advanced_ae:block/adv_pattern_provider_back",
+    "side": "advanced_ae:block/adv_pattern_provider_alt",
+    "top": "advanced_ae:block/adv_pattern_provider_front"
+  }
+}

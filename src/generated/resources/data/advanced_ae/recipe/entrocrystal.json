@@ -1,0 +1,28 @@
+{
+  "type": "advanced_ae:reaction",
+  "input_energy": 100000,
+  "input_fluid": {
+    "amount": 500,
+    "ingredient": {
+      "fluid": "minecraft:water"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 32,
+      "ingredient": {
+        "item": "extendedae:entro_dust"
+      }
+    },
+    {
+      "amount": 32,
+      "ingredient": {
+        "item": "ae2:fluix_crystal"
+      }
+    }
+  ],
+  "output": {
+    "count": 64,
+    "id": "extendedae:entro_crystal"
+  }
+}

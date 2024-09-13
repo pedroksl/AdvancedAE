@@ -21,7 +21,6 @@ build
 eclipse
 run
 run-data/
-src/generated
 mcmodsrepo
 repo
 

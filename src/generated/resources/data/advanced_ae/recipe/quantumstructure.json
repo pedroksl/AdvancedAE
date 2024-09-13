@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "Q": {
+      "item": "ae2:quartz_glass"
+    },
+    "S": {
+      "item": "ae2:sky_stone_block"
+    }
+  },
+  "pattern": [
+    "QSQ",
+    "S S",
+    "QSQ"
+  ],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:quantum_structure"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "ae2:item/cable_pattern_provider",
+  "textures": {
+    "back": "advanced_ae:part/adv_pattern_provider_back",
+    "front": "advanced_ae:part/adv_pattern_provider",
+    "sides": "advanced_ae:part/adv_pattern_provider_sides"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "variants": {
+    "connection_state=false,push_direction=all": {
+      "model": "advanced_ae:block/small_adv_pattern_provider"
+    },
+    "connection_state=false,push_direction=down": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 180
+    },
+    "connection_state=false,push_direction=east": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 90,
+      "y": 90
+    },
+    "connection_state=false,push_direction=north": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 90
+    },
+    "connection_state=false,push_direction=south": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 90,
+      "y": 180
+    },
+    "connection_state=false,push_direction=up": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented"
+    },
+    "connection_state=false,push_direction=west": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 90,
+      "y": 270
+    },
+    "connection_state=true,push_direction=all": {
+      "model": "advanced_ae:block/small_adv_pattern_provider"
+    },
+    "connection_state=true,push_direction=down": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 180
+    },
+    "connection_state=true,push_direction=east": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 90,
+      "y": 90
+    },
+    "connection_state=true,push_direction=north": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 90
+    },
+    "connection_state=true,push_direction=south": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 90,
+      "y": 180
+    },
+    "connection_state=true,push_direction=up": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented"
+    },
+    "connection_state=true,push_direction=west": {
+      "model": "advanced_ae:block/small_adv_pattern_provider_oriented",
+      "x": 90,
+      "y": 270
+    }
+  }
+}
