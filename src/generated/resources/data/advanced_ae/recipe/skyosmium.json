@@ -15,7 +15,7 @@
     }
   ],
   "type": "advanced_ae:reaction",
-  "input_energy": 20000,
+  "input_energy": 200000,
   "input_fluid": {
     "amount": 500,
     "ingredient": {
@@ -43,7 +43,7 @@
     }
   ],
   "output": {
-    "count": 32,
+    "count": 64,
     "id": "megacells:sky_osmium_ingot"
   }
 }

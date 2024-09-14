@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.renderer.RenderType;
@@ -38,11 +40,11 @@ abstract class AAECraftingCubeBakedModel implements IDynamicBakedModel {
     }
 
     @Override
-    public List<BakedQuad> getQuads(
+    public @NotNull List<BakedQuad> getQuads(
             @Nullable BlockState state,
             @Nullable Direction side,
-            RandomSource rand,
-            ModelData extraData,
+            @NotNull RandomSource rand,
+            @NotNull ModelData extraData,
             RenderType renderType) {
         if (side == null) {
             return Collections.emptyList(); // No generic quads for this model
@@ -136,7 +138,6 @@ abstract class AAECraftingCubeBakedModel implements IDynamicBakedModel {
                     }
                     case UP -> {
                         y1 = 14.0f;
-                        y2 = 16;
                     }
                     case WEST -> {
                         x1 = 0;
@@ -144,7 +145,6 @@ abstract class AAECraftingCubeBakedModel implements IDynamicBakedModel {
                     }
                     case EAST -> {
                         x1 = 14;
-                        x2 = 16;
                     }
                     case NORTH -> {
                         z1 = 0;
@@ -152,7 +152,6 @@ abstract class AAECraftingCubeBakedModel implements IDynamicBakedModel {
                     }
                     case SOUTH -> {
                         z1 = 14;
-                        z2 = 16;
                     }
                 }
 
@@ -249,7 +248,7 @@ abstract class AAECraftingCubeBakedModel implements IDynamicBakedModel {
     }
 
     @Override
-    public TextureAtlasSprite getParticleIcon() {
+    public @NotNull TextureAtlasSprite getParticleIcon() {
         return this.ringCorner;
     }
 
@@ -259,12 +258,13 @@ abstract class AAECraftingCubeBakedModel implements IDynamicBakedModel {
     }
 
     @Override
-    public ItemOverrides getOverrides() {
+    public @NotNull ItemOverrides getOverrides() {
         return ItemOverrides.EMPTY;
     }
 
+    @ParametersAreNonnullByDefault
     @Override
-    public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
+    public @NotNull ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
         return RENDER_TYPES;
     }
 }

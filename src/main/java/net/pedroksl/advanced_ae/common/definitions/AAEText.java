@@ -26,6 +26,10 @@ public enum AAEText implements LocalizationEnum {
     TankAmount("%s mb / %s mb", Type.TOOLTIP),
 
     ReactionChamberEnergy("Used Power: %d" + "k FE", Type.EMI_TEXT),
+    ShatteredSingularityDescription(
+            "This item is produced by chemical reaction in the reaction chamber and has "
+                    + "several applications in quantum computing.",
+            Type.EMI_TEXT),
 
     PatternProviderUpgrade(
             "Upgrades a normal or extended pattern provider to the advanced version with the same "

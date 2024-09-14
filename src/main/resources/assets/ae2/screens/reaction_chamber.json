@@ -1,6 +1,10 @@
 {
 	"$schema": "schema.json",
-	"includes": ["common/common.json", "common/player_inventory.json", "common/toolbox.json"],
+	"includes": [
+		"common/common.json",
+		"common/player_inventory.json",
+		"common/toolbox.json"
+	],
 	"text": {
 		"dialog_title": {
 			"text": {
@@ -33,8 +37,8 @@
 	},
 	"images": {
 		"progressBar": {
-		  "texture": "guis/reaction_chamber.png",
-		  "srcRect": [176, 0, 6, 18]
+			"texture": "guis/reaction_chamber.png",
+			"srcRect": [176, 0, 6, 18]
 		}
 	},
 	"widgets": {
@@ -43,8 +47,8 @@
 			"top": 58
 		},
 		"progressBar": {
-		  "left": 142,
-		  "top": 27
+			"left": 142,
+			"top": 27
 		}
 	}
 }
