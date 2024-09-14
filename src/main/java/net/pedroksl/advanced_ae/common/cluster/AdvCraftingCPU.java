@@ -85,6 +85,10 @@ public class AdvCraftingCPU implements ICraftingCPU {
         return cluster.getSelectionMode();
     }
 
+    public boolean isInventoryEmpty() {
+        return this.getInventory().list.isEmpty();
+    }
+
     public void markDirty() {
         cluster.markDirty();
     }
@@ -107,6 +111,10 @@ public class AdvCraftingCPU implements ICraftingCPU {
 
     public ListCraftingInventory getInventory() {
         return craftingLogic.getInventory();
+    }
+
+    public void deactivate() {
+        cluster.deactivate(plan);
     }
 
     public IActionSource getSrc() {

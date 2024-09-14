@@ -62,6 +62,8 @@ public class AdvCraftingCPULogic {
 
     private long lastModifiedOnTick = TickHandler.instance().getCurrentTick();
 
+    private boolean markedForDeletion = false;
+
     public AdvCraftingCPULogic(AdvCraftingCPU cpu) {
         this.cpu = cpu;
     }
@@ -118,6 +120,10 @@ public class AdvCraftingCPULogic {
             this.storeItems();
             if (!this.inventory.list.isEmpty()) {
                 cantStoreItems = true;
+            } else {
+                if (markedForDeletion) {
+                    cpu.deactivate();
+                }
             }
             return;
         }
@@ -308,7 +314,9 @@ public class AdvCraftingCPULogic {
         // TODO: log
 
         // Clear waitingFor list and post all the relevant changes.
-        job.waitingFor.clear();
+        if (!success) {
+            job.waitingFor.clear();
+        }
         // Notify opened menus of cancelled scheduled tasks.
         for (var entry : job.tasks.entrySet()) {
             for (var output : entry.getKey().getOutputs()) {
@@ -504,5 +512,13 @@ public class AdvCraftingCPULogic {
                     jobId, job.finalOutput.what(), job.finalOutput.amount(), job.remainingAmount, status);
             connectedPlayer.connection.send(message);
         }
+    }
+
+    public boolean isMarkedForDeletion() {
+        return this.markedForDeletion;
+    }
+
+    public void markForDeletion() {
+        this.markedForDeletion = true;
     }
 }
