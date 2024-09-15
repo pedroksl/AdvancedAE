@@ -41,7 +41,7 @@ standalone computer, power must be provided through the Up or Down sides, where 
 <BlockImage id="advanced_ae:quantum_storage_256" scale="4"></BlockImage>
 </Row>
 
-These block expand the crafting storage of the quantum core. They effectively increase the amount of concurrent tasks
+These blocks expand the crafting storage of the quantum core. They effectively increase the amount of concurrent tasks
 the quantum computer is able to run. There are two variations, with 128M and 256M of capacity.
 
 ## Quantum Data Entangler
@@ -64,7 +64,7 @@ in a great amount of these.
 
 <BlockImage id="advanced_ae:quantum_multi_threader" scale="4"></BlockImage>
 
-Similarly to the Data Entanglers, multi-threaders enable accelerators to run extra thread in separate dimensions,
+Similarly to the Data Entanglers, multi-threaders enable accelerators to run extra threads in separate dimensions,
 multiplying their co-processing power by 4. Only one of these can be placed in each quantum computer multiblock.
 
 ## Quantum Structure
@@ -75,7 +75,7 @@ multiplying their co-processing power by 4. Only one of these can be placed in e
 <BlockImage id="advanced_ae:quantum_structure" p:formed="true" p:powered="true" scale="4"></BlockImage>
 </Row>
 
-These block provide the framing of the quantum computer. They are used as a building block for the quantum computer and
+These blocks provide the framing of the quantum computer. They are used as a building block for the quantum computer and
 connect everything together.
 
 ## The multiblock
@@ -89,3 +89,15 @@ for no additional benefits;
 - At most one <ItemLink id="advanced_ae:quantum_multi_threader" />;
 - All blocks on the outside layer must be <ItemLink id="advanced_ae:quantum_structure" />;
 - No block on the inside can be <ItemLink id="advanced_ae:quantum_structure" />.
+
+## Server Configs
+
+Several values can be tweak by server configs. Such as:
+- Maximum multiblock size;
+- Co-processors in each Quantum Accelerator;
+- Maximum amount of Quantum Multi-Threaders;
+- Multi-Threader thread multiplication value;
+- Maximum amount of Data Entanglers;
+- Data Entangler storage multiplication value;
+
+The limits for your instance can be checked using the item's tooltips.
