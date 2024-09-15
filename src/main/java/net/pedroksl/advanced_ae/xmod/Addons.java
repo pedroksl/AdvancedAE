@@ -8,6 +8,7 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 
 public enum Addons {
+    EXTENDEDAE("Extended AE"),
     APPFLUX("Applied Flux"),
     MEGACELLS("MEGACells"),
     MEKANISM("Mekanism");

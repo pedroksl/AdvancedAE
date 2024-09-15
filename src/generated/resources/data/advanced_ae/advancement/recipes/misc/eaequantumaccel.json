@@ -1,11 +1,8 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:mod_loaded",
-        "modid": "extendedae"
-      }
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
     }
   ],
   "parent": "minecraft:recipes/root",
@@ -22,7 +19,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantumaccel"
+        "recipe": "advanced_ae:eaequantumaccel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -35,7 +32,7 @@
   ],
   "rewards": {
     "recipes": [
-      "advanced_ae:quantumaccel"
+      "advanced_ae:eaequantumaccel"
     ]
   }
 }

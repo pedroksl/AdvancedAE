@@ -5,8 +5,8 @@ import java.util.Iterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.pedroksl.advanced_ae.AAEConfig;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
+import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 
 import appeng.api.networking.IGrid;

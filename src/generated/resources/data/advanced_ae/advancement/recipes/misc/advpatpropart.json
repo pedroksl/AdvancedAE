@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "extendedae:ex_pattern_provider"
+            "items": "ae2:pattern_provider"
           }
         ]
       },

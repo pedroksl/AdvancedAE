@@ -1,8 +1,8 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
 import net.minecraft.world.item.Item;
-import net.pedroksl.advanced_ae.AAEConfig;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 
 import appeng.block.crafting.ICraftingUnitType;
 import appeng.core.definitions.BlockDefinition;

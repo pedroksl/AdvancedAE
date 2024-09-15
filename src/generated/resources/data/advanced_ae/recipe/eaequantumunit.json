@@ -1,11 +1,8 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:mod_loaded",
-        "modid": "extendedae"
-      }
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
     }
   ],
   "type": "minecraft:crafting_shapeless",
@@ -18,10 +15,7 @@
       "item": "ae2:singularity"
     },
     {
-      "item": "advanced_ae:shattered_singularity"
-    },
-    {
-      "item": "advanced_ae:shattered_singularity"
+      "item": "extendedae:concurrent_processor"
     }
   ],
   "result": {

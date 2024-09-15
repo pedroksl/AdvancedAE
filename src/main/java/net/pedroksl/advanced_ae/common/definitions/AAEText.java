@@ -6,10 +6,21 @@ import appeng.core.localization.LocalizationEnum;
 
 public enum AAEText implements LocalizationEnum {
     ModName("Advanced AE", Type.GUI),
-    AcceleratorThreads("Provides 8 co-processing threads per block.", Type.TOOLTIP),
-    CoreTooltip("Provides 256M crafting storage and 8 co-processing threads.", Type.TOOLTIP),
+    QuantumStructureTooltip(
+            "Used in the outside layer of the Quantum Computer Multiblock. Maximum multiblock size is %1$dx%1$dx%1$d.",
+            Type.TOOLTIP),
+    AcceleratorThreads("Provides %d co-processing threads per block.", Type.TOOLTIP),
+    MultiThreaderMultiplication(
+            "Multiplies the amount of co-processors in the Quantum Computer Multiblock by %d. Limited to %d per multiblock.",
+            Type.TOOLTIP),
+    DataEntanglerMultiplication(
+            "Multiplies the total storage in the Quantum Computer Multiblock by %d. Limited to %d per multiblock.",
+            Type.TOOLTIP),
+    CoreTooltip("Provides 256M crafting storage and %d co-processing threads.", Type.TOOLTIP),
     AdvPatternProvider("ME Adv. Pattern Provider", Type.GUI),
-    AdvPatternEncoder("Advanced Pattern Provider", Type.GUI),
+    AdvPatternProviderEmiDesc(
+            "Created by upgrading an Advanced Pattern Provider with a capacity upgrade", Type.EMI_TEXT),
+    AdvPatternEncoder("Advanced Pattern Encoder", Type.GUI),
     ReactionChamber("Reaction Chamber", Type.GUI),
     EmiReactionChamber("Reaction Chamber", Type.EMI_CATEGORY),
     AnyButton("Target the face adjacent to the adv. pattern provider", Type.TOOLTIP),
@@ -41,7 +52,7 @@ public enum AAEText implements LocalizationEnum {
     private final String englishText;
     private final Type type;
 
-    public static final int TOOLTIP_DEFAULT_COLOR = 0x5E5E5E;
+    public static final int TOOLTIP_DEFAULT_COLOR = 0x7E7E7E;
 
     AAEText(String englishText, Type type) {
         this.englishText = englishText;

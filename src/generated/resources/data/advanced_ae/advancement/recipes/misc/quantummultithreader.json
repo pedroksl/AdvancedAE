@@ -14,7 +14,7 @@
       "conditions": {
         "items": [
           {
-            "items": "ae2:singularity"
+            "items": "advanced_ae:quantum_unit"
           }
         ]
       },
@@ -22,7 +22,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantumaccel"
+        "recipe": "advanced_ae:quantummultithreader"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -35,7 +35,7 @@
   ],
   "rewards": {
     "recipes": [
-      "advanced_ae:quantumaccel"
+      "advanced_ae:quantummultithreader"
     ]
   }
 }

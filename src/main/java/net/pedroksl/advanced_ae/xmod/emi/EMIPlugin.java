@@ -15,6 +15,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.xmod.emi.recipes.EMIReactionChamberRecipe;
 
@@ -35,6 +36,7 @@ public class EMIPlugin implements EmiPlugin {
         registry.addCategory(EMIReactionChamberRecipe.CATEGORY);
         registry.addWorkstation(EMIReactionChamberRecipe.CATEGORY, EmiStack.of(AAEBlocks.REACTION_CHAMBER.stack()));
         adaptRecipeType(registry, ReactionChamberRecipe.TYPE, EMIReactionChamberRecipe::new);
+        addInfo(registry, AAEBlocks.ADV_PATTERN_PROVIDER, AAEText.AdvPatternProviderEmiDesc.text());
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void adaptRecipeType(

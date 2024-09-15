@@ -1,30 +1,35 @@
 {
-  "type": "extendedae:crystal_assembler",
-  "input_items": [
+  "neoforge:conditions": [
     {
-      "ingredient": {
-        "item": "advanced_ae:quantum_unit"
-      }
-    },
-    {
-      "ingredient": {
-        "item": "advanced_ae:quantum_core"
-      }
-    },
-    {
-      "amount": 8,
-      "ingredient": {
-        "item": "advanced_ae:shattered_singularity"
-      }
-    },
-    {
-      "amount": 4,
-      "ingredient": {
-        "item": "advanced_ae:quantum_storage_256"
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:mod_loaded",
+        "modid": "extendedae"
       }
     }
   ],
-  "output": {
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_core"
+    },
+    "Q": {
+      "item": "advanced_ae:quantum_storage_256"
+    },
+    "S": {
+      "item": "advanced_ae:shattered_singularity"
+    },
+    "U": {
+      "item": "advanced_ae:quantum_unit"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "QUQ",
+    "QCQ"
+  ],
+  "result": {
     "count": 1,
     "id": "advanced_ae:data_entangler"
   }
