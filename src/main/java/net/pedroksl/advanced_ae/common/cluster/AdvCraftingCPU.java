@@ -106,6 +106,10 @@ public class AdvCraftingCPU implements ICraftingCPU {
         return craftingLogic.getInventory();
     }
 
+    public void deactivate() {
+        cluster.deactivate(plan);
+    }
+
     public IActionSource getSrc() {
         return cluster.getSrc();
     }

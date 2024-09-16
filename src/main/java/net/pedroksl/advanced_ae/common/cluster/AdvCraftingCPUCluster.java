@@ -233,8 +233,9 @@ public class AdvCraftingCPUCluster implements IAECluster {
     }
 
     private void killCpu(ICraftingPlan plan, boolean updateGrid) {
-        var cpu = this.activeCpus.remove(plan);
+        var cpu = this.activeCpus.get(plan);
         cpu.craftingLogic.cancel();
+        cpu.craftingLogic.markForDeletion();
         recalculateRemainingStorage();
         if (updateGrid) {
             updateGridForChangedCpu(this);
@@ -245,14 +246,21 @@ public class AdvCraftingCPUCluster implements IAECluster {
         killCpu(plan, true);
     }
 
+    protected void deactivate(ICraftingPlan plan) {
+        this.activeCpus.remove(plan);
+        recalculateRemainingStorage();
+        updateGridForChangedCpu(this);
+    }
+
     public List<AdvCraftingCPU> getActiveCPUs() {
         var list = new ArrayList<AdvCraftingCPU>();
         var killList = new ArrayList<ICraftingPlan>();
-        for (var cpu : activeCpus.entrySet()) {
-            if (cpu.getValue().craftingLogic.hasJob()) {
-                list.add(cpu.getValue());
+        for (var cpuEntry : activeCpus.entrySet()) {
+            var cpu = cpuEntry.getValue();
+            if (cpu.craftingLogic.hasJob() || cpu.craftingLogic.isMarkedForDeletion()) {
+                list.add(cpu);
             } else {
-                killList.add(cpu.getKey());
+                killList.add(cpuEntry.getKey());
             }
         }
         for (var cpu : killList) {

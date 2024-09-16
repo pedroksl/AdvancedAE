@@ -59,6 +59,8 @@ public class AdvCraftingCPULogic {
 
     private long lastModifiedOnTick = TickHandler.instance().getCurrentTick();
 
+    private boolean markedForDeletion = false;
+
     public AdvCraftingCPULogic(AdvCraftingCPU cpu) {
         this.cpu = cpu;
     }
@@ -115,6 +117,10 @@ public class AdvCraftingCPULogic {
             this.storeItems();
             if (!this.inventory.list.isEmpty()) {
                 cantStoreItems = true;
+            } else {
+                if (markedForDeletion) {
+                    cpu.deactivate();
+                }
             }
             return;
         }
@@ -497,5 +503,13 @@ public class AdvCraftingCPULogic {
                             status),
                     connectedPlayer);
         }
+    }
+
+    public boolean isMarkedForDeletion() {
+        return this.markedForDeletion;
+    }
+
+    public void markForDeletion() {
+        this.markedForDeletion = true;
     }
 }
