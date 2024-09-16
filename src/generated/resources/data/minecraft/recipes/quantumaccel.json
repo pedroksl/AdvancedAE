@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "ae2:quantum_entangled_singularity"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "S": {
+      "item": "ae2:singularity"
+    },
+    "U": {
+      "item": "advanced_ae:quantum_unit"
+    }
+  },
+  "pattern": [
+    "ESE",
+    "SUS",
+    "ENE"
+  ],
+  "result": {
+    "item": "advanced_ae:quantum_accelerator"
+  },
+  "show_notification": true
+}

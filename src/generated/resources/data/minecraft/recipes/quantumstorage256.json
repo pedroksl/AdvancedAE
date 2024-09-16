@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ae2:quantum_entangled_singularity"
+    },
+    {
+      "item": "advanced_ae:quantum_storage_128"
+    },
+    {
+      "item": "advanced_ae:quantum_storage_128"
+    },
+    {
+      "item": "advanced_ae:quantum_unit"
+    }
+  ],
+  "result": {
+    "item": "advanced_ae:quantum_storage_256"
+  }
+}
