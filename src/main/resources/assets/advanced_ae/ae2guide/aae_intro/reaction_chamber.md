@@ -37,7 +37,7 @@ Pattern Provider will also provide the grid connection (without powering it).
 
 ### Induction Cards (Extra Mod Required: Applied Flux)
 
-Induction Cards can be inserted in cable part Pattern Providers or directional Pattern Providers, to allow them to
+Induction Cards can be inserted in cable part Pattern Providers or directional Pattern Providers, allowing them to
 export power stored in Energy Cells. As long as it is setup properly, it should fill the energy storage of the Reaction
 Chamber, allowing it to work. Do note, however, that Induction Cards, as well as some other AE2 components, has a
 ramp-up timer, starting slow and increasing speed with time. This means that the crafting speed won't be maxed at first
