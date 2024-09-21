@@ -128,7 +128,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .save(Addons.EXTENDEDAE.notConditionalRecipe(c), AdvancedAE.makeId("largeappupgrade"));
         ReactionChamberRecipeBuilder.react(AAEItems.SHATTERED_SINGULARITY, 2, 200000)
                 .input(AEItems.SINGULARITY)
-                .input(AEItems.ENDER_DUST, 4)
+                .input(ConventionTags.ENDER_PEARL_DUST, 4)
                 .input(AEItems.SKY_DUST, 4)
                 .fluid(Fluids.LAVA, 100)
                 .save(c, "shatteredsingularity");
