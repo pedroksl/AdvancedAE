@@ -32,7 +32,7 @@
     {
       "amount": 16,
       "ingredient": {
-        "item": "mekanism:ingot_osmium"
+        "tag": "c:ingots/osmium"
       }
     },
     {
