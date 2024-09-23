@@ -11,7 +11,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.client.gui.config.OutputDirectionScreen;
+import net.pedroksl.advanced_ae.client.gui.OutputDirectionScreen;
 
 import appeng.api.orientation.RelativeSide;
 

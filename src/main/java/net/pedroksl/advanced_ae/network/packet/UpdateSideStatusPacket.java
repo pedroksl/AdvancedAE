@@ -6,7 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.gui.config.OutputDirectionMenu;
+import net.pedroksl.advanced_ae.gui.OutputDirectionMenu;
 
 import appeng.api.orientation.RelativeSide;
 

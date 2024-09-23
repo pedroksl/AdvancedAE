@@ -1,16 +1,17 @@
 package net.pedroksl.advanced_ae.api;
 
-import appeng.api.orientation.RelativeSide;
-import appeng.api.storage.ISubMenuHost;
+import java.util.EnumSet;
+
 import net.minecraft.world.item.ItemStack;
 
-import java.util.EnumSet;
+import appeng.api.orientation.RelativeSide;
+import appeng.api.storage.ISubMenuHost;
 
 public interface IDirectionalOutputHost extends ISubMenuHost {
 
-	EnumSet<RelativeSide> getAllowedOutputs();
+    EnumSet<RelativeSide> getAllowedOutputs();
 
-	void updateOutputSides(EnumSet<RelativeSide> sides);
+    void updateOutputSides(EnumSet<RelativeSide> sides);
 
-	ItemStack getAdjacentBlock(RelativeSide side);
+    ItemStack getAdjacentBlock(RelativeSide side);
 }

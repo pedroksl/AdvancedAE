@@ -16,7 +16,7 @@
  * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package net.pedroksl.advanced_ae.gui.widgets;
+package net.pedroksl.advanced_ae.client.gui.widgets;
 
 import java.util.function.Consumer;
 import java.util.regex.Pattern;

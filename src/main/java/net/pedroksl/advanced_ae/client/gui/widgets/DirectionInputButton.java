@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.gui.patternencoder;
+package net.pedroksl.advanced_ae.client.gui.widgets;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;

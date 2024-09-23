@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.gui.config;
+package net.pedroksl.advanced_ae.gui;
 
 import java.util.EnumSet;
 
@@ -6,14 +6,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
+import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.OutputDirectionClientUpdatePacket;
 import net.pedroksl.advanced_ae.network.packet.UpdateSideStatusPacket;
 
 import appeng.api.orientation.RelativeSide;
-import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
@@ -23,24 +22,24 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
 
     public EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
 
-    private final ISubMenuHost host;
+    private final IDirectionalOutputHost host;
 
     private static final String CLEAR = "clearSides";
 
-    public OutputDirectionMenu(int id, Inventory ip, ISubMenuHost host) {
+    public OutputDirectionMenu(int id, Inventory ip, IDirectionalOutputHost host) {
         this(AAEMenus.OUTPUT_DIRECTION, id, ip, host);
 
         registerClientAction(CLEAR, this::clearSides);
     }
 
     protected OutputDirectionMenu(
-            MenuType<? extends OutputDirectionMenu> type, int id, Inventory ip, ISubMenuHost host) {
+            MenuType<? extends OutputDirectionMenu> type, int id, Inventory ip, IDirectionalOutputHost host) {
         super(type, id, ip, host);
         this.host = host;
     }
 
     @Override
-    public ISubMenuHost getHost() {
+    public IDirectionalOutputHost getHost() {
         return this.host;
     }
 
@@ -78,7 +77,7 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
         }
 
         this.allowedOutputs.clear();
-        ((ReactionChamberEntity) this.getHost()).updateOutputSides(this.allowedOutputs);
+        this.getHost().updateOutputSides(this.allowedOutputs);
     }
 
     public void updateSideStatus(RelativeSide side) {
@@ -93,7 +92,7 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
             this.allowedOutputs.add(side);
         }
 
-        ((ReactionChamberEntity) this.getHost()).updateOutputSides(allowedOutputs);
+        this.getHost().updateOutputSides(allowedOutputs);
         AAENetworkHandler.INSTANCE.sendTo(
                 new OutputDirectionClientUpdatePacket(this.allowedOutputs), ((ServerPlayer) getPlayer()));
     }

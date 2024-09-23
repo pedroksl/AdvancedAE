@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.client.gui.config;
+package net.pedroksl.advanced_ae.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +8,10 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
-import net.pedroksl.advanced_ae.gui.config.OutputDirectionButton;
-import net.pedroksl.advanced_ae.gui.config.OutputDirectionMenu;
-import net.pedroksl.advanced_ae.gui.widgets.AAEActionButton;
-import net.pedroksl.advanced_ae.gui.widgets.AAEActionItems;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
+import net.pedroksl.advanced_ae.client.gui.widgets.OutputDirectionButton;
+import net.pedroksl.advanced_ae.gui.OutputDirectionMenu;
 
 import appeng.api.orientation.RelativeSide;
 import appeng.client.gui.AEBaseScreen;
@@ -80,7 +79,7 @@ public class OutputDirectionScreen extends AEBaseScreen<OutputDirectionMenu> {
         for (var button : this.buttons) {
             var side = button.getSide();
             if (side != null) {
-                ItemStack item = ((ReactionChamberEntity) this.getMenu().getHost()).getAdjacentBlock(side);
+                ItemStack item = this.getMenu().getHost().getAdjacentBlock(side);
                 button.setItemStack(item);
             }
         }

@@ -6,7 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
+import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
 
 public class AdvPatternEncoderUpdateRequestPacket implements IMessage {
 
@@ -20,7 +20,7 @@ public class AdvPatternEncoderUpdateRequestPacket implements IMessage {
 
     @Override
     public void onMessage(Player player) {
-        if (player.containerMenu instanceof AdvPatternEncoderContainer encoderContainer) {
+        if (player.containerMenu instanceof AdvPatternEncoderMenu encoderContainer) {
             encoderContainer.onUpdateRequested();
         }
     }

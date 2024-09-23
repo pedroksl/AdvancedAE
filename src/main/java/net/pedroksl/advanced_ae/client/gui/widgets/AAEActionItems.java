@@ -21,9 +21,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.pedroksl.advanced_ae.gui.widgets;
+package net.pedroksl.advanced_ae.client.gui.widgets;
 
 public enum AAEActionItems {
     F_FLUSH,
-    CLEAR
+    CLEAR,
+    DIRECTIONAL_OUTPUT
 }

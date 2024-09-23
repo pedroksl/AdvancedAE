@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.gui.config;
+package net.pedroksl.advanced_ae.client.gui.widgets;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
