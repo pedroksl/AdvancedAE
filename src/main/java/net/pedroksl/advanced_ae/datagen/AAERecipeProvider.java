@@ -28,10 +28,6 @@ import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
 import appeng.datagen.providers.tags.ConventionTags;
 
-import mekanism.common.registries.MekanismItems;
-import mekanism.common.resource.PrimaryResource;
-import mekanism.common.resource.ResourceType;
-
 import gripe._90.megacells.definition.MEGAItems;
 
 public class AAERecipeProvider extends RecipeProvider {
@@ -319,7 +315,7 @@ public class AAERecipeProvider extends RecipeProvider {
 
         ReactionChamberRecipeBuilder.react(MEGAItems.SKY_OSMIUM_INGOT, 64, 200000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
-                .input(MekanismItems.PROCESSED_RESOURCES.get(ResourceType.INGOT, PrimaryResource.OSMIUM), 16)
+                .input(AAEConventionTags.OSMIUM_INGOT, 16)
                 .input(AEBlocks.SKY_STONE_BLOCK, 16)
                 .fluid(Fluids.LAVA, 500)
                 .save(
