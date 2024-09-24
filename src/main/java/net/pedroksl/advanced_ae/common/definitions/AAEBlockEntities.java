@@ -10,10 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
-import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
-import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
-import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
+import net.pedroksl.advanced_ae.common.entities.*;
 
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
@@ -50,6 +47,9 @@ public final class AAEBlockEntities {
 
     public static final Supplier<BlockEntityType<ReactionChamberEntity>> REACTION_CHAMBER = create(
             "reaction_chamber", ReactionChamberEntity.class, ReactionChamberEntity::new, AAEBlocks.REACTION_CHAMBER);
+
+    public static final Supplier<BlockEntityType<QuantumCrafterEntity>> QUANTUM_CRAFTER =
+            create("quantum_craft", QuantumCrafterEntity.class, QuantumCrafterEntity::new, AAEBlocks.QUANTUM_CRAFTER);
 
     @SuppressWarnings({"DataFlowIssue", "unchecked"})
     @SafeVarargs

@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.gui.patternencoder;
+package net.pedroksl.advanced_ae.gui;
 
 import java.util.HashMap;
 
@@ -24,12 +24,12 @@ import appeng.menu.SlotSemantics;
 import appeng.menu.slot.OutputSlot;
 import appeng.menu.slot.RestrictedInputSlot;
 
-public class AdvPatternEncoderContainer extends AEBaseMenu {
+public class AdvPatternEncoderMenu extends AEBaseMenu {
     private final RestrictedInputSlot inputSlot;
     private final OutputSlot outputSlot;
     private final AdvPatternEncoderHost host;
 
-    public AdvPatternEncoderContainer(int id, Inventory playerInventory, AdvPatternEncoderHost host) {
+    public AdvPatternEncoderMenu(int id, Inventory playerInventory, AdvPatternEncoderHost host) {
         super(AAEMenus.ADV_PATTERN_ENCODER, id, playerInventory, host);
         this.createPlayerInventorySlots(playerInventory);
         this.host = host;

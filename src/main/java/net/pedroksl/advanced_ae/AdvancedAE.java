@@ -66,6 +66,8 @@ public class AdvancedAE {
     private static void initUpgrades(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Upgrades.add(AEItems.SPEED_CARD, AAEBlocks.REACTION_CHAMBER, 4);
+            Upgrades.add(AEItems.SPEED_CARD, AAEBlocks.QUANTUM_CRAFTER, 4);
+            Upgrades.add(AEItems.REDSTONE_CARD, AAEBlocks.QUANTUM_CRAFTER, 1);
 
             if (ModList.get().isLoaded("appflux")) {
                 AFCommonLoad.init();

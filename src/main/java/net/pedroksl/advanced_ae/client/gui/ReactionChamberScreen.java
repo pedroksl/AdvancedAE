@@ -2,9 +2,9 @@ package net.pedroksl.advanced_ae.client.gui;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.pedroksl.advanced_ae.gui.reactionchamber.ReactionChamberMenu;
-import net.pedroksl.advanced_ae.gui.widgets.AAEActionButton;
-import net.pedroksl.advanced_ae.gui.widgets.AAEActionItems;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
+import net.pedroksl.advanced_ae.gui.ReactionChamberMenu;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;

@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-15T14:56:16.2096852	Recipes
+// 1.21.1	2024-09-23T19:07:49.4676142	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -49,10 +49,10 @@ fa06d42191c184ad9eb80e5da2933f5b614fda9a data/advanced_ae/recipe/quantumunit.jso
 1aa23245200cb55c86fa7af817d0ace3bcd7a5ba data/advanced_ae/recipe/quartzcrystal.json
 25898dbaf0ac91d2334ce960bfd34a96080ac932 data/advanced_ae/recipe/reactionchamber.json
 8e50ac2d43e5802958e24eff21b438f381a444d1 data/advanced_ae/recipe/redstonecrystal.json
-69f7d3e1700ef3440391f33d268bc200cfa7aee4 data/advanced_ae/recipe/shatteredsingularity.json
+7cdf9354a63727a4385e2ad92463a578eb2c748f data/advanced_ae/recipe/shatteredsingularity.json
 dde9d704e98ccadee759bbb804fac6c0790cfdaa data/advanced_ae/recipe/singularity.json
 5e310379a7f96016fe7308bfd1f7f488f2981d82 data/advanced_ae/recipe/skybronze.json
-174d94afab595aae41a929af9f94316ba21094f3 data/advanced_ae/recipe/skyosmium.json
+13311ea6ad2d08783e11473a7969b065a240b7e5 data/advanced_ae/recipe/skyosmium.json
 120ce941e4a2d9eeeb22a66d883fefcf5d40e575 data/advanced_ae/recipe/skysteel.json
 155d7e6b684659e28050e283d77f6d56a3ab2646 data/advanced_ae/recipe/smalladvpatpro.json
 419c8b2201d4f75a74cae5f8e9d85f6f06eae78e data/advanced_ae/recipe/smalladvpatpro2.json

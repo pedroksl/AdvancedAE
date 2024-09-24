@@ -33,6 +33,8 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.ADV_PATTERN_ENCODER);
         basicItem(AAEItems.SHATTERED_SINGULARITY);
 
+        basicBlock(AAEBlocks.QUANTUM_CRAFTER);
+
         // CRAFTING UNITS
         for (var type : AAECraftingUnitType.values()) {
             if (type == AAECraftingUnitType.QUANTUM_CORE || type == AAECraftingUnitType.STRUCTURE) {
@@ -64,6 +66,12 @@ public class AAEModelProvider extends AE2BlockStateProvider {
 
     private void basicItem(ItemDefinition<?> item) {
         itemModels().basicItem(item.asItem());
+    }
+
+    private void basicBlock(BlockDefinition<?> block) {
+        var model = cubeAll(block.block());
+        simpleBlock(block.block(), model);
+        simpleBlockItem(block.block(), model);
     }
 
     private void basicCraftingBlockModel(AAECraftingUnitType type) {

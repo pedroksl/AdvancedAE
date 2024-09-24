@@ -81,6 +81,8 @@ public final class AAEBlocks {
 
     public static final BlockDefinition<ReactionChamberBlock> REACTION_CHAMBER =
             block("Reaction Chamber", "reaction_chamber", ReactionChamberBlock::new, AEBaseBlockItem::new);
+    public static final BlockDefinition<QuantumCrafterBlock> QUANTUM_CRAFTER =
+            block("Quantum Crafter", "quantum_crafter", QuantumCrafterBlock::new, AEBaseBlockItem::new);
 
     private static <T extends Block> BlockDefinition<T> block(
             String englishName,

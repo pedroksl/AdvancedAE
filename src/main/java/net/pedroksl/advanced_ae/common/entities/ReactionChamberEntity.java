@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.blocks.ReactionChamberBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
@@ -40,7 +41,6 @@ import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AEKeyType;
 import appeng.api.stacks.GenericStack;
-import appeng.api.storage.ISubMenuHost;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.UpgradeInventories;
@@ -59,7 +59,7 @@ import appeng.util.inv.FilteredInternalInventory;
 import appeng.util.inv.filter.AEItemFilters;
 
 public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
-        implements IGridTickable, IUpgradeableObject, IConfigurableObject, ISubMenuHost {
+        implements IGridTickable, IUpgradeableObject, IConfigurableObject, IDirectionalOutputHost {
     private static final int MAX_PROCESSING_STEPS = 200;
     private static final int MAX_POWER_STORAGE = 500000;
     private static final int MAX_TANK_CAPACITY = 16000;
@@ -178,6 +178,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         return this.fluidInv;
     }
 
+    @Override
     public EnumSet<RelativeSide> getAllowedOutputs() {
         return this.allowedOutputs;
     }
@@ -527,11 +528,13 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         this.fluidInv.clear();
     }
 
+    @Override
     public void updateOutputSides(EnumSet<RelativeSide> allowedOutputs) {
         this.allowedOutputs = allowedOutputs;
         saveChanges();
     }
 
+    @Override
     public ItemStack getAdjacentBlock(RelativeSide side) {
         var dir = getOrientation().getSide(side);
         BlockPos blockPos = getBlockPos().relative(dir);

@@ -4,7 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
-import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
+import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.menu.locator.ItemMenuHostLocator;
@@ -14,7 +14,7 @@ import appeng.util.inv.InternalInventoryHost;
 public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> implements InternalInventoryHost {
 
     private final AppEngInternalInventory inOutInventory = new AppEngInternalInventory(this, 2);
-    private AdvPatternEncoderContainer.inventoryChangedHandler invChangeHandler;
+    private AdvPatternEncoderMenu.inventoryChangedHandler invChangeHandler;
 
     public AdvPatternEncoderHost(AdvPatternEncoderItem item, Player player, ItemMenuHostLocator locator) {
         super(item, player, locator);
@@ -60,7 +60,7 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
         return this.inOutInventory;
     }
 
-    public void setInventoryChangedHandler(AdvPatternEncoderContainer.inventoryChangedHandler handler) {
+    public void setInventoryChangedHandler(AdvPatternEncoderMenu.inventoryChangedHandler handler) {
         invChangeHandler = handler;
     }
 }

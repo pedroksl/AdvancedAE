@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.gui.reactionchamber;
+package net.pedroksl.advanced_ae.gui;
 
 import java.util.List;
 
@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
-import net.pedroksl.advanced_ae.gui.config.OutputDirectionMenu;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 
 import appeng.api.config.Settings;

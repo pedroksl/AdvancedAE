@@ -11,7 +11,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
+import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
 
 import appeng.api.stacks.AEKey;
 
@@ -46,7 +46,7 @@ public class AdvPatternEncoderChangeDirectionPacket implements IMessage {
 
     @Override
     public void onMessage(Player player) {
-        if (player.containerMenu instanceof AdvPatternEncoderContainer encoderContainer) {
+        if (player.containerMenu instanceof AdvPatternEncoderMenu encoderContainer) {
             encoderContainer.update(this.key, this.dir);
         }
     }

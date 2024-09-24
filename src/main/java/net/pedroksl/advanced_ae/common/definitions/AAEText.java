@@ -22,6 +22,7 @@ public enum AAEText implements LocalizationEnum {
             "Created by upgrading an Advanced Pattern Provider with a capacity upgrade", Type.EMI_TEXT),
     AdvPatternEncoder("Advanced Pattern Encoder", Type.GUI),
     ReactionChamber("Reaction Chamber", Type.GUI),
+    QuantumCrafter("Quantum Crafter", Type.GUI),
     EmiReactionChamber("Reaction Chamber", Type.EMI_CATEGORY),
     AnyButton("Target the face adjacent to the adv. pattern provider", Type.TOOLTIP),
     NorthButton("Target the NORTH face of the machine.", Type.TOOLTIP),
@@ -47,7 +48,16 @@ public enum AAEText implements LocalizationEnum {
                     + "amount of pattern slots",
             Type.TOOLTIP),
     PatternProviderCapacityUpgrade(
-            "Upgrades an Advanced Pattern Provider to the maximum amount of pattern slots", Type.TOOLTIP);
+            "Upgrades an Advanced Pattern Provider to the maximum amount of pattern slots", Type.TOOLTIP),
+
+    PatternInventory("Pattern Input", Type.GUI),
+    OutputInventory("Output", Type.GUI),
+
+    MeExport("ME Export", Type.TOOLTIP),
+    MeExportOn("Produced items will be exported to the ME System.", Type.TOOLTIP),
+    MeExportOff("Produces items will be exported to allowed nearby containers", Type.TOOLTIP),
+    DirectionalOutput("Directional Output", Type.TOOLTIP),
+    DirectionOutputHint("Configure which directions are allowed for output auto-export", Type.TOOLTIP);
 
     private final String englishText;
     private final Type type;

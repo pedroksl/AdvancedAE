@@ -1,0 +1,45 @@
+{
+	"$schema": "schema.json",
+	"includes": [
+		"common/common.json",
+		"common/player_inventory.json",
+		"common/toolbox.json"
+	],
+	"text": {
+		"dialog_title": {
+			"text": {
+				"translate": "gui.advanced_ae.QuantumCrafter"
+			},
+			"position": {
+				"left": 8,
+				"top": 5
+			}
+		},
+		"output_inv_text": {
+			"text": {
+				"translate": "gui.advanced_ae.OutputInventory"
+			},
+			"position": {
+				"left": 8,
+				"top": 76
+			}
+		}
+	},
+	"background": {
+		"texture": "guis/quantum_crafter.png",
+		"srcRect": [0, 0, 176, 219]
+	},
+	"slots": {
+		"MACHINE_INPUT": {
+			"left": 8,
+			"top": 42,
+			"grid": "HORIZONTAL"
+		},
+		"MACHINE_OUTPUT": {
+			"left": 8,
+			"top": 87,
+			"grid": "BREAK_AFTER_9COLS"
+		}
+	},
+	"widgets": {}
+}
