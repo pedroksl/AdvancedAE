@@ -88,11 +88,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     private final InternalInventory invExposed = new CombinedInternalInventory(this.inputExposed, this.outputExposed);
 
     private boolean working = false;
-    private boolean dirty = false;
     private int currentCraftJob = 0;
     private YesNo lastRedstoneState;
 
-    private IActionSource mySrc;
+    private final IActionSource mySrc;
     private boolean isActive = false;
 
     private final List<CraftingJob> craftingJobs = new ArrayList<>();
@@ -237,10 +236,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
     private boolean hasWork() {
         if (this.isEnabled()) {
-
             return !this.patternInv.isEmpty();
         }
 
+        this.setWorking(false);
         return false;
     }
 
@@ -279,7 +278,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
                 var extracted = grid.getStorageService()
                         .getInventory()
-                        .extract(genInput.what(), toExtract, Actionable.SIMULATE, IActionSource.ofMachine(this));
+                        .extract(genInput.what(), toExtract, Actionable.SIMULATE, this.mySrc);
 
                 if (!job.isInputConsumed(genInput) && extracted >= toExtract) {
                     success = true;
@@ -304,7 +303,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         var maxStock = job.limitMaxOutput;
         var extracted = grid.getStorageService()
                 .getInventory()
-                .extract(output.what(), maxStock, Actionable.SIMULATE, IActionSource.ofMachine(this));
+                .extract(output.what(), maxStock, Actionable.SIMULATE, this.mySrc);
         var amountInOutput = 0;
         for (int x = 0; x < this.outputInv.size(); x++) {
             var stack = this.outputInv.getStackInSlot(x);
@@ -392,7 +391,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
         return this.hasCraftWork()
                 ? TickRateModulation.URGENT
-                : this.hasAutoExportWork() ? TickRateModulation.SLOWER : TickRateModulation.SLEEP;
+                : this.hasAutoExportWork() ? TickRateModulation.SLOWER : TickRateModulation.IDLE;
     }
 
     private void performCrafts(int maxCrafts) {
@@ -430,7 +429,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
                 var toExtract = job.requiredInputTotal(genInput, toCraft);
                 var extracted = StorageHelper.poweredExtraction(
-                        energy, storage.getInventory(), genInput.what(), toExtract, IActionSource.ofMachine(this));
+                        energy, storage.getInventory(), genInput.what(), toExtract, this.mySrc);
                 if (extracted >= inputAmount) {
                     requiredPerCraft.add(inputAmount);
                     extractedItems.add(new GenericStack(genInput.what(), extracted));
@@ -489,7 +488,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 toReturn -= (required * completeRecipes);
             }
             var successfulReturn = storage.getInventory()
-                    .insert(extractedItems.get(x).what(), toReturn, Actionable.MODULATE, IActionSource.ofMachine(this));
+                    .insert(extractedItems.get(x).what(), toReturn, Actionable.MODULATE, this.mySrc);
 
             // Failed to add to ME System, try to return items to output Inventory
             if (successfulReturn < toReturn) {
@@ -547,7 +546,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                     AEItemKey.of(extractStack),
                     extractStack.getCount(),
                     Actionable.MODULATE,
-                    IActionSource.ofMachine(this));
+                    this.mySrc);
             extractStack.setCount(extractStack.getCount() - (int) inserted);
             this.outputInv.insertItem(x, extractStack, false);
 
@@ -560,6 +559,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     private boolean exportToAdjacentBlocks() {
+        if (level == null) {
+            return false;
+        }
+
         var orientation = this.getOrientation();
 
         List<ItemTransfer> invMap = new ArrayList<>();
@@ -677,6 +680,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     public void updateRedstoneState() {
+        if (level == null) {
+            return;
+        }
+
         final YesNo currentState = this.level.getBestNeighborSignal(this.worldPosition) != 0 ? YesNo.YES : YesNo.NO;
         if (this.lastRedstoneState != currentState) {
             this.lastRedstoneState = currentState;

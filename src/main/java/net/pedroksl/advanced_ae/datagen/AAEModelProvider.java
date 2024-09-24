@@ -9,7 +9,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.blocks.AAEAbstractCraftingUnitBlock;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
-import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
+import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 
@@ -33,7 +33,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.ADV_PATTERN_ENCODER);
         basicItem(AAEItems.SHATTERED_SINGULARITY);
 
-        basicBlock(AAEBlocks.QUANTUM_CRAFTER);
+        quantumCrafterModel();
 
         // CRAFTING UNITS
         for (var type : AAECraftingUnitType.values()) {
@@ -115,9 +115,8 @@ public class AAEModelProvider extends AE2BlockStateProvider {
                         AdvancedAE.makeId("block/" + blockName + "_back"),
                         AdvancedAE.makeId("block/" + blockName + "_front"));
         multiVariantGenerator(block, Variant.variant())
-                .with(PropertyDispatch.properties(
-                                PatternProviderBlock.PUSH_DIRECTION, AdvPatternProviderBlock.CONNECTION_STATE)
-                        .generate((dir, state) -> {
+                .with(PropertyDispatch.property(PatternProviderBlock.PUSH_DIRECTION)
+                        .generate((dir) -> {
                             var forward = dir.getDirection();
                             if (forward == null) {
                                 return Variant.variant()
@@ -134,6 +133,26 @@ public class AAEModelProvider extends AE2BlockStateProvider {
                                         0);
                             }
                         }));
+    }
+
+    private void quantumCrafterModel() {
+        var grid = AdvancedAE.makeId("block/quantum_crafter_grid");
+        var gridOn = AdvancedAE.makeId("block/quantum_crafter_grid_on");
+        var bottom = AdvancedAE.makeId("block/quantum_crafter_bottom");
+        var sides = AdvancedAE.makeId("block/quantum_crafter_side");
+
+        var block = AAEBlocks.QUANTUM_CRAFTER.block();
+        var blockModel =
+                models().cubeBottomTop("quantum_crafter", sides, bottom, grid).texture("north", grid);
+        var blockModelOn = models().cubeBottomTop("quantum_crafter_on", sides, bottom, gridOn)
+                .texture("north", gridOn);
+        multiVariantGenerator(AAEBlocks.QUANTUM_CRAFTER, Variant.variant())
+                .with(PropertyDispatch.property(QuantumCrafterBlock.WORKING).generate((working) -> {
+                    var model = working ? blockModelOn : blockModel;
+                    return Variant.variant().with(VariantProperties.MODEL, model.getLocation());
+                }))
+                .with(createFacingSpinDispatch());
+        simpleBlockItem(block, blockModelOn);
     }
 
     @Override

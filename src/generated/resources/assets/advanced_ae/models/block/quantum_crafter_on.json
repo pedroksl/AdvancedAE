@@ -2,8 +2,8 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "bottom": "advanced_ae:block/quantum_crafter_bottom",
-    "north": "advanced_ae:block/quantum_crafter_grid",
+    "north": "advanced_ae:block/quantum_crafter_grid_on",
     "side": "advanced_ae:block/quantum_crafter_side",
-    "top": "advanced_ae:block/quantum_crafter_grid"
+    "top": "advanced_ae:block/quantum_crafter_grid_on"
   }
 }

@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -35,6 +36,7 @@ public class QuantumCrafterBlock extends AEBaseEntityBlock<QuantumCrafterEntity>
         builder.add(WORKING);
     }
 
+    @ParametersAreNonnullByDefault
     @Override
     public void neighborChanged(
             BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
@@ -59,6 +61,6 @@ public class QuantumCrafterBlock extends AEBaseEntityBlock<QuantumCrafterEntity>
 
     @Override
     public IOrientationStrategy getOrientationStrategy() {
-        return OrientationStrategies.horizontalFacing();
+        return OrientationStrategies.full();
     }
 }
