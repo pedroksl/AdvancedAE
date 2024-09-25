@@ -10,10 +10,7 @@ import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
-import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
-import net.pedroksl.advanced_ae.gui.OutputDirectionMenu;
-import net.pedroksl.advanced_ae.gui.QuantumCrafterMenu;
-import net.pedroksl.advanced_ae.gui.ReactionChamberMenu;
+import net.pedroksl.advanced_ae.gui.*;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.quantumcomputer.QuantumComputerMenu;
@@ -40,6 +37,8 @@ public class AAEMenus {
 
     public static final MenuType<OutputDirectionMenu> OUTPUT_DIRECTION =
             create("output_direction", OutputDirectionMenu::new, IDirectionalOutputHost.class);
+    public static final MenuType<QuantumCrafterConfigPatternMenu> CRAFTER_PATTERN_CONFIG =
+            create("quantum_crafter_pattern_config", QuantumCrafterConfigPatternMenu::new, QuantumCrafterEntity.class);
 
     private static <M extends AEBaseMenu, H> MenuType<M> create(
             String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {

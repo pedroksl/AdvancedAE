@@ -28,14 +28,14 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
 
     public OutputDirectionMenu(int id, Inventory ip, IDirectionalOutputHost host) {
         this(AAEMenus.OUTPUT_DIRECTION, id, ip, host);
-
-        registerClientAction(CLEAR, this::clearSides);
     }
 
     protected OutputDirectionMenu(
             MenuType<? extends OutputDirectionMenu> type, int id, Inventory ip, IDirectionalOutputHost host) {
         super(type, id, ip, host);
         this.host = host;
+
+        registerClientAction(CLEAR, this::clearSides);
     }
 
     @Override

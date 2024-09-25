@@ -57,7 +57,11 @@ public enum AAEText implements LocalizationEnum {
     MeExportOn("Produced items will be exported to the ME System.", Type.TOOLTIP),
     MeExportOff("Produces items will be exported to allowed nearby containers", Type.TOOLTIP),
     DirectionalOutput("Directional Output", Type.TOOLTIP),
-    DirectionOutputHint("Configure which directions are allowed for output auto-export", Type.TOOLTIP);
+    DirectionOutputHint("Configure which directions are allowed for output auto-export", Type.TOOLTIP),
+
+    QuantumCrafterPatternConfig("Pattern Configuration", Type.GUI),
+    ConfigurePatternButton("Configure Pattern", Type.TOOLTIP),
+    EnablePatternButton("Enabled/Disable", Type.TOOLTIP);
 
     private final String englishText;
     private final Type type;

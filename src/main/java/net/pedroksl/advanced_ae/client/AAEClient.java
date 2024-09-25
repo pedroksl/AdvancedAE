@@ -55,6 +55,11 @@ public class AAEClient {
 
         InitScreens.register(
                 event, AAEMenus.OUTPUT_DIRECTION, OutputDirectionScreen::new, "/screens/output_direction.json");
+        InitScreens.register(
+                event,
+                AAEMenus.CRAFTER_PATTERN_CONFIG,
+                QuantumCrafterConfigPatternScreen::new,
+                "/screens/quantum_crafter_pattern_config.json");
     }
 
     @SuppressWarnings("deprecation")

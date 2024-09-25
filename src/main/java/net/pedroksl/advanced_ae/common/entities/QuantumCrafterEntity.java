@@ -2,15 +2,14 @@ package net.pedroksl.advanced_ae.common.entities;
 
 import java.util.*;
 
+import com.mojang.datafixers.util.Pair;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -48,6 +47,7 @@ import appeng.api.orientation.BlockOrientation;
 import appeng.api.orientation.RelativeSide;
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
 import appeng.api.storage.StorageHelper;
 import appeng.api.upgrades.IUpgradeInventory;
@@ -94,9 +94,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     private final IActionSource mySrc;
     private boolean isActive = false;
 
-    private final List<CraftingJob> craftingJobs = new ArrayList<>();
+    private final List<CraftingJob> craftingJobs = Arrays.asList(new CraftingJob[9]);
 
     private EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
+    private final List<Boolean> enabledPatternSlots = new ArrayList<>();
 
     public QuantumCrafterEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
@@ -118,6 +119,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
         this.mySrc = new MachineSource(this);
         this.lastRedstoneState = YesNo.UNDECIDED;
+
+        for (var x = 0; x < this.patternInv.size(); x++) {
+            this.enabledPatternSlots.add(false);
+        }
     }
 
     public boolean isWorking() {
@@ -209,14 +214,21 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     private void makeCraftingRecipeList() {
-        craftingJobs.clear();
         for (var x = 0; x < this.patternInv.size(); x++) {
+            var success = false;
             ItemStack is = this.patternInv.getStackInSlot(x);
             if (!is.isEmpty()) {
                 IPatternDetails details = PatternDetailsHelper.decodePattern(is, this.getLevel());
                 if (details instanceof AECraftingPattern craftPattern) {
-                    craftingJobs.add(new CraftingJob(craftPattern));
+                    if (craftingJobs.get(x) != null && craftingJobs.get(x).pattern == craftPattern) {
+                        continue;
+                    }
+                    craftingJobs.set(x, new CraftingJob(craftPattern));
+                    success = true;
                 }
+            }
+            if (!success) {
+                craftingJobs.set(x, null);
             }
         }
     }
@@ -301,23 +313,27 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
         var output = job.pattern.getOutputs().getFirst();
         var maxStock = job.limitMaxOutput;
-        var extracted = grid.getStorageService()
-                .getInventory()
-                .extract(output.what(), maxStock, Actionable.SIMULATE, this.mySrc);
-        var amountInOutput = 0;
-        for (int x = 0; x < this.outputInv.size(); x++) {
-            var stack = this.outputInv.getStackInSlot(x);
-            if (stack.is(GenericStack.wrapInItemStack(output).getItem())) {
-                amountInOutput += stack.getCount();
+        if (maxStock > 0) {
+            var extracted = grid.getStorageService()
+                    .getInventory()
+                    .extract(output.what(), maxStock, Actionable.SIMULATE, this.mySrc);
+            var amountInOutput = 0;
+            for (int x = 0; x < this.outputInv.size(); x++) {
+                var stack = this.outputInv.getStackInSlot(x);
+                if (stack.is(GenericStack.wrapInItemStack(output).getItem())) {
+                    amountInOutput += stack.getCount();
+                }
             }
-        }
 
-        int limitByOutput = (int) Math.floor((double) (maxStock - extracted - amountInOutput) / output.amount());
-        totalCrafts = Math.max(0, Math.min(totalCrafts, limitByOutput));
-        if (extracted < maxStock) {
-            return totalCrafts;
+            int limitByOutput = (int) Math.floor((double) (maxStock - extracted - amountInOutput) / output.amount());
+            totalCrafts = Math.max(0, Math.min(totalCrafts, limitByOutput));
+            if (extracted < maxStock) {
+                return totalCrafts;
+            } else {
+                return (int) Math.floor((double) extracted / output.amount());
+            }
         } else {
-            return (int) Math.floor((double) extracted / output.amount());
+            return totalCrafts;
         }
     }
 
@@ -396,20 +412,20 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
     private void performCrafts(int maxCrafts) {
         int totalCrafts = 0;
-        int initialCraft = this.currentCraftJob;
-        while (totalCrafts < maxCrafts) {
+        this.currentCraftJob = -1;
+        while (this.currentCraftJob <= craftingJobs.size()) {
+            this.currentCraftJob++;
             var job = getNextJob();
-            if (job == null) break;
+
+            if (job == null || !enabledPatternSlots.get(this.currentCraftJob)) {
+                continue;
+            }
 
             final int craftAmount = maximumCraftableAmount(job);
             final int craftsLeft = maxCrafts - totalCrafts;
             final int toCraft = Math.min(craftAmount, craftsLeft);
 
             totalCrafts += performCraft(job, toCraft);
-
-            if (this.currentCraftJob == initialCraft) {
-                break;
-            }
         }
     }
 
@@ -487,8 +503,8 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             if (job.isInputConsumed(input)) {
                 toReturn -= (required * completeRecipes);
             }
-            var successfulReturn = storage.getInventory()
-                    .insert(extractedItems.get(x).what(), toReturn, Actionable.MODULATE, this.mySrc);
+            var successfulReturn = StorageHelper.poweredInsert(
+                    energy, storage.getInventory(), extractedItems.get(x).what(), toReturn, this.mySrc);
 
             // Failed to add to ME System, try to return items to output Inventory
             if (successfulReturn < toReturn) {
@@ -508,15 +524,8 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
     private @Nullable CraftingJob getNextJob() {
         try {
-            var job = craftingJobs.get(this.currentCraftJob++);
-            if (this.currentCraftJob >= craftingJobs.size()) {
-                this.currentCraftJob = 0;
-            }
-            return job;
+            return craftingJobs.get(this.currentCraftJob);
         } catch (IndexOutOfBoundsException e) {
-            if (this.currentCraftJob >= craftingJobs.size()) {
-                this.currentCraftJob = 0;
-            }
             return null;
         }
     }
@@ -543,10 +552,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         for (var x = 0; x < this.outputInv.size(); x++) {
             var extractStack = this.outputInv.extractItem(x, MAX_OUTPUT_INV_SIZE, false);
             var inserted = inventory.insert(
-                    AEItemKey.of(extractStack),
-                    extractStack.getCount(),
-                    Actionable.MODULATE,
-                    this.mySrc);
+                    AEItemKey.of(extractStack), extractStack.getCount(), Actionable.MODULATE, this.mySrc);
             extractStack.setCount(extractStack.getCount() - (int) inserted);
             this.outputInv.insertItem(x, extractStack, false);
 
@@ -625,6 +631,18 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             outputTags.add(StringTag.valueOf(side.name()));
         }
         data.put("outputSides", outputTags);
+
+        ListTag enabledTags = new ListTag();
+        for (var value : enabledPatternSlots) {
+            enabledTags.add(ByteTag.valueOf(value));
+        }
+        data.put("enabledPatterns", enabledTags);
+
+        ListTag jobTags = new ListTag();
+        for (var job : craftingJobs) {
+            job.writeToNBT(data, registries);
+        }
+        data.put("craftingJobs", jobTags);
 
         this.upgrades.writeToNBT(data, "upgrades", registries);
         this.configManager.writeToNBT(data, registries);
@@ -705,10 +723,13 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
 
         final RedstoneMode rs = this.configManager.getSetting(Settings.REDSTONE_CONTROLLED);
+        if (rs == RedstoneMode.LOW_SIGNAL) {
+            return !this.getRedstoneState();
+        }
         if (rs == RedstoneMode.HIGH_SIGNAL) {
             return this.getRedstoneState();
         }
-        return !this.getRedstoneState();
+        return true;
     }
 
     public boolean isActive() {
@@ -768,40 +789,123 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         return new ItemStack(AAEBlocks.QUANTUM_CRAFTER.asItem());
     }
 
-    private record CraftingJob(
-            AECraftingPattern pattern,
-            List<ItemStack> remainingItems,
-            Map<IPatternDetails.IInput, Integer> keepMinInput,
-            long limitMaxOutput) {
+    public List<Boolean> getEnabledPatternSlots() {
+        return enabledPatternSlots;
+    }
 
-        public static final int DEFAULT_KEEP_INPUT = 0;
-        public static final long DEFAULT_KEEP_OUTPUT = Long.MAX_VALUE;
-        private static final int GRID_SIZE = 3;
-
-        public CraftingJob(AECraftingPattern pattern) {
-            this(pattern, getRemainingItems(pattern), createNewInputMap(pattern), DEFAULT_KEEP_OUTPUT);
+    public void toggleEnablePattern(int index) {
+        if (index >= 0 && index < enabledPatternSlots.size()) {
+            enabledPatternSlots.set(index, !enabledPatternSlots.get(index));
         }
 
-        public int minimumInputToKeep(IPatternDetails.IInput stack) {
-            if (keepMinInput.containsKey(stack)) {
-                return keepMinInput.get(stack);
-            }
+        saveChanges();
+    }
 
+    public HashMap<AEKey, Long> getPatternConfigInputs(int index) {
+        HashMap<AEKey, Long> inputs = new HashMap<>();
+        try {
+            var job = craftingJobs.get(index);
+            for (var input : job.pattern.getInputs()) {
+                var genStack = input.getPossibleInputs()[0];
+                inputs.put(genStack.what(), job.minimumInputToKeep(input));
+            }
+            return inputs;
+
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    public Pair<AEKey, Long> getPatternConfigOutput(int index) {
+        try {
+            var job = craftingJobs.get(index);
+            return new Pair<>(job.pattern.getOutputs().getFirst().what(), job.limitMaxOutput);
+
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    public void setStockAmount(int index, int inputIndex, long amount) {
+        try {
+            var job = craftingJobs.get(index);
+            job.setMinimumInputToKeep(inputIndex, amount);
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+    }
+
+    public void setMaxCrafted(int index, long amount) {
+        try {
+            var job = craftingJobs.get(index);
+            job.limitMaxOutput = amount;
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+    }
+
+    private static class CraftingJob {
+
+        public static final long DEFAULT_KEEP_INPUT = 0;
+        public static final long DEFAULT_KEEP_OUTPUT = 0;
+        private static final int GRID_SIZE = 3;
+
+        public final AECraftingPattern pattern;
+        private final List<ItemStack> remainingItems;
+        private final List<Long> keepMinInput;
+        public long limitMaxOutput;
+
+        public CraftingJob(AECraftingPattern pattern) {
+            this.pattern = pattern;
+            this.remainingItems = getRemainingItems();
+            this.keepMinInput = createNewInputMap();
+            this.limitMaxOutput = DEFAULT_KEEP_OUTPUT;
+        }
+
+        public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
+            CompoundTag patternTag = pattern.getDefinition().toTag(registries);
+            data.put("pattern", patternTag);
+
+            ListTag remainingTag = new ListTag();
+            for (var item : remainingItems) {
+                CompoundTag itemTag = new CompoundTag();
+                item.save(registries, itemTag);
+                remainingTag.add(itemTag);
+            }
+            data.put("remainingItems", remainingTag);
+
+            data.putInt("listMinInputSize", keepMinInput.size());
+            ListTag listMinTag = new ListTag();
+            for (var value : keepMinInput) {
+                listMinTag.add(LongTag.valueOf(value));
+            }
+            data.put("listMinInput", listMinTag);
+
+            data.putLong("limitMaxOutput", limitMaxOutput);
+        }
+
+        public long minimumInputToKeep(IPatternDetails.IInput stack) {
+            for (var x = 0; x < pattern.getInputs().length; x++) {
+                var input = pattern.getInputs()[x];
+                if (input.equals(stack)) {
+                    return keepMinInput.get(x);
+                }
+            }
             return DEFAULT_KEEP_INPUT;
         }
 
-        public void setMinimumInputToKeep(IPatternDetails.IInput stack, int value) {
-            if (keepMinInput.containsKey(stack)) {
-                keepMinInput.put(stack, value);
-            }
+        public void setMinimumInputToKeep(int inputIndex, long value) {
+            if (inputIndex >= pattern.getInputs().length) return;
+
+            keepMinInput.set(inputIndex, value);
         }
 
-        public int requiredInputTotal(GenericStack input, int toCraft) {
-            var multiplier = 0;
+        public long requiredInputTotal(GenericStack input, int toCraft) {
+            long multiplier = 0;
             for (var i : pattern.getInputs()) {
                 for (var genInput : i.getPossibleInputs()) {
                     if (input.what().matches(genInput)) {
-                        multiplier = (int) Math.ceil(i.getMultiplier() * input.amount());
+                        multiplier = i.getMultiplier() * input.amount();
                         break;
                     }
                 }
@@ -843,15 +947,15 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             return false;
         }
 
-        private static Map<IPatternDetails.IInput, Integer> createNewInputMap(AECraftingPattern pattern) {
-            Map<IPatternDetails.IInput, Integer> map = new HashMap<>();
-            for (var input : pattern.getInputs()) {
-                map.put(input, DEFAULT_KEEP_INPUT);
+        private List<Long> createNewInputMap() {
+            List<Long> list = new ArrayList<>();
+            for (var ignored : pattern.getInputs()) {
+                list.add(DEFAULT_KEEP_INPUT);
             }
-            return map;
+            return list;
         }
 
-        private static List<ItemStack> getRemainingItems(AECraftingPattern pattern) {
+        private List<ItemStack> getRemainingItems() {
             List<ItemStack> craftingInput = new ArrayList<>();
             int bucketsToRemove = 0;
             for (var x = 0; x < pattern.getSparseInputs().size(); x++) {

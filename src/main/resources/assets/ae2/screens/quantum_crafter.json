@@ -41,5 +41,114 @@
 			"grid": "BREAK_AFTER_9COLS"
 		}
 	},
-	"widgets": {}
+	"widgets": {
+		"cfgButton1": {
+			"left": 8,
+			"top": 24,
+			"width": 16,
+			"height": 16
+		},
+		"cfgButton2": {
+			"left": 26,
+			"top": 24,
+			"width": 16,
+			"height": 16
+		},
+		"cfgButton3": {
+			"left": 44,
+			"top": 24,
+			"width": 16,
+			"height": 16
+		},
+		"cfgButton4": {
+			"left": 62,
+			"top": 24,
+			"width": 16,
+			"height": 16
+		},
+		"cfgButton5": {
+			"left": 80,
+			"top": 24,
+			"width": 16,
+			"height": 16
+		},
+		"cfgButton6": {
+			"left": 98,
+			"top": 24,
+			"width": 16,
+			"height": 16
+		},
+		"cfgButton7": {
+			"left": 116,
+			"top": 24,
+			"width": 16,
+			"height": 16
+		},
+		"cfgButton8": {
+			"left": 134,
+			"top": 24,
+			"width": 16,
+			"height": 16
+		},
+		"cfgButton9": {
+			"left": 152,
+			"top": 24,
+			"width": 16,
+			"height": 16
+		},
+		"enableButton1": {
+			"left": 9,
+			"top": 60,
+			"width": 12,
+			"height": 12
+		},
+		"enableButton2": {
+			"left": 27,
+			"top": 60,
+			"width": 12,
+			"height": 12
+		},
+		"enableButton3": {
+			"left": 45,
+			"top": 60,
+			"width": 12,
+			"height": 12
+		},
+		"enableButton4": {
+			"left": 63,
+			"top": 60,
+			"width": 12,
+			"height": 12
+		},
+		"enableButton5": {
+			"left": 81,
+			"top": 60,
+			"width": 12,
+			"height": 12
+		},
+		"enableButton6": {
+			"left": 99,
+			"top": 60,
+			"width": 12,
+			"height": 12
+		},
+		"enableButton7": {
+			"left": 117,
+			"top": 60,
+			"width": 12,
+			"height": 12
+		},
+		"enableButton8": {
+			"left": 135,
+			"top": 60,
+			"width": 12,
+			"height": 12
+		},
+		"enableButton9": {
+			"left": 153,
+			"top": 60,
+			"width": 12,
+			"height": 12
+		}
+	}
 }
