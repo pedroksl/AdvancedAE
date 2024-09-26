@@ -43,6 +43,9 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
     @GuiSync(9)
     private int selectedCpuSerial = -1;
 
+    @GuiSync(10)
+    public CpuSelectionMode selectionMode = CpuSelectionMode.ANY;
+
     private final AdvCraftingBlockEntity host;
 
     public QuantumComputerMenu(int id, Inventory ip, AdvCraftingBlockEntity te) {
@@ -55,6 +58,11 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
         this.selectedCpu = null;
         this.selectedCpuSerial = -1;
         this.host = te;
+
+        if (te.getCluster() != null) {
+            selectionMode = te.getCluster().getSelectionMode();
+        }
+
         this.registerClientAction("selectCpu", Integer.class, this::selectCpu);
     }
 
@@ -118,6 +126,10 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
             }
         }
 
+        if (this.host.getCluster() != null) {
+            selectionMode = this.host.getCluster().getSelectionMode();
+        }
+
         super.broadcastChanges();
     }
 
@@ -176,6 +188,10 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
 
     public int getSelectedCpuSerial() {
         return selectedCpuSerial;
+    }
+
+    public CpuSelectionMode getSelectionMode() {
+        return this.selectionMode;
     }
 
     public record CraftingCpuList(List<CraftingStatusMenu.CraftingCpuListEntry> cpus) implements PacketWritable {
