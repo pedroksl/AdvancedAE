@@ -8,22 +8,21 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParsePosition;
 import java.util.*;
 import java.util.function.Consumer;
+import javax.annotation.Nullable;
 
-import appeng.api.stacks.AEFluidKey;
-import appeng.api.stacks.AEKey;
 import com.google.common.primitives.Longs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
+import appeng.api.stacks.AEFluidKey;
+import appeng.api.stacks.AEKey;
 import appeng.client.gui.MathExpressionParser;
 import appeng.client.gui.NumberEntryType;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.ConfirmableTextField;
 import appeng.core.localization.GuiText;
-
-import javax.annotation.Nullable;
 
 public class NumberTextField extends ConfirmableTextField {
 
