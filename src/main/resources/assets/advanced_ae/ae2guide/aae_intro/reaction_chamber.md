@@ -27,7 +27,7 @@ consumed, increasing the required power per tick. To be able to power it properl
 A full block pattern provider is capable of connecting the Reaction Chamber directly to the AE2 grid, allowing power to
 be extracted from store energy inside it. If the total power stored in the grid is lower than the required power per
 tick, no progress will be made and no power consumed. To remedy this, it is recommended that the grid is connected to a
-few <ItemLink id="ae2:dense_cell" />s.
+few <ItemLink id="ae2:dense_energy_cell" />s.
 
 ### External Power
 

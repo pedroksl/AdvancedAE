@@ -11,10 +11,12 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import com.google.common.primitives.Longs;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEKey;
@@ -37,6 +39,9 @@ public class NumberTextField extends ConfirmableTextField {
     private final long maxValue = Long.MAX_VALUE;
     private boolean isFluid;
 
+    private long lastLongValue = 0;
+    private boolean isOutput = false;
+
     public NumberTextField(ScreenStyle style, int x, int y, int width, int height, Consumer<Long> onConfirm) {
         super(style, Minecraft.getInstance().font, x, y, width, height);
 
@@ -52,10 +57,22 @@ public class NumberTextField extends ConfirmableTextField {
         setResponder(text -> this.validate());
         setOnConfirm(() -> {
             if (getLongValue().isPresent()) {
+                this.lastLongValue = getLongValue().getAsLong();
                 onConfirm.accept(getLongValue().getAsLong());
             }
         });
         this.validate();
+    }
+
+    public boolean isChanged() {
+        if (getLongValue().isPresent()) {
+            return this.lastLongValue != getLongValue().getAsLong();
+        }
+        return true;
+    }
+
+    public void setAsOutput() {
+        this.isOutput = true;
     }
 
     public OptionalInt getIntValue() {
@@ -91,6 +108,7 @@ public class NumberTextField extends ConfirmableTextField {
     }
 
     public void setLongValue(long value) {
+        this.lastLongValue = value;
         var internalValue = convertToInternalValue(Longs.constrainToRange(value, minValue, maxValue));
         setValue(decimalFormat.format(internalValue));
         moveCursorToEnd(false);
@@ -152,12 +170,17 @@ public class NumberTextField extends ConfirmableTextField {
 
         boolean valid = validationErrors.isEmpty();
         var tooltip = valid ? infoMessages : validationErrors;
+        if (tooltip.isEmpty()) {
+            if (!isOutput) {
+                tooltip.add(AAEText.NumberTextFieldInputHint.text(
+                        InputConstants.getKey("key.keyboard" + ".enter").getDisplayName()));
+            } else {
+                tooltip.add(AAEText.NumberTextFieldOutputHint.text(
+                        InputConstants.getKey("key.keyboard" + ".enter").getDisplayName()));
+            }
+        }
         setTextColor(valid ? TEXT_COLOR : ERROR_COLOR);
         setTooltipMessage(tooltip);
-    }
-
-    private Component makeLabel(Component prefix, long amount) {
-        return prefix.plainCopy().append(this.decimalFormat.format(amount));
     }
 
     private long convertToExternalValue(BigDecimal internalValue) {

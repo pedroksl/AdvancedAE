@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import appeng.client.gui.Icon;
 import appeng.client.gui.style.Blitter;
 import appeng.client.gui.widgets.ITooltip;
 
@@ -24,6 +25,8 @@ public abstract class AAEIconButton extends Button implements ITooltip {
 
     private boolean disableBackground = false;
 
+    private boolean enableHoverOffset = true;
+
     public AAEIconButton(OnPress onPress) {
         super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
     }
@@ -31,6 +34,10 @@ public abstract class AAEIconButton extends Button implements ITooltip {
     public void setVisibility(boolean vis) {
         this.visible = vis;
         this.active = vis;
+    }
+
+    public void setHoverOffsetChange(boolean enable) {
+        this.enableHoverOffset = enable;
     }
 
     @Override
@@ -52,11 +59,11 @@ public abstract class AAEIconButton extends Button implements ITooltip {
                 this.height = 8;
             }
 
-            var yOffset = isHovered() ? 1 : 0;
+            var yOffset = isHovered() && this.enableHoverOffset ? 1 : 0;
 
             if (this.halfSize) {
                 if (!disableBackground) {
-                    AAEIcon.TOOLBAR_BUTTON_BACKGROUND
+                    Icon.TOOLBAR_BUTTON_BACKGROUND
                             .getBlitter()
                             .dest(getX(), getY())
                             .zOffset(10)
@@ -73,9 +80,9 @@ public abstract class AAEIconButton extends Button implements ITooltip {
                 }
             } else {
                 if (!disableBackground) {
-                    AAEIcon bgIcon = isHovered()
-                            ? AAEIcon.TOOLBAR_BUTTON_BACKGROUND_HOVER
-                            : isFocused() ? AAEIcon.TOOLBAR_BUTTON_BACKGROUND_FOCUS : AAEIcon.TOOLBAR_BUTTON_BACKGROUND;
+                    Icon bgIcon = isHovered()
+                            ? Icon.TOOLBAR_BUTTON_BACKGROUND_HOVER
+                            : isFocused() ? Icon.TOOLBAR_BUTTON_BACKGROUND_FOCUS : Icon.TOOLBAR_BUTTON_BACKGROUND;
 
                     bgIcon.getBlitter()
                             .dest(getX() - 1, getY() + yOffset, 18, 20)

@@ -340,9 +340,11 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 }
             }
 
-            int limitByOutput = (int) Math.floor((double) (maxStock - extracted - amountInOutput) / output.amount());
+            var producedAmount = job.outputAmountPerCraft(output);
+            ;
+            int limitByOutput = (int) Math.floor((double) (maxStock - extracted - amountInOutput) / producedAmount);
             totalCrafts = Math.max(0, Math.min(totalCrafts, limitByOutput));
-            if (extracted < maxStock) {
+            if (extracted <= maxStock) {
                 return totalCrafts;
             } else {
                 return (int) Math.floor((double) extracted / output.amount());
@@ -482,7 +484,8 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         for (var output : job.pattern.getOutputs()) {
             if (output.what() instanceof AEItemKey key) {
                 var stack = key.toStack();
-                stack.setCount(stack.getCount() * completeRecipes);
+                stack.setCount((int) job.outputAmountPerCraft(output) * completeRecipes);
+
                 for (var x = 0; x < this.outputInv.size(); x++) {
                     stack = this.outputInv.insertItem(x, stack, Actionable.MODULATE.isSimulate());
                     if (stack.isEmpty()) {
@@ -982,6 +985,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 }
             }
 
+            if (!isInputConsumed(input)) {
+                return multiplier;
+            }
+
             if (input.what() instanceof AEItemKey key) {
                 ItemStack stack = key.toStack();
 
@@ -990,6 +997,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                         return multiplier;
                     }
                 }
+
                 return multiplier * toCraft;
             }
             if (input.what() instanceof AEFluidKey) {
@@ -1004,6 +1012,11 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                     return false;
                 }
             }
+            for (var output : pattern.getOutputs()) {
+                if (input.what().matches(output)) {
+                    return output.amount() - input.amount() <= 0;
+                }
+            }
             return true;
         }
 
@@ -1016,6 +1029,17 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 }
             }
             return false;
+        }
+
+        public long outputAmountPerCraft(GenericStack stack) {
+            for (var i : pattern.getInputs()) {
+                for (var genInput : i.getPossibleInputs()) {
+                    if (stack.what().matches(genInput)) {
+                        return stack.amount() - genInput.amount();
+                    }
+                }
+            }
+            return stack.amount();
         }
 
         private List<Long> createNewInputMap() {

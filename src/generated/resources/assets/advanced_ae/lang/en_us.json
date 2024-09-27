@@ -41,6 +41,8 @@
   "gui.tooltips.advanced_ae.MeExportOn": "Produced items will be exported to the ME System.",
   "gui.tooltips.advanced_ae.MultiThreaderMultiplication": "Multiplies the amount of co-processors in the Quantum Computer Multiblock by %d. Limited to %d per multiblock.",
   "gui.tooltips.advanced_ae.NorthButton": "Target the NORTH face of the machine.",
+  "gui.tooltips.advanced_ae.NumberTextFieldInputHint": "Confirm the input using the %s key.",
+  "gui.tooltips.advanced_ae.NumberTextFieldOutputHint": "Confirm the input using the %s key.\nSetting the value to 0 removes the limit.",
   "gui.tooltips.advanced_ae.PatternProviderCapacityUpgrade": "Upgrades an Advanced Pattern Provider to the maximum amount of pattern slots",
   "gui.tooltips.advanced_ae.PatternProviderUpgrade": "Upgrades a normal or extended pattern provider to the advanced version with the same amount of pattern slots",
   "gui.tooltips.advanced_ae.QuantumStructureTooltip": "Used in the outside layer of the Quantum Computer Multiblock. Maximum multiblock size is %1$dx%1$dx%1$d.",

@@ -59,6 +59,9 @@ public enum AAEText implements LocalizationEnum {
     DirectionalOutput("Directional Output", Type.TOOLTIP),
     DirectionOutputHint("Configure which directions are allowed for output auto-export", Type.TOOLTIP),
 
+    NumberTextFieldInputHint("Confirm the input using the %s key.", Type.TOOLTIP),
+    NumberTextFieldOutputHint(
+            "Confirm the input using the %s key.\nSetting the value to 0 removes the limit.", Type.TOOLTIP),
     QuantumCrafterPatternConfig("Pattern Configuration", Type.GUI),
     ConfigurePatternButton("Configure Pattern", Type.TOOLTIP),
     EnablePatternButton("Enabled/Disable", Type.TOOLTIP);

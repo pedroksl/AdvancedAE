@@ -5,12 +5,15 @@ import java.util.HashMap;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEIconButton;
 import net.pedroksl.advanced_ae.client.gui.widgets.NumberTextField;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterConfigPatternMenu;
 import net.pedroksl.advanced_ae.network.packet.SetStockAmountPacket;
@@ -36,6 +39,9 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
     private static final int LIST_ANCHOR_Y = 25;
     private static final int OUTPUT_X = 18;
     private static final int OUTPUT_Y = 110;
+
+    private static final int TEXTFIELD_WIDTH = 60;
+    private static final int TEXTFIELD_HEIGHT = 16;
 
     private static final Rect2i SLOT_BBOX = new Rect2i(176, 0, SLOT_SIZE, SLOT_SIZE);
     private final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/pattern_config.png");
@@ -69,24 +75,44 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
 
             var x = LIST_ANCHOR_X + 1;
             var y = LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING);
-
             InputRow row = this.rows.get(currentRow);
             var renderContext = new SimpleRenderContext(LytRect.empty(), guiGraphics);
             renderContext.renderItem(row.key().wrapForDisplayOrFilter(), x, y, 16, 16);
 
-            row.textField.setRectangle(80, 16, this.leftPos + x + 24, this.topPos + y + 4);
+            x += 37;
+            y += 4;
+            guiGraphics.drawCenteredString(Minecraft.getInstance().font, row.label, x, y, 0xFFFFFF);
+
+            x += this.leftPos + 20;
+            y += this.topPos;
+            row.textField.setRectangle(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT, x, y);
             row.textField.setVisible(true);
+
+            x += TEXTFIELD_WIDTH + 10;
+            y -= 5;
+            row.button.setValid(!row.textField.isChanged());
+            row.button.setPosition(x, y);
         }
 
         if (outputRow != null) {
             var x = OUTPUT_X + 1;
             var y = OUTPUT_Y + 1;
-
             var renderContext = new SimpleRenderContext(LytRect.empty(), guiGraphics);
             renderContext.renderItem(outputRow.key().wrapForDisplayOrFilter(), x, y, 16, 16);
 
-            outputRow.textField.setRectangle(80, 16, offsetX + x + 24, offsetY + y + 4);
+            x += 37;
+            y += 4;
+            guiGraphics.drawCenteredString(Minecraft.getInstance().font, outputRow.label, x, y, 0xFFFFFF);
+
+            x += this.leftPos + 20;
+            y += this.topPos;
+            outputRow.textField.setRectangle(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT, x, y);
             outputRow.textField.setVisible(true);
+
+            x += TEXTFIELD_WIDTH + 10;
+            y -= 5;
+            outputRow.button.setValid(!outputRow.textField.isChanged());
+            outputRow.button.setPosition(x, y);
         }
     }
 
@@ -126,23 +152,21 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
             this.rows.clear();
 
             for (var entry : inputs.entrySet()) {
-                var textField = addNewTextField(entry.getValue(), this.rows.size());
+                var textField = addNewNumberField(entry.getValue(), this.rows.size());
                 this.rows.add(new InputRow(
-                        entry.getKey(), textField, Component.empty().append("Keep:")));
+                        entry.getKey(), textField, Component.empty().append("Keep:"), addNewValidButton()));
             }
         } else {
             for (var row : this.rows) {
-                row.textField.setLongValue(inputs.get(row.key));
                 row.textField.setFocused(false);
             }
         }
 
         if (this.outputRow == null) {
-            var textField = addNewTextField(output.getSecond(), -1);
+            var textField = addNewNumberField(output.getSecond(), -1);
             this.outputRow =
-                    new InputRow(output.getFirst(), textField, Component.empty().append("Keep:"));
+                    new InputRow(output.getFirst(), textField, Component.empty().append("Limit:"), addNewValidButton());
         } else {
-            this.outputRow.textField.setLongValue(output.getSecond());
             this.outputRow.textField.setFocused(false);
         }
 
@@ -154,18 +178,45 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
         scrollbar.setRange(0, this.rows.size() - VISIBLE_ROWS, 2);
     }
 
-    public record InputRow(AEKey key, NumberTextField textField, Component label) {}
+    public record InputRow(AEKey key, NumberTextField textField, Component label, ValidButton button) {}
 
-    private NumberTextField addNewTextField(long value, int index) {
-        NumberTextField searchField = new NumberTextField(this.style, 0, 0, 0, 0, amount -> {
+    private NumberTextField addNewNumberField(long value, int index) {
+        NumberTextField numberField = new NumberTextField(this.style, 0, 0, 0, 0, amount -> {
             if (index >= 0) {
                 PacketDistributor.sendToServer(new SetStockAmountPacket(index, amount));
             } else {
                 menu.setMaxCrafted(amount);
             }
         });
-        searchField.setLongValue(value);
-        this.addRenderableWidget(searchField);
-        return searchField;
+        numberField.setLongValue(value);
+        if (index == -1) {
+            numberField.setAsOutput();
+        }
+        return this.addRenderableWidget(numberField);
+    }
+
+    private ValidButton addNewValidButton() {
+        var button = new ValidButton(btn -> {});
+        return this.addRenderableWidget(button);
+    }
+
+    static class ValidButton extends AAEIconButton {
+
+        private boolean isValid = false;
+
+        public ValidButton(OnPress onPress) {
+            super(onPress);
+            this.setDisableBackground(true);
+            this.setHoverOffsetChange(false);
+        }
+
+        public void setValid(boolean val) {
+            this.isValid = val;
+        }
+
+        @Override
+        protected AAEIcon getIcon() {
+            return isValid ? AAEIcon.VALID_INPUT : AAEIcon.INVALID_INPUT;
+        }
     }
 }
