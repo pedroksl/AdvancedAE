@@ -89,7 +89,6 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
     private boolean initialized = false;
     private boolean working = false;
-    private int currentCraftJob = 0;
     private YesNo lastRedstoneState;
 
     private final IActionSource mySrc;
@@ -341,7 +340,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             }
 
             var producedAmount = job.outputAmountPerCraft(output);
-            ;
+
             int limitByOutput = (int) Math.floor((double) (maxStock - extracted - amountInOutput) / producedAmount);
             totalCrafts = Math.max(0, Math.min(totalCrafts, limitByOutput));
             if (extracted <= maxStock) {
@@ -428,12 +427,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     private void performCrafts(int maxCrafts) {
-        this.currentCraftJob = -1;
-        while (this.currentCraftJob <= craftingJobs.size()) {
-            this.currentCraftJob++;
-            var job = getNextJob();
+        for (var x = 0; x < craftingJobs.size(); x++) {
+            var job = getNextJob(x);
 
-            if (job == null || !enabledPatternSlots.get(this.currentCraftJob)) {
+            if (job == null || !enabledPatternSlots.get(x)) {
                 continue;
             }
 
@@ -535,9 +532,9 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
     }
 
-    private @Nullable CraftingJob getNextJob() {
+    private @Nullable CraftingJob getNextJob(int jobIndex) {
         try {
-            var job = craftingJobs.get(this.currentCraftJob);
+            var job = craftingJobs.get(jobIndex);
             return job == null || job.pattern == null ? null : job;
         } catch (IndexOutOfBoundsException e) {
             return null;
@@ -560,13 +557,18 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         if (this.getGridNode() == null) return false;
 
         var storage = this.getGridNode().getGrid().getStorageService();
+        var energy = this.getGridNode().getGrid().getEnergyService();
         var inventory = storage.getInventory();
 
         var success = false;
         for (var x = 0; x < this.outputInv.size(); x++) {
             var extractStack = this.outputInv.extractItem(x, MAX_OUTPUT_INV_SIZE, false);
-            var inserted = inventory.insert(
-                    AEItemKey.of(extractStack), extractStack.getCount(), Actionable.MODULATE, this.mySrc);
+            var inserted = StorageHelper.poweredInsert(
+                    energy,
+                    inventory,
+                    Objects.requireNonNull(AEItemKey.of(extractStack)),
+                    extractStack.getCount(),
+                    this.mySrc);
             extractStack.setCount(extractStack.getCount() - (int) inserted);
             this.outputInv.insertItem(x, extractStack, false);
 
@@ -977,11 +979,17 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         public long requiredInputTotal(GenericStack input, int toCraft) {
             long multiplier = 0;
             for (var i : pattern.getInputs()) {
+                var found = false;
                 for (var genInput : i.getPossibleInputs()) {
                     if (input.what().matches(genInput)) {
                         multiplier = i.getMultiplier() * input.amount();
+                        found = true;
                         break;
                     }
+                }
+
+                if (found) {
+                    break;
                 }
             }
 
