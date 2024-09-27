@@ -563,12 +563,11 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         var success = false;
         for (var x = 0; x < this.outputInv.size(); x++) {
             var extractStack = this.outputInv.extractItem(x, MAX_OUTPUT_INV_SIZE, false);
-            var inserted = StorageHelper.poweredInsert(
-                    energy,
-                    inventory,
-                    Objects.requireNonNull(AEItemKey.of(extractStack)),
-                    extractStack.getCount(),
-                    this.mySrc);
+
+            var key = AEItemKey.of(extractStack);
+            if (key == null) continue;
+
+            var inserted = StorageHelper.poweredInsert(energy, inventory, key, extractStack.getCount(), this.mySrc);
             extractStack.setCount(extractStack.getCount() - (int) inserted);
             this.outputInv.insertItem(x, extractStack, false);
 
