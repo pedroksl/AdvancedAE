@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-27T00:04:08.0136133	Recipes
+// 1.21.1	2024-09-27T15:31:01.8667011	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -9,7 +9,7 @@
 9726aeff64890b80ccc67e5daf04b808cdf4da86 data/advanced_ae/advancement/recipes/misc/megaquantumstorage128.json
 1b7257a3e7b5799ceb7ea0d9e1358dc69353c987 data/advanced_ae/advancement/recipes/misc/quantumaccel.json
 87d88422d89e4899e9346040c9addd8dc3af2ab6 data/advanced_ae/advancement/recipes/misc/quantumcore.json
-528727ae491e04d327181f241f73d3fce2763f83 data/advanced_ae/advancement/recipes/misc/quantumcrafter.json
+eb1bc14267fd4825d984ce0a712ad2af12203178 data/advanced_ae/advancement/recipes/misc/quantumcrafter.json
 6993dee93747724b707a0653ae2d1875703d79c8 data/advanced_ae/advancement/recipes/misc/quantumdataentangler.json
 62d4378d9fd50b9d26e99253e6eb98c9b434e020 data/advanced_ae/advancement/recipes/misc/quantummultithreader.json
 35decf71b7480c7cb1a739beb3e19bfb8e53dc3c data/advanced_ae/advancement/recipes/misc/quantumstorage128.json

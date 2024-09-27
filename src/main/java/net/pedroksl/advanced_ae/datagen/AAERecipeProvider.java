@@ -92,7 +92,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', AAEBlocks.QUANTUM_ACCELERATOR)
                 .define('K', AEItems.CELL_COMPONENT_64K)
                 .define('U', AAEBlocks.QUANTUM_UNIT)
-                .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_UNIT))
+                .unlockedBy("hasItem", has(AAEItems.SHATTERED_SINGULARITY))
                 .save(c, AdvancedAE.makeId("quantumcrafter"));
 
         // Items
