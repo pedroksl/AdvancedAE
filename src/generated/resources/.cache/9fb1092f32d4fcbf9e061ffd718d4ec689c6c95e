@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-23T19:07:49.4676142	Recipes
+// 1.21.1	2024-09-27T00:04:08.0136133	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -9,6 +9,7 @@
 9726aeff64890b80ccc67e5daf04b808cdf4da86 data/advanced_ae/advancement/recipes/misc/megaquantumstorage128.json
 1b7257a3e7b5799ceb7ea0d9e1358dc69353c987 data/advanced_ae/advancement/recipes/misc/quantumaccel.json
 87d88422d89e4899e9346040c9addd8dc3af2ab6 data/advanced_ae/advancement/recipes/misc/quantumcore.json
+528727ae491e04d327181f241f73d3fce2763f83 data/advanced_ae/advancement/recipes/misc/quantumcrafter.json
 6993dee93747724b707a0653ae2d1875703d79c8 data/advanced_ae/advancement/recipes/misc/quantumdataentangler.json
 62d4378d9fd50b9d26e99253e6eb98c9b434e020 data/advanced_ae/advancement/recipes/misc/quantummultithreader.json
 35decf71b7480c7cb1a739beb3e19bfb8e53dc3c data/advanced_ae/advancement/recipes/misc/quantumstorage128.json
@@ -40,6 +41,7 @@ e1443cb85689f6f994585d37c85384c221f09e96 data/advanced_ae/recipe/fluixcrystalfro
 48bdd0cc4b9bf95009b30d2c3b06bdcd5c972932 data/advanced_ae/recipe/megaquantumstorage128.json
 18896ddd55412bba9f201068ca1c7edcf8b2216f data/advanced_ae/recipe/quantumaccel.json
 faf416e7a6125f5f852a3b2c5e08d1e0e66b0d5b data/advanced_ae/recipe/quantumcore.json
+ff13db5ae870a9d9aa7459f28aad17f16c79033d data/advanced_ae/recipe/quantumcrafter.json
 7150a83f51f8f8ccad7f0eeb302360c067043d1f data/advanced_ae/recipe/quantumdataentangler.json
 b3047f1dbecc14e2fe185fdc10ddbc6610cc9e14 data/advanced_ae/recipe/quantummultithreader.json
 27e7444cf10490c41e7dab36e5eb2a6a09a7de5a data/advanced_ae/recipe/quantumstorage128.json

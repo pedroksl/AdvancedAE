@@ -84,6 +84,16 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('B', Items.BUCKET)
                 .unlockedBy("hasItem", has(AEBlocks.VIBRATION_CHAMBER))
                 .save(c, AdvancedAE.makeId("reactionchamber"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_CRAFTER)
+                .pattern("SAS")
+                .pattern("KUK")
+                .pattern("SAS")
+                .define('S', AAEItems.SHATTERED_SINGULARITY)
+                .define('A', AAEBlocks.QUANTUM_ACCELERATOR)
+                .define('K', AEItems.CELL_COMPONENT_64K)
+                .define('U', AAEBlocks.QUANTUM_UNIT)
+                .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_UNIT))
+                .save(c, AdvancedAE.makeId("quantumcrafter"));
 
         // Items
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_ENCODER)
