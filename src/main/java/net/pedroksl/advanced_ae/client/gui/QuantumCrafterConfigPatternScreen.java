@@ -178,8 +178,8 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
 
         if (this.outputRow == null) {
             var textField = addNewNumberField(output.getSecond(), -1);
-            this.outputRow =
-                    new InputRow(output.getFirst(), textField, Component.empty().append("Limit:"), new ValidButton(btn -> {}));
+            this.outputRow = new InputRow(
+                    output.getFirst(), textField, Component.empty().append("Limit:"), new ValidButton(btn -> {}));
         } else {
             this.outputRow.textField.setFocused(false);
         }

@@ -858,7 +858,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     public Pair<AEKey, Long> getPatternConfigOutput(int index) {
         try {
             var job = craftingJobs.get(index);
-            if (job.pattern == null) return null;
+            if (job == null || job.pattern == null) return null;
             return new Pair<>(job.pattern.getOutputs().getFirst().what(), job.limitMaxOutput);
 
         } catch (IndexOutOfBoundsException e) {
