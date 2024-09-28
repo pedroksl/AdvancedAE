@@ -62,7 +62,21 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
     @Override
     public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
         this.menu.slots.removeIf(slot -> slot instanceof FakeSlot);
-        this.rows.forEach(row -> row.textField.setVisible(false));
+        this.rows.forEach(row -> {
+            if (!this.renderables.contains(row.textField)) {
+                this.addRenderableWidget(row.textField);
+            }
+            if (!this.renderables.contains(row.button)) {
+                this.addRenderableOnly(row.button);
+            }
+            row.textField.setVisible(false);
+        });
+        if (!this.renderables.contains(this.outputRow.textField)) {
+            this.addRenderableWidget(this.outputRow.textField);
+        }
+        if (!this.renderables.contains(outputRow.button)) {
+            this.addRenderableOnly(outputRow.button);
+        }
 
         final int scrollLevel = scrollbar.getCurrentScroll();
         int visibleRows = Math.min(VISIBLE_ROWS, this.rows.size());
@@ -83,8 +97,8 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
             y += 4;
             guiGraphics.drawCenteredString(Minecraft.getInstance().font, row.label, x, y, 0xFFFFFF);
 
-            x += this.leftPos + 20;
-            y += this.topPos;
+            x += offsetX + 20;
+            y += offsetY;
             row.textField.setRectangle(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT, x, y);
             row.textField.setVisible(true);
 
@@ -104,8 +118,8 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
             y += 4;
             guiGraphics.drawCenteredString(Minecraft.getInstance().font, outputRow.label, x, y, 0xFFFFFF);
 
-            x += this.leftPos + 20;
-            y += this.topPos;
+            x += offsetX + 20;
+            y += offsetY;
             outputRow.textField.setRectangle(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT, x, y);
             outputRow.textField.setVisible(true);
 
@@ -154,7 +168,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
             for (var entry : inputs.entrySet()) {
                 var textField = addNewNumberField(entry.getValue(), this.rows.size());
                 this.rows.add(new InputRow(
-                        entry.getKey(), textField, Component.empty().append("Keep:"), addNewValidButton()));
+                        entry.getKey(), textField, Component.empty().append("Keep:"), new ValidButton(btn -> {})));
             }
         } else {
             for (var row : this.rows) {
@@ -165,7 +179,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
         if (this.outputRow == null) {
             var textField = addNewNumberField(output.getSecond(), -1);
             this.outputRow =
-                    new InputRow(output.getFirst(), textField, Component.empty().append("Limit:"), addNewValidButton());
+                    new InputRow(output.getFirst(), textField, Component.empty().append("Limit:"), new ValidButton(btn -> {}));
         } else {
             this.outputRow.textField.setFocused(false);
         }
@@ -192,12 +206,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
         if (index == -1) {
             numberField.setAsOutput();
         }
-        return this.addRenderableWidget(numberField);
-    }
-
-    private ValidButton addNewValidButton() {
-        var button = new ValidButton(btn -> {});
-        return this.addRenderableWidget(button);
+        return numberField;
     }
 
     static class ValidButton extends AAEIconButton {
