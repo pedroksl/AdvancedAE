@@ -23,6 +23,8 @@
   "gui.advanced_ae.QuantumCrafter": "Quantum Crafter",
   "gui.advanced_ae.QuantumCrafterPatternConfig": "Pattern Configuration",
   "gui.advanced_ae.ReactionChamber": "Reaction Chamber",
+  "gui.advanced_ae.StockExportBus": "Stock Export Bus",
+  "gui.advanced_ae.StockExportBusSetAmount": "Middle click to set the amount to keep in stock",
   "gui.tooltips.advanced_ae.AcceleratorThreads": "Provides %d co-processing threads per block.",
   "gui.tooltips.advanced_ae.AnyButton": "Target the face adjacent to the adv. pattern provider",
   "gui.tooltips.advanced_ae.ClearButton": "Clear",
@@ -57,5 +59,6 @@
   "item.advanced_ae.adv_pattern_provider_upgrade": "Advanced Pattern Provider Upgrade",
   "item.advanced_ae.adv_processing_pattern": "Advanced Processing Pattern",
   "item.advanced_ae.shattered_singularity": "Shattered Singulary",
-  "item.advanced_ae.small_adv_pattern_provider_part": "Advanced Pattern Provider"
+  "item.advanced_ae.small_adv_pattern_provider_part": "Advanced Pattern Provider",
+  "item.advanced_ae.stock_export_bus_part": "Stock Export Bus"
 }

@@ -58,6 +58,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
 
         interfaceOrProviderPart(AAEItems.ADV_PATTERN_PROVIDER);
         interfaceOrProviderPart(AAEItems.SMALL_ADV_PATTERN_PROVIDER);
+        interfaceOrProviderPart(AAEItems.STOCK_EXPORT_BUS, true);
 
         // PATTERN PROVIDER
         patternProvider(AAEBlocks.ADV_PATTERN_PROVIDER);
@@ -83,23 +84,26 @@ public class AAEModelProvider extends AE2BlockStateProvider {
     }
 
     private void interfaceOrProviderPart(ItemDefinition<?> part) {
+        interfaceOrProviderPart(part, false);
+    }
+
+    private void interfaceOrProviderPart(ItemDefinition<?> part, boolean isExport) {
         var id = part.id().getPath();
         var partName = id.substring(0, id.lastIndexOf('_'));
         var front = AdvancedAE.makeId("part/" + partName);
         var back = AdvancedAE.makeId("part/" + partName + "_back");
         var sides = AdvancedAE.makeId("part/" + partName + "_sides");
 
-        models().singleTexture(
-                        "part/" + id,
-                        AppEng.makeId("part/pattern_provider_base"),
-                        "sides_status",
-                        AppEng.makeId("part/monitor_sides_status"))
+        var base = isExport ? AppEng.makeId("part/export_bus_base") : AppEng.makeId("part/pattern_provider_base");
+        var itemBase = isExport ? AppEng.makeId("item/export_bus") : AppEng.makeId("item/cable_pattern_provider");
+
+        models().singleTexture("part/" + id, base, "sidesStatus", AppEng.makeId("part/monitor_sides_status"))
                 .texture("sides", sides)
                 .texture("front", front)
                 .texture("back", back)
                 .texture("particle", back);
         itemModels()
-                .singleTexture("item/" + id, AppEng.makeId("item/cable_pattern_provider"), "sides", sides)
+                .singleTexture("item/" + id, itemBase, "sides", sides)
                 .texture("front", front)
                 .texture("back", back);
     }

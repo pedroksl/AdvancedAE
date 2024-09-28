@@ -10,6 +10,7 @@ import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
+import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
 import net.pedroksl.advanced_ae.gui.*;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
@@ -34,6 +35,9 @@ public class AAEMenus {
             create("adv_pattern_encoder", AdvPatternEncoderMenu::new, AdvPatternEncoderHost.class);
     public static final MenuType<QuantumCrafterMenu> QUANTUM_CRAFTER =
             create("quantum_crafter", QuantumCrafterMenu::new, QuantumCrafterEntity.class);
+
+    public static final MenuType<StockExportBusMenu> STOCK_EXPORT_BUS =
+            create("stock_export_bus", StockExportBusMenu::new, StockExportBusPart.class);
 
     public static final MenuType<OutputDirectionMenu> OUTPUT_DIRECTION =
             create("output_direction", OutputDirectionMenu::new, IDirectionalOutputHost.class);

@@ -1,0 +1,8 @@
+{
+  "parent": "ae2:item/export_bus",
+  "textures": {
+    "back": "advanced_ae:part/stock_export_bus_back",
+    "front": "advanced_ae:part/stock_export_bus",
+    "sides": "advanced_ae:part/stock_export_bus_sides"
+  }
+}

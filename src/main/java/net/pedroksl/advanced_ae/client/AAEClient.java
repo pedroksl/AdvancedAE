@@ -54,6 +54,9 @@ public class AAEClient {
                 event, AAEMenus.QUANTUM_CRAFTER, QuantumCrafterScreen::new, "/screens/quantum_crafter.json");
 
         InitScreens.register(
+                event, AAEMenus.STOCK_EXPORT_BUS, StockExportBusScreen::new, "/screens/stock_export_bus.json");
+
+        InitScreens.register(
                 event, AAEMenus.OUTPUT_DIRECTION, OutputDirectionScreen::new, "/screens/output_direction.json");
         InitScreens.register(
                 event,

@@ -23,6 +23,7 @@ public enum AAEText implements LocalizationEnum {
     AdvPatternEncoder("Advanced Pattern Encoder", Type.GUI),
     ReactionChamber("Reaction Chamber", Type.GUI),
     QuantumCrafter("Quantum Crafter", Type.GUI),
+    StockExportBus("Stock Export Bus", Type.GUI),
     EmiReactionChamber("Reaction Chamber", Type.EMI_CATEGORY),
     AnyButton("Target the face adjacent to the adv. pattern provider", Type.TOOLTIP),
     NorthButton("Target the NORTH face of the machine.", Type.TOOLTIP),
@@ -64,7 +65,9 @@ public enum AAEText implements LocalizationEnum {
             "Confirm the input using the %s key.\nSetting the value to 0 removes the limit.", Type.TOOLTIP),
     QuantumCrafterPatternConfig("Pattern Configuration", Type.GUI),
     ConfigurePatternButton("Configure Pattern", Type.TOOLTIP),
-    EnablePatternButton("Enabled/Disable", Type.TOOLTIP);
+    EnablePatternButton("Enabled/Disable", Type.TOOLTIP),
+
+    StockExportBusSetAmount("Middle click to set the amount to keep in stock", Type.GUI);
 
     private final String englishText;
     private final Type type;
