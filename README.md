@@ -1,4 +1,6 @@
- # Advanced AE!
+[![Downloads](https://cf.way2muchnoise.eu/full_1084104_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/advancedae) ![MCVsrsion](https://cf.way2muchnoise.eu/versions/1084104.svg)
+
+# Advanced AE!
 
 Advanced AE focuses on convenience and improving user experience when handling your ME System.
 It features a unique pattern provider and a very powerful crafting unit, with more to come!
