@@ -4,45 +4,49 @@ import java.lang.reflect.Method;
 
 import com.glodblock.github.glodium.reflect.ReflectKit;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.helpers.SimulatedStorageImportStrategy;
 
 import appeng.api.behaviors.StackTransferContext;
 import appeng.api.config.Actionable;
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
-import appeng.api.inventories.InternalInventory;
-import appeng.api.inventories.ItemTransfer;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingService;
 import appeng.api.networking.energy.IEnergyService;
 import appeng.api.networking.storage.IStorageService;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.IPartModel;
-import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
+import appeng.api.storage.ISubMenuHost;
 import appeng.core.AppEng;
 import appeng.core.definitions.AEItems;
 import appeng.items.parts.PartModels;
+import appeng.menu.ISubMenu;
+import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuLocators;
 import appeng.parts.PartModel;
-import appeng.parts.automation.ExportBusPart;
-import appeng.parts.automation.IOBusPart;
-import appeng.parts.automation.StackWorldBehaviors;
+import appeng.parts.automation.*;
 import appeng.util.ConfigInventory;
 
 @SuppressWarnings("UnstableApiUsage")
-public class StockExportBusPart extends ExportBusPart {
+public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
 
     public static final ResourceLocation MODEL_BASE = AdvancedAE.makeId("part/stock_export_bus_part");
 
@@ -59,6 +63,9 @@ public class StockExportBusPart extends ExportBusPart {
     private static final Method createTransferContext;
     private static final Method updateState;
     private ConfigInventory config;
+
+    private SimulatedStorageImportStrategy<IItemHandler, ItemStack> itemImportStrategy;
+    private SimulatedStorageImportStrategy<IFluidHandler, FluidStack> fluidImportStrategy;
 
     public StockExportBusPart(IPartItem<?> partItem) {
         super(partItem);
@@ -88,11 +95,28 @@ public class StockExportBusPart extends ExportBusPart {
         return this.config;
     }
 
-    private ItemTransfer getTarget() {
+    private void getStrategies() {
         BlockEntity self = this.getHost().getBlockEntity();
         BlockPos fromPos = self.getBlockPos().relative(this.getSide());
         Direction fromSide = this.getSide().getOpposite();
-        return InternalInventory.wrapExternal(this.getLevel(), fromPos, fromSide);
+
+        if (this.itemImportStrategy == null) {
+            this.itemImportStrategy = new SimulatedStorageImportStrategy<>(
+                    Capabilities.ItemHandler.BLOCK,
+                    HandlerStrategy.ITEMS,
+                    (ServerLevel) this.getLevel(),
+                    fromPos,
+                    fromSide);
+        }
+
+        if (this.fluidImportStrategy == null) {
+            this.fluidImportStrategy = new SimulatedStorageImportStrategy<>(
+                    Capabilities.FluidHandler.BLOCK,
+                    HandlerStrategy.FLUIDS,
+                    (ServerLevel) this.getLevel(),
+                    fromPos,
+                    fromSide);
+        }
     }
 
     @Override
@@ -122,12 +146,11 @@ public class StockExportBusPart extends ExportBusPart {
             var before = context.getOperationsRemaining();
 
             var transferFactor = what.getAmountPerOperation();
-            int maxAmount = context.getOperationsRemaining() * transferFactor;
+            var maxAmount = (long) context.getOperationsRemaining() * transferFactor;
 
-            var currentStack = getCurrentStock(what, amount);
-            if (currentStack == null) continue;
+            var currentAmount = getCurrentStock(context, what, amount);
 
-            maxAmount = Math.min(maxAmount, amount - currentStack.getCount());
+            maxAmount = Math.min(maxAmount, amount - currentAmount);
 
             var transferred = getExportStrategy().transfer(context, what, maxAmount);
             if (transferred > 0) {
@@ -156,14 +179,13 @@ public class StockExportBusPart extends ExportBusPart {
     }
 
     private void attemptCrafting(
-            StackTransferContext context, ICraftingService cg, int slotToExport, AEKey what, int targetAmount) {
+            StackTransferContext context, ICraftingService cg, int slotToExport, AEKey what, long targetAmount) {
         // don't bother crafting / checking or result, if target cannot accept at least 1 of requested item
-        var maxAmount = context.getOperationsRemaining() * what.getAmountPerOperation();
+        var maxAmount = (long) context.getOperationsRemaining() * what.getAmountPerOperation();
 
-        var stack = getCurrentStock(what, targetAmount);
-        if (stack == null) return;
+        var currentAmount = getCurrentStock(context, what, targetAmount);
 
-        maxAmount = Math.min(maxAmount, targetAmount - stack.getCount());
+        maxAmount = Math.min(maxAmount, targetAmount - currentAmount);
 
         var amount = getExportStrategy().push(what, maxAmount, Actionable.SIMULATE);
         if (amount > 0) {
@@ -172,17 +194,11 @@ public class StockExportBusPart extends ExportBusPart {
         }
     }
 
-    private @Nullable ItemStack getCurrentStock(AEKey what, int targetAmount) {
-        var target = getTarget();
-        if (target == null || !(what instanceof AEItemKey key)) {
-            return null;
-        }
+    private long getCurrentStock(StackTransferContext context, AEKey what, long targetAmount) {
+        getStrategies();
 
-	    var stack = target.simulateRemove(targetAmount, key.toStack(), null);
-        if (stack.getCount() >= targetAmount) {
-            return null;
-        }
-        return stack;
+        return this.itemImportStrategy.simulateTransfer(what, targetAmount, context.getActionSource())
+                + this.fluidImportStrategy.simulateTransfer(what, targetAmount, context.getActionSource());
     }
 
     public static void updatePartState(IOBusPart owner) {
@@ -191,6 +207,14 @@ public class StockExportBusPart extends ExportBusPart {
 
     protected MenuType<?> getMenuType() {
         return AAEMenus.STOCK_EXPORT_BUS;
+    }
+
+    public void returnToMainMenu(Player player, ISubMenu subMenu) {
+        MenuOpener.open(AAEMenus.STOCK_EXPORT_BUS, player, MenuLocators.forPart(this));
+    }
+
+    public ItemStack getMainMenuIcon() {
+        return this.getPartItem().asItem().getDefaultInstance();
     }
 
     @Override

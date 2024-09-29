@@ -16,6 +16,7 @@ import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.quantumcomputer.QuantumComputerMenu;
 
+import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.implementations.MenuTypeBuilder;
 
@@ -43,6 +44,8 @@ public class AAEMenus {
             create("output_direction", OutputDirectionMenu::new, IDirectionalOutputHost.class);
     public static final MenuType<QuantumCrafterConfigPatternMenu> CRAFTER_PATTERN_CONFIG =
             create("quantum_crafter_pattern_config", QuantumCrafterConfigPatternMenu::new, QuantumCrafterEntity.class);
+    public static final MenuType<SetAmountMenu> SET_AMOUNT =
+            create("set_amount", SetAmountMenu::new, ISubMenuHost.class);
 
     private static <M extends AEBaseMenu, H> MenuType<M> create(
             String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {

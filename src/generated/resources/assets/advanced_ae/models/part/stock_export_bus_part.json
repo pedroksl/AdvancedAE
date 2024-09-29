@@ -5,6 +5,6 @@
     "front": "advanced_ae:part/stock_export_bus",
     "particle": "advanced_ae:part/stock_export_bus_back",
     "sides": "advanced_ae:part/stock_export_bus_sides",
-    "sides_status": "ae2:part/monitor_sides_status"
+    "sidesStatus": "ae2:part/monitor_sides_status"
   }
 }

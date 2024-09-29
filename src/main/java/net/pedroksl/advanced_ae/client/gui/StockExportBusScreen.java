@@ -2,8 +2,6 @@ package net.pedroksl.advanced_ae.client.gui;
 
 import java.util.ArrayList;
 
-import com.glodblock.github.extendedae.client.gui.subgui.SetAmount;
-import com.glodblock.github.extendedae.common.EAESingletons;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +10,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.StockExportBusMenu;
 
@@ -31,8 +27,6 @@ import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.core.definitions.AEItems;
 import appeng.core.localization.ButtonToolTips;
 import appeng.core.localization.Tooltips;
-import appeng.core.network.serverbound.InventoryActionPacket;
-import appeng.helpers.InventoryAction;
 
 public class StockExportBusScreen extends UpgradeableScreen<StockExportBusMenu> {
 
@@ -86,18 +80,7 @@ public class StockExportBusScreen extends UpgradeableScreen<StockExportBusMenu> 
         if (this.minecraft.options.keyPickItem.matchesMouse(btn)) {
             Slot slot = this.findSlot(xCoord, yCoord);
             if (this.isValidSlot(slot)) {
-                GenericStack currentStack = GenericStack.fromItemStack(slot.getItem());
-
-                if (currentStack != null) {
-                    SetAmount<StockExportBusMenu, StockExportBusScreen> screen = new SetAmount<>(
-                            this,
-                            new ItemStack(EAESingletons.PRECISE_EXPORT_BUS),
-                            currentStack,
-                            (newStack) -> PacketDistributor.sendToServer(new InventoryActionPacket(
-                                    InventoryAction.SET_FILTER, slot.index, GenericStack.wrapInItemStack(newStack))));
-                    this.switchToScreen(screen);
-                    return true;
-                }
+                this.menu.openAmountMenu(slot.index);
             }
         }
 
@@ -127,9 +110,9 @@ public class StockExportBusScreen extends UpgradeableScreen<StockExportBusMenu> 
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(10.0F, 17.0F, 0.0F);
-        poseStack.scale(0.6F, 0.6F, 1.0F);
+        poseStack.scale(0.7F, 0.7F, 1.0F);
         Color color = this.style.getColor(PaletteColor.DEFAULT_TEXT_COLOR);
-        guiGraphics.drawString(this.font, AAEText.StockExportBusSetAmount.text(), 0, 0, color.toARGB(), false);
+        guiGraphics.drawString(this.font, AAEText.SetAmountButtonHint.text(), 0, 0, color.toARGB(), false);
         poseStack.popPose();
     }
 

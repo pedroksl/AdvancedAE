@@ -67,7 +67,8 @@ public enum AAEText implements LocalizationEnum {
     ConfigurePatternButton("Configure Pattern", Type.TOOLTIP),
     EnablePatternButton("Enabled/Disable", Type.TOOLTIP),
 
-    StockExportBusSetAmount("Middle click to set the amount to keep in stock", Type.GUI);
+    SetAmountButtonHint("Middle click to set the amount to keep in stock", Type.GUI),
+    SetAmount("Set Stock Amount", Type.GUI);
 
     private final String englishText;
     private final Type type;

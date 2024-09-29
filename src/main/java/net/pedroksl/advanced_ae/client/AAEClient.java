@@ -63,6 +63,7 @@ public class AAEClient {
                 AAEMenus.CRAFTER_PATTERN_CONFIG,
                 QuantumCrafterConfigPatternScreen::new,
                 "/screens/quantum_crafter_pattern_config.json");
+        InitScreens.register(event, AAEMenus.SET_AMOUNT, SetAmountScreen::new, "/screens/aae_set_amount.json");
     }
 
     @SuppressWarnings("deprecation")

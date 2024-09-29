@@ -5,6 +5,6 @@
     "front": "advanced_ae:part/adv_pattern_provider",
     "particle": "advanced_ae:part/adv_pattern_provider_back",
     "sides": "advanced_ae:part/adv_pattern_provider_sides",
-    "sides_status": "ae2:part/monitor_sides_status"
+    "sidesStatus": "ae2:part/monitor_sides_status"
   }
 }
