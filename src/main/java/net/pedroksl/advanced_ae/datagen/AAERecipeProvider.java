@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.datagen;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import appeng.core.definitions.AEParts;
 import com.glodblock.github.appflux.common.AFSingletons;
 import com.glodblock.github.extendedae.common.EAESingletons;
 import com.glodblock.github.extendedae.recipe.CrystalAssemblerRecipeBuilder;
@@ -96,6 +97,15 @@ public class AAERecipeProvider extends RecipeProvider {
                 .save(c, AdvancedAE.makeId("quantumcrafter"));
 
         // Items
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.STOCK_EXPORT_BUS)
+                .pattern("   ")
+                .pattern("CEL")
+                .pattern("   ")
+                .define('E', AEParts.EXPORT_BUS)
+                .define('C', AEItems.CALCULATION_PROCESSOR)
+                .define('L', AEItems.LOGIC_PROCESSOR)
+                .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
+                .save(c, AdvancedAE.makeId("stock_export_bus"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_ENCODER)
                 .pattern("QRQ")
                 .pattern("RER")
