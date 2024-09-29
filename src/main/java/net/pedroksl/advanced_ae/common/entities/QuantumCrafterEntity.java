@@ -286,11 +286,15 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
     private int maximumCraftableAmount(CraftingJob job) {
         if (this.getGridNode() == null) return 0;
+        if (job == null || job.pattern == null) return 0;
+
+        var inputs = job.pattern.getInputs();
+        var outputs = job.pattern.getOutputs();
 
         var grid = this.getGridNode().getGrid();
 
         int totalCrafts = MAX_CRAFT_AMOUNT;
-        for (var input : job.pattern.getInputs()) {
+        for (var input : inputs) {
             var minStock = job.minimumInputToKeep(input);
 
             var success = false;
@@ -325,7 +329,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             }
         }
 
-        var output = job.pattern.getOutputs().getFirst();
+        var output = outputs.getFirst();
         var maxStock = job.limitMaxOutput;
         if (maxStock > 0) {
             var extracted = grid.getStorageService()
@@ -442,6 +446,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
     private void performCraft(CraftingJob job, int toCraft) {
         if (this.getGridNode() == null) return;
+        if (job == null || job.pattern == null) return;
+
+        var inputs = job.pattern.getInputs();
+        var outputs = job.pattern.getOutputs();
 
         List<Long> requiredPerCraft = new ArrayList<>();
         List<GenericStack> extractedItems = new ArrayList<>();
@@ -450,7 +458,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         var storage = grid.getStorageService();
 
         // Extract all the items from ME Storage
-        for (var input : job.pattern.getInputs()) {
+        for (var input : inputs) {
             for (var genInput : input.getPossibleInputs()) {
                 var inputAmount = input.getMultiplier() * genInput.amount();
 
@@ -466,7 +474,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
 
         // Check how many complete recipes were extracted
-        var completeRecipes = extractedItems.size() == job.pattern.getInputs().length ? toCraft : 0;
+        var completeRecipes = extractedItems.size() == inputs.length ? toCraft : 0;
         for (var x = 0; x < extractedItems.size(); x++) {
             if (!job.isInputConsumed(extractedItems.get(x))) {
                 continue;
@@ -478,7 +486,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
 
         // Create outputs and put them in output slots
-        for (var output : job.pattern.getOutputs()) {
+        for (var output : outputs) {
             if (output.what() instanceof AEItemKey key) {
                 var stack = key.toStack();
                 stack.setCount((int) job.outputAmountPerCraft(output) * completeRecipes);
@@ -653,17 +661,21 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
         data.put("enabledPatterns", enabledTags);
 
-        ListTag jobTags = new ListTag();
-        for (var job : craftingJobs) {
-            CompoundTag tag = new CompoundTag();
-            if (job != null) {
-                job.writeToNBT(tag, registries);
-                jobTags.add(tag);
-            } else {
-                jobTags.add(tag);
+        try {
+            ListTag jobTags = new ListTag();
+            for (var job : craftingJobs) {
+                CompoundTag tag = new CompoundTag();
+                if (job != null) {
+                    job.writeToNBT(tag, registries);
+                    jobTags.add(tag);
+                } else {
+                    jobTags.add(tag);
+                }
             }
+            data.put("craftingJobs", jobTags);
+        } catch (NullPointerException ignored) {
+
         }
-        data.put("craftingJobs", jobTags);
 
         this.upgrades.writeToNBT(data, "upgrades", registries);
         this.configManager.writeToNBT(data, registries);
@@ -689,12 +701,14 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             }
         }
 
-        ListTag jobTags = data.getList("craftingJobs", Tag.TAG_COMPOUND);
-        if (!jobTags.isEmpty()) {
-            for (var x = 0; x < jobTags.size(); x++) {
-                CompoundTag tag = ((CompoundTag) jobTags.get(x));
-                if (!tag.isEmpty()) {
-                    craftingJobs.set(x, CraftingJob.fromTag(tag, registries));
+        if (data.contains("craftingJobs")) {
+            ListTag jobTags = data.getList("craftingJobs", Tag.TAG_COMPOUND);
+            if (!jobTags.isEmpty()) {
+                for (var x = 0; x < jobTags.size(); x++) {
+                    CompoundTag tag = ((CompoundTag) jobTags.get(x));
+                    if (!tag.isEmpty()) {
+                        craftingJobs.set(x, CraftingJob.fromTag(tag, registries));
+                    }
                 }
             }
         }
@@ -916,8 +930,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
             ListTag remainingTag = new ListTag();
             for (var item : remainingItems) {
+                if (item == null || item.isEmpty()) continue;
+
                 CompoundTag itemTag = new CompoundTag();
-                item.save(registries, itemTag);
+                itemTag = (CompoundTag) item.save(registries, itemTag);
                 remainingTag.add(itemTag);
             }
             data.put("remainingItems", remainingTag);
@@ -1092,7 +1108,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                     }
                 }
             }
-            return finalList;
+            return Collections.unmodifiableList(finalList);
         }
     }
 }
