@@ -3,7 +3,6 @@ package net.pedroksl.advanced_ae.datagen;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import appeng.core.definitions.AEParts;
 import com.glodblock.github.appflux.common.AFSingletons;
 import com.glodblock.github.extendedae.common.EAESingletons;
 import com.glodblock.github.extendedae.recipe.CrystalAssemblerRecipeBuilder;
@@ -27,6 +26,7 @@ import net.pedroksl.advanced_ae.xmod.Addons;
 
 import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
+import appeng.core.definitions.AEParts;
 import appeng.datagen.providers.tags.ConventionTags;
 
 import gripe._90.megacells.definition.MEGAItems;
@@ -305,6 +305,10 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(Items.LAPIS_LAZULI, 32)
                 .fluid(Fluids.WATER, 500)
                 .save(Addons.EXTENDEDAE.conditionalRecipe(c), "entroingot");
+        ReactionChamberRecipeBuilder.react(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 64, 1300000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL, 64)
+                .fluid(Fluids.WATER, 1000)
+                .save(c, "certuscharger");
 
         loadAppFluxRecipes(c);
         loadMegaCellsRecipes(c);
@@ -317,6 +321,10 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(Items.GLOWSTONE_DUST, 16)
                 .fluid(Fluids.WATER, 500)
                 .save(Addons.APPFLUX.conditionalRecipe(c), "redstonecrystal");
+        ReactionChamberRecipeBuilder.react(AFSingletons.CHARGED_REDSTONE, 64, 1300000)
+                .input(AFSingletons.REDSTONE_CRYSTAL, 64)
+                .fluid(Fluids.WATER, 1000)
+                .save(Addons.APPFLUX.conditionalRecipe(c), "chargedredstone");
     }
 
     private void loadMegaCellsRecipes(@NotNull RecipeOutput c) {
