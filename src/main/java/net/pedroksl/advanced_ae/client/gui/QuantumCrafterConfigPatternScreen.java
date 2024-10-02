@@ -1,7 +1,7 @@
 package net.pedroksl.advanced_ae.client.gui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.mojang.datafixers.util.Pair;
 
@@ -160,7 +160,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
                 SLOT_BBOX.getHeight());
     }
 
-    public void update(HashMap<AEKey, Long> inputs, Pair<AEKey, Long> output) {
+    public void update(LinkedHashMap<AEKey, Long> inputs, Pair<AEKey, Long> output) {
         if (inputs.size() != this.rows.size()) {
             this.rows.forEach(row -> this.removeWidget(row.textField));
             this.rows.clear();

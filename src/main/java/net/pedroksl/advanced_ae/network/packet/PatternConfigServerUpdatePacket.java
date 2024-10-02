@@ -3,7 +3,7 @@ package net.pedroksl.advanced_ae.network.packet;
 import static appeng.api.stacks.AEKey.readKey;
 import static appeng.api.stacks.AEKey.writeKey;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.mojang.datafixers.util.Pair;
 
@@ -17,7 +17,7 @@ import appeng.api.stacks.AEKey;
 import appeng.core.network.ClientboundPacket;
 import appeng.core.network.CustomAppEngPayload;
 
-public record PatternConfigServerUpdatePacket(HashMap<AEKey, Long> inputs, Pair<AEKey, Long> output)
+public record PatternConfigServerUpdatePacket(LinkedHashMap<AEKey, Long> inputs, Pair<AEKey, Long> output)
         implements ClientboundPacket {
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PatternConfigServerUpdatePacket> STREAM_CODEC =
@@ -32,13 +32,13 @@ public record PatternConfigServerUpdatePacket(HashMap<AEKey, Long> inputs, Pair<
     }
 
     @SuppressWarnings("unchecked")
-    public PatternConfigServerUpdatePacket(HashMap<AEKey, Long> inputs, Pair<AEKey, Long> output) {
-        this.inputs = (HashMap<AEKey, Long>) inputs.clone();
+    public PatternConfigServerUpdatePacket(LinkedHashMap<AEKey, Long> inputs, Pair<AEKey, Long> output) {
+        this.inputs = (LinkedHashMap<AEKey, Long>) inputs.clone();
         this.output = new Pair<>(output.getFirst(), output.getSecond());
     }
 
     public static PatternConfigServerUpdatePacket decode(RegistryFriendlyByteBuf stream) {
-        var inputs = new HashMap<AEKey, Long>();
+        var inputs = new LinkedHashMap<AEKey, Long>();
 
         var size = stream.readInt();
         for (var x = 0; x < size; x++) {

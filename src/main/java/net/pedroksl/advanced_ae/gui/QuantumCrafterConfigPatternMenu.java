@@ -1,6 +1,6 @@
 package net.pedroksl.advanced_ae.gui;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.mojang.datafixers.util.Pair;
 
@@ -25,7 +25,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
 
     private final String SET_MAX_CRAFTED = "set_max_crafted";
 
-    public HashMap<AEKey, Long> inputs = new HashMap<>();
+    public LinkedHashMap<AEKey, Long> inputs = new LinkedHashMap<>();
     public Pair<AEKey, Long> output;
 
     public QuantumCrafterConfigPatternMenu(int id, Inventory ip, QuantumCrafterEntity host) {
@@ -49,7 +49,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
             ServerPlayer player,
             MenuHostLocator locator,
             int index,
-            HashMap<AEKey, Long> inputs,
+            LinkedHashMap<AEKey, Long> inputs,
             Pair<AEKey, Long> output) {
         MenuOpener.open(AAEMenus.CRAFTER_PATTERN_CONFIG, player, locator);
 
@@ -64,8 +64,8 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
         this.index = index;
     }
 
-    private void setInputsAndOutput(HashMap<AEKey, Long> inputs, Pair<AEKey, Long> output) {
-        this.inputs = new HashMap<>(inputs);
+    private void setInputsAndOutput(LinkedHashMap<AEKey, Long> inputs, Pair<AEKey, Long> output) {
+        this.inputs = new LinkedHashMap<>(inputs);
         this.output = new Pair<>(output.getFirst(), output.getSecond());
 
         if (isServerSide() && this.inputs != null && this.output != null) {

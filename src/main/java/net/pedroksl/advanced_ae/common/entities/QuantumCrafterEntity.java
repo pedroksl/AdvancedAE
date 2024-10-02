@@ -853,8 +853,8 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         saveChanges();
     }
 
-    public HashMap<AEKey, Long> getPatternConfigInputs(int index) {
-        HashMap<AEKey, Long> inputs = new HashMap<>();
+    public LinkedHashMap<AEKey, Long> getPatternConfigInputs(int index) {
+        LinkedHashMap<AEKey, Long> inputs = new LinkedHashMap<>();
         try {
             var job = craftingJobs.get(index);
             if (job == null || job.pattern == null) return null;
