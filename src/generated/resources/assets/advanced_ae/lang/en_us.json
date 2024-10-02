@@ -26,6 +26,7 @@
   "gui.advanced_ae.SetAmount": "Set Stock Amount",
   "gui.advanced_ae.SetAmountButtonHint": "Middle click to set the amount to keep in stock",
   "gui.advanced_ae.StockExportBus": "Stock Export Bus",
+  "gui.advanced_ae.ThroughputMonitorValue": "%s%s/s",
   "gui.tooltips.advanced_ae.AcceleratorThreads": "Provides %d co-processing threads per block.",
   "gui.tooltips.advanced_ae.AnyButton": "Target the face adjacent to the adv. pattern provider",
   "gui.tooltips.advanced_ae.ClearButton": "Clear",
@@ -61,5 +62,6 @@
   "item.advanced_ae.adv_processing_pattern": "Advanced Processing Pattern",
   "item.advanced_ae.shattered_singularity": "Shattered Singulary",
   "item.advanced_ae.small_adv_pattern_provider_part": "Advanced Pattern Provider",
-  "item.advanced_ae.stock_export_bus_part": "Stock Export Bus"
+  "item.advanced_ae.stock_export_bus_part": "Stock Export Bus",
+  "item.advanced_ae.throughput_monitor": "ME Throughput Monitor"
 }

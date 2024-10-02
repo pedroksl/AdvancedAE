@@ -16,8 +16,11 @@ import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
 import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 
+import appeng.api.util.AEColor;
+import appeng.client.render.StaticItemColor;
 import appeng.client.render.crafting.CraftingCubeModel;
 import appeng.hooks.BuiltInModelHooks;
 import appeng.init.client.InitScreens;
@@ -69,16 +72,20 @@ public class AAEClient {
     @SuppressWarnings("deprecation")
     private static void initCraftingUnitModels(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            var type = AAECraftingUnitType.STRUCTURE;
-            BuiltInModelHooks.addBuiltInModel(
-                    AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
-                    new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
-
-            ItemBlockRenderTypes.setRenderLayer(type.getDefinition().block(), RenderType.cutout());
+            for (var type : AAECraftingUnitType.values()) {
+                if (type == AAECraftingUnitType.STRUCTURE) {
+                    BuiltInModelHooks.addBuiltInModel(
+                            AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
+                            new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
+                }
+                ItemBlockRenderTypes.setRenderLayer(type.getDefinition().block(), RenderType.cutout());
+            }
         });
     }
 
-    private static void initItemColours(RegisterColorHandlersEvent.Item event) {}
+    private static void initItemColours(RegisterColorHandlersEvent.Item event) {
+        event.register(new StaticItemColor(AEColor.TRANSPARENT), AAEItems.THROUGHPUT_MONITOR.asItem());
+    }
 
     private static void initRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(AAEBlockEntities.REACTION_CHAMBER.get(), ReactionChamberTESR::new);

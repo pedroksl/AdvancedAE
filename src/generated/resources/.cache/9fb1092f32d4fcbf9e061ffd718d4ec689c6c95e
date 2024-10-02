@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-29T02:57:22.5487041	Recipes
+// 1.21.1	2024-09-29T23:42:53.3785421	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -25,6 +25,8 @@ a43dbea0dfb743372deee07f3883301cee626ce8 data/advanced_ae/advancement/recipes/mi
 d094766f49f8c9cb85ed4125e167da047536790b data/advanced_ae/recipe/advpartenc.json
 3b8443500641b89cad92b21f4622c44d5a6811d4 data/advanced_ae/recipe/advpatpro2.json
 3c8685e5f15887a2960b835bc5df061a25a90824 data/advanced_ae/recipe/advpatpropart.json
+7ea31cb5f0ace77ed65c395be7494a6bcd9c5656 data/advanced_ae/recipe/certuscharger.json
+231e907406568ebbc6c21530b61a9e29a849c4a2 data/advanced_ae/recipe/chargedredstone.json
 171a74fdb528b6fe02ec5572520aede1a2a8c3e0 data/advanced_ae/recipe/chippedbudding.json
 68ba7324c9b096cd9569f9d7e322baf6a1a70213 data/advanced_ae/recipe/damagedbudding.json
 9fb6980062ff8cb33bc01407e6832a3c8c0ae681 data/advanced_ae/recipe/eaeadvpatpro.json
