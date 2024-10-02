@@ -18,7 +18,7 @@
 	},
 	"background": {
 		"texture": "guis/reaction_chamber.png",
-		"srcRect": [0, 0, 176, 165]
+		"srcRect": [0, 0, 176, 175]
 	},
 	"slots": {
 		"MACHINE_INPUT": {
