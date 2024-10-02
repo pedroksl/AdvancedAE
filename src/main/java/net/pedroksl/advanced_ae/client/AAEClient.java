@@ -1,7 +1,9 @@
 package net.pedroksl.advanced_ae.client;
 
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.util.FastColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -84,10 +86,14 @@ public class AAEClient {
     }
 
     private static void initItemColours(RegisterColorHandlersEvent.Item event) {
-        event.register(new StaticItemColor(AEColor.TRANSPARENT), AAEItems.THROUGHPUT_MONITOR.asItem());
+        event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
     }
 
     private static void initRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(AAEBlockEntities.REACTION_CHAMBER.get(), ReactionChamberTESR::new);
+    }
+
+    private static ItemColor makeOpaque(ItemColor itemColor) {
+        return (stack, tintIndex) -> FastColor.ARGB32.opaque(itemColor.getColor(stack, tintIndex));
     }
 }
