@@ -1,6 +1,6 @@
 package net.pedroksl.advanced_ae.gui;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -76,7 +76,7 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
 
         if (details == null) return;
 
-        HashMap<AEKey, Direction> dirMap = new HashMap<>();
+        LinkedHashMap<AEKey, Direction> dirMap = new LinkedHashMap<>();
         if (details instanceof AEProcessingPattern processingPattern) {
             dirMap = decodeProcessingPattern(processingPattern);
         } else if (details instanceof AdvProcessingPattern advProcessingPattern) {
@@ -88,10 +88,10 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
         }
     }
 
-    private HashMap<AEKey, Direction> decodeProcessingPattern(AEProcessingPattern pattern) {
+    private LinkedHashMap<AEKey, Direction> decodeProcessingPattern(AEProcessingPattern pattern) {
         var sparseInputs = pattern.getSparseInputs();
 
-        HashMap<AEKey, Direction> inputMap = new HashMap<>();
+        LinkedHashMap<AEKey, Direction> inputMap = new LinkedHashMap<>();
         for (GenericStack input : sparseInputs) {
             if (input == null) {
                 continue;
@@ -109,7 +109,7 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
         return inputMap;
     }
 
-    private HashMap<AEKey, Direction> decodeAdvProcessingPattern(AdvProcessingPattern pattern) {
+    private LinkedHashMap<AEKey, Direction> decodeAdvProcessingPattern(AdvProcessingPattern pattern) {
         this.outputSlot.set(this.inputSlot.getItem().copy());
 
         return pattern.getDirectionMap();

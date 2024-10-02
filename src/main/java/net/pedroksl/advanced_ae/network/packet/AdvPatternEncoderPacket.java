@@ -2,7 +2,7 @@ package net.pedroksl.advanced_ae.network.packet;
 
 import static appeng.api.stacks.AEKey.writeKey;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
 
@@ -18,13 +18,13 @@ import appeng.api.stacks.AEKey;
 
 public class AdvPatternEncoderPacket implements IMessage {
 
-    private HashMap<AEKey, Direction> dirMap;
+    private LinkedHashMap<AEKey, Direction> dirMap;
 
     public AdvPatternEncoderPacket() {
-        this.dirMap = new HashMap<>();
+        this.dirMap = new LinkedHashMap<>();
     }
 
-    public AdvPatternEncoderPacket(HashMap<AEKey, Direction> dirMap) {
+    public AdvPatternEncoderPacket(LinkedHashMap<AEKey, Direction> dirMap) {
         this.dirMap = dirMap;
     }
 
@@ -45,7 +45,7 @@ public class AdvPatternEncoderPacket implements IMessage {
 
     @Override
     public void fromBytes(RegistryFriendlyByteBuf buf) {
-        dirMap = new HashMap<>();
+        dirMap = new LinkedHashMap<>();
 
         int size = buf.readInt();
         for (var x = 0; x < size; x++) {

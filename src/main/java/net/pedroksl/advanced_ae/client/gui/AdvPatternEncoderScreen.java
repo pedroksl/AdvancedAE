@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.client.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import javax.annotation.Nullable;
 
 import com.mojang.datafixers.util.Pair;
@@ -49,7 +50,7 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
     private final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/adv_pattern_encoder.png");
 
     private final Scrollbar scrollbar;
-    private HashMap<AEKey, Direction> inputList = new HashMap<>();
+    private LinkedHashMap<AEKey, Direction> inputList = new LinkedHashMap<>();
     private final HashMap<AEKey, DirectionInputButton[]> directionButtons = new HashMap<>();
     private final ArrayList<InputRow> rows = new ArrayList<>();
 
@@ -133,7 +134,7 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
         this.refreshList();
     }
 
-    public void update(HashMap<AEKey, Direction> inputList) {
+    public void update(LinkedHashMap<AEKey, Direction> inputList) {
         this.inputList.clear();
         this.directionButtons.forEach((k, v) -> {
             for (var btn : v) {

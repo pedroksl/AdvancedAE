@@ -30,7 +30,7 @@ public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails
     private final List<GenericStack> sparseInputs, sparseOutputs;
     private final AdvProcessingPattern.Input[] inputs;
     private final List<GenericStack> condensedOutputs;
-    private final HashMap<AEKey, Direction> dirMap = new HashMap<>();
+    private final LinkedHashMap<AEKey, Direction> dirMap = new LinkedHashMap<>();
 
     public AdvProcessingPattern(AEItemKey definition) {
         this.definition = definition;
@@ -139,7 +139,7 @@ public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails
         return sparseOutputs;
     }
 
-    public HashMap<AEKey, Direction> getDirectionMap() {
+    public LinkedHashMap<AEKey, Direction> getDirectionMap() {
         return dirMap;
     }
 
@@ -223,7 +223,7 @@ public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails
             return input.matches(template[0]);
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public AEKey getRemainingKey(AEKey template) {
             return null;
