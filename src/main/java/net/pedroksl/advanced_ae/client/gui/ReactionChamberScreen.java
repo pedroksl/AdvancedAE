@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionButton;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEToolbarActionButton;
 import net.pedroksl.advanced_ae.gui.ReactionChamberMenu;
 
 import appeng.api.config.Settings;
@@ -16,6 +17,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
 
     private final ProgressBar pb;
     private final SettingToggleButton<YesNo> autoExportBtn;
+    private final AAEToolbarActionButton outputConfigure;
 
     public ReactionChamberScreen(
             ReactionChamberMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
@@ -26,6 +28,11 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
 
         this.autoExportBtn = new ServerSettingToggleButton<>(Settings.AUTO_EXPORT, YesNo.NO);
         this.addToLeftToolbar(autoExportBtn);
+
+        this.outputConfigure =
+                new AAEToolbarActionButton(AAEActionItems.DIRECTIONAL_OUTPUT, btn -> menu.configureOutput());
+        this.outputConfigure.setVisibility(getMenu().getAutoExport() == YesNo.YES);
+        this.addToLeftToolbar(this.outputConfigure);
 
         AAEActionButton clearBtn = new AAEActionButton(AAEActionItems.F_FLUSH, btn -> menu.clearFluid());
         clearBtn.setHalfSize(true);
@@ -41,5 +48,6 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
         this.pb.setFullMsg(Component.literal(progress + "%"));
 
         this.autoExportBtn.set(getMenu().getAutoExport());
+        this.outputConfigure.setVisibility(getMenu().getAutoExport() == YesNo.YES);
     }
 }

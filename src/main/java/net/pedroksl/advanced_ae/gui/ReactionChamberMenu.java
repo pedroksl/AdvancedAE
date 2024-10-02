@@ -35,13 +35,12 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity> 
     public YesNo autoExport = YesNo.NO;
 
     private static final String FLUSH_FLUID = "flushFluid";
+    private static final String CONFIGURE_OUTPUT = "configureOutput";
 
     private final Slot first;
     private final Slot second;
     private final Slot third;
     private final AppEngSlot tank;
-
-    private boolean initialized = false;
 
     public ReactionChamberMenu(int id, Inventory ip, ReactionChamberEntity host) {
         super(AAEMenus.REACTION_CHAMBER, id, ip, host);
@@ -60,23 +59,11 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity> 
                 AAEText.TankEmpty.text(), AAEText.TankAmount.text(0, 16000).withStyle(Tooltips.NORMAL_TOOLTIP_TEXT)));
 
         registerClientAction(FLUSH_FLUID, this::clearFluid);
+        registerClientAction(CONFIGURE_OUTPUT, this::configureOutput);
     }
 
     protected void loadSettingsFromHost(IConfigManager cm) {
-        var autoExport = this.getHost().getConfigManager().getSetting(Settings.AUTO_EXPORT);
-        if (autoExport != this.autoExport && autoExport == YesNo.YES && initialized) {
-            var locator = getLocator();
-            if (locator != null && isServerSide()) {
-                OutputDirectionMenu.open(
-                        ((ServerPlayer) this.getPlayer()),
-                        getLocator(),
-                        this.getHost().getAllowedOutputs());
-            }
-        }
-        this.autoExport = autoExport;
-        if (!initialized) {
-            initialized = true;
-        }
+        this.autoExport = this.getHost().getConfigManager().getSetting(Settings.AUTO_EXPORT);
     }
 
     @Override
@@ -119,5 +106,20 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity> 
         }
 
         this.getHost().clearFluid();
+    }
+
+    public void configureOutput() {
+        if (isClientSide()) {
+            sendClientAction(CONFIGURE_OUTPUT);
+            return;
+        }
+
+        var locator = getLocator();
+        if (locator != null && isServerSide()) {
+            OutputDirectionMenu.open(
+                    ((ServerPlayer) this.getPlayer()),
+                    getLocator(),
+                    this.getHost().getAllowedOutputs());
+        }
     }
 }
