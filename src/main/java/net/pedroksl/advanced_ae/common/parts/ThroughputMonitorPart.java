@@ -22,6 +22,7 @@ import appeng.api.parts.IPartItem;
 import appeng.api.parts.IPartModel;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AmountFormat;
+import appeng.api.util.AEColor;
 import appeng.client.render.BlockEntityRenderHelper;
 import appeng.core.AppEng;
 import appeng.hooks.ticking.TickHandler;
@@ -56,6 +57,9 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     protected long amountAtLastUpdate = -1;
     protected long lastReportedValue = -1;
     protected String lastHumanReadableValue = "";
+
+    private static final int positiveColor = AEColor.GREEN.mediumVariant;
+    private static final int negativeColor = AEColor.RED.mediumVariant;
 
     public ThroughputMonitorPart(IPartItem<?> partItem) {
         super(partItem, false);
@@ -131,25 +135,25 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
                 BlockOrientation orientation = BlockOrientation.get(this.getSide(), this.getSpin());
                 poseStack.translate(0.5, 0.5, 0.5);
                 BlockEntityRenderHelper.rotateToFace(poseStack, orientation);
-                poseStack.translate(-0.15, 0.05, 0.5);
+                poseStack.translate(0, 0.1, 0.5);
                 BlockEntityRenderHelper.renderItem2dWithAmount(
                         poseStack,
                         buffers,
                         this.getDisplayed(),
                         ((MixinAbstractMonitorPartAccessor) this).getAmount(),
                         ((MixinAbstractMonitorPartAccessor) this).getCanCraft(),
-                        0.2F,
-                        -0.13F,
+                        0.3F,
+                        -0.15F,
                         this.getColor().contrastTextColor,
                         this.getLevel());
 
-                poseStack.translate(0.25, -0.13F, 0);
+                poseStack.translate(0, -0.23F, 0);
                 var sign = lastReportedValue > 0 ? "+" : lastReportedValue == 0 ? "" : "-";
+                var color = lastReportedValue > 0
+                        ? positiveColor
+                        : lastReportedValue == 0 ? this.getColor().contrastTextColor : negativeColor;
                 AAEBlockEntityRenderHelper.renderString(
-                        poseStack,
-                        buffers,
-                        AAEText.ThroughputMonitorValue.text(sign, lastHumanReadableValue),
-                        this.getColor().contrastTextColor);
+                        poseStack, buffers, AAEText.ThroughputMonitorValue.text(sign, lastHumanReadableValue), color);
                 poseStack.popPose();
             }
         }
