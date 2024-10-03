@@ -8,6 +8,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.renderer.AAEBlockEntityRenderHelper;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.mixins.MixinAbstractMonitorPartAccessor;
@@ -97,13 +103,24 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     @Override
     public void writeVisualStateToNBT(CompoundTag data) {
         super.writeVisualStateToNBT(data);
+        data.putLong("lastValue", this.lastReportedValue);
         data.putString("throughput", this.lastHumanReadableValue);
     }
 
     @Override
     public void readVisualStateFromNBT(CompoundTag data) {
         super.readVisualStateFromNBT(data);
+        this.lastReportedValue = data.getLong("lastValue");
         this.lastHumanReadableValue = data.getString("throughput");
+    }
+
+    @Override
+    public boolean onUseItemOn(ItemStack heldItem, Player player, InteractionHand hand, Vec3 pos) {
+        if (heldItem == ItemStack.EMPTY) {
+            return super.onUseWithoutItem(player, pos);
+        } else {
+            return super.onUseItemOn(heldItem, player, hand, pos);
+        }
     }
 
     private @Nullable AEKey getConfiguredItem() {
@@ -123,6 +140,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void renderDynamic(
             float partialTicks,
             PoseStack poseStack,

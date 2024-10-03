@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-29T23:42:53.3785421	Recipes
+// 1.21.1	2024-10-02T21:00:09.0709526	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -22,6 +22,7 @@ f5b69a588049e082b7ae4148cd85f179875639b4 data/advanced_ae/advancement/recipes/mi
 74b23b08046d0b4a810ed022ddd21b26ff8cb0b4 data/advanced_ae/advancement/recipes/misc/smalladvpatpropart.json
 a43dbea0dfb743372deee07f3883301cee626ce8 data/advanced_ae/advancement/recipes/misc/smallappupgrade.json
 639127e0f281e0ae9f5e2c487e9552b9235379e4 data/advanced_ae/advancement/recipes/misc/stock_export_bus.json
+423c20f44d3ee0a836a21a3e475699394d959ba2 data/advanced_ae/advancement/recipes/misc/throughput_monitor.json
 d094766f49f8c9cb85ed4125e167da047536790b data/advanced_ae/recipe/advpartenc.json
 3b8443500641b89cad92b21f4622c44d5a6811d4 data/advanced_ae/recipe/advpatpro2.json
 3c8685e5f15887a2960b835bc5df061a25a90824 data/advanced_ae/recipe/advpatpropart.json
@@ -64,3 +65,4 @@ dde9d704e98ccadee759bbb804fac6c0790cfdaa data/advanced_ae/recipe/singularity.jso
 8f4c9addbbeb7b52120c47fdacff057d4cc7f1ca data/advanced_ae/recipe/smalladvpatpropart.json
 fdcbd6ceaee517b8f1e6e68d3f915e47c8024f2b data/advanced_ae/recipe/smallappupgrade.json
 914885ddca72b365298cbdb5b77bd0b63dd42df1 data/advanced_ae/recipe/stock_export_bus.json
+a8d7cca6a040782fd5e6d6772a61884f37de1446 data/advanced_ae/recipe/throughput_monitor.json

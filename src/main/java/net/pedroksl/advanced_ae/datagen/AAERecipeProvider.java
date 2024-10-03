@@ -148,6 +148,11 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(AEItems.SKY_DUST, 4)
                 .fluid(Fluids.LAVA, 100)
                 .save(c, "shatteredsingularity");
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.THROUGHPUT_MONITOR)
+                .requires(AEItems.CALCULATION_PROCESSOR)
+                .requires(AEParts.STORAGE_MONITOR)
+                .unlockedBy("hasItem", has(AEParts.STORAGE_MONITOR))
+                .save(c, AdvancedAE.makeId("throughput_monitor"));
 
         // Quantum Computer
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STRUCTURE)
