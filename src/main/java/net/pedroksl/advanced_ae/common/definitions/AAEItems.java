@@ -64,7 +64,7 @@ public class AAEItems {
             "adv_pattern_provider_capacity_upgrade",
             AdvPatternProviderCapacityUpgradeItem::new);
     public static final ItemDefinition<Item> SHATTERED_SINGULARITY =
-            item("Shattered Singulary", "shattered_singularity", ShatteredSingularityItem::new);
+            item("Shattered Singularity", "shattered_singularity", ShatteredSingularityItem::new);
 
     public static final ItemDefinition<AdvPatternEncoderItem> ADV_PATTERN_ENCODER =
             item("Advanced Pattern Encoder", "adv_pattern_encoder", p -> new AdvPatternEncoderItem(p.stacksTo(1)));
