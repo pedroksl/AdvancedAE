@@ -33,6 +33,7 @@ public class AAENetworkHandler extends NetworkHandler {
         serverbound(this.registrar, AAEConfigButtonPacket.TYPE, AAEConfigButtonPacket.STREAM_CODEC);
         serverbound(this.registrar, ServerActionPacket.TYPE, ServerActionPacket.STREAM_CODEC);
         serverbound(this.registrar, SetStockAmountPacket.TYPE, SetStockAmountPacket.STREAM_CODEC);
+        serverbound(this.registrar, AAEHotkeyPacket.TYPE, AAEHotkeyPacket.STREAM_CODEC);
 
         clientbound(this.registrar, PatternConfigServerUpdatePacket.TYPE, PatternConfigServerUpdatePacket.STREAM_CODEC);
         clientbound(this.registrar, EnabledPatternsUpdatePacket.TYPE, EnabledPatternsUpdatePacket.STREAM_CODEC);

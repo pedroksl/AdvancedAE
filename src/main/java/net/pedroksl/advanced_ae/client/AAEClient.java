@@ -1,16 +1,17 @@
 package net.pedroksl.advanced_ae.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.FastColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.common.NeoForge;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.*;
 import net.pedroksl.advanced_ae.client.gui.OutputDirectionScreen;
@@ -22,6 +23,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 
 import appeng.api.util.AEColor;
+import appeng.client.gui.me.common.PinnedKeys;
 import appeng.client.render.StaticItemColor;
 import appeng.client.render.crafting.CraftingCubeModel;
 import appeng.hooks.BuiltInModelHooks;
@@ -29,12 +31,25 @@ import appeng.init.client.InitScreens;
 
 @SuppressWarnings("unused")
 @Mod(value = AdvancedAE.MOD_ID, dist = Dist.CLIENT)
-public class AAEClient {
-    public AAEClient(IEventBus eventBus) {
+public class AAEClient extends AdvancedAE {
+
+    private static AAEClient INSTANCE;
+
+    public AAEClient(IEventBus eventBus, ModContainer container) {
+        super(eventBus, container);
+
         eventBus.addListener(AAEClient::initScreens);
         eventBus.addListener(AAEClient::initCraftingUnitModels);
         eventBus.addListener(AAEClient::initItemColours);
         eventBus.addListener(AAEClient::initRenderers);
+        eventBus.addListener(this::registerHotkeys);
+
+        INSTANCE = this;
+
+        NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post e) -> {
+            tickPinnedKeys(Minecraft.getInstance());
+            Hotkeys.checkHotkeys();
+        });
     }
 
     private static void initScreens(RegisterMenuScreensEvent event) {
@@ -85,6 +100,22 @@ public class AAEClient {
         });
     }
 
+    private void tickPinnedKeys(Minecraft minecraft) {
+        // Only prune pinned keys when no screen is currently open
+        if (minecraft.screen == null) {
+            PinnedKeys.prune();
+        }
+    }
+
+    @Override
+    public void registerHotkey(String id) {
+        Hotkeys.registerHotkey(id);
+    }
+
+    private void registerHotkeys(RegisterKeyMappingsEvent e) {
+        Hotkeys.finalizeRegistration(e::register);
+    }
+
     private static void initItemColours(RegisterColorHandlersEvent.Item event) {
         event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
     }
@@ -95,5 +126,9 @@ public class AAEClient {
 
     private static ItemColor makeOpaque(ItemColor itemColor) {
         return (stack, tintIndex) -> FastColor.ARGB32.opaque(itemColor.getColor(stack, tintIndex));
+    }
+
+    public static AAEClient instance() {
+        return INSTANCE;
     }
 }
