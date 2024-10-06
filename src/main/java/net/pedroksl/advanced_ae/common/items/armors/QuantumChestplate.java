@@ -26,7 +26,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
 
 import software.bernie.geckolib.animatable.GeoItem;
 
-public class QuantumChestplate extends QuantumArmorBase implements GeoItem {
+public class QuantumChestplate extends QuantumArmorBase implements GeoItem{
 
     public QuantumChestplate(Properties properties) {
         super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.CHESTPLATE, properties);

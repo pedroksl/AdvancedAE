@@ -37,6 +37,7 @@ public enum AAEText implements LocalizationEnum {
     ClearSidesButtonHint("Disable output from all sides of the machine.", Type.TOOLTIP),
     TankEmpty("Empty", Type.TOOLTIP),
     TankAmount("%s mb / %s mb", Type.TOOLTIP),
+    QuantumArmorConfig("Quantum Armor Configuration", Type.GUI),
 
     ReactionChamberEnergy("Used Power: %d" + "k FE", Type.EMI_TEXT),
     ShatteredSingularityDescription(

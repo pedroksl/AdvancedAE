@@ -1,7 +1,5 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import java.util.Properties;
-
 import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
 
 public class QuantumHelmet extends QuantumArmorBase {

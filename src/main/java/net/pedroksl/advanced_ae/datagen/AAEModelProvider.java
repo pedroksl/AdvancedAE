@@ -33,6 +33,8 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.ADV_PATTERN_ENCODER);
         basicItem(AAEItems.SHATTERED_SINGULARITY);
 
+        basicItem(AAEItems.QUANTUM_UPGRADE_BASE);
+
         quantumCrafterModel();
 
         // CRAFTING UNITS

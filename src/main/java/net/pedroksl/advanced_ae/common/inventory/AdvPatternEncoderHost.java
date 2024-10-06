@@ -14,7 +14,7 @@ import appeng.util.inv.InternalInventoryHost;
 public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> implements InternalInventoryHost {
 
     private final AppEngInternalInventory inOutInventory = new AppEngInternalInventory(this, 2);
-    private AdvPatternEncoderMenu.inventoryChangedHandler invChangeHandler;
+    private AdvPatternEncoderMenu.InventoryChangedHandler invChangeHandler;
 
     public AdvPatternEncoderHost(AdvPatternEncoderItem item, Player player, ItemMenuHostLocator locator) {
         super(item, player, locator);
@@ -53,14 +53,16 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
             this.getItemStack().remove(AAEComponents.STACK_TAG);
         }
 
-        invChangeHandler.handleChange(inv, slot);
+        if (invChangeHandler != null) {
+            invChangeHandler.handleChange(inv, slot);
+        }
     }
 
     public AppEngInternalInventory getInventory() {
         return this.inOutInventory;
     }
 
-    public void setInventoryChangedHandler(AdvPatternEncoderMenu.inventoryChangedHandler handler) {
+    public void setInventoryChangedHandler(AdvPatternEncoderMenu.InventoryChangedHandler handler) {
         invChangeHandler = handler;
     }
 }

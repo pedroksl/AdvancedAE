@@ -2,13 +2,12 @@
 	"$schema": "schema.json",
 	"includes": [
 		"common/common.json",
-		"common/player_inventory.json",
-		"common/toolbox.json"
+		"common/player_inventory.json"
 	],
 	"text": {
 		"dialog_title": {
 			"text": {
-				"translate": "gui.advanced_ae.ReactionChamber"
+				"translate": "gui.advanced_ae.QuantumArmorConfig"
 			},
 			"position": {
 				"left": 10,
@@ -17,38 +16,24 @@
 		}
 	},
 	"background": {
-		"texture": "guis/reaction_chamber.png",
-		"srcRect": [0, 0, 176, 175]
+		"texture": "guis/quantum_armor_config.png",
+		"srcRect": [0, 0, 176, 195]
 	},
 	"slots": {
+		"AAE_ARMOR": {
+			"left": 8,
+			"top": 27,
+			"grid": "VERTICAL"
+		},
 		"MACHINE_INPUT": {
-			"left": 32,
-			"top": 28,
-			"grid": "HORIZONTAL"
-		},
-		"STORAGE": {
-			"left": 50,
-			"top": 47
-		},
-		"MACHINE_OUTPUT": {
-			"left": 120,
-			"top": 28
-		}
-	},
-	"images": {
-		"progressBar": {
-			"texture": "guis/reaction_chamber.png",
-			"srcRect": [176, 0, 6, 18]
+			"left": 152,
+			"top": 6
 		}
 	},
 	"widgets": {
-		"clearFluid": {
-			"left": 70,
-			"top": 58
-		},
-		"progressBar": {
-			"left": 142,
-			"top": 27
+		"scrollbar": {
+			"left": 159,
+			"top": 33
 		}
 	}
 }

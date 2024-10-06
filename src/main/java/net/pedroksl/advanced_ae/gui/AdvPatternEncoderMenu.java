@@ -156,7 +156,7 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
         }
     }
 
-    public interface inventoryChangedHandler {
+    public interface InventoryChangedHandler {
         void handleChange(InternalInventory inv, int slot);
     }
 }

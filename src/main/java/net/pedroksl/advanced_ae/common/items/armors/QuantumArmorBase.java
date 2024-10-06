@@ -80,7 +80,6 @@ public class QuantumArmorBase extends ArmorItem implements GeoItem, IMenuItem {
     // Let's add our animation controller
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        return;
         /*
         controllers.add(new AnimationController<GeoAnimatable>(this, 20, state -> {
         				// Apply our generic idle animation.

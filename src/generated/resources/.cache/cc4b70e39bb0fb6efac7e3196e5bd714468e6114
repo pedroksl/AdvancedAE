@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-02T21:00:09.0739531	Block States / Models
+// 1.21.1	2024-10-06T05:54:08.0212735	Block States / Models
 95a299ecaf1f57e89c3507297d4be2fc99a2749c assets/advanced_ae/blockstates/adv_pattern_provider.json
 fef5598f6fe49cc3150d9233ce01bc5a7136fcf9 assets/advanced_ae/blockstates/data_entangler.json
 9f77870684c7b9108903c29765927a81ea7d4cfd assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -37,6 +37,7 @@ d76cb3cbc341923a40ba492803e851622feac77e assets/advanced_ae/models/item/quantum_
 052279774e42bd5acc540f715d18fb4199773dbb assets/advanced_ae/models/item/quantum_storage_256.json
 f06d4bb85c083bf5f527787bf8e9ff0f6108a35d assets/advanced_ae/models/item/quantum_structure.json
 f71739f0baf970c037c00c4b1569c12f46057812 assets/advanced_ae/models/item/quantum_unit.json
+cf7d0e572ff8b9c4c14640fc4811d4c2557bb696 assets/advanced_ae/models/item/quantum_upgrade_base.json
 859961e68f959c07c5609cf8d832cdc747aab060 assets/advanced_ae/models/item/shattered_singularity.json
 2497dc9b5a83466842a8c2531e283348f17b7f14 assets/advanced_ae/models/item/small_adv_pattern_provider.json
 a141ebe7f51be28f6d14e2f6a8c8717495e9386f assets/advanced_ae/models/item/small_adv_pattern_provider_part.json
