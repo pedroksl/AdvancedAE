@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.common.helpers;
 
 import java.util.function.Predicate;
 
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -25,13 +26,14 @@ public record ArmorHotkeyAction(Predicate<ItemStack> locatable, Opener opener) i
     @Override
     public boolean run(Player player) {
         var items = player.getArmorSlots();
-
+        int i = 0;
         for (var item : items) {
-            if (item == null) continue;
-
-            if (this.locatable.test(item) && this.opener.open(player, MenuLocators.forStack(item))) {
-                return true;
+            if (this.locatable.test(item)) {
+                if (opener.open(player, MenuLocators.forInventorySlot(Inventory.INVENTORY_SIZE + i))) {
+                    return true;
+                }
             }
+            i++;
         }
 
         return false;

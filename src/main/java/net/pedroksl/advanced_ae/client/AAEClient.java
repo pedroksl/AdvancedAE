@@ -84,6 +84,12 @@ public class AAEClient extends AdvancedAE {
                 QuantumCrafterConfigPatternScreen::new,
                 "/screens/quantum_crafter_pattern_config.json");
         InitScreens.register(event, AAEMenus.SET_AMOUNT, SetAmountScreen::new, "/screens/aae_set_amount.json");
+
+        InitScreens.register(
+                event,
+                AAEMenus.QUANTUM_ARMOR_CONFIG,
+                QuantumArmorConfigScreen::new,
+                "/screens/quantum_armor_config.json");
     }
 
     @SuppressWarnings("deprecation")

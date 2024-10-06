@@ -9,6 +9,7 @@ import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
+import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
 import net.pedroksl.advanced_ae.gui.*;
@@ -46,6 +47,9 @@ public class AAEMenus {
             create("quantum_crafter_pattern_config", QuantumCrafterConfigPatternMenu::new, QuantumCrafterEntity.class);
     public static final MenuType<SetAmountMenu> SET_AMOUNT =
             create("set_amount", SetAmountMenu::new, ISubMenuHost.class);
+
+    public static final MenuType<QuantumArmorConfigMenu> QUANTUM_ARMOR_CONFIG =
+            create("quantum_armor_config", QuantumArmorConfigMenu::new, QuantumArmorMenuHost.class);
 
     private static <M extends AEBaseMenu, H> MenuType<M> create(
             String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {

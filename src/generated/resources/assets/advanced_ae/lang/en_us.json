@@ -60,8 +60,15 @@
   "item.advanced_ae.adv_pattern_provider_part": "Advanced Extended Pattern Provider",
   "item.advanced_ae.adv_pattern_provider_upgrade": "Advanced Pattern Provider Upgrade",
   "item.advanced_ae.adv_processing_pattern": "Advanced Processing Pattern",
+  "item.advanced_ae.quantum_boots": "Quantum Boots",
+  "item.advanced_ae.quantum_chestplate": "Quantum Chestplate",
+  "item.advanced_ae.quantum_helmet": "Quantum Helmet",
+  "item.advanced_ae.quantum_leggings": "Quantum Leggings",
   "item.advanced_ae.shattered_singularity": "Shattered Singularity",
   "item.advanced_ae.small_adv_pattern_provider_part": "Advanced Pattern Provider",
   "item.advanced_ae.stock_export_bus_part": "Stock Export Bus",
-  "item.advanced_ae.throughput_monitor": "ME Throughput Monitor"
+  "item.advanced_ae.throughput_monitor": "ME Throughput Monitor",
+  "key.advanced_ae.category": "Advanced AE",
+  "key.advanced_ae.quantum_armor_config": "Open Quantum Armor Configuration",
+  "material.advanced_ae.quantum_alloy": "Quantum Alloy"
 }

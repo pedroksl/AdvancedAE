@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
@@ -12,6 +13,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
@@ -20,16 +22,18 @@ import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
 import net.pedroksl.advanced_ae.xmod.appflux.AFCommonLoad;
 
 import appeng.api.AECapabilities;
+import appeng.api.features.GridLinkables;
 import appeng.api.networking.IInWorldGridNodeHost;
 import appeng.api.parts.RegisterPartCapabilitiesEvent;
 import appeng.api.parts.RegisterPartCapabilitiesEventInternal;
 import appeng.api.upgrades.Upgrades;
 import appeng.blockentity.AEBaseInvBlockEntity;
 import appeng.blockentity.powersink.AEBasePoweredBlockEntity;
+import appeng.core.AELog;
 import appeng.core.definitions.AEBlockEntities;
 import appeng.core.definitions.AEItems;
 
-@Mod(AdvancedAE.MOD_ID)
+@Mod(value = AdvancedAE.MOD_ID, dist = Dist.DEDICATED_SERVER)
 public class AdvancedAE {
     public static final String MOD_ID = "advanced_ae";
 
@@ -49,6 +53,7 @@ public class AdvancedAE {
         AAEMenus.DR.register(eventBus);
         AAEComponents.DR.register(eventBus);
         AAECreativeTab.DR.register(eventBus);
+        AAEMaterials.DR.register(eventBus);
 
         eventBus.addListener(AdvancedAE::initUpgrades);
         eventBus.addListener(AdvancedAE::initCapabilities);
@@ -61,6 +66,30 @@ public class AdvancedAE {
                 InitRecipeSerializers.init(event.getRegistry(Registries.RECIPE_SERIALIZER));
             }
         });
+
+        eventBus.addListener(this::commonSetup);
+        AAEHotkeys.init();
+    }
+
+    public static AdvancedAE instance() {
+        return INSTANCE;
+    }
+
+    public void registerHotkey(String id) {}
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(this::postRegistrationInitialization).whenComplete((res, err) -> {
+            if (err != null) {
+                AELog.warn(err);
+            }
+        });
+    }
+
+    public void postRegistrationInitialization() {
+        GridLinkables.register(AAEItems.QUANTUM_HELMET, QuantumArmorBase.LINKABLE_HANDLER);
+        GridLinkables.register(AAEItems.QUANTUM_CHESTPLATE, QuantumArmorBase.LINKABLE_HANDLER);
+        GridLinkables.register(AAEItems.QUANTUM_LEGGINGS, QuantumArmorBase.LINKABLE_HANDLER);
+        GridLinkables.register(AAEItems.QUANTUM_BOOTS, QuantumArmorBase.LINKABLE_HANDLER);
     }
 
     private static void initUpgrades(FMLCommonSetupEvent event) {

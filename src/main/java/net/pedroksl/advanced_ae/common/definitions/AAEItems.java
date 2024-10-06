@@ -12,6 +12,10 @@ import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderCapacityUpgradeItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderUpgradeItem;
 import net.pedroksl.advanced_ae.common.items.ShatteredSingularityItem;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumBoots;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumChestplate;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumHelmet;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumLeggings;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
@@ -68,6 +72,15 @@ public class AAEItems {
 
     public static final ItemDefinition<AdvPatternEncoderItem> ADV_PATTERN_ENCODER =
             item("Advanced Pattern Encoder", "adv_pattern_encoder", p -> new AdvPatternEncoderItem(p.stacksTo(1)));
+
+    public static final ItemDefinition<QuantumHelmet> QUANTUM_HELMET =
+            item("Quantum Helmet", "quantum_helmet", QuantumHelmet::new);
+    public static final ItemDefinition<QuantumChestplate> QUANTUM_CHESTPLATE =
+            item("Quantum Chestplate", "quantum_chestplate", QuantumChestplate::new);
+    public static final ItemDefinition<QuantumLeggings> QUANTUM_LEGGINGS =
+            item("Quantum Leggings", "quantum_leggings", QuantumLeggings::new);
+    public static final ItemDefinition<QuantumBoots> QUANTUM_BOOTS =
+            item("Quantum Boots", "quantum_boots", QuantumBoots::new);
 
     private static <T extends Item> ItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {
