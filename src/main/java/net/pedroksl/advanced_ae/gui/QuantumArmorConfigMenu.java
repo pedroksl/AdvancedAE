@@ -1,26 +1,22 @@
 package net.pedroksl.advanced_ae.gui;
 
-import appeng.api.inventories.InternalInventory;
-import appeng.client.gui.me.common.ClientReadOnlySlot;
-import appeng.menu.SlotSemantic;
-import appeng.menu.SlotSemantics;
-import appeng.menu.slot.AppEngSlot;
-import appeng.menu.slot.DisabledSlot;
-import mekanism.common.inventory.container.slot.ArmorSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
+import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
+import appeng.api.inventories.InternalInventory;
 import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
-import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
-import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import appeng.menu.SlotSemantics;
+import appeng.menu.slot.AppEngSlot;
+import appeng.menu.slot.DisabledSlot;
 
 public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost {
 
@@ -42,9 +38,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost {
         this.host.setInventoryChangedHandler(this::onChangeInventory);
     }
 
-    private void onChangeInventory(InternalInventory inv, int slot) {
-
-    }
+    private void onChangeInventory(InternalInventory inv, int slot) {}
 
     @Override
     public void returnToMainMenu(Player player, ISubMenu iSubMenu) {

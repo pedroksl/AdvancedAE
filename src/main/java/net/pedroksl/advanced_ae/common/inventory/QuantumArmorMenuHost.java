@@ -2,18 +2,17 @@ package net.pedroksl.advanced_ae.common.inventory;
 
 import java.util.function.BiConsumer;
 
-import appeng.util.inv.AppEngInternalInventory;
-import appeng.util.inv.InternalInventoryHost;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.Slot;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.advanced_ae.gui.QuantumArmorConfigMenu;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
-import net.pedroksl.advanced_ae.gui.QuantumArmorConfigMenu;
+import appeng.util.inv.AppEngInternalInventory;
+import appeng.util.inv.InternalInventoryHost;
 
 public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHost<T> implements InternalInventoryHost {
 
