@@ -8,7 +8,7 @@
 			},
 			"position": {
 				"left": 10,
-				"top": 5
+				"top": 8
 			}
 		}
 	},
@@ -27,10 +27,20 @@
 			"top": 6
 		}
 	},
+	"images": {
+		"progressBar": {
+			"texture": "guis/quantum_armor_config.png",
+			"srcRect": [176, 0, 18, 18]
+		}
+	},
 	"widgets": {
 		"scrollbar": {
 			"left": 159,
 			"top": 33
+		},
+		"progressBar": {
+			"left": 151,
+			"top": 5
 		}
 	}
 }

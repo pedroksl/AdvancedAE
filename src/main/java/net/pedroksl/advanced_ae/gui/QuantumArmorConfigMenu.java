@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
@@ -15,10 +16,18 @@ import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.SlotSemantics;
+import appeng.menu.guisync.GuiSync;
+import appeng.menu.interfaces.IProgressProvider;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.DisabledSlot;
 
-public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost {
+public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, IProgressProvider {
+
+    @GuiSync(2)
+    public int maxProcessingTime;
+
+    @GuiSync(3)
+    public int processingTime = -1;
 
     private final QuantumArmorMenuHost<?> host;
 
@@ -31,11 +40,25 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost {
 
         this.inputSlot = this.addSlot(new UpgradeSlot(host.getInventory(), 0), SlotSemantics.MACHINE_INPUT);
 
+        int indexOfFirstQuantum = -1;
         for (int i = 3; i >= 0; i--) {
-            this.addSlot(new DisabledSlot(playerInventory, Inventory.INVENTORY_SIZE + i), AAESlotSemantics.ARMOR);
+            var index = Inventory.INVENTORY_SIZE + i;
+            var slot = new DisabledSlot(playerInventory, index);
+            if (indexOfFirstQuantum == -1 && slot.getItem().getItem() instanceof QuantumArmorBase) {
+                indexOfFirstQuantum = index;
+            }
+            this.addSlot(slot, AAESlotSemantics.ARMOR);
         }
 
+        this.host.setSelectedItemSlot(indexOfFirstQuantum);
+
+        maxProcessingTime = this.host.getMaxProcessingTime();
+        this.host.setProgressChangedHandler(this::progressChanged);
         this.host.setInventoryChangedHandler(this::onChangeInventory);
+    }
+
+    private void progressChanged(int progress) {
+        this.processingTime = progress;
     }
 
     private void onChangeInventory(InternalInventory inv, int slot) {}
@@ -50,8 +73,14 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost {
         return this.host.getItemStack();
     }
 
-    public interface InventoryChangedHandler {
-        void handleChange(InternalInventory inv, int slot);
+    @Override
+    public int getCurrentProgress() {
+        return this.processingTime;
+    }
+
+    @Override
+    public int getMaxProgress() {
+        return this.maxProcessingTime;
     }
 
     private static class UpgradeSlot extends AppEngSlot {

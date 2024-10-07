@@ -17,6 +17,7 @@ import net.pedroksl.advanced_ae.common.items.armors.QuantumChestplate;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumHelmet;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumLeggings;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
@@ -85,6 +86,14 @@ public class AAEItems {
 
     public static final ItemDefinition<QuantumUpgradeBaseItem> QUANTUM_UPGRADE_BASE =
             item("Quantum Upgrade Base Card", "quantum_upgrade_base", QuantumUpgradeBaseItem::new);
+    public static final ItemDefinition<QuantumUpgradeBaseItem> WALK_SPEED_CARD =
+            item("Walk Speed Card", "walk_speed_card", p -> new QuantumUpgradeBaseItem(UpgradeType.WALK_SPEED, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> SPRINT_SPEED_CARD = item(
+            "Sprint Speed Card", "sprint_speed_card", p -> new QuantumUpgradeBaseItem(UpgradeType.SPRINT_SPEED, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> STEP_ASSIST_CARD =
+            item("Step Assist Card", "step_assist_card", p -> new QuantumUpgradeBaseItem(UpgradeType.STEP_ASSIST, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> JUMP_HEIGHT_CARD =
+            item("Jump Height Card", "jump_height_card", p -> new QuantumUpgradeBaseItem(UpgradeType.JUMP_HEIGHT, p));
 
     private static <T extends Item> ItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {

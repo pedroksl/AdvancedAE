@@ -1,7 +1,10 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.model.HumanoidModel;
@@ -37,8 +40,27 @@ public class QuantumArmorBase extends ArmorItem implements GeoItem, IMenuItem {
 
     public static final IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
 
+    protected Map<UpgradeType, Boolean> upgrades = new HashMap<>();
+
     public QuantumArmorBase(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);
+    }
+
+    public boolean isUpgradeAllowed(UpgradeType type) {
+        return false;
+    }
+
+    private boolean hasUpgrade(UpgradeType type) {
+        return !this.components().has(type.getComponent());
+    }
+
+    private boolean applyUpgrade(UpgradeType type) {
+        if (!isUpgradeAllowed(type) || hasUpgrade(type)) {
+            return false;
+        }
+
+        upgrades.put(type, true);
+        return true;
     }
 
     protected boolean checkPreconditions(ItemStack item) {

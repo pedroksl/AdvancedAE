@@ -33,7 +33,11 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.ADV_PATTERN_ENCODER);
         basicItem(AAEItems.SHATTERED_SINGULARITY);
 
-        basicItem(AAEItems.QUANTUM_UPGRADE_BASE);
+        basicItem(AAEItems.QUANTUM_UPGRADE_BASE, "upgrades");
+        basicItem(AAEItems.WALK_SPEED_CARD, "upgrades");
+        basicItem(AAEItems.SPRINT_SPEED_CARD, "upgrades");
+        basicItem(AAEItems.STEP_ASSIST_CARD, "upgrades");
+        basicItem(AAEItems.JUMP_HEIGHT_CARD, "upgrades");
 
         quantumCrafterModel();
 
@@ -68,7 +72,17 @@ public class AAEModelProvider extends AE2BlockStateProvider {
     }
 
     private void basicItem(ItemDefinition<?> item) {
-        itemModels().basicItem(item.asItem());
+        basicItem(item, "");
+    }
+
+    private void basicItem(ItemDefinition<?> item, String texturePath) {
+        if (texturePath.isEmpty()) itemModels().basicItem(item.asItem());
+        else {
+            String id = item.id().getPath();
+            itemModels()
+                    .singleTexture(
+                            id, mcLoc("item/generated"), "layer0", AdvancedAE.makeId("item/" + texturePath + "/" + id));
+        }
     }
 
     private void basicBlock(BlockDefinition<?> block) {
