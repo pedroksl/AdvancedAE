@@ -8,9 +8,10 @@ import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import appeng.core.definitions.ItemDefinition;
 
 public enum UpgradeType {
-    EMPTY(null, SettingType.NONE, 0, ExtraSettings.NONE, AAEItems.QUANTUM_UPGRADE_BASE, null),
+    EMPTY("Empty", null, SettingType.NONE, 0, ExtraSettings.NONE, AAEItems.QUANTUM_UPGRADE_BASE, null),
 
     WALK_SPEED(
+            "Walk Speed",
             UpgradeCards::walkSpeed,
             SettingType.NUM_INPUT,
             10,
@@ -18,6 +19,7 @@ public enum UpgradeType {
             AAEItems.WALK_SPEED_CARD,
             new UpgradeSettings(1, 80, 0.1f)),
     SPRINT_SPEED(
+            "Sprint Speed",
             UpgradeCards::sprintSpeed,
             SettingType.NUM_INPUT,
             10,
@@ -25,6 +27,7 @@ public enum UpgradeType {
             AAEItems.SPRINT_SPEED_CARD,
             new UpgradeSettings(1, 80, 0.1f)),
     STEP_ASSIST(
+            "Step Assist",
             UpgradeCards::stepAssist,
             SettingType.NUM_INPUT,
             1,
@@ -32,6 +35,7 @@ public enum UpgradeType {
             AAEItems.STEP_ASSIST_CARD,
             new UpgradeSettings(1, 3)),
     JUMP_HEIGHT(
+            "Jump Height",
             UpgradeCards::jumpHeight,
             SettingType.NUM_INPUT,
             10,
@@ -50,6 +54,7 @@ public enum UpgradeType {
         TRUE
     }
 
+    public final String name;
     public final Ability ability;
     private final SettingType settingType;
     private final int cost;
@@ -58,11 +63,13 @@ public enum UpgradeType {
     private UpgradeSettings settings = null;
 
     UpgradeType(
+            String name,
             Ability ability,
             SettingType settingType,
             int cost,
             ExtraSettings extraSettings,
             ItemDefinition<? extends QuantumUpgradeBaseItem> item) {
+        this.name = name;
         this.ability = ability;
         this.settingType = settingType;
         this.cost = cost;
@@ -71,13 +78,14 @@ public enum UpgradeType {
     }
 
     UpgradeType(
+            String name,
             Ability ability,
             SettingType settingType,
             int cost,
             ExtraSettings extraSettings,
             ItemDefinition<? extends QuantumUpgradeBaseItem> item,
             UpgradeSettings settings) {
-        this(ability, settingType, cost, extraSettings, item);
+        this(name, ability, settingType, cost, extraSettings, item);
         this.settings = settings;
     }
 

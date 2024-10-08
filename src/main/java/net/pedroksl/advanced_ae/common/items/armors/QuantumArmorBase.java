@@ -47,6 +47,10 @@ public class QuantumArmorBase extends ArmorItem implements GeoItem, IMenuItem {
         super(material, type, properties);
     }
 
+    public List<UpgradeType> getPossibleUpgrades() {
+        return possibleUpgrades;
+    }
+
     public boolean isUpgradeAllowed(UpgradeType type) {
         return possibleUpgrades.contains(type);
     }
