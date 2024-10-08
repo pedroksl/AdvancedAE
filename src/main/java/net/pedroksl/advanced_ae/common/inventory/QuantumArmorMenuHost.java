@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.hooks.ticking.TickHandler;
@@ -14,7 +15,6 @@ import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
-import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 
 public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHost<T> implements InternalInventoryHost {
 
@@ -34,16 +34,31 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
             T item, Player player, ItemMenuHostLocator locator, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator);
         this.returnToMainMenu = returnToMainMenu;
+
+        var itemTag = this.getItemStack().get(AAEComponents.STACK_TAG);
+        var registry = player.registryAccess();
+        if (itemTag != null) {
+            this.input.readFromNBT(itemTag, "input", registry);
+        }
     }
 
     @Override
     public void tick() {
         var inputCard = this.input.getStackInSlot(0);
         if (inputCard.isEmpty() || selectedItemSlot == -1) {
-            if (consumeCardStartTick != -1) {
-                consumeCardStartTick = -1;
-                updateProgress(-1);
-            }
+            resetProgress();
+            return;
+        }
+
+        ItemStack stack = super.getPlayer().getInventory().getItem(this.selectedItemSlot);
+        if (!(stack.getItem() instanceof QuantumArmorBase item)) {
+            resetProgress();
+            return;
+        }
+
+        QuantumUpgradeBaseItem card = ((QuantumUpgradeBaseItem) inputCard.getItem());
+        if (!item.isUpgradeAllowed(card.getType()) || item.hasUpgrade(stack, card.getType())) {
+            resetProgress();
             return;
         }
 
@@ -57,25 +72,29 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
             progressTime = -1;
             updateProgress(progressTime);
 
-            // Apply the upgrade
-            ItemStack stack = super.getPlayer().getInventory().getItem(this.selectedItemSlot);
-            if (stack.getItem() instanceof QuantumArmorBase item) {
-                QuantumUpgradeBaseItem card = ((QuantumUpgradeBaseItem) inputCard.getItem());
-                if (item.isUpgradeAllowed(card.getType())) {
-                    var type = card.getType();
-                    stack.set(type.getComponent(), type.getDefaultValue());
-                }
+            var type = card.getType();
+            if (item.applyUpgrade(stack, type)) {
+                this.input.setItemDirect(0, ItemStack.EMPTY);
             }
-
-            // Consume the upgrade card
-            this.input.setItemDirect(0, ItemStack.EMPTY);
         } else {
             updateProgress(progressTime);
         }
     }
 
     public void setSelectedItemSlot(int slot) {
+        resetProgress();
         selectedItemSlot = slot;
+    }
+
+    public int getSelctedSlotIndex() {
+        return selectedItemSlot;
+    }
+
+    private void resetProgress() {
+        if (consumeCardStartTick != -1) {
+            consumeCardStartTick = -1;
+            updateProgress(-1);
+        }
     }
 
     public int getMaxProcessingTime() {

@@ -18,6 +18,6 @@ public final class AAEConventionTags {
     public static final TagKey<Item> CURIOS = tag("curios:curio");
 
     private static TagKey<Item> tag(String name) {
-        return net.minecraft.tags.TagKey.create(Registries.ITEM, ResourceLocation.parse(name));
+        return TagKey.create(Registries.ITEM, ResourceLocation.parse(name));
     }
 }

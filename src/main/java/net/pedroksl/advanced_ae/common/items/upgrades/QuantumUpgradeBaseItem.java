@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.Item;
 
 public class QuantumUpgradeBaseItem extends Item {

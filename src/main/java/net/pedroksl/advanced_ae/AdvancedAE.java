@@ -55,6 +55,8 @@ public class AdvancedAE {
         AAECreativeTab.DR.register(eventBus);
         AAEMaterials.DR.register(eventBus);
 
+        AAEComponents.init();
+
         eventBus.addListener(AdvancedAE::initUpgrades);
         eventBus.addListener(AdvancedAE::initCapabilities);
 

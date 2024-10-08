@@ -33,10 +33,12 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
 
     private final Slot inputSlot;
 
+    private static final String SELECT_SLOT = "select_slot";
+
     public QuantumArmorConfigMenu(int id, Inventory playerInventory, QuantumArmorMenuHost<?> host) {
         super(AAEMenus.QUANTUM_ARMOR_CONFIG, id, playerInventory, host);
-        this.createPlayerInventorySlots(playerInventory);
         this.host = host;
+        this.createPlayerInventorySlots(playerInventory);
 
         this.inputSlot = this.addSlot(new UpgradeSlot(host.getInventory(), 0), SlotSemantics.MACHINE_INPUT);
 
@@ -55,6 +57,8 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         maxProcessingTime = this.host.getMaxProcessingTime();
         this.host.setProgressChangedHandler(this::progressChanged);
         this.host.setInventoryChangedHandler(this::onChangeInventory);
+
+        registerClientAction(SELECT_SLOT, Integer.class, this::setSelectedItemSlot);
     }
 
     private void progressChanged(int progress) {
@@ -83,6 +87,23 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         return this.maxProcessingTime;
     }
 
+    public boolean isArmorSlot(Slot slot) {
+        return this.getSlots(AAESlotSemantics.ARMOR).contains(slot);
+    }
+
+    public void setSelectedItemSlot(int index) {
+        if (isClientSide()) {
+            sendClientAction(SELECT_SLOT, index);
+            return;
+        }
+
+        this.host.setSelectedItemSlot(index);
+    }
+
+    public int getSelectedSlotIndex() {
+        return this.host.getSelctedSlotIndex();
+    }
+
     private static class UpgradeSlot extends AppEngSlot {
         public UpgradeSlot(InternalInventory inv, int invSlot) {
             super(inv, invSlot);
@@ -94,6 +115,11 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
                 return upgrade.getType() != UpgradeType.EMPTY;
             }
             return false;
+        }
+
+        @Override
+        public boolean mayPickup(Player player) {
+            return true;
         }
     }
 }

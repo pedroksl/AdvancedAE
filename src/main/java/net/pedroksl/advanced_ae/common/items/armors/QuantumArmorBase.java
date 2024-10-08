@@ -1,10 +1,9 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
-import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.model.HumanoidModel;
@@ -18,8 +17,10 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
+import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
 import appeng.api.features.IGridLinkableHandler;
 import appeng.api.ids.AEComponents;
@@ -40,26 +41,32 @@ public class QuantumArmorBase extends ArmorItem implements GeoItem, IMenuItem {
 
     public static final IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
 
-    protected Map<UpgradeType, Boolean> upgrades = new HashMap<>();
+    protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
 
     public QuantumArmorBase(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);
     }
 
     public boolean isUpgradeAllowed(UpgradeType type) {
-        return false;
+        return possibleUpgrades.contains(type);
     }
 
-    private boolean hasUpgrade(UpgradeType type) {
-        return !this.components().has(type.getComponent());
+    public boolean hasUpgrade(ItemStack stack, UpgradeType type) {
+        return stack.has(AAEComponents.UPGRADE_TOGGLE.get(type));
     }
 
-    private boolean applyUpgrade(UpgradeType type) {
-        if (!isUpgradeAllowed(type) || hasUpgrade(type)) {
+    public boolean applyUpgrade(ItemStack stack, UpgradeType type) {
+        if (!isUpgradeAllowed(type) || hasUpgrade(stack, type)) {
             return false;
         }
 
-        upgrades.put(type, true);
+        stack.set(AAEComponents.UPGRADE_TOGGLE.get(type), true);
+        if (type.getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
+            stack.set(AAEComponents.UPGRADE_VALUE.get(type), type.getSettings().maxValue);
+        }
+        if (type.getSettingType() == UpgradeType.SettingType.FILTER) {
+            stack.set(AAEComponents.TAG_FILTER, new ArrayList<>());
+        }
         return true;
     }
 
