@@ -94,6 +94,8 @@ public class AAEItems {
             item("Step Assist Card", "step_assist_card", p -> new QuantumUpgradeBaseItem(UpgradeType.STEP_ASSIST, p));
     public static final ItemDefinition<QuantumUpgradeBaseItem> JUMP_HEIGHT_CARD =
             item("Jump Height Card", "jump_height_card", p -> new QuantumUpgradeBaseItem(UpgradeType.JUMP_HEIGHT, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> FLIGHT_CARD =
+            item("Flight Card", "flight_card", p -> new QuantumUpgradeBaseItem(UpgradeType.FLIGHT, p));
 
     private static <T extends Item> ItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {

@@ -9,10 +9,12 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.gui.QuantumArmorConfigScreen;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIconButton;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeTogglePacket;
 
 import appeng.client.gui.Icon;
 import appeng.client.gui.style.ScreenStyle;
@@ -44,17 +46,17 @@ public class QuantumUpgradeWidget {
     }
 
     public void add() {
-        if (state.getType().getSettingType() != UpgradeType.SettingType.NONE) {
-            configureButton = new ConfigButton(x + 69, y - 6, this::configRequested);
+        if (state.type().getSettingType() != UpgradeType.SettingType.NONE) {
+            configureButton = new ConfigButton(x + 72, y - 2, this::configRequested);
             host.addChildWidget("upgrade_config" + index, configureButton, children);
         }
 
-        enableButton = new AECheckbox(x + 87, y - 3, 16, 16, style, Component.empty());
-        enableButton.setSelected(state.isEnabled());
+        enableButton = new AECheckbox(x + 90, y + 1, 16, 16, style, Component.empty());
+        enableButton.setSelected(state.enabled());
         enableButton.setChangeListener(this::toggleEnable);
         host.addChildWidget("upgrade_enable" + index, enableButton, children);
 
-        uninstallButton = new UninstallButton(x + 110, y - 6, this::uninstallRequested);
+        uninstallButton = new UninstallButton(x + 113, y - 2, this::uninstallRequested);
         host.addChildWidget("upgrade_uninstall" + index, uninstallButton, children);
     }
 
@@ -67,7 +69,7 @@ public class QuantumUpgradeWidget {
     }
 
     public String getName() {
-        return state.getType().name;
+        return state.type().name;
     }
 
     public int getX() {
@@ -79,22 +81,19 @@ public class QuantumUpgradeWidget {
     }
 
     private void configRequested(Button button) {
-        // Request config window to open
-        var a = 1;
-        a *= 2;
-        var b = a;
+        if (state.type().getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
+
+        } else if (state.type().getSettingType() == UpgradeType.SettingType.FILTER) {
+
+        }
     }
 
     private void toggleEnable() {
-        var a = 1;
-        a *= 2;
-        var b = a;
+        PacketDistributor.sendToServer(new QuantumArmorUpgradeTogglePacket(state.type(), enableButton.isSelected()));
     }
 
     private void uninstallRequested(Button button) {
-        var a = 1;
-        a *= 2;
-        var b = a;
+        host.requestUninstall(state.type());
     }
 
     static class ConfigButton extends IconButton {

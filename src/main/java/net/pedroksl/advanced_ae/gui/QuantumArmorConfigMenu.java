@@ -1,15 +1,21 @@
 package net.pedroksl.advanced_ae.gui;
 
+import java.util.List;
+
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeStatePacket;
 
 import appeng.api.inventories.InternalInventory;
 import appeng.api.storage.ISubMenuHost;
@@ -33,7 +39,10 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
 
     private final Slot inputSlot;
 
+    private boolean markDirty = false;
+
     private static final String SELECT_SLOT = "select_slot";
+    private static final String REQUEST_UNINSTALL = "request_uninstall";
 
     public QuantumArmorConfigMenu(int id, Inventory playerInventory, QuantumArmorMenuHost<?> host) {
         super(AAEMenus.QUANTUM_ARMOR_CONFIG, id, playerInventory, host);
@@ -56,9 +65,11 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
 
         maxProcessingTime = this.host.getMaxProcessingTime();
         this.host.setProgressChangedHandler(this::progressChanged);
+        this.host.setUpgradeAppliedWatcher(() -> this.markDirty = true);
         this.host.setInventoryChangedHandler(this::onChangeInventory);
 
         registerClientAction(SELECT_SLOT, Integer.class, this::setSelectedItemSlot);
+        registerClientAction(REQUEST_UNINSTALL, UpgradeType.class, this::requestUninstall);
     }
 
     private void progressChanged(int progress) {
@@ -101,7 +112,85 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
     }
 
     public int getSelectedSlotIndex() {
-        return this.host.getSelctedSlotIndex();
+        return this.host.getSelectedSlotIndex();
+    }
+
+    public void toggleUpgradeEnable(UpgradeType upgradeType, boolean state) {
+        var slotIndex = this.host.getSelectedSlotIndex();
+        var stack = getPlayer().getInventory().getItem(slotIndex);
+        if (stack.getItem() instanceof QuantumArmorBase item) {
+            if (item.getPossibleUpgrades().contains(upgradeType)) {
+                if (item.hasUpgrade(stack, upgradeType)) {
+                    stack.set(AAEComponents.UPGRADE_TOGGLE.get(upgradeType), state);
+                    this.markDirty = true;
+                }
+            }
+        }
+    }
+
+    public void updateUpgradeValue(UpgradeType upgradeType, int value) {
+        var slotIndex = this.host.getSelectedSlotIndex();
+        var stack = getPlayer().getInventory().getItem(slotIndex);
+        if (stack.getItem() instanceof QuantumArmorBase item) {
+            if (item.getPossibleUpgrades().contains(upgradeType)) {
+                if (item.hasUpgrade(stack, upgradeType)) {
+                    stack.set(AAEComponents.UPGRADE_VALUE.get(upgradeType), value);
+                    this.markDirty = true;
+                }
+            }
+        }
+    }
+
+    public void updateUpgradeFilter(UpgradeType upgradeType, List<TagKey<Item>> filter) {
+        var slotIndex = this.host.getSelectedSlotIndex();
+        var stack = getPlayer().getInventory().getItem(slotIndex);
+        if (stack.getItem() instanceof QuantumArmorBase item) {
+            if (item.getPossibleUpgrades().contains(upgradeType)) {
+                if (item.hasUpgrade(stack, upgradeType)) {
+                    stack.set(AAEComponents.UPGRADE_FILTER.get(upgradeType), filter);
+                    this.markDirty = true;
+                }
+            }
+        }
+    }
+
+    public void requestUninstall(UpgradeType upgradeType) {
+        if (isClientSide()) {
+            sendClientAction(REQUEST_UNINSTALL, upgradeType);
+            return;
+        }
+
+        boolean upgradeRemoved = false;
+        var slotIndex = this.host.getSelectedSlotIndex();
+        var stack = getPlayer().getInventory().getItem(slotIndex);
+        if (stack.getItem() instanceof QuantumArmorBase item) {
+            if (item.getPossibleUpgrades().contains(upgradeType)) {
+                if (item.hasUpgrade(stack, upgradeType)) {
+                    upgradeRemoved = item.removeUpgrade(stack, upgradeType);
+                }
+            }
+        }
+
+        var upgradeStack = upgradeType.item().stack();
+        if (upgradeRemoved) {
+            if (!getPlayer().getInventory().add(upgradeStack)) {
+                getPlayer().drop(upgradeStack, false);
+            }
+        }
+        this.markDirty = true;
+    }
+
+    private void updateClient() {
+        sendPacketToClient(new QuantumArmorUpgradeStatePacket());
+    }
+
+    @Override
+    public void broadcastChanges() {
+        super.broadcastChanges();
+
+        if (markDirty) {
+            updateClient();
+        }
     }
 
     private static class UpgradeSlot extends AppEngSlot {

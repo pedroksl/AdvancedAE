@@ -3,7 +3,6 @@ package net.pedroksl.advanced_ae.common.items.armors;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.HolderLookup;
@@ -23,13 +22,18 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
 import software.bernie.geckolib.animatable.GeoItem;
 
 public class QuantumChestplate extends QuantumArmorBase implements GeoItem {
 
+    private static final double MAX_POWER_STORAGE = 150000;
+
     public QuantumChestplate(Properties properties) {
-        super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.CHESTPLATE, properties);
+        super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.CHESTPLATE, properties, () -> MAX_POWER_STORAGE);
+
+        this.possibleUpgrades.add(UpgradeType.FLIGHT);
     }
 
     @Override
@@ -54,14 +58,11 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem {
     }
 
     @Override
-    public void inventoryTick(
-            @NotNull ItemStack itemStack,
-            @NotNull Level level,
-            @NotNull Entity entity,
-            int itemSlot,
-            boolean isSelected) {
-        if (itemSlot == Inventory.INVENTORY_SIZE + EquipmentSlot.CHEST.getIndex() && entity instanceof Player player) {
-            // tick
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.CHEST.getIndex()
+                && !getPassiveTickAbilities(stack).isEmpty()
+                && entity instanceof Player player) {
+            tickUpgrades(level, player, stack);
         }
     }
 

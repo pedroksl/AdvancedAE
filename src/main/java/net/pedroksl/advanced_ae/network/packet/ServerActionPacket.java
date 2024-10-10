@@ -22,10 +22,6 @@ public record ServerActionPacket(AAEActionItems action) implements ServerboundPa
         return TYPE;
     }
 
-    public ServerActionPacket(AAEActionItems action) {
-        this.action = action;
-    }
-
     public static ServerActionPacket decode(RegistryFriendlyByteBuf stream) {
         AAEActionItems action = stream.readEnum(AAEActionItems.class);
         return new ServerActionPacket(action);

@@ -11,11 +11,13 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
+import net.pedroksl.advanced_ae.events.AAEPlayerEvents;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
 import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
@@ -23,6 +25,7 @@ import net.pedroksl.advanced_ae.xmod.appflux.AFCommonLoad;
 
 import appeng.api.AECapabilities;
 import appeng.api.features.GridLinkables;
+import appeng.api.implementations.items.IAEItemPowerStorage;
 import appeng.api.networking.IInWorldGridNodeHost;
 import appeng.api.parts.RegisterPartCapabilitiesEvent;
 import appeng.api.parts.RegisterPartCapabilitiesEventInternal;
@@ -32,6 +35,7 @@ import appeng.blockentity.powersink.AEBasePoweredBlockEntity;
 import appeng.core.AELog;
 import appeng.core.definitions.AEBlockEntities;
 import appeng.core.definitions.AEItems;
+import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 
 @Mod(value = AdvancedAE.MOD_ID, dist = Dist.DEDICATED_SERVER)
 public class AdvancedAE {
@@ -80,6 +84,10 @@ public class AdvancedAE {
     public void registerHotkey(String id) {}
 
     private void commonSetup(FMLCommonSetupEvent event) {
+        // NeoForge.EVENT_BUS.register(AAEEntityEvents.class);
+        // NeoForge.EVENT_BUS.register(AAELivingEntityEvents.class);
+        NeoForge.EVENT_BUS.register(AAEPlayerEvents.class);
+
         event.enqueueWork(this::postRegistrationInitialization).whenComplete((res, err) -> {
             if (err != null) {
                 AELog.warn(err);
@@ -115,6 +123,14 @@ public class AdvancedAE {
         for (var type : AAEBlockEntities.DR.getEntries()) {
             event.registerBlockEntity(
                     AECapabilities.IN_WORLD_GRID_NODE_HOST, type.get(), (be, context) -> (IInWorldGridNodeHost) be);
+        }
+        for (var type : AAEItems.getItems()) {
+            if (type.get() instanceof IAEItemPowerStorage powerStorage) {
+                event.registerItem(
+                        Capabilities.EnergyStorage.ITEM,
+                        (object, context) -> new PoweredItemCapabilities(object, powerStorage),
+                        type);
+            }
         }
 
         event.registerBlockEntity(

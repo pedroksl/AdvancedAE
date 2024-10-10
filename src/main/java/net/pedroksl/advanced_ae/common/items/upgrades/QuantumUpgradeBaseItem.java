@@ -16,18 +16,6 @@ public class QuantumUpgradeBaseItem extends Item {
     }
 
     public UpgradeType getType() {
-        return type;
-    }
-
-    public UpgradeType.SettingType getSettingType() {
-        return type.getSettingType();
-    }
-
-    public int getCost() {
-        return type.getCost();
-    }
-
-    public UpgradeType.ExtraSettings getExtraSettings() {
-        return type.getExtraSettings();
+        return this.type;
     }
 }

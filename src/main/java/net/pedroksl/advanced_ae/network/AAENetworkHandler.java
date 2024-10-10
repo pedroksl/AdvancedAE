@@ -9,6 +9,10 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.network.packet.*;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeFilterPacket;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeStatePacket;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeTogglePacket;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeValuePacket;
 
 import appeng.core.network.ClientboundPacket;
 import appeng.core.network.ServerboundPacket;
@@ -34,9 +38,13 @@ public class AAENetworkHandler extends NetworkHandler {
         serverbound(this.registrar, ServerActionPacket.TYPE, ServerActionPacket.STREAM_CODEC);
         serverbound(this.registrar, SetStockAmountPacket.TYPE, SetStockAmountPacket.STREAM_CODEC);
         serverbound(this.registrar, AAEHotkeyPacket.TYPE, AAEHotkeyPacket.STREAM_CODEC);
+        serverbound(this.registrar, QuantumArmorUpgradeTogglePacket.TYPE, QuantumArmorUpgradeTogglePacket.STREAM_CODEC);
+        serverbound(this.registrar, QuantumArmorUpgradeValuePacket.TYPE, QuantumArmorUpgradeValuePacket.STREAM_CODEC);
+        serverbound(this.registrar, QuantumArmorUpgradeFilterPacket.TYPE, QuantumArmorUpgradeFilterPacket.STREAM_CODEC);
 
         clientbound(this.registrar, PatternConfigServerUpdatePacket.TYPE, PatternConfigServerUpdatePacket.STREAM_CODEC);
         clientbound(this.registrar, EnabledPatternsUpdatePacket.TYPE, EnabledPatternsUpdatePacket.STREAM_CODEC);
+        clientbound(this.registrar, QuantumArmorUpgradeStatePacket.TYPE, QuantumArmorUpgradeStatePacket.STREAM_CODEC);
     }
 
     private static <T extends ClientboundPacket> void clientbound(

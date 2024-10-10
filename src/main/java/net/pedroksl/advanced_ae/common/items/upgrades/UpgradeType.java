@@ -1,5 +1,7 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -8,14 +10,14 @@ import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import appeng.core.definitions.ItemDefinition;
 
 public enum UpgradeType {
-    EMPTY("Empty", null, SettingType.NONE, 0, ExtraSettings.NONE, AAEItems.QUANTUM_UPGRADE_BASE, null),
+    EMPTY("Empty", null, SettingType.NONE, 0, ApplicationType.PASSIVE, AAEItems.QUANTUM_UPGRADE_BASE, null),
 
     WALK_SPEED(
             "Walk Speed",
             UpgradeCards::walkSpeed,
             SettingType.NUM_INPUT,
             10,
-            ExtraSettings.NONE,
+            ApplicationType.PASSIVE,
             AAEItems.WALK_SPEED_CARD,
             new UpgradeSettings(1, 80, 0.1f)),
     SPRINT_SPEED(
@@ -23,15 +25,15 @@ public enum UpgradeType {
             UpgradeCards::sprintSpeed,
             SettingType.NUM_INPUT,
             10,
-            ExtraSettings.NONE,
+            ApplicationType.PASSIVE,
             AAEItems.SPRINT_SPEED_CARD,
             new UpgradeSettings(1, 80, 0.1f)),
     STEP_ASSIST(
             "Step Assist",
-            UpgradeCards::stepAssist,
+            null,
             SettingType.NUM_INPUT,
             1,
-            ExtraSettings.NONE,
+            ApplicationType.PASSIVE_USE,
             AAEItems.STEP_ASSIST_CARD,
             new UpgradeSettings(1, 3)),
     JUMP_HEIGHT(
@@ -39,9 +41,10 @@ public enum UpgradeType {
             UpgradeCards::jumpHeight,
             SettingType.NUM_INPUT,
             10,
-            ExtraSettings.NONE,
+            ApplicationType.PASSIVE_USE,
             AAEItems.JUMP_HEIGHT_CARD,
-            new UpgradeSettings(1, 3));
+            new UpgradeSettings(1, 3)),
+    FLIGHT("Flight", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.FLIGHT_CARD);
 
     public enum SettingType {
         NONE,
@@ -49,43 +52,44 @@ public enum UpgradeType {
         FILTER
     }
 
-    public enum ExtraSettings {
-        NONE,
-        TRUE
+    public enum ApplicationType {
+        PASSIVE,
+        PASSIVE_USE,
+        BUFF
     }
 
     public final String name;
     public final Ability ability;
     private final SettingType settingType;
     private final int cost;
-    private final ExtraSettings extraSettings;
+    public final ApplicationType applicationType;
     private final ItemDefinition<? extends QuantumUpgradeBaseItem> item;
     private UpgradeSettings settings = null;
 
     UpgradeType(
             String name,
-            Ability ability,
+            @Nullable Ability ability,
             SettingType settingType,
             int cost,
-            ExtraSettings extraSettings,
+            ApplicationType applicationType,
             ItemDefinition<? extends QuantumUpgradeBaseItem> item) {
         this.name = name;
         this.ability = ability;
         this.settingType = settingType;
         this.cost = cost;
-        this.extraSettings = extraSettings;
+        this.applicationType = applicationType;
         this.item = item;
     }
 
     UpgradeType(
             String name,
-            Ability ability,
+            @Nullable Ability ability,
             SettingType settingType,
             int cost,
-            ExtraSettings extraSettings,
+            ApplicationType applicationType,
             ItemDefinition<? extends QuantumUpgradeBaseItem> item,
             UpgradeSettings settings) {
-        this(name, ability, settingType, cost, extraSettings, item);
+        this(name, ability, settingType, cost, applicationType, item);
         this.settings = settings;
     }
 
@@ -101,8 +105,8 @@ public enum UpgradeType {
         return this.cost;
     }
 
-    public ExtraSettings getExtraSettings() {
-        return this.extraSettings;
+    public ApplicationType getApplicationType() {
+        return this.applicationType;
     }
 
     public UpgradeSettings getSettings() {

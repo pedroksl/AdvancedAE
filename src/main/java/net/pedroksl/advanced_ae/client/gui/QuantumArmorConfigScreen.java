@@ -6,7 +6,9 @@ import java.util.Map;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.pedroksl.advanced_ae.client.widgets.QuantumUpgradeWidget;
@@ -22,12 +24,17 @@ import appeng.client.gui.style.PaletteColor;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.ProgressBar;
 import appeng.client.gui.widgets.Scrollbar;
+import appeng.core.AppEng;
 
 public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMenu> {
 
-    private static final int LIST_ANCHOR_X = 33;
-    private static final int LIST_ANCHOR_Y = 33;
+    private static final int LIST_ANCHOR_X = 30;
+    private static final int LIST_ANCHOR_Y = 31;
     private static final int LIST_LINE_HEIGHT = 16;
+    private static final int VISIBLE_ROWS = 4;
+
+    private static final Rect2i LIST_BACK_BBOX = new Rect2i(0, 195, 128, 16);
+    private static final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/quantum_armor_config.png");
 
     private final Scrollbar scrollbar;
     private final ProgressBar pb;
@@ -81,14 +88,45 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         }
 
         Color color = this.style.getColor(PaletteColor.DEFAULT_TEXT_COLOR);
-        for (var upgrade : this.upgradeList) {
-            guiGraphics.drawString(this.font, upgrade.getName(), upgrade.getX(), upgrade.getY(), color.toARGB(), false);
+
+        final int scrollLevel = scrollbar.getCurrentScroll();
+        int visibleRows = Math.min(VISIBLE_ROWS, this.upgradeList.size());
+        for (var i = 0; i < visibleRows; ++i) {
+            int currentRow = scrollLevel + i;
+            if (currentRow >= this.upgradeList.size()) {
+                break;
+            }
+            var upgrade = this.upgradeList.get(currentRow);
+            guiGraphics.drawString(
+                    this.font, upgrade.getName(), upgrade.getX() + 2, upgrade.getY() + 3, color.toARGB(), false);
         }
     }
 
-    private void refreshList() {
+    @Override
+    public void drawBG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+        super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
+
+        int currentX = offsetX + LIST_ANCHOR_X;
+        int currentY = offsetY + LIST_ANCHOR_Y;
+
+        int visibleRows = Math.min(VISIBLE_ROWS, this.upgradeList.size());
+        for (int i = 0; i < visibleRows; ++i) {
+            guiGraphics.blit(
+                    DEFAULT_TEXTURE,
+                    currentX,
+                    currentY,
+                    LIST_BACK_BBOX.getX(),
+                    LIST_BACK_BBOX.getY(),
+                    LIST_BACK_BBOX.getWidth(),
+                    LIST_BACK_BBOX.getHeight());
+            currentY += LIST_LINE_HEIGHT;
+        }
+    }
+
+    public void refreshList() {
         this.upgradeList.forEach(w -> w.children().forEach(this::removeWidget));
         this.upgradeList.clear();
+        this.resetScrollbar();
 
         if (this.selectedIndex == -1) return;
 
@@ -110,14 +148,14 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
                                 components.get(AAEComponents.UPGRADE_VALUE.get(upgrade)));
 
                     } else if (upgrade.getSettingType() == UpgradeType.SettingType.FILTER) {
-                        if (!components.has(AAEComponents.TAG_FILTER)) continue;
+                        if (!components.has(AAEComponents.UPGRADE_FILTER.get(upgrade))) continue;
 
                         state = new UpgradeState(
                                 upgrade,
                                 upgrade.getSettings(),
                                 Boolean.TRUE.equals(components.get(AAEComponents.UPGRADE_TOGGLE.get(upgrade))),
                                 0,
-                                components.get(AAEComponents.TAG_FILTER));
+                                components.get(AAEComponents.UPGRADE_FILTER.get(upgrade)));
                     } else continue;
 
                     var widget = new QuantumUpgradeWidget(
@@ -147,6 +185,10 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         addRenderableWidget(widget);
     }
 
+    public void requestUninstall(UpgradeType upgradeType) {
+        this.menu.requestUninstall(upgradeType);
+    }
+
     @Override
     protected void init() {
         super.init();
@@ -154,5 +196,10 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         var index = this.menu.getSelectedSlotIndex();
         this.selectedIndex = 4 - (index - Inventory.INVENTORY_SIZE) + Inventory.INVENTORY_SIZE;
         refreshList();
+    }
+
+    private void resetScrollbar() {
+        scrollbar.setHeight(VISIBLE_ROWS * LIST_LINE_HEIGHT + (VISIBLE_ROWS - 1) * 2 - 2);
+        scrollbar.setRange(0, this.upgradeList.size() - VISIBLE_ROWS, 2);
     }
 }

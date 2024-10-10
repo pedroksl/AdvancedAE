@@ -23,6 +23,7 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     private final AppEngInternalInventory input = new AppEngInternalInventory(this, 1, 1);
     private ProgressChangedHandler progressChangedHandler;
     private InventoryChangedHandler invChangeHandler;
+    private UpgradeAppliedWatcher upgradeAppliedWatcher;
 
     private final BiConsumer<Player, ISubMenu> returnToMainMenu;
 
@@ -75,6 +76,9 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
             var type = card.getType();
             if (item.applyUpgrade(stack, type)) {
                 this.input.setItemDirect(0, ItemStack.EMPTY);
+                if (upgradeAppliedWatcher != null) {
+                    upgradeAppliedWatcher.updateClient();
+                }
             }
         } else {
             updateProgress(progressTime);
@@ -86,7 +90,7 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
         selectedItemSlot = slot;
     }
 
-    public int getSelctedSlotIndex() {
+    public int getSelectedSlotIndex() {
         return selectedItemSlot;
     }
 
@@ -147,6 +151,10 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
         progressChangedHandler = handler;
     }
 
+    public void setUpgradeAppliedWatcher(UpgradeAppliedWatcher handler) {
+        upgradeAppliedWatcher = handler;
+    }
+
     public void setInventoryChangedHandler(InventoryChangedHandler handler) {
         invChangeHandler = handler;
     }
@@ -158,6 +166,11 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     @FunctionalInterface
     public interface ProgressChangedHandler {
         void handleProgress(int progressTime);
+    }
+
+    @FunctionalInterface
+    public interface UpgradeAppliedWatcher {
+        void updateClient();
     }
 
     @FunctionalInterface

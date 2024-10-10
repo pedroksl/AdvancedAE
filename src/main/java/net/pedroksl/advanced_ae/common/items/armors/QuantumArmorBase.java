@@ -2,7 +2,9 @@ package net.pedroksl.advanced_ae.common.items.armors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.DoubleSupplier;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -12,20 +14,25 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.PoweredArmor;
 
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
 import appeng.api.features.IGridLinkableHandler;
 import appeng.api.ids.AEComponents;
 import appeng.api.implementations.menuobjects.IMenuItem;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.api.networking.GridHelper;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.ItemMenuHostLocator;
 
@@ -36,19 +43,83 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class QuantumArmorBase extends ArmorItem implements GeoItem, IMenuItem {
+public class QuantumArmorBase extends PoweredArmor implements GeoItem, IMenuItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public static final IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
 
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
+    private List<UpgradeType> appliedUpgrades;
 
-    public QuantumArmorBase(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super(material, type, properties);
+    public QuantumArmorBase(
+            Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
+        super(material, type, properties, powerCapacity);
     }
 
     public List<UpgradeType> getPossibleUpgrades() {
         return possibleUpgrades;
+    }
+
+    protected List<UpgradeType> getAppliedUpgrades(ItemStack stack) {
+        if (appliedUpgrades == null) {
+            appliedUpgrades = new ArrayList<>();
+            for (var upgrade : possibleUpgrades) {
+                if (hasUpgrade(stack, upgrade)) {
+                    appliedUpgrades.add(upgrade);
+                }
+            }
+        }
+        return appliedUpgrades;
+    }
+
+    protected List<UpgradeType> getPassiveTickAbilities(ItemStack itemStack) {
+        List<UpgradeType> abilityList = new ArrayList<>();
+        getAppliedUpgrades(itemStack).forEach(up -> {
+            if (up.applicationType == UpgradeType.ApplicationType.PASSIVE) abilityList.add(up);
+        });
+        return abilityList;
+    }
+
+    protected void tickUpgrades(Level level, Player player, ItemStack stack) {
+        for (var upgrade : getAppliedUpgrades(stack)) {
+            if (upgrade.applicationType == UpgradeType.ApplicationType.PASSIVE && isUpgradeEnabled(stack, upgrade)) {
+                upgrade.ability.execute(level, player, stack);
+            }
+        }
+    }
+
+    public boolean isUpgradeEnabled(ItemStack stack, UpgradeType upgrade) {
+        return stack.getOrDefault(AAEComponents.UPGRADE_TOGGLE.get(upgrade), false);
+    }
+
+    public boolean isUpgradePowered(ItemStack stack, UpgradeType upgrade) {
+        return isUpgradePowered(stack, upgrade, null);
+    }
+
+    public boolean isUpgradePowered(ItemStack stack, UpgradeType upgrade, Level level) {
+        // Use internal buffer
+        var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        if (energy != null && energy.getEnergyStored() > upgrade.getCost()) return true;
+
+        // If that failed, try to pull from the grid
+        if (level != null && stack.has(AEComponents.WIRELESS_LINK_TARGET)) {
+            var host = GridHelper.getNodeHost(
+                    level,
+                    Objects.requireNonNull(stack.get(AEComponents.WIRELESS_LINK_TARGET))
+                            .pos());
+            if (host != null && host.getGridNode(null) != null) {
+                var node = host.getGridNode(null).getGrid();
+                var energyService = node.getEnergyService();
+                var extracted =
+                        energyService.extractAEPower(upgrade.getCost(), Actionable.SIMULATE, PowerMultiplier.CONFIG);
+                return extracted >= upgrade.getCost() - 0.01;
+            }
+        }
+        return false;
+    }
+
+    public boolean isUpgradeEnabledAndPowered(ItemStack stack, UpgradeType upgrade) {
+        return isUpgradeEnabled(stack, upgrade) && isUpgradePowered(stack, upgrade);
     }
 
     public boolean isUpgradeAllowed(UpgradeType type) {
@@ -64,14 +135,26 @@ public class QuantumArmorBase extends ArmorItem implements GeoItem, IMenuItem {
             return false;
         }
 
+        getAppliedUpgrades(stack).add(type);
         stack.set(AAEComponents.UPGRADE_TOGGLE.get(type), true);
         if (type.getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
             stack.set(AAEComponents.UPGRADE_VALUE.get(type), type.getSettings().maxValue);
         }
         if (type.getSettingType() == UpgradeType.SettingType.FILTER) {
-            stack.set(AAEComponents.TAG_FILTER, new ArrayList<>());
+            stack.set(AAEComponents.UPGRADE_FILTER.get(type), new ArrayList<>());
         }
         return true;
+    }
+
+    public boolean removeUpgrade(ItemStack stack, UpgradeType type) {
+        if (getAppliedUpgrades(stack).contains(type)) {
+            stack.remove(AAEComponents.UPGRADE_TOGGLE.get(type));
+            stack.remove(AAEComponents.UPGRADE_VALUE.get(type));
+            stack.remove(AAEComponents.UPGRADE_FILTER.get(type));
+            getAppliedUpgrades(stack).remove(type);
+            return true;
+        }
+        return false;
     }
 
     protected boolean checkPreconditions(ItemStack item) {
