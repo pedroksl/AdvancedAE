@@ -19,7 +19,7 @@ public enum UpgradeType {
             10,
             ApplicationType.PASSIVE,
             AAEItems.WALK_SPEED_CARD,
-            new UpgradeSettings(1, 80, 0.1f)),
+            new UpgradeSettings(1, 60, 0.1f)),
     SPRINT_SPEED(
             "Sprint Speed",
             UpgradeCards::sprintSpeed,
@@ -32,7 +32,7 @@ public enum UpgradeType {
             "Step Assist",
             null,
             SettingType.NUM_INPUT,
-            1,
+            5,
             ApplicationType.PASSIVE_USE,
             AAEItems.STEP_ASSIST_CARD,
             new UpgradeSettings(1, 3)),
@@ -44,12 +44,33 @@ public enum UpgradeType {
             ApplicationType.PASSIVE_USE,
             AAEItems.JUMP_HEIGHT_CARD,
             new UpgradeSettings(1, 3)),
-    FLIGHT("Flight", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.FLIGHT_CARD);
+    LAVA_IMMUNITY(
+            "Lava Immunity", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.LAVA_IMMUNITY_CARD),
+    FLIGHT("Flight", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.FLIGHT_CARD),
+    WATER_BREATHING(
+            "Water Breathing", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.WATER_BREATHING_CARD),
+    AUTO_FEED(
+            "Auto Feed",
+            UpgradeCards::autoFeed,
+            SettingType.FILTER,
+            5,
+            ApplicationType.PASSIVE,
+            AAEItems.AUTO_FEED_CARD),
+    AUTO_STOCK(
+            "Auto Stock",
+            UpgradeCards::autoStock,
+            SettingType.FILTER,
+            5,
+            ApplicationType.PASSIVE,
+            AAEItems.AUTO_STOCK_CARD),
+    MAGNET("Magnet", UpgradeCards::magnet, SettingType.FILTER, 5, ApplicationType.PASSIVE, AAEItems.MAGNET_CARD),
+    HP_BUFFER("HP Buffer", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.HP_BUFFER_CARD);
 
     public enum SettingType {
         NONE,
         NUM_INPUT,
-        FILTER
+        FILTER,
+        NUM_AND_FILTER
     }
 
     public enum ApplicationType {

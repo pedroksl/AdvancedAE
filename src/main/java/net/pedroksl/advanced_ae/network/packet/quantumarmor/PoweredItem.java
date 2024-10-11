@@ -19,13 +19,12 @@ import appeng.api.ids.AEComponents;
 import appeng.api.implementations.items.IAEItemPowerStorage;
 import appeng.core.localization.Tooltips;
 
-public class PoweredArmor extends ArmorItem implements IAEItemPowerStorage {
+public class PoweredItem extends ArmorItem implements IAEItemPowerStorage {
 
     private static final double MIN_POWER = 0.0001;
     private final DoubleSupplier powerCapacity;
 
-    public PoweredArmor(
-            Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
+    public PoweredItem(Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
         super(material, type, properties);
         this.powerCapacity = powerCapacity;
     }

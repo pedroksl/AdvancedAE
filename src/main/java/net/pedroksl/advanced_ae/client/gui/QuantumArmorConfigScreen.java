@@ -9,8 +9,10 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.pedroksl.advanced_ae.client.widgets.QuantumUpgradeWidget;
 import net.pedroksl.advanced_ae.client.widgets.UpgradeState;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
@@ -29,7 +31,7 @@ import appeng.core.AppEng;
 public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMenu> {
 
     private static final int LIST_ANCHOR_X = 30;
-    private static final int LIST_ANCHOR_Y = 31;
+    private static final int LIST_ANCHOR_Y = 32;
     private static final int LIST_LINE_HEIGHT = 16;
     private static final int VISIBLE_ROWS = 4;
 
@@ -107,7 +109,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
 
         int currentX = offsetX + LIST_ANCHOR_X;
-        int currentY = offsetY + LIST_ANCHOR_Y;
+        int currentY = offsetY + LIST_ANCHOR_Y - 1;
 
         int visibleRows = Math.min(VISIBLE_ROWS, this.upgradeList.size());
         for (int i = 0; i < visibleRows; ++i) {
@@ -137,27 +139,13 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
                 if (item.hasUpgrade(stack, upgrade)) {
                     var components = stack.getComponents();
 
-                    UpgradeState state;
-                    if (upgrade.getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
-                        if (!components.has(AAEComponents.UPGRADE_VALUE.get(upgrade))) continue;
+                    boolean enabled = Boolean.TRUE.equals(components.get(AAEComponents.UPGRADE_TOGGLE.get(upgrade)));
+                    int value = components.getOrDefault(
+                            AAEComponents.UPGRADE_VALUE.get(upgrade), upgrade.getSettings().maxValue);
+                    var filter = components.getOrDefault(
+                            AAEComponents.UPGRADE_FILTER.get(upgrade), new ArrayList<TagKey<Item>>());
 
-                        state = new UpgradeState(
-                                upgrade,
-                                upgrade.getSettings(),
-                                Boolean.TRUE.equals(components.get(AAEComponents.UPGRADE_TOGGLE.get(upgrade))),
-                                components.get(AAEComponents.UPGRADE_VALUE.get(upgrade)));
-
-                    } else if (upgrade.getSettingType() == UpgradeType.SettingType.FILTER) {
-                        if (!components.has(AAEComponents.UPGRADE_FILTER.get(upgrade))) continue;
-
-                        state = new UpgradeState(
-                                upgrade,
-                                upgrade.getSettings(),
-                                Boolean.TRUE.equals(components.get(AAEComponents.UPGRADE_TOGGLE.get(upgrade))),
-                                0,
-                                components.get(AAEComponents.UPGRADE_FILTER.get(upgrade)));
-                    } else continue;
-
+                    UpgradeState state = new UpgradeState(upgrade, upgrade.getSettings(), enabled, value, filter);
                     var widget = new QuantumUpgradeWidget(
                             this, index, LIST_ANCHOR_X, LIST_ANCHOR_Y + index * LIST_LINE_HEIGHT, style, state);
                     widget.add();

@@ -17,6 +17,7 @@ import net.pedroksl.advanced_ae.common.definitions.*;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
+import net.pedroksl.advanced_ae.events.AAELivingEntityEvents;
 import net.pedroksl.advanced_ae.events.AAEPlayerEvents;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
@@ -85,7 +86,7 @@ public class AdvancedAE {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         // NeoForge.EVENT_BUS.register(AAEEntityEvents.class);
-        // NeoForge.EVENT_BUS.register(AAELivingEntityEvents.class);
+        NeoForge.EVENT_BUS.register(AAELivingEntityEvents.class);
         NeoForge.EVENT_BUS.register(AAEPlayerEvents.class);
 
         event.enqueueWork(this::postRegistrationInitialization).whenComplete((res, err) -> {

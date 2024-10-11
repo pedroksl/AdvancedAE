@@ -34,6 +34,8 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem {
         super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.CHESTPLATE, properties, () -> MAX_POWER_STORAGE);
 
         this.possibleUpgrades.add(UpgradeType.FLIGHT);
+        this.possibleUpgrades.add(UpgradeType.HP_BUFFER);
+        this.possibleUpgrades.add(UpgradeType.LAVA_IMMUNITY);
     }
 
     @Override
@@ -60,7 +62,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.CHEST.getIndex()
-                && !getPassiveTickAbilities(stack).isEmpty()
+                && !getPassiveUpgrades(stack).isEmpty()
                 && entity instanceof Player player) {
             tickUpgrades(level, player, stack);
         }

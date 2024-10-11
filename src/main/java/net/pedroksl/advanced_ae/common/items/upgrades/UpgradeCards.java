@@ -1,10 +1,17 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
+import java.util.ArrayList;
+
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+
+import appeng.api.ids.AEComponents;
+import appeng.api.networking.GridHelper;
 
 public class UpgradeCards {
     public static boolean walkSpeed(Level level, Player player, ItemStack stack) {
@@ -50,6 +57,36 @@ public class UpgradeCards {
                 player.moveRelative(value, new Vec3(0, 1, 0));
             }
         }
+        return false;
+    }
+
+    public static boolean autoFeed(Level level, Player player, ItemStack stack) {
+        var pos = stack.get(AEComponents.WIRELESS_LINK_TARGET);
+        if (player.getFoodData().needsFood() && pos != null) {
+            var host = GridHelper.getNodeHost(level, pos.pos());
+            if (host != null) {
+                var gridNode = host.getGridNode(null);
+                if (gridNode != null) {
+                    var grid = gridNode.getGrid();
+                    var storage = grid.getStorageService();
+                    var filter = stack.getOrDefault(
+                            AAEComponents.UPGRADE_FILTER.get(UpgradeType.AUTO_FEED), new ArrayList<TagKey<Item>>());
+                    // for (var tag : filter) {
+                    // AEKey
+                    // var opt = tag.cast(tag.registry());
+                    // if (storage.getInventory().extract(, 1, Actionable.SIMULATE));
+                    // }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean autoStock(Level level, Player player, ItemStack stack) {
+        return false;
+    }
+
+    public static boolean magnet(Level level, Player player, ItemStack stack) {
         return false;
     }
 }

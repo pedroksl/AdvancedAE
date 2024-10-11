@@ -23,7 +23,7 @@ public class QuantumBoots extends QuantumArmorBase {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.FEET.getIndex()
-                && !getPassiveTickAbilities(stack).isEmpty()
+                && !getPassiveUpgrades(stack).isEmpty()
                 && entity instanceof Player player) {
             tickUpgrades(level, player, stack);
         }

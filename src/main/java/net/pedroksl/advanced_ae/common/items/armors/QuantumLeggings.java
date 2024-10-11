@@ -23,7 +23,7 @@ public class QuantumLeggings extends QuantumArmorBase {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.LEGS.getIndex()
-                && !getPassiveTickAbilities(stack).isEmpty()
+                && !getPassiveUpgrades(stack).isEmpty()
                 && entity instanceof Player player) {
             tickUpgrades(level, player, stack);
         }

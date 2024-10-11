@@ -94,8 +94,22 @@ public class AAEItems {
             item("Step Assist Card", "step_assist_card", p -> new QuantumUpgradeBaseItem(UpgradeType.STEP_ASSIST, p));
     public static final ItemDefinition<QuantumUpgradeBaseItem> JUMP_HEIGHT_CARD =
             item("Jump Height Card", "jump_height_card", p -> new QuantumUpgradeBaseItem(UpgradeType.JUMP_HEIGHT, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> LAVA_IMMUNITY_CARD = item(
+            "Lava Immunity Card", "lava_immunity_card", p -> new QuantumUpgradeBaseItem(UpgradeType.LAVA_IMMUNITY, p));
     public static final ItemDefinition<QuantumUpgradeBaseItem> FLIGHT_CARD =
             item("Flight Card", "flight_card", p -> new QuantumUpgradeBaseItem(UpgradeType.FLIGHT, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> WATER_BREATHING_CARD = item(
+            "Water Breathing Card",
+            "water_breathing_card",
+            p -> new QuantumUpgradeBaseItem(UpgradeType.WATER_BREATHING, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> AUTO_FEED_CARD =
+            item("Auto Feeding Card", "auto_feeding_card", p -> new QuantumUpgradeBaseItem(UpgradeType.AUTO_FEED, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> AUTO_STOCK_CARD =
+            item("Auto Stock Card", "auto_stock_card", p -> new QuantumUpgradeBaseItem(UpgradeType.AUTO_STOCK, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> MAGNET_CARD =
+            item("Magnet Card", "magnet_card", p -> new QuantumUpgradeBaseItem(UpgradeType.MAGNET, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> HP_BUFFER_CARD =
+            item("HP Buffer Card", "hp_buffer_card", p -> new QuantumUpgradeBaseItem(UpgradeType.HP_BUFFER, p));
 
     private static <T extends Item> ItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {

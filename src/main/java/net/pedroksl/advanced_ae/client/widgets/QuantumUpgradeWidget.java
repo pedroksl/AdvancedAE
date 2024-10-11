@@ -85,6 +85,8 @@ public class QuantumUpgradeWidget {
 
         } else if (state.type().getSettingType() == UpgradeType.SettingType.FILTER) {
 
+        } else if (state.type().getSettingType() == UpgradeType.SettingType.NUM_AND_FILTER) {
+
         }
     }
 
