@@ -10,12 +10,12 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.common.patterns.EncodedAdvProcessingPattern;
+
+import appeng.api.stacks.GenericStack;
 
 public final class AAEComponents {
     public static final DeferredRegister<DataComponentType<?>> DR =
@@ -30,7 +30,7 @@ public final class AAEComponents {
 
     public static final Map<UpgradeType, DataComponentType<Boolean>> UPGRADE_TOGGLE = new HashMap<>();
     public static final Map<UpgradeType, DataComponentType<Integer>> UPGRADE_VALUE = new HashMap<>();
-    public static final Map<UpgradeType, DataComponentType<List<TagKey<Item>>>> UPGRADE_FILTER = new HashMap<>();
+    public static final Map<UpgradeType, DataComponentType<List<GenericStack>>> UPGRADE_FILTER = new HashMap<>();
 
     public static void init() {
         for (var upgrade : UpgradeType.values()) {
@@ -40,9 +40,9 @@ public final class AAEComponents {
             DataComponentType<Integer> value =
                     register(upgrade.name() + "_value", builder -> builder.persistent(Codec.INT)
                             .networkSynchronized(ByteBufCodecs.INT));
-            DataComponentType<List<TagKey<Item>>> filter = register(
-                    upgrade.name() + "_filter", builder -> builder.persistent(Codec.list(TagKey.codec(Registries.ITEM)))
-                            .networkSynchronized(ByteBufCodecs.fromCodec(Codec.list(TagKey.codec(Registries.ITEM)))));
+            DataComponentType<List<GenericStack>> filter =
+                    register(upgrade.name() + "_filter", builder -> builder.persistent(Codec.list(GenericStack.CODEC))
+                            .networkSynchronized(GenericStack.STREAM_CODEC.apply(ByteBufCodecs.list())));
             UPGRADE_TOGGLE.put(upgrade, toggle);
             UPGRADE_VALUE.put(upgrade, value);
             UPGRADE_FILTER.put(upgrade, filter);

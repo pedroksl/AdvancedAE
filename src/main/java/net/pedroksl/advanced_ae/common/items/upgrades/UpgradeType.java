@@ -63,7 +63,14 @@ public enum UpgradeType {
             5,
             ApplicationType.PASSIVE,
             AAEItems.AUTO_STOCK_CARD),
-    MAGNET("Magnet", UpgradeCards::magnet, SettingType.FILTER, 5, ApplicationType.PASSIVE, AAEItems.MAGNET_CARD),
+    MAGNET(
+            "Magnet",
+            UpgradeCards::magnet,
+            SettingType.NUM_AND_FILTER,
+            5,
+            ApplicationType.PASSIVE,
+            AAEItems.MAGNET_CARD,
+            new UpgradeSettings(1, 12)),
     HP_BUFFER("HP Buffer", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.HP_BUFFER_CARD);
 
     public enum SettingType {

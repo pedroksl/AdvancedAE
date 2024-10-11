@@ -2,11 +2,9 @@ package net.pedroksl.advanced_ae.gui;
 
 import java.util.List;
 
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
@@ -18,6 +16,7 @@ import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeStatePacket;
 
 import appeng.api.inventories.InternalInventory;
+import appeng.api.stacks.GenericStack;
 import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
@@ -141,7 +140,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         }
     }
 
-    public void updateUpgradeFilter(UpgradeType upgradeType, List<TagKey<Item>> filter) {
+    public void updateUpgradeFilter(UpgradeType upgradeType, List<GenericStack> filter) {
         var slotIndex = this.host.getSelectedSlotIndex();
         var stack = getPlayer().getInventory().getItem(slotIndex);
         if (stack.getItem() instanceof QuantumArmorBase item) {

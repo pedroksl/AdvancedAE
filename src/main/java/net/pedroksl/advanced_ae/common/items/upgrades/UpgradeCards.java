@@ -2,25 +2,29 @@ package net.pedroksl.advanced_ae.common.items.upgrades;
 
 import java.util.ArrayList;
 
-import net.minecraft.tags.TagKey;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 
+import appeng.api.config.Actionable;
 import appeng.api.ids.AEComponents;
 import appeng.api.networking.GridHelper;
+import appeng.api.networking.security.IActionSource;
+import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.GenericStack;
 
 public class UpgradeCards {
     public static boolean walkSpeed(Level level, Player player, ItemStack stack) {
-        //        ItemStack chestItem = player.getItemBySlot(EquipmentSlot.CHEST);
-        //        boolean canBoostElytra = chestItem.getItem() instanceof ToggleableTool toggleableTool &&
-        // toggleableTool.canUseAbilityAndDurability(itemStack, Ability.ELYTRA);
-        //        boolean isNotFlying = player.fallDistance <= 0 && !player.isFallFlying();
-        boolean shouldBoostFlight = true; // canBoostElytra || isNotFlying;
-        if (!player.isSprinting() && shouldBoostFlight && player.zza > 0F && !player.isInWaterOrBubble()) {
+        ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+        boolean canFly = chest.getItem() instanceof QuantumArmorBase armor
+                && armor.isUpgradeEnabledAndPowered(chest, UpgradeType.FLIGHT);
+        boolean isNotFlying = player.fallDistance <= 0 && !player.isFallFlying();
+        if (!player.isSprinting() && (canFly || isNotFlying) && player.zza > 0F && !player.isInWaterOrBubble()) {
             var upgrade = UpgradeType.WALK_SPEED;
             var value = upgrade.getSettings().multiplier
                     * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), -1)
@@ -70,12 +74,38 @@ public class UpgradeCards {
                     var grid = gridNode.getGrid();
                     var storage = grid.getStorageService();
                     var filter = stack.getOrDefault(
-                            AAEComponents.UPGRADE_FILTER.get(UpgradeType.AUTO_FEED), new ArrayList<TagKey<Item>>());
-                    // for (var tag : filter) {
-                    // AEKey
-                    // var opt = tag.cast(tag.registry());
-                    // if (storage.getInventory().extract(, 1, Actionable.SIMULATE));
-                    // }
+                            AAEComponents.UPGRADE_FILTER.get(UpgradeType.AUTO_FEED), new ArrayList<GenericStack>());
+                    for (var genStack : filter) {
+                        if (storage.getInventory()
+                                        .extract(
+                                                genStack.what(), 1, Actionable.SIMULATE, IActionSource.ofPlayer(player))
+                                > 0) {
+                            if (genStack.what() instanceof AEItemKey itemKey) {
+                                ItemStack foodStack = itemKey.toStack();
+                                if (foodStack.has(DataComponents.FOOD)) {
+                                    var foodProperties = foodStack.get(DataComponents.FOOD);
+                                    if (foodProperties != null) {
+                                        storage.getInventory()
+                                                .extract(
+                                                        genStack.what(),
+                                                        1,
+                                                        Actionable.MODULATE,
+                                                        IActionSource.ofPlayer(player));
+                                        ItemStack remainingStack = player.eat(level, foodStack, foodProperties);
+                                        if (remainingStack != ItemStack.EMPTY) {
+                                            storage.getInventory()
+                                                    .insert(
+                                                            AEItemKey.of(remainingStack),
+                                                            remainingStack.getCount(),
+                                                            Actionable.MODULATE,
+                                                            IActionSource.ofPlayer(player));
+                                        }
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -83,6 +113,68 @@ public class UpgradeCards {
     }
 
     public static boolean autoStock(Level level, Player player, ItemStack stack) {
+        var pos = stack.get(AEComponents.WIRELESS_LINK_TARGET);
+        if (pos != null) {
+            var host = GridHelper.getNodeHost(level, pos.pos());
+            if (host != null) {
+                var gridNode = host.getGridNode(null);
+                if (gridNode != null) {
+                    var grid = gridNode.getGrid();
+                    var storage = grid.getStorageService();
+                    var filter = stack.getOrDefault(
+                            AAEComponents.UPGRADE_FILTER.get(UpgradeType.AUTO_STOCK), new ArrayList<GenericStack>());
+                    for (var genStack : filter) {
+                        if (genStack.what() instanceof AEItemKey itemKey) {
+                            var desiredAmount = genStack.amount();
+                            var currentAmount = 0;
+                            var slots = new ArrayList<Integer>();
+                            for (var x = 0; x < player.getInventory().getContainerSize(); x++) {
+                                var currentStack = player.getInventory().getItem(x);
+                                if (itemKey.is(currentStack.getItem())) {
+                                    currentAmount += currentStack.getCount();
+                                    slots.add(x);
+                                }
+                            }
+                            var amountDelta = desiredAmount - currentAmount;
+                            if (amountDelta > 0) {
+                                long extracted = storage.getInventory()
+                                        .extract(
+                                                genStack.what(),
+                                                amountDelta,
+                                                Actionable.MODULATE,
+                                                IActionSource.ofPlayer(player));
+                                ItemStack stackToInsert = new ItemStack(itemKey.getItem(), (int) extracted);
+                                player.addItem(stackToInsert);
+                                storage.getInventory()
+                                        .insert(
+                                                genStack.what(),
+                                                stackToInsert.getCount(),
+                                                Actionable.MODULATE,
+                                                IActionSource.ofPlayer(player));
+                            } else if (amountDelta < 0) {
+                                var amountToLeave = (int) desiredAmount;
+                                for (var slot : slots) {
+                                    var item = player.getInventory().getItem(slot);
+                                    player.getInventory()
+                                            .setItem(
+                                                    slot,
+                                                    new ItemStack(
+                                                            item.getItem(),
+                                                            Math.max(0, item.getCount() - amountToLeave)));
+                                    amountToLeave = Math.max(0, amountToLeave - item.getCount());
+                                }
+                                storage.getInventory()
+                                        .insert(
+                                                genStack.what(),
+                                                amountDelta,
+                                                Actionable.MODULATE,
+                                                IActionSource.ofPlayer(player));
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return false;
     }
 
