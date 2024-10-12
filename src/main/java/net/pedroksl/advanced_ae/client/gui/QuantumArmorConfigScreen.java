@@ -9,17 +9,19 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.widgets.QuantumUpgradeWidget;
 import net.pedroksl.advanced_ae.client.widgets.UpgradeState;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.gui.QuantumArmorConfigMenu;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeFilterPacket;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeValuePacket;
 
+import appeng.api.stacks.GenericStack;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.style.Color;
 import appeng.client.gui.style.PaletteColor;
@@ -140,10 +142,9 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
                     var components = stack.getComponents();
 
                     boolean enabled = Boolean.TRUE.equals(components.get(AAEComponents.UPGRADE_TOGGLE.get(upgrade)));
-                    int value = components.getOrDefault(
-                            AAEComponents.UPGRADE_VALUE.get(upgrade), upgrade.getSettings().maxValue);
+                    int value = components.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 1);
                     var filter = components.getOrDefault(
-                            AAEComponents.UPGRADE_FILTER.get(upgrade), new ArrayList<TagKey<Item>>());
+                            AAEComponents.UPGRADE_FILTER.get(upgrade), new ArrayList<GenericStack>());
 
                     UpgradeState state = new UpgradeState(upgrade, upgrade.getSettings(), enabled, value, filter);
                     var widget = new QuantumUpgradeWidget(
@@ -189,5 +190,29 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     private void resetScrollbar() {
         scrollbar.setHeight(VISIBLE_ROWS * LIST_LINE_HEIGHT + (VISIBLE_ROWS - 1) * 2 - 2);
         scrollbar.setRange(0, this.upgradeList.size() - VISIBLE_ROWS, 2);
+    }
+
+    @Override
+    public void onClose() {
+        this.menu.emptyUpgradeSlot();
+        super.onClose();
+    }
+
+    public void openConfigDialog(UpgradeState state) {
+        if (state.type().getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
+            var settings = state.settings();
+            var screen = new QuantumArmorNumInputConfigScreen<>(
+                    this,
+                    settings.minValue,
+                    settings.maxValue,
+                    state.currentValue(),
+                    settings.multiplier,
+                    newValue ->
+                            PacketDistributor.sendToServer(new QuantumArmorUpgradeValuePacket(state.type(), newValue)));
+
+            this.switchToScreen(screen);
+        } else if (state.type().getSettingType() == UpgradeType.SettingType.FILTER) {
+            PacketDistributor.sendToServer(new QuantumArmorUpgradeFilterPacket(false, state.type(), state.filter()));
+        }
     }
 }

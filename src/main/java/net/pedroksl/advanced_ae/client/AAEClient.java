@@ -90,6 +90,11 @@ public class AAEClient extends AdvancedAE {
                 AAEMenus.QUANTUM_ARMOR_CONFIG,
                 QuantumArmorConfigScreen::new,
                 "/screens/quantum_armor_config.json");
+        InitScreens.register(
+                event,
+                AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG,
+                QuantumArmorFilterConfigScreen::new,
+                "/screens/quantum_armor_filter_config.json");
     }
 
     @SuppressWarnings("deprecation")

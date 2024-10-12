@@ -2,25 +2,22 @@ package net.pedroksl.advanced_ae.client.widgets;
 
 import java.util.List;
 
-import com.mojang.serialization.Codec;
-
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeSettings;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+
+import appeng.api.stacks.GenericStack;
 
 public record UpgradeState(
         UpgradeType type,
         UpgradeSettings settings,
         boolean enabled,
         int currentValue,
-        @Nullable List<TagKey<Item>> filter) {
+        @Nullable List<GenericStack> filter) {
     public static final StreamCodec<RegistryFriendlyByteBuf, UpgradeState> STREAM_CODEC =
             StreamCodec.ofMember(UpgradeState::write, UpgradeState::decode);
 
@@ -35,8 +32,7 @@ public record UpgradeState(
         var currentValue = stream.readInt();
 
         if (stream.readBoolean()) {
-            var filter = ByteBufCodecs.fromCodec(Codec.list(TagKey.codec(Registries.ITEM)))
-                    .decode(stream);
+            var filter = GenericStack.STREAM_CODEC.apply(ByteBufCodecs.list()).decode(stream);
             return new UpgradeState(type, settings, enabled, currentValue, filter);
         } else {
             return new UpgradeState(type, settings, enabled, currentValue);
@@ -51,7 +47,7 @@ public record UpgradeState(
 
         if (filter != null) {
             data.writeBoolean(true);
-            ByteBufCodecs.fromCodec(Codec.list(TagKey.codec(Registries.ITEM))).encode(data, filter);
+            GenericStack.STREAM_CODEC.apply(ByteBufCodecs.list()).encode(data, filter);
         }
     }
 }

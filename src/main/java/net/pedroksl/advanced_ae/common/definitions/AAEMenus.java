@@ -50,6 +50,8 @@ public class AAEMenus {
 
     public static final MenuType<QuantumArmorConfigMenu> QUANTUM_ARMOR_CONFIG =
             create("quantum_armor_config", QuantumArmorConfigMenu::new, QuantumArmorMenuHost.class);
+    public static final MenuType<QuantumArmorFilterConfigMenu> QUANTUM_ARMOR_FILTER_CONFIG =
+            create("quantum_armor_filter_config", QuantumArmorFilterConfigMenu::new, ISubMenuHost.class);
 
     private static <M extends AEBaseMenu, H> MenuType<M> create(
             String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {

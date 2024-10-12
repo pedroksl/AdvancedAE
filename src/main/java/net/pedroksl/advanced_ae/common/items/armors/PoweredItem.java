@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.network.packet.quantumarmor;
+package net.pedroksl.advanced_ae.common.items.armors;
 
 import java.util.List;
 import java.util.function.DoubleSupplier;

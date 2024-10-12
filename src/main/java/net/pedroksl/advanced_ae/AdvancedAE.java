@@ -14,7 +14,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.advanced_ae.common.items.armors.IGridLinkedItem;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.events.AAELivingEntityEvents;
@@ -97,10 +97,10 @@ public class AdvancedAE {
     }
 
     public void postRegistrationInitialization() {
-        GridLinkables.register(AAEItems.QUANTUM_HELMET, QuantumArmorBase.LINKABLE_HANDLER);
-        GridLinkables.register(AAEItems.QUANTUM_CHESTPLATE, QuantumArmorBase.LINKABLE_HANDLER);
-        GridLinkables.register(AAEItems.QUANTUM_LEGGINGS, QuantumArmorBase.LINKABLE_HANDLER);
-        GridLinkables.register(AAEItems.QUANTUM_BOOTS, QuantumArmorBase.LINKABLE_HANDLER);
+        GridLinkables.register(AAEItems.QUANTUM_HELMET, IGridLinkedItem.LINKABLE_HANDLER);
+        GridLinkables.register(AAEItems.QUANTUM_CHESTPLATE, IGridLinkedItem.LINKABLE_HANDLER);
+        GridLinkables.register(AAEItems.QUANTUM_LEGGINGS, IGridLinkedItem.LINKABLE_HANDLER);
+        GridLinkables.register(AAEItems.QUANTUM_BOOTS, IGridLinkedItem.LINKABLE_HANDLER);
     }
 
     private static void initUpgrades(FMLCommonSetupEvent event) {

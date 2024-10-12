@@ -81,13 +81,7 @@ public class QuantumUpgradeWidget {
     }
 
     private void configRequested(Button button) {
-        if (state.type().getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
-
-        } else if (state.type().getSettingType() == UpgradeType.SettingType.FILTER) {
-
-        } else if (state.type().getSettingType() == UpgradeType.SettingType.NUM_AND_FILTER) {
-
-        }
+        host.openConfigDialog(state);
     }
 
     private void toggleEnable() {

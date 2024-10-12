@@ -10,20 +10,22 @@ import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.api.storage.ISubMenuHost;
 import appeng.hooks.ticking.TickHandler;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
-public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHost<T> implements InternalInventoryHost {
+public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHost<T>
+        implements InternalInventoryHost, ISubMenuHost {
 
     private static final int MAX_PROCESSING_TIME = 20;
 
     private final AppEngInternalInventory input = new AppEngInternalInventory(this, 1, 1);
     private ProgressChangedHandler progressChangedHandler;
     private InventoryChangedHandler invChangeHandler;
-    private UpgradeAppliedWatcher upgradeAppliedWatcher;
+    private ClientUpdater clientUpdater;
 
     private final BiConsumer<Player, ISubMenu> returnToMainMenu;
 
@@ -76,8 +78,8 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
             var type = card.getType();
             if (item.applyUpgrade(stack, type)) {
                 this.input.setItemDirect(0, ItemStack.EMPTY);
-                if (upgradeAppliedWatcher != null) {
-                    upgradeAppliedWatcher.updateClient();
+                if (clientUpdater != null) {
+                    clientUpdater.updateClient();
                 }
             }
         } else {
@@ -147,12 +149,17 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
         this.returnToMainMenu.accept(player, iSubMenu);
     }
 
+    @Override
+    public ItemStack getMainMenuIcon() {
+        return this.getItemStack();
+    }
+
     public void setProgressChangedHandler(ProgressChangedHandler handler) {
         progressChangedHandler = handler;
     }
 
-    public void setUpgradeAppliedWatcher(UpgradeAppliedWatcher handler) {
-        upgradeAppliedWatcher = handler;
+    public void setUpgradeAppliedWatcher(ClientUpdater handler) {
+        clientUpdater = handler;
     }
 
     public void setInventoryChangedHandler(InventoryChangedHandler handler) {
@@ -169,7 +176,7 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     }
 
     @FunctionalInterface
-    public interface UpgradeAppliedWatcher {
+    public interface ClientUpdater {
         void updateClient();
     }
 

@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.gui;
 
 import java.util.List;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -42,6 +43,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
 
     private static final String SELECT_SLOT = "select_slot";
     private static final String REQUEST_UNINSTALL = "request_uninstall";
+    private static final String EMPTY_SLOT = "empty_slot";
 
     public QuantumArmorConfigMenu(int id, Inventory playerInventory, QuantumArmorMenuHost<?> host) {
         super(AAEMenus.QUANTUM_ARMOR_CONFIG, id, playerInventory, host);
@@ -69,6 +71,11 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
 
         registerClientAction(SELECT_SLOT, Integer.class, this::setSelectedItemSlot);
         registerClientAction(REQUEST_UNINSTALL, UpgradeType.class, this::requestUninstall);
+        registerClientAction(EMPTY_SLOT, this::emptyUpgradeSlot);
+    }
+
+    public QuantumArmorMenuHost<?> getHost() {
+        return this.host;
     }
 
     private void progressChanged(int progress) {
@@ -140,6 +147,14 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         }
     }
 
+    public void openFilterConfigScreen(UpgradeType upgradeType, List<GenericStack> filter) {
+        var locator = getLocator();
+        if (locator != null && isServerSide()) {
+            QuantumArmorFilterConfigMenu.open(
+                    ((ServerPlayer) this.getPlayer()), getLocator(), this.getSelectedSlotIndex(), filter, upgradeType);
+        }
+    }
+
     public void updateUpgradeFilter(UpgradeType upgradeType, List<GenericStack> filter) {
         var slotIndex = this.host.getSelectedSlotIndex();
         var stack = getPlayer().getInventory().getItem(slotIndex);
@@ -189,6 +204,18 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
 
         if (markDirty) {
             updateClient();
+        }
+    }
+
+    public void emptyUpgradeSlot() {
+        if (isClientSide()) {
+            sendClientAction(EMPTY_SLOT);
+            return;
+        }
+
+        if (!this.inputSlot.getItem().isEmpty()) {
+            this.getPlayer().addItem(this.inputSlot.getItem());
+            this.inputSlot.set(ItemStack.EMPTY);
         }
     }
 

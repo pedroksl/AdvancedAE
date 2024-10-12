@@ -2,10 +2,11 @@ package net.pedroksl.advanced_ae.common.items.armors;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -15,10 +16,8 @@ import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
-import appeng.api.ids.AEComponents;
-import appeng.api.networking.GridHelper;
 
-public interface IUpgradeableItem {
+public interface IUpgradeableItem extends IGridLinkedItem {
     List<UpgradeType> getPossibleUpgrades();
 
     List<UpgradeType> getAppliedUpgrades(ItemStack stack);
@@ -45,14 +44,11 @@ public interface IUpgradeableItem {
         if (energy != null && energy.getEnergyStored() > upgrade.getCost()) return true;
 
         // If that failed, try to pull from the grid
-        if (level != null && stack.has(AEComponents.WIRELESS_LINK_TARGET)) {
-            var host = GridHelper.getNodeHost(
-                    level,
-                    Objects.requireNonNull(stack.get(AEComponents.WIRELESS_LINK_TARGET))
-                            .pos());
-            if (host != null && host.getGridNode(null) != null) {
-                var node = host.getGridNode(null).getGrid();
-                var energyService = node.getEnergyService();
+        if (level != null && getLinkedPosition(stack) != null) {
+            MutableObject<Component> errorHolder = new MutableObject<>();
+            var grid = getLinkedGrid(stack, level, errorHolder::setValue);
+            if (grid != null) {
+                var energyService = grid.getEnergyService();
                 var extracted =
                         energyService.extractAEPower(upgrade.getCost(), Actionable.SIMULATE, PowerMultiplier.CONFIG);
                 return extracted >= upgrade.getCost() - 0.01;

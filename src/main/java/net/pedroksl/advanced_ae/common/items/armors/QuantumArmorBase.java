@@ -8,7 +8,6 @@ import java.util.function.DoubleSupplier;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,10 +21,7 @@ import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
-import net.pedroksl.advanced_ae.network.packet.quantumarmor.PoweredItem;
 
-import appeng.api.features.IGridLinkableHandler;
-import appeng.api.ids.AEComponents;
 import appeng.api.implementations.menuobjects.IMenuItem;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.core.localization.GuiText;
@@ -43,8 +39,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem, IUpgradeableItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public static final IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
-
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
     private List<UpgradeType> appliedUpgrades;
 
@@ -58,7 +52,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
             ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {
         super.appendHoverText(stack, context, lines, advancedTooltips);
 
-        if (stack.get(AEComponents.WIRELESS_LINK_TARGET) == null) {
+        if (getLinkedPosition(stack) == null) {
             lines.add(Tooltips.of(GuiText.Unlinked, Tooltips.RED));
         } else {
             lines.add(Tooltips.of(GuiText.Linked, Tooltips.GREEN));
@@ -166,22 +160,5 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     public ItemMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator, @Nullable BlockHitResult hitResult) {
         return new QuantumArmorMenuHost<>(
                 this, player, locator, (p, subMenu) -> openFromEquipmentSlot(p, locator, true));
-    }
-
-    private static class LinkableHandler implements IGridLinkableHandler {
-        @Override
-        public boolean canLink(ItemStack itemStack) {
-            return itemStack.getItem() instanceof QuantumArmorBase;
-        }
-
-        @Override
-        public void link(ItemStack itemStack, GlobalPos pos) {
-            itemStack.set(AEComponents.WIRELESS_LINK_TARGET, pos);
-        }
-
-        @Override
-        public void unlink(ItemStack itemStack) {
-            itemStack.remove(AEComponents.WIRELESS_LINK_TARGET);
-        }
     }
 }

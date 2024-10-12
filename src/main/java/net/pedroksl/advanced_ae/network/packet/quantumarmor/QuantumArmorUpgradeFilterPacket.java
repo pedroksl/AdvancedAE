@@ -2,8 +2,6 @@ package net.pedroksl.advanced_ae.network.packet.quantumarmor;
 
 import java.util.List;
 
-import com.mojang.serialization.Codec;
-
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -15,7 +13,7 @@ import appeng.api.stacks.GenericStack;
 import appeng.core.network.CustomAppEngPayload;
 import appeng.core.network.ServerboundPacket;
 
-public record QuantumArmorUpgradeFilterPacket(UpgradeType upgradeType, List<GenericStack> filter)
+public record QuantumArmorUpgradeFilterPacket(boolean isUpdate, UpgradeType upgradeType, List<GenericStack> filter)
         implements ServerboundPacket {
     public static final StreamCodec<RegistryFriendlyByteBuf, QuantumArmorUpgradeFilterPacket> STREAM_CODEC =
             StreamCodec.ofMember(QuantumArmorUpgradeFilterPacket::write, QuantumArmorUpgradeFilterPacket::decode);
@@ -29,12 +27,14 @@ public record QuantumArmorUpgradeFilterPacket(UpgradeType upgradeType, List<Gene
     }
 
     public static QuantumArmorUpgradeFilterPacket decode(RegistryFriendlyByteBuf stream) {
+        var isUpdate = stream.readBoolean();
         var upgradeType = stream.readEnum(UpgradeType.class);
-        var filter = ByteBufCodecs.fromCodec(Codec.list(GenericStack.CODEC)).decode(stream);
-        return new QuantumArmorUpgradeFilterPacket(upgradeType, filter);
+        var filter = GenericStack.STREAM_CODEC.apply(ByteBufCodecs.list()).decode(stream);
+        return new QuantumArmorUpgradeFilterPacket(isUpdate, upgradeType, filter);
     }
 
     public void write(RegistryFriendlyByteBuf data) {
+        data.writeBoolean(isUpdate);
         data.writeEnum(upgradeType);
         GenericStack.STREAM_CODEC.apply(ByteBufCodecs.list()).encode(data, filter);
     }
@@ -42,7 +42,11 @@ public record QuantumArmorUpgradeFilterPacket(UpgradeType upgradeType, List<Gene
     @Override
     public void handleOnServer(ServerPlayer serverPlayer) {
         if (serverPlayer.containerMenu instanceof QuantumArmorConfigMenu menu) {
-            menu.updateUpgradeFilter(upgradeType, filter);
+            if (isUpdate) {
+                menu.updateUpgradeFilter(upgradeType, filter);
+            } else {
+                menu.openFilterConfigScreen(upgradeType, filter);
+            }
         }
     }
 }
