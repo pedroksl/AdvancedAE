@@ -13,7 +13,7 @@ import appeng.api.stacks.GenericStack;
 import appeng.core.network.CustomAppEngPayload;
 import appeng.core.network.ServerboundPacket;
 
-public record QuantumArmorUpgradeFilterPacket(boolean isUpdate, UpgradeType upgradeType, List<GenericStack> filter)
+public record QuantumArmorUpgradeFilterPacket(UpgradeType upgradeType, List<GenericStack> filter)
         implements ServerboundPacket {
     public static final StreamCodec<RegistryFriendlyByteBuf, QuantumArmorUpgradeFilterPacket> STREAM_CODEC =
             StreamCodec.ofMember(QuantumArmorUpgradeFilterPacket::write, QuantumArmorUpgradeFilterPacket::decode);
@@ -27,14 +27,12 @@ public record QuantumArmorUpgradeFilterPacket(boolean isUpdate, UpgradeType upgr
     }
 
     public static QuantumArmorUpgradeFilterPacket decode(RegistryFriendlyByteBuf stream) {
-        var isUpdate = stream.readBoolean();
         var upgradeType = stream.readEnum(UpgradeType.class);
         var filter = GenericStack.STREAM_CODEC.apply(ByteBufCodecs.list()).decode(stream);
-        return new QuantumArmorUpgradeFilterPacket(isUpdate, upgradeType, filter);
+        return new QuantumArmorUpgradeFilterPacket(upgradeType, filter);
     }
 
     public void write(RegistryFriendlyByteBuf data) {
-        data.writeBoolean(isUpdate);
         data.writeEnum(upgradeType);
         GenericStack.STREAM_CODEC.apply(ByteBufCodecs.list()).encode(data, filter);
     }
@@ -42,11 +40,7 @@ public record QuantumArmorUpgradeFilterPacket(boolean isUpdate, UpgradeType upgr
     @Override
     public void handleOnServer(ServerPlayer serverPlayer) {
         if (serverPlayer.containerMenu instanceof QuantumArmorConfigMenu menu) {
-            if (isUpdate) {
-                menu.updateUpgradeFilter(upgradeType, filter);
-            } else {
-                menu.openFilterConfigScreen(upgradeType, filter);
-            }
+            menu.openFilterConfigScreen(upgradeType, filter);
         }
     }
 }

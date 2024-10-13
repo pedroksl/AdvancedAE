@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.common.inventory;
 import java.util.function.BiConsumer;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
@@ -90,6 +91,7 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     public void setSelectedItemSlot(int slot) {
         resetProgress();
         selectedItemSlot = slot;
+        getItemStack().set(AAEComponents.INT_TAG, slot);
     }
 
     public int getSelectedSlotIndex() {
@@ -146,6 +148,9 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     }
 
     public void returnToMainMenu(Player player, ISubMenu iSubMenu) {
+        if (player instanceof ServerPlayer serverPlayer && this.selectedItemSlot != -1) {
+            serverPlayer.getPersistentData().putInt("aae%qaSlot", this.selectedItemSlot);
+        }
         this.returnToMainMenu.accept(player, iSubMenu);
     }
 

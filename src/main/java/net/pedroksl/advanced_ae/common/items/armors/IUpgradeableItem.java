@@ -80,15 +80,10 @@ public interface IUpgradeableItem extends IGridLinkedItem {
 
         getAppliedUpgrades(stack).add(type);
         stack.set(AAEComponents.UPGRADE_TOGGLE.get(type), true);
-        if (type.getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
-            stack.set(AAEComponents.UPGRADE_VALUE.get(type), type.getSettings().maxValue);
-        }
-        if (type.getSettingType() == UpgradeType.SettingType.FILTER) {
-            stack.set(AAEComponents.UPGRADE_FILTER.get(type), new ArrayList<>());
-        }
-        if (type.getSettingType() == UpgradeType.SettingType.NUM_AND_FILTER) {
-            stack.set(AAEComponents.UPGRADE_VALUE.get(type), type.getSettings().maxValue);
-            stack.set(AAEComponents.UPGRADE_FILTER.get(type), new ArrayList<>());
+        stack.set(AAEComponents.UPGRADE_VALUE.get(type), type.getSettings().maxValue);
+        stack.set(AAEComponents.UPGRADE_FILTER.get(type), new ArrayList<>());
+        if (type.getExtraSettings() != UpgradeType.ExtraSettings.NONE) {
+            stack.set(AAEComponents.UPGRADE_EXTRA.get(type), true);
         }
         return true;
     }

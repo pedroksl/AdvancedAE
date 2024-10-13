@@ -14,19 +14,19 @@
 	},
 	"background": {
 		"texture": "guis/quantum_armor_setting_config.png",
-		"srcRect": [0, 0, 79, 78]
+		"srcRect": [0, 0, 99, 78]
 	},
 	"widgets": {
 		"back": {
-			"left": 55,
+			"left": 75,
 			"top": -5,
 			"width": 20,
 			"height": 20
 		},
 		"slider": {
-			"left": 10,
+			"left": 15,
 			"top": 29,
-			"width": 61,
+			"width": 71,
 			"height": 20
 		}
 	}

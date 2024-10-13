@@ -50,8 +50,12 @@ public class AAEMenus {
 
     public static final MenuType<QuantumArmorConfigMenu> QUANTUM_ARMOR_CONFIG =
             create("quantum_armor_config", QuantumArmorConfigMenu::new, QuantumArmorMenuHost.class);
+    public static final MenuType<QuantumArmorNumInputConfigMenu> QUANTUM_ARMOR_NUM_INPUT =
+            create("quantum_armor_num_input", QuantumArmorNumInputConfigMenu::new, ISubMenuHost.class);
     public static final MenuType<QuantumArmorFilterConfigMenu> QUANTUM_ARMOR_FILTER_CONFIG =
             create("quantum_armor_filter_config", QuantumArmorFilterConfigMenu::new, ISubMenuHost.class);
+    public static final MenuType<QuantumArmorMagnetMenu> QUANTUM_ARMOR_MAGNET =
+            create("quantum_armor_magnet", QuantumArmorMagnetMenu::new, ISubMenuHost.class);
 
     private static <M extends AEBaseMenu, H> MenuType<M> create(
             String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {

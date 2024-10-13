@@ -3,7 +3,6 @@ package net.pedroksl.advanced_ae.common.definitions;
 import java.util.*;
 import java.util.function.Consumer;
 
-import com.glodblock.github.glodium.util.GlodCodecs;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.component.DataComponentType;
@@ -26,11 +25,14 @@ public final class AAEComponents {
                     .networkSynchronized(EncodedAdvProcessingPattern.STREAM_CODEC));
     public static final DataComponentType<CompoundTag> STACK_TAG =
             register("generic_nbt", builder -> builder.persistent(CompoundTag.CODEC)
-                    .networkSynchronized(GlodCodecs.NBT_STREAM_CODEC));
+                    .networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
+    public static final DataComponentType<Integer> INT_TAG =
+            register("generic_int", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
 
     public static final Map<UpgradeType, DataComponentType<Boolean>> UPGRADE_TOGGLE = new HashMap<>();
     public static final Map<UpgradeType, DataComponentType<Integer>> UPGRADE_VALUE = new HashMap<>();
     public static final Map<UpgradeType, DataComponentType<List<GenericStack>>> UPGRADE_FILTER = new HashMap<>();
+    public static final Map<UpgradeType, DataComponentType<Boolean>> UPGRADE_EXTRA = new HashMap<>();
 
     public static void init() {
         for (var upgrade : UpgradeType.values()) {
@@ -46,6 +48,12 @@ public final class AAEComponents {
             UPGRADE_TOGGLE.put(upgrade, toggle);
             UPGRADE_VALUE.put(upgrade, value);
             UPGRADE_FILTER.put(upgrade, filter);
+            if (upgrade.getExtraSettings() != UpgradeType.ExtraSettings.NONE) {
+                DataComponentType<Boolean> extra =
+                        register(upgrade.name() + "_extra", builder -> builder.persistent(Codec.BOOL)
+                                .networkSynchronized(ByteBufCodecs.BOOL));
+                UPGRADE_EXTRA.put(upgrade, extra);
+            }
         }
     }
 

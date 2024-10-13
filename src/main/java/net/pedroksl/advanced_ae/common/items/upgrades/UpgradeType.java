@@ -5,12 +5,13 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 
 import appeng.core.definitions.ItemDefinition;
 
 public enum UpgradeType {
-    EMPTY("Empty", null, SettingType.NONE, 0, ApplicationType.PASSIVE, AAEItems.QUANTUM_UPGRADE_BASE, null),
+    EMPTY("Empty", null, SettingType.NONE, 0, ApplicationType.PASSIVE, AAEItems.QUANTUM_UPGRADE_BASE),
 
     WALK_SPEED(
             "Walk Speed",
@@ -18,32 +19,22 @@ public enum UpgradeType {
             SettingType.NUM_INPUT,
             10,
             ApplicationType.PASSIVE,
-            AAEItems.WALK_SPEED_CARD,
-            new UpgradeSettings(1, 60, 0.1f)),
+            AAEItems.WALK_SPEED_CARD),
     SPRINT_SPEED(
             "Sprint Speed",
             UpgradeCards::sprintSpeed,
             SettingType.NUM_INPUT,
             10,
             ApplicationType.PASSIVE,
-            AAEItems.SPRINT_SPEED_CARD,
-            new UpgradeSettings(1, 80, 0.1f)),
-    STEP_ASSIST(
-            "Step Assist",
-            null,
-            SettingType.NUM_INPUT,
-            5,
-            ApplicationType.PASSIVE_USE,
-            AAEItems.STEP_ASSIST_CARD,
-            new UpgradeSettings(1, 3)),
+            AAEItems.SPRINT_SPEED_CARD),
+    STEP_ASSIST("Step Assist", null, SettingType.NUM_INPUT, 5, ApplicationType.PASSIVE_USE, AAEItems.STEP_ASSIST_CARD),
     JUMP_HEIGHT(
             "Jump Height",
             UpgradeCards::jumpHeight,
             SettingType.NUM_INPUT,
             10,
             ApplicationType.PASSIVE_USE,
-            AAEItems.JUMP_HEIGHT_CARD,
-            new UpgradeSettings(1, 3)),
+            AAEItems.JUMP_HEIGHT_CARD),
     LAVA_IMMUNITY(
             "Lava Immunity", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.LAVA_IMMUNITY_CARD),
     FLIGHT("Flight", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.FLIGHT_CARD),
@@ -70,8 +61,16 @@ public enum UpgradeType {
             5,
             ApplicationType.PASSIVE,
             AAEItems.MAGNET_CARD,
-            new UpgradeSettings(1, 12)),
-    HP_BUFFER("HP Buffer", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.HP_BUFFER_CARD);
+            ExtraSettings.BLACKLIST),
+    HP_BUFFER("HP Buffer", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.HP_BUFFER_CARD),
+    EVASION("Evasion", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.EVASION_CARD),
+    REGENERATION(
+            "Regeneration",
+            UpgradeCards::regeneration,
+            SettingType.NONE,
+            10,
+            ApplicationType.PASSIVE,
+            AAEItems.REGENERATION_CARD);
 
     public enum SettingType {
         NONE,
@@ -86,13 +85,18 @@ public enum UpgradeType {
         BUFF
     }
 
+    public enum ExtraSettings {
+        NONE,
+        BLACKLIST
+    }
+
     public final String name;
     public final Ability ability;
     private final SettingType settingType;
     private final int cost;
     public final ApplicationType applicationType;
     private final ItemDefinition<? extends QuantumUpgradeBaseItem> item;
-    private UpgradeSettings settings = null;
+    private final ExtraSettings extra;
 
     UpgradeType(
             String name,
@@ -101,12 +105,7 @@ public enum UpgradeType {
             int cost,
             ApplicationType applicationType,
             ItemDefinition<? extends QuantumUpgradeBaseItem> item) {
-        this.name = name;
-        this.ability = ability;
-        this.settingType = settingType;
-        this.cost = cost;
-        this.applicationType = applicationType;
-        this.item = item;
+        this(name, ability, settingType, cost, applicationType, item, ExtraSettings.NONE);
     }
 
     UpgradeType(
@@ -116,9 +115,14 @@ public enum UpgradeType {
             int cost,
             ApplicationType applicationType,
             ItemDefinition<? extends QuantumUpgradeBaseItem> item,
-            UpgradeSettings settings) {
-        this(name, ability, settingType, cost, applicationType, item);
-        this.settings = settings;
+            ExtraSettings extra) {
+        this.name = name;
+        this.ability = ability;
+        this.settingType = settingType;
+        this.cost = cost;
+        this.applicationType = applicationType;
+        this.item = item;
+        this.extra = extra;
     }
 
     public ItemDefinition<? extends QuantumUpgradeBaseItem> item() {
@@ -138,7 +142,26 @@ public enum UpgradeType {
     }
 
     public UpgradeSettings getSettings() {
-        return settings;
+        return switch (this) {
+            case EMPTY,
+                    LAVA_IMMUNITY,
+                    FLIGHT,
+                    WATER_BREATHING,
+                    AUTO_FEED,
+                    AUTO_STOCK,
+                    REGENERATION -> new UpgradeSettings(1);
+            case WALK_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxWalkSpeed(), 0.1f);
+            case SPRINT_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxSprintSpeed(), 0.1f);
+            case STEP_ASSIST -> new UpgradeSettings(1, AAEConfig.instance().getMaxStepHeight());
+            case JUMP_HEIGHT -> new UpgradeSettings(1, AAEConfig.instance().getMaxJumpHeight());
+            case MAGNET -> new UpgradeSettings(3, AAEConfig.instance().getMaxMagnetRange());
+            case HP_BUFFER -> new UpgradeSettings(AAEConfig.instance().getmaxHpBuffer());
+            case EVASION -> new UpgradeSettings(AAEConfig.instance().getEvasionChance());
+        };
+    }
+
+    public ExtraSettings getExtraSettings() {
+        return this.extra;
     }
 
     @FunctionalInterface

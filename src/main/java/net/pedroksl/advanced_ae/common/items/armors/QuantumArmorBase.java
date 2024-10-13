@@ -44,7 +44,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     public QuantumArmorBase(
             Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
-        super(material, type, properties.fireResistant(), powerCapacity);
+        super(material, type, properties.fireResistant().stacksTo(1), powerCapacity);
     }
 
     @Override

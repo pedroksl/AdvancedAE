@@ -110,6 +110,10 @@ public class AAEItems {
             item("Magnet Card", "magnet_card", p -> new QuantumUpgradeBaseItem(UpgradeType.MAGNET, p));
     public static final ItemDefinition<QuantumUpgradeBaseItem> HP_BUFFER_CARD =
             item("HP Buffer Card", "hp_buffer_card", p -> new QuantumUpgradeBaseItem(UpgradeType.HP_BUFFER, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> EVASION_CARD =
+            item("Evasion Card", "evasion_card", p -> new QuantumUpgradeBaseItem(UpgradeType.EVASION, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> REGENERATION_CARD = item(
+            "Regeneration Card", "regeneration_card", p -> new QuantumUpgradeBaseItem(UpgradeType.REGENERATION, p));
 
     private static <T extends Item> ItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {

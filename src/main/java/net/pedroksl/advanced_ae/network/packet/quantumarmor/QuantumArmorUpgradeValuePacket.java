@@ -34,7 +34,7 @@ public record QuantumArmorUpgradeValuePacket(UpgradeType upgradeType, int state)
     @Override
     public void handleOnServer(ServerPlayer serverPlayer) {
         if (serverPlayer.containerMenu instanceof QuantumArmorConfigMenu menu) {
-            menu.updateUpgradeValue(upgradeType, state);
+            menu.openNumInputConfigScreen(upgradeType, state);
         }
     }
 }

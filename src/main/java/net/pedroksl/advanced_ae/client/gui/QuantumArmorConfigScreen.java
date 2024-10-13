@@ -18,6 +18,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.gui.QuantumArmorConfigMenu;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorMagnetPacket;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeFilterPacket;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeValuePacket;
 
@@ -200,19 +201,18 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
     public void openConfigDialog(UpgradeState state) {
         if (state.type().getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
-            var settings = state.settings();
-            var screen = new QuantumArmorNumInputConfigScreen<>(
-                    this,
-                    settings.minValue,
-                    settings.maxValue,
-                    state.currentValue(),
-                    settings.multiplier,
-                    newValue ->
-                            PacketDistributor.sendToServer(new QuantumArmorUpgradeValuePacket(state.type(), newValue)));
-
-            this.switchToScreen(screen);
+            PacketDistributor.sendToServer(new QuantumArmorUpgradeValuePacket(state.type(), state.currentValue()));
         } else if (state.type().getSettingType() == UpgradeType.SettingType.FILTER) {
-            PacketDistributor.sendToServer(new QuantumArmorUpgradeFilterPacket(false, state.type(), state.filter()));
+            PacketDistributor.sendToServer(new QuantumArmorUpgradeFilterPacket(state.type(), state.filter()));
+        } else if (state.type().getSettingType() == UpgradeType.SettingType.NUM_AND_FILTER) {
+            if (state.type() == UpgradeType.MAGNET) {
+                var stack = this.menu.getSlot(selectedIndex).getItem();
+                if (stack.getItem() instanceof QuantumArmorBase) {
+                    var blacklist = stack.get(AAEComponents.UPGRADE_EXTRA.get(UpgradeType.MAGNET));
+                    PacketDistributor.sendToServer(
+                            new QuantumArmorMagnetPacket(state.currentValue(), state.filter(), blacklist));
+                }
+            }
         }
     }
 }

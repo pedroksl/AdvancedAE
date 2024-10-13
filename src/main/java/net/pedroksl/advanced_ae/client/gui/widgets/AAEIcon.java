@@ -13,6 +13,8 @@ public enum AAEIcon {
     INVALID_INPUT(64, 0),
     CLEAR(80, 0),
     CLEAR_DISABLED(96, 0),
+    WHITELIST(112, 0),
+    BLACKLIST(128, 0),
 
     TOOLBAR_BUTTON_BACKGROUND(176, 128, 18, 20);
 

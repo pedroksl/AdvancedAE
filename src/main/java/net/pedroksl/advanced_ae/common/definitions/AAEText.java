@@ -38,7 +38,8 @@ public enum AAEText implements LocalizationEnum {
     TankEmpty("Empty", Type.TOOLTIP),
     TankAmount("%s mb / %s mb", Type.TOOLTIP),
     QuantumArmorConfig("Quantum Armor Config", Type.GUI),
-    QuantumArmorSetting("Config", Type.GUI),
+    QuantumArmorSetting("Setting Config", Type.GUI),
+    MagnetRangeSlider("Pickup Range", Type.GUI),
 
     ReactionChamberEnergy("Used Power: %d" + "k FE", Type.EMI_TEXT),
     ShatteredSingularityDescription(

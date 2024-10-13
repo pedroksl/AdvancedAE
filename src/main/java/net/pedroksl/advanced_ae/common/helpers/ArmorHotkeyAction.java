@@ -12,7 +12,7 @@ import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
 public record ArmorHotkeyAction(Predicate<ItemStack> locatable, Opener opener) implements HotkeyAction {
-    public static final String ARMOR_CONFIG = "armor_config";
+    public static final String ARMOR_CONFIG = "quantum_armor_config";
 
     public ArmorHotkeyAction(ItemLike item, Opener opener) {
         this((stack) -> stack.is(item.asItem()), opener);

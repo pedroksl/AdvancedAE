@@ -41,6 +41,34 @@ public class AAEConfig {
         return common.quantumComputerDataEntanglerMultiplication.get();
     }
 
+    public int getMaxWalkSpeed() {
+        return common.maxWalkSpeed.get();
+    }
+
+    public int getMaxSprintSpeed() {
+        return common.maxSprintSpeed.get();
+    }
+
+    public int getMaxStepHeight() {
+        return common.maxStepHeight.get();
+    }
+
+    public int getMaxJumpHeight() {
+        return common.maxJumpHeight.get();
+    }
+
+    public int getmaxHpBuffer() {
+        return common.hpBufferHearts.get();
+    }
+
+    public int getEvasionChance() {
+        return common.evasionChance.get();
+    }
+
+    public int getMaxMagnetRange() {
+        return common.maxMagnetRange.get();
+    }
+
     public void save() {
         common.spec.save();
         client.spec.save();
@@ -76,6 +104,14 @@ public class AAEConfig {
         public final ModConfigSpec.IntValue quantumComputerMaxDataEntanglers;
         public final ModConfigSpec.IntValue quantumComputerMultiThreaderMultiplication;
         public final ModConfigSpec.IntValue quantumComputerDataEntanglerMultiplication;
+
+        public final ModConfigSpec.IntValue maxWalkSpeed;
+        public final ModConfigSpec.IntValue maxSprintSpeed;
+        public final ModConfigSpec.IntValue maxStepHeight;
+        public final ModConfigSpec.IntValue maxJumpHeight;
+        public final ModConfigSpec.IntValue hpBufferHearts;
+        public final ModConfigSpec.IntValue evasionChance;
+        public final ModConfigSpec.IntValue maxMagnetRange;
 
         public CommonConfig() {
             var builder = new ModConfigSpec.Builder();
@@ -123,6 +159,38 @@ public class AAEConfig {
                     2,
                     8,
                     "Define the multiplication factor of the data entanglers.");
+            builder.pop();
+
+            builder.push("quantum armor");
+            maxWalkSpeed = define(
+                    builder,
+                    "quantumArmorMaxWalkSpeed",
+                    60,
+                    10,
+                    100,
+                    "Define the maximum walk speed increase. Values are divided by 10 before use.");
+            maxSprintSpeed = define(
+                    builder,
+                    "quantumArmorMaxSprintSpeed",
+                    80,
+                    10,
+                    150,
+                    "Define the maximum sprint speed increase. Values are divided by 10 before use.");
+            maxStepHeight = define(
+                    builder, "quantumArmorMaxStepHeight", 3, 1, 5, "Define the maximum increase in step height.");
+            maxJumpHeight = define(
+                    builder, "quantumArmorMaxJumpHeight", 3, 1, 5, "Define the maximum increase in jump height.");
+            hpBufferHearts = define(
+                    builder, "quantumArmorHpBuffer", 20, 5, 50, "Define the HP increased of the HP Buffer card.");
+            evasionChance = define(
+                    builder,
+                    "quantumArmorEvasionChance",
+                    30,
+                    0,
+                    100,
+                    "Define the evasion % chance of the evasion card.");
+            maxMagnetRange =
+                    define(builder, "quantumArmorEvasionChance", 12, 5, 15, "Define the max range of the magnet card.");
             builder.pop();
 
             this.spec = builder.build();

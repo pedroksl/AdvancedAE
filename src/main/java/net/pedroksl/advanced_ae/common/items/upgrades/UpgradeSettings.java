@@ -22,17 +22,16 @@ public class UpgradeSettings {
     public float multiplier = 1;
     public int defaultValue;
 
+    public UpgradeSettings(int value) {
+        this(value, value);
+    }
+
     public UpgradeSettings(int min, int max) {
-        this.minValue = min;
-        this.maxValue = max;
-        this.defaultValue = max;
+        this(min, max, 1);
     }
 
     public UpgradeSettings(int min, int max, float multiplier) {
-        this.minValue = min;
-        this.maxValue = max;
-        this.multiplier = multiplier;
-        this.defaultValue = max;
+        this(min, max, multiplier, max);
     }
 
     public UpgradeSettings(int min, int max, float multiplier, int defaultValue) {

@@ -1,47 +1,45 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import java.util.function.Consumer;
-
-import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAESlider;
+import net.pedroksl.advanced_ae.gui.QuantumArmorNumInputConfigMenu;
 
 import appeng.client.gui.AEBaseScreen;
-import appeng.client.gui.AESubScreen;
-import appeng.client.gui.Icon;
-import appeng.client.gui.widgets.TabButton;
-import appeng.menu.AEBaseMenu;
+import appeng.client.gui.implementations.AESubScreen;
+import appeng.client.gui.style.ScreenStyle;
 
-public class QuantumArmorNumInputConfigScreen<C extends AEBaseMenu, P extends AEBaseScreen<C>>
-        extends AESubScreen<C, P> {
+public class QuantumArmorNumInputConfigScreen extends AEBaseScreen<QuantumArmorNumInputConfigMenu> {
 
-    private final ExtendedSlider slider;
-    private final Consumer<Integer> setter;
-    private final float multiplier;
+    private final AAESlider slider;
+    private float multiplier = 1;
+    private boolean sliderInitialized = false;
 
     public QuantumArmorNumInputConfigScreen(
-            P screen, int min, int max, int current, float multiplier, Consumer<Integer> setter) {
-        super(screen, "/screens/quantum_armor_num_input_config.json");
-        this.setter = setter;
-        this.multiplier = multiplier;
+            QuantumArmorNumInputConfigMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
+        super(menu, playerInventory, title, style);
 
-        var button = new TabButton(Icon.BACK, screen.getTitle(), btn -> onClose());
-        this.widgets.add("back", button);
+        AESubScreen.addBackButton(menu, "back", widgets);
 
-        var screenMin = min * multiplier;
-        var screenMax = max * multiplier;
-        var screenCurrent = current * multiplier;
-        var precision = (int) Math.log10(1 / multiplier);
-        this.slider = new AAESlider(screenMin, screenMax, screenCurrent, multiplier, precision);
-
+        this.slider = new AAESlider(0, 1, 0, 1, value -> {
+            this.menu.setCurrentValue((int) Math.round(value / this.multiplier));
+        });
         this.widgets.add("slider", this.slider);
     }
 
     @Override
-    public void onClose() {
-        var value = this.slider.getValue();
-        this.setter.accept((int) Math.round(value / this.multiplier));
+    protected void updateBeforeRender() {
+        super.updateBeforeRender();
 
-        returnToParent();
-        super.onClose();
+        if (!this.sliderInitialized) {
+            var settings = menu.type.getSettings();
+
+            this.multiplier = settings.multiplier;
+            var screenMin = settings.minValue * this.multiplier;
+            var screenMax = settings.maxValue * this.multiplier;
+            var currentValue = this.menu.currentValue * this.multiplier;
+            this.slider.setValues(screenMin, screenMax, currentValue, this.multiplier);
+            this.sliderInitialized = true;
+        }
     }
 }
