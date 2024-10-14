@@ -31,6 +31,8 @@ The Quantum Core can be used as a standalone crafting unit with 256M storage and
 Specially when using two special block types: The Quantum Data Entangler and the Quantum Multi-Threader, which multiply storage and co-processors present in the multiblock by 4, respectively.
 The multiblock can be scaled up to a 5x5x5, and consumes a single channel for all of this computing power!
 
+All my homies hate mek radiation
+
 <img src="https://github.com/user-attachments/assets/4016908f-8303-4e0f-8efb-0951198d8c21" height="500"><img src="https://github.com/user-attachments/assets/8c18e183-7515-40fe-9699-e214a95e197b" height="500">
 
 Found a bug? Missing a feature?
