@@ -2,11 +2,13 @@ package net.pedroksl.advanced_ae.common.items.upgrades;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 
 import appeng.core.definitions.ItemDefinition;
 
@@ -70,7 +72,15 @@ public enum UpgradeType {
             SettingType.NONE,
             10,
             ApplicationType.PASSIVE,
-            AAEItems.REGENERATION_CARD);
+            AAEItems.REGENERATION_CARD),
+    STRENGTH("Strength", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.STRENGTH_CARD),
+    ATTACK_SPEED("Attack Speed", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.ATTACK_SPEED_CARD),
+
+    LUCK("Luck Boost", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.LUCK_CARD),
+    REACH("Reach Boost", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.REACH_CARD),
+    SWIM_SPEED("Swim Speed", null, SettingType.NONE, 5, ApplicationType.BUFF, AAEItems.SWIM_SPEED_CARD),
+    NIGHT_VISION("Night Vision", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.NIGHT_VISION_CARD),
+    FLIGHT_DRIFT("No Flight Drift", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.FLIGHT_DRIFT_CARD);
 
     public enum SettingType {
         NONE,
@@ -149,7 +159,8 @@ public enum UpgradeType {
                     WATER_BREATHING,
                     AUTO_FEED,
                     AUTO_STOCK,
-                    REGENERATION -> new UpgradeSettings(1);
+                    REGENERATION,
+                    NIGHT_VISION -> new UpgradeSettings(1);
             case WALK_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxWalkSpeed(), 0.1f);
             case SPRINT_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxSprintSpeed(), 0.1f);
             case STEP_ASSIST -> new UpgradeSettings(1, AAEConfig.instance().getMaxStepHeight());
@@ -157,6 +168,41 @@ public enum UpgradeType {
             case MAGNET -> new UpgradeSettings(3, AAEConfig.instance().getMaxMagnetRange());
             case HP_BUFFER -> new UpgradeSettings(AAEConfig.instance().getmaxHpBuffer());
             case EVASION -> new UpgradeSettings(AAEConfig.instance().getEvasionChance());
+            case STRENGTH -> new UpgradeSettings(AAEConfig.instance().getStrengthBoost());
+            case ATTACK_SPEED -> new UpgradeSettings(AAEConfig.instance().getAttackSpeedBoost());
+            case LUCK -> new UpgradeSettings(AAEConfig.instance().getLuckBoost());
+            case REACH -> new UpgradeSettings(AAEConfig.instance().getMaxReachBoost());
+            case SWIM_SPEED -> new UpgradeSettings(AAEConfig.instance().getMaxSwimSpeedBoost());
+            case FLIGHT_DRIFT -> new UpgradeSettings(0, 100);
+        };
+    }
+
+    public MutableComponent getTooltip() {
+        return switch (this) {
+            case EMPTY -> AAEText.UpgradeBaseTooltip.text();
+            case WALK_SPEED -> AAEText.WalkSpeedTooltip.text();
+            case SPRINT_SPEED -> AAEText.SprintSpeedTooltip.text();
+            case STEP_ASSIST -> AAEText.StepAssistTooltip.text(
+                    AAEConfig.instance().getMaxStepHeight());
+            case JUMP_HEIGHT -> AAEText.JumpHeightTooltip.text(
+                    AAEConfig.instance().getMaxJumpHeight());
+            case LAVA_IMMUNITY -> AAEText.LavaImmunityTooltip.text();
+            case FLIGHT -> AAEText.FlightTooltip.text();
+            case WATER_BREATHING -> AAEText.WaterBreathingTooltip.text();
+            case AUTO_FEED -> AAEText.AutoFeedTooltip.text();
+            case AUTO_STOCK -> AAEText.AutoStockTooltip.text();
+            case MAGNET -> AAEText.MagnetTooltip.text(AAEConfig.instance().getMaxMagnetRange());
+            case HP_BUFFER -> AAEText.HpBufferTooltip.text(AAEConfig.instance().getmaxHpBuffer());
+            case EVASION -> AAEText.EvasionTooltip.text(AAEConfig.instance().getEvasionChance());
+            case REGENERATION -> AAEText.RegenerationTooltip.text();
+            case STRENGTH -> AAEText.StrengthTooltip.text(AAEConfig.instance().getStrengthBoost());
+            case ATTACK_SPEED -> AAEText.AttackSpeedTooltip.text(
+                    AAEConfig.instance().getAttackSpeedBoost());
+            case LUCK -> AAEText.LuckTooltip.text(AAEConfig.instance().getLuckBoost());
+            case REACH -> AAEText.ReachTooltip.text(AAEConfig.instance().getMaxReachBoost());
+            case SWIM_SPEED -> AAEText.SwimSpeedTooltip.text();
+            case NIGHT_VISION -> AAEText.NightVisionTooltip.text();
+            case FLIGHT_DRIFT -> AAEText.FlightDriftTooltip.text();
         };
     }
 

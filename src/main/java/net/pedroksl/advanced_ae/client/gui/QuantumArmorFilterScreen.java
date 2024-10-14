@@ -28,7 +28,7 @@ public class QuantumArmorFilterScreen<M extends QuantumArmorFilterConfigMenu> ex
 
     @Override
     public boolean mouseClicked(double xCoord, double yCoord, int btn) {
-        if (this.menu.type == UpgradeType.AUTO_STOCK || this.menu.type == UpgradeType.MAGNET) {
+        if (this.menu.type == UpgradeType.AUTO_STOCK) {
             assert this.minecraft != null;
 
             if (this.minecraft.options.keyPickItem.matchesMouse(btn)) {

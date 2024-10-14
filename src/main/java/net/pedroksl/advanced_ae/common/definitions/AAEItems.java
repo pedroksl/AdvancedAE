@@ -12,10 +12,7 @@ import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderCapacityUpgradeItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderUpgradeItem;
 import net.pedroksl.advanced_ae.common.items.ShatteredSingularityItem;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumBoots;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumChestplate;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumHelmet;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumLeggings;
+import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
@@ -39,6 +36,18 @@ public class AAEItems {
 
     public static List<ItemDefinition<?>> getItems() {
         return Collections.unmodifiableList(ITEMS);
+    }
+
+    public static List<ItemDefinition<?>> getQuantumArmor() {
+        return ITEMS.stream()
+                .filter(item -> item.stack().getItem() instanceof QuantumArmorBase)
+                .toList();
+    }
+
+    public static List<ItemDefinition<?>> getQuantumCards() {
+        return ITEMS.stream()
+                .filter(item -> item.stack().getItem() instanceof QuantumUpgradeBaseItem)
+                .toList();
     }
 
     public static final ItemDefinition<PartItem<AdvPatternProviderPart>> ADV_PATTERN_PROVIDER = part(
@@ -114,6 +123,20 @@ public class AAEItems {
             item("Evasion Card", "evasion_card", p -> new QuantumUpgradeBaseItem(UpgradeType.EVASION, p));
     public static final ItemDefinition<QuantumUpgradeBaseItem> REGENERATION_CARD = item(
             "Regeneration Card", "regeneration_card", p -> new QuantumUpgradeBaseItem(UpgradeType.REGENERATION, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> STRENGTH_CARD =
+            item("Strength Card", "strength_card", p -> new QuantumUpgradeBaseItem(UpgradeType.STRENGTH, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> ATTACK_SPEED_CARD = item(
+            "Attack Speed Card", "attack_speed_card", p -> new QuantumUpgradeBaseItem(UpgradeType.ATTACK_SPEED, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> LUCK_CARD =
+            item("Luck Card", "luck_card", p -> new QuantumUpgradeBaseItem(UpgradeType.LUCK, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> REACH_CARD =
+            item("Reach Card", "reach_card", p -> new QuantumUpgradeBaseItem(UpgradeType.REACH, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> SWIM_SPEED_CARD =
+            item("Swim Speed Card", "swim_speed_card", p -> new QuantumUpgradeBaseItem(UpgradeType.SWIM_SPEED, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> NIGHT_VISION_CARD = item(
+            "Night Vision Card", "night_vision_card", p -> new QuantumUpgradeBaseItem(UpgradeType.NIGHT_VISION, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> FLIGHT_DRIFT_CARD = item(
+            "Flight Drift Card", "flight_drift_card", p -> new QuantumUpgradeBaseItem(UpgradeType.FLIGHT_DRIFT, p));
 
     private static <T extends Item> ItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {

@@ -20,6 +20,8 @@ public class QuantumHelmet extends QuantumArmorBase {
         this.possibleUpgrades.add(UpgradeType.AUTO_FEED);
         this.possibleUpgrades.add(UpgradeType.AUTO_STOCK);
         this.possibleUpgrades.add(UpgradeType.MAGNET);
+        this.possibleUpgrades.add(UpgradeType.LUCK);
+        this.possibleUpgrades.add(UpgradeType.NIGHT_VISION);
     }
 
     @Override

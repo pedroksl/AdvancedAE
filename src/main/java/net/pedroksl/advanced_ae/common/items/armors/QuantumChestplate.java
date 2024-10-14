@@ -37,6 +37,8 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem {
         this.possibleUpgrades.add(UpgradeType.HP_BUFFER);
         this.possibleUpgrades.add(UpgradeType.LAVA_IMMUNITY);
         this.possibleUpgrades.add(UpgradeType.REGENERATION);
+        this.possibleUpgrades.add(UpgradeType.STRENGTH);
+        this.possibleUpgrades.add(UpgradeType.ATTACK_SPEED);
     }
 
     @Override

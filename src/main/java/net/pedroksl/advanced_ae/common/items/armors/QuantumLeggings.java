@@ -18,6 +18,8 @@ public class QuantumLeggings extends QuantumArmorBase {
 
         this.possibleUpgrades.add(UpgradeType.WALK_SPEED);
         this.possibleUpgrades.add(UpgradeType.SPRINT_SPEED);
+        this.possibleUpgrades.add(UpgradeType.SWIM_SPEED);
+        this.possibleUpgrades.add(UpgradeType.REACH);
     }
 
     @Override

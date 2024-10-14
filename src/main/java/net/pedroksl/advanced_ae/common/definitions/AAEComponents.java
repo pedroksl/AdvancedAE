@@ -28,6 +28,9 @@ public final class AAEComponents {
                     .networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
     public static final DataComponentType<Integer> INT_TAG =
             register("generic_int", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DataComponentType<Boolean> NIGHT_VISION_ACTIVATED =
+            register("night_vision_activated", builder -> builder.persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL));
 
     public static final Map<UpgradeType, DataComponentType<Boolean>> UPGRADE_TOGGLE = new HashMap<>();
     public static final Map<UpgradeType, DataComponentType<Integer>> UPGRADE_VALUE = new HashMap<>();

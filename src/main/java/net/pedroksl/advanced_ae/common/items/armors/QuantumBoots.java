@@ -19,6 +19,7 @@ public class QuantumBoots extends QuantumArmorBase {
         this.possibleUpgrades.add(UpgradeType.STEP_ASSIST);
         this.possibleUpgrades.add(UpgradeType.JUMP_HEIGHT);
         this.possibleUpgrades.add(UpgradeType.EVASION);
+        this.possibleUpgrades.add(UpgradeType.FLIGHT_DRIFT);
     }
 
     @Override

@@ -38,10 +38,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
     public int slotIndex;
     private final ISubMenuHost host;
 
-    private final ConfigInventory inv = ConfigInventory.configStacks(9)
-            .changeListener(this::onSlotChanged)
-            .allowOverstacking(true)
-            .build();
+    protected final ConfigInventory inv;
 
     protected final FakeSlot[] slots = new FakeSlot[9];
 
@@ -52,6 +49,17 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
         this.host = host;
         createPlayerInventorySlots(playerInventory);
 
+        var filterQuantities = type == AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG;
+        if (filterQuantities) {
+            this.inv = ConfigInventory.configStacks(9)
+                    .changeListener(this::onSlotChanged)
+                    .allowOverstacking(true)
+                    .build();
+        } else {
+            this.inv = ConfigInventory.configTypes(9)
+                    .changeListener(this::onSlotChanged)
+                    .build();
+        }
         var wrappedInv = inv.createMenuWrapper();
 
         for (var x = 0; x < inv.size(); x++) {

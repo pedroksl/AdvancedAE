@@ -37,6 +37,9 @@ public enum AAEText implements LocalizationEnum {
     ClearSidesButtonHint("Disable output from all sides of the machine.", Type.TOOLTIP),
     TankEmpty("Empty", Type.TOOLTIP),
     TankAmount("%s mb / %s mb", Type.TOOLTIP),
+    QuantumArmorTooltip("Upgrades:", Type.TOOLTIP),
+    UpgradeTooltip("Upgrade available for:", Type.TOOLTIP),
+    UpgradeNotInstalled(" (Not Installed)", Type.TOOLTIP),
     QuantumArmorConfig("Quantum Armor Config", Type.GUI),
     QuantumArmorSetting("Setting Config", Type.GUI),
     MagnetRangeSlider("Pickup Range", Type.GUI),
@@ -73,7 +76,30 @@ public enum AAEText implements LocalizationEnum {
     SetAmountButtonHint("Middle click to set the amount to keep in stock", Type.GUI),
     SetAmount("Set Stock Amount", Type.GUI),
 
-    ThroughputMonitorValue("%s" + "%s" + "/s", Type.GUI);
+    ThroughputMonitorValue("%s" + "%s" + "/s", Type.GUI),
+
+    QuantumUpgradeTooltip("Quantum Armor Upgrade", Type.TOOLTIP),
+    UpgradeBaseTooltip("Base upgrade card required to craft the others.", Type.TOOLTIP),
+    WalkSpeedTooltip("Boosts the walking speed.", Type.TOOLTIP),
+    SprintSpeedTooltip("Boosts the sprinting speed.", Type.TOOLTIP),
+    StepAssistTooltip("Enables step assist. Maximum step of %s.", Type.TOOLTIP),
+    JumpHeightTooltip("Boosts the jump height by %s.", Type.TOOLTIP),
+    LavaImmunityTooltip("Makes the user immune to lava and fire.", Type.TOOLTIP),
+    FlightTooltip("Enables Creative Flight.", Type.TOOLTIP),
+    WaterBreathingTooltip("Enables breathing under water.", Type.TOOLTIP),
+    AutoFeedTooltip("Configurable to auto-feed the user with food from the ME system.", Type.TOOLTIP),
+    AutoStockTooltip("Configurable to regulate an exact amount of items to be in the user's inventory.", Type.TOOLTIP),
+    MagnetTooltip("Configurable to pull items from the world to user inventory. Maximum range of %s.", Type.TOOLTIP),
+    HpBufferTooltip("Boosts the user's max health by +%s.", Type.TOOLTIP),
+    EvasionTooltip("Enables damage avoidance of any type with a %s" + "%4% chance.", Type.TOOLTIP),
+    RegenerationTooltip("Enables a regeneration effect.", Type.TOOLTIP),
+    StrengthTooltip("Boosts the user's strength by %s.", Type.TOOLTIP),
+    AttackSpeedTooltip("Boosts the user's attack speed by %s.", Type.TOOLTIP),
+    LuckTooltip("Boosts the user's luck by %s.", Type.TOOLTIP),
+    ReachTooltip("Boosts the user's reach by %s.", Type.TOOLTIP),
+    SwimSpeedTooltip("Boosts the user's swimming speed.", Type.TOOLTIP),
+    NightVisionTooltip("Enables Night Vision.", Type.TOOLTIP),
+    FlightDriftTooltip("Removed flight drift. Requires basic flight upgrade.", Type.TOOLTIP);
 
     private final String englishText;
     private final Type type;

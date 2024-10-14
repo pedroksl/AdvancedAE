@@ -69,6 +69,26 @@ public class AAEConfig {
         return common.maxMagnetRange.get();
     }
 
+    public int getStrengthBoost() {
+        return common.strengthBoost.get();
+    }
+
+    public int getAttackSpeedBoost() {
+        return common.attackSpeedBoost.get();
+    }
+
+    public int getLuckBoost() {
+        return common.luckBoost.get();
+    }
+
+    public int getMaxReachBoost() {
+        return common.maxReachBoost.get();
+    }
+
+    public int getMaxSwimSpeedBoost() {
+        return common.swimSpeedBoost.get();
+    }
+
     public void save() {
         common.spec.save();
         client.spec.save();
@@ -112,6 +132,11 @@ public class AAEConfig {
         public final ModConfigSpec.IntValue hpBufferHearts;
         public final ModConfigSpec.IntValue evasionChance;
         public final ModConfigSpec.IntValue maxMagnetRange;
+        public final ModConfigSpec.IntValue strengthBoost;
+        public final ModConfigSpec.IntValue attackSpeedBoost;
+        public final ModConfigSpec.IntValue luckBoost;
+        public final ModConfigSpec.IntValue maxReachBoost;
+        public final ModConfigSpec.IntValue swimSpeedBoost;
 
         public CommonConfig() {
             var builder = new ModConfigSpec.Builder();
@@ -180,6 +205,13 @@ public class AAEConfig {
                     builder, "quantumArmorMaxStepHeight", 3, 1, 5, "Define the maximum increase in step height.");
             maxJumpHeight = define(
                     builder, "quantumArmorMaxJumpHeight", 3, 1, 5, "Define the maximum increase in jump height.");
+            swimSpeedBoost = define(
+                    builder,
+                    "quantumArmorSwimSpeedBoost",
+                    40,
+                    10,
+                    60,
+                    "Define the maximum swim speed increase. Values are divided by 10 before use.");
             hpBufferHearts = define(
                     builder, "quantumArmorHpBuffer", 20, 5, 50, "Define the HP increased of the HP Buffer card.");
             evasionChance = define(
@@ -190,7 +222,29 @@ public class AAEConfig {
                     100,
                     "Define the evasion % chance of the evasion card.");
             maxMagnetRange =
-                    define(builder, "quantumArmorEvasionChance", 12, 5, 15, "Define the max range of the magnet card.");
+                    define(builder, "quantumArmorMagnetRange", 12, 5, 15, "Define the max range of the magnet card.");
+            strengthBoost = define(
+                    builder,
+                    "quantumArmorStrengthBoost",
+                    10,
+                    5,
+                    50,
+                    "Define the Attack Damage boost of the Strength Card.");
+            attackSpeedBoost = define(
+                    builder,
+                    "quantumArmorAttackSpeedBoost",
+                    5,
+                    1,
+                    10,
+                    "Define the Attack Speed Damage boost of the Attck Speed Card.");
+            luckBoost = define(builder, "quantumArmorLuckBoost", 2, 1, 5, "Define the luck boost of the Luck Card.");
+            maxReachBoost = define(
+                    builder,
+                    "quantumArmorMaxReachBoost",
+                    5,
+                    1,
+                    8,
+                    "Define the max additional reach of the " + "Reach Card.");
             builder.pop();
 
             this.spec = builder.build();

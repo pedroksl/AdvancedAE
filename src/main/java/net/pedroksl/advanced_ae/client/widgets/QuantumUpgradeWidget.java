@@ -26,9 +26,9 @@ public class QuantumUpgradeWidget {
     private final QuantumArmorConfigScreen host;
     private final int index;
     private final int x;
-    private final int y;
+    private int y;
     private final ScreenStyle style;
-    private final UpgradeState state;
+    private UpgradeState state;
     private final Map<String, AbstractWidget> children = new HashMap<>();
 
     private ConfigButton configureButton;
@@ -61,7 +61,19 @@ public class QuantumUpgradeWidget {
     }
 
     public void hide() {
-        children.values().forEach(w -> w.visible = false);
+        children.values().forEach(w -> {
+            if (w.visible) {
+                w.visible = false;
+            }
+        });
+    }
+
+    public void show() {
+        children.values().forEach(w -> {
+            if (!w.visible) {
+                w.visible = true;
+            }
+        });
     }
 
     public Collection<AbstractWidget> children() {
@@ -72,12 +84,32 @@ public class QuantumUpgradeWidget {
         return state.type().name;
     }
 
+    public UpgradeType getType() {
+        return state.type();
+    }
+
     public int getX() {
         return x;
     }
 
     public int getY() {
         return y;
+    }
+
+    public void setY(int y, int topPos) {
+        this.y = y;
+        this.children.values().forEach(w -> {
+            if (w instanceof AECheckbox) {
+                w.setY(topPos + y + 1);
+            } else {
+                w.setY(topPos + y - 2);
+            }
+        });
+    }
+
+    public void setState(UpgradeState state) {
+        this.state = state;
+        this.enableButton.setSelected(state.enabled());
     }
 
     private void configRequested(Button button) {

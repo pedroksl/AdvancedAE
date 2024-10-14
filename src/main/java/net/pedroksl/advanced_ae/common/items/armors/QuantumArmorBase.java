@@ -18,7 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
@@ -56,6 +58,20 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
             lines.add(Tooltips.of(GuiText.Unlinked, Tooltips.RED));
         } else {
             lines.add(Tooltips.of(GuiText.Linked, Tooltips.GREEN));
+        }
+
+        lines.add(Component.empty());
+        lines.add(AAEText.QuantumArmorTooltip.text().withStyle(Tooltips.NORMAL_TOOLTIP_TEXT));
+        for (var upgrade : possibleUpgrades) {
+            var upgradeComponent =
+                    Component.translatable(upgrade.item().asItem().getDescriptionId());
+            if (!hasUpgrade(stack, upgrade)) {
+                upgradeComponent.append(AAEText.UpgradeNotInstalled.text());
+                upgradeComponent.withStyle(Tooltips.MUTED_COLOR);
+            } else {
+                upgradeComponent.withStyle(Tooltips.GREEN);
+            }
+            lines.add(upgradeComponent);
         }
     }
 
@@ -160,5 +176,18 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     public ItemMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator, @Nullable BlockHitResult hitResult) {
         return new QuantumArmorMenuHost<>(
                 this, player, locator, (p, subMenu) -> openFromEquipmentSlot(p, locator, true));
+    }
+
+    public static List<QuantumArmorBase> upgradeAvailableFor(UpgradeType type) {
+        List<QuantumArmorBase> list = new ArrayList<>();
+
+        for (var equip : AAEItems.getQuantumArmor()) {
+            var armor = ((QuantumArmorBase) equip.stack().getItem());
+            if (armor.possibleUpgrades.contains(type)) {
+                list.add(armor);
+            }
+        }
+
+        return list;
     }
 }

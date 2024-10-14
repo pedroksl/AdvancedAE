@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "advanced_ae:item/upgrades/hp_buffer_card"
+  }
+}

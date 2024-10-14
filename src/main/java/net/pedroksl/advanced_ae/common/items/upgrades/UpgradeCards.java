@@ -1,17 +1,24 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.mutable.MutableObject;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+import net.pedroksl.advanced_ae.common.helpers.MagnetHelpers;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumChestplate;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumHelmet;
@@ -155,22 +162,20 @@ public class UpgradeCards {
                                             Actionable.MODULATE,
                                             IActionSource.ofPlayer(player));
                         } else if (amountDelta < 0) {
-                            var amountToLeave = (int) desiredAmount;
-                            for (var slot : slots) {
-                                var item = player.getInventory().getItem(slot);
-                                player.getInventory()
-                                        .setItem(
-                                                slot,
-                                                new ItemStack(
-                                                        item.getItem(), Math.max(0, item.getCount() - amountToLeave)));
-                                amountToLeave = Math.max(0, amountToLeave - item.getCount());
-                            }
-                            storage.getInventory()
+                            amountDelta = -amountDelta;
+                            var inserted = storage.getInventory()
                                     .insert(
                                             genStack.what(),
                                             amountDelta,
                                             Actionable.MODULATE,
                                             IActionSource.ofPlayer(player));
+                            var amountToLeave = (int) desiredAmount + (int) (amountDelta - inserted);
+                            for (var slot : slots) {
+                                var item = player.getInventory().getItem(slot);
+                                var amountToSet = Math.max(0, Math.min(item.getCount(), amountToLeave));
+                                player.getInventory().setItem(slot, new ItemStack(item.getItem(), amountToSet));
+                                amountToLeave = Math.max(0, amountToLeave - amountToSet);
+                            }
                         }
                     }
                 }
@@ -180,6 +185,34 @@ public class UpgradeCards {
     }
 
     public static boolean magnet(Level level, Player player, ItemStack stack) {
+        if (player instanceof ServerPlayer serverPlayer && stack.getItem() instanceof QuantumHelmet helmet) {
+            if (helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.MAGNET, level)) {
+                var range = stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.MAGNET), 5);
+                var pos = serverPlayer.position();
+
+                AABB area = MagnetHelpers.getBoundingBox(pos, range);
+
+                // Pick up items
+                var filter = stack.getOrDefault(
+                        AAEComponents.UPGRADE_FILTER.get(UpgradeType.MAGNET), new ArrayList<GenericStack>());
+                var blacklist = stack.getOrDefault(AAEComponents.UPGRADE_EXTRA.get(UpgradeType.MAGNET), true);
+                List<ItemEntity> items = level.getEntities(
+                        EntityType.ITEM, area, obj -> MagnetHelpers.validEntities(obj, player, filter, blacklist));
+                items.forEach(itemEntity -> {
+                    itemEntity.playerTouch(player);
+                    // Still move the items close to the player in case inventory is full
+                    itemEntity.setPos(pos);
+                });
+
+                // Pick up experience
+                List<ExperienceOrb> xps = level.getEntitiesOfClass(ExperienceOrb.class, area);
+                xps.forEach(xp -> {
+                    xp.invulnerableTime = 0;
+                    player.takeXpDelay = 0;
+                    xp.playerTouch(player);
+                });
+            }
+        }
         return false;
     }
 

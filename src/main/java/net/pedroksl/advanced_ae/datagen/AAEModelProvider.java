@@ -33,11 +33,9 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.ADV_PATTERN_ENCODER);
         basicItem(AAEItems.SHATTERED_SINGULARITY);
 
-        basicItem(AAEItems.QUANTUM_UPGRADE_BASE, "upgrades");
-        basicItem(AAEItems.WALK_SPEED_CARD, "upgrades");
-        basicItem(AAEItems.SPRINT_SPEED_CARD, "upgrades");
-        basicItem(AAEItems.STEP_ASSIST_CARD, "upgrades");
-        basicItem(AAEItems.JUMP_HEIGHT_CARD, "upgrades");
+        for (var card : AAEItems.getQuantumCards()) {
+            basicItem(card, "upgrades");
+        }
 
         quantumCrafterModel();
 

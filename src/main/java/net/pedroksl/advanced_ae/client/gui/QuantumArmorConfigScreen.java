@@ -68,7 +68,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
             if (this.isArmorSlot(slot)) {
                 this.selectedIndex = slot.index;
                 this.menu.setSelectedItemSlot(slot.getSlotIndex());
-                refreshList();
+                refreshList(true);
             }
         }
 
@@ -95,6 +95,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         Color color = this.style.getColor(PaletteColor.DEFAULT_TEXT_COLOR);
 
         final int scrollLevel = scrollbar.getCurrentScroll();
+        this.upgradeList.forEach(QuantumUpgradeWidget::hide);
         int visibleRows = Math.min(VISIBLE_ROWS, this.upgradeList.size());
         for (var i = 0; i < visibleRows; ++i) {
             int currentRow = scrollLevel + i;
@@ -102,6 +103,11 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
                 break;
             }
             var upgrade = this.upgradeList.get(currentRow);
+
+            int y = LIST_ANCHOR_Y + i * LIST_LINE_HEIGHT;
+            upgrade.setY(y, this.topPos);
+            upgrade.show();
+
             guiGraphics.drawString(
                     this.font, upgrade.getName(), upgrade.getX() + 2, upgrade.getY() + 3, color.toARGB(), false);
         }
@@ -129,9 +135,14 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     }
 
     public void refreshList() {
-        this.upgradeList.forEach(w -> w.children().forEach(this::removeWidget));
-        this.upgradeList.clear();
-        this.resetScrollbar();
+        this.refreshList(false);
+    }
+
+    public void refreshList(boolean removeWidgets) {
+        if (removeWidgets) {
+            this.upgradeList.forEach(w -> w.children().forEach(this::removeWidget));
+            this.upgradeList.clear();
+        }
 
         if (this.selectedIndex == -1) return;
 
@@ -146,16 +157,34 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
                     int value = components.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 1);
                     var filter = components.getOrDefault(
                             AAEComponents.UPGRADE_FILTER.get(upgrade), new ArrayList<GenericStack>());
-
                     UpgradeState state = new UpgradeState(upgrade, upgrade.getSettings(), enabled, value, filter);
-                    var widget = new QuantumUpgradeWidget(
-                            this, index, LIST_ANCHOR_X, LIST_ANCHOR_Y + index * LIST_LINE_HEIGHT, style, state);
-                    widget.add();
-                    this.upgradeList.add(widget);
+
+                    boolean found = false;
+                    for (var widget : this.upgradeList) {
+                        if (widget.getType() == upgrade) {
+                            widget.setState(state);
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        var widget = new QuantumUpgradeWidget(
+                                this, index, LIST_ANCHOR_X, LIST_ANCHOR_Y + index * LIST_LINE_HEIGHT, style, state);
+                        widget.add();
+                        this.upgradeList.add(widget);
+                    }
                     index++;
+                } else if (!removeWidgets) {
+                    for (var w : this.upgradeList) {
+                        if (w.getType() == upgrade) {
+                            w.children().forEach(this::removeWidget);
+                            this.upgradeList.remove(w);
+                            break;
+                        }
+                    }
                 }
             }
         }
+        this.resetScrollbar();
     }
 
     @Override
@@ -185,12 +214,12 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
         var index = this.menu.getSelectedSlotIndex();
         this.selectedIndex = 4 - (index - Inventory.INVENTORY_SIZE) + Inventory.INVENTORY_SIZE;
-        refreshList();
+        refreshList(true);
     }
 
     private void resetScrollbar() {
-        scrollbar.setHeight(VISIBLE_ROWS * LIST_LINE_HEIGHT + (VISIBLE_ROWS - 1) * 2 - 2);
-        scrollbar.setRange(0, this.upgradeList.size() - VISIBLE_ROWS, 2);
+        scrollbar.setHeight(VISIBLE_ROWS * LIST_LINE_HEIGHT - 4);
+        scrollbar.setRange(0, this.upgradeList.size() - VISIBLE_ROWS, 1);
     }
 
     @Override
