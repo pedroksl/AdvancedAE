@@ -1,5 +1,7 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
+import static appeng.block.AEBaseBlock.stoneProps;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +19,7 @@ import net.pedroksl.advanced_ae.common.items.AAECraftingBlockItem;
 import appeng.block.AEBaseBlockItem;
 import appeng.core.definitions.BlockDefinition;
 import appeng.core.definitions.ItemDefinition;
+import appeng.decorative.AEDecorativeBlock;
 
 public final class AAEBlocks {
     public static final DeferredRegister.Blocks DR = DeferredRegister.createBlocks(AdvancedAE.MOD_ID);
@@ -26,6 +29,12 @@ public final class AAEBlocks {
     public static List<BlockDefinition<?>> getBlocks() {
         return Collections.unmodifiableList(BLOCKS);
     }
+
+    public static final BlockDefinition<AEDecorativeBlock> QUANTUM_ALLOY_BLOCK = block(
+            "Quantum Alloy Block",
+            "quantum_alloy_block",
+            () -> new AEDecorativeBlock(stoneProps().strength(50, 150).requiresCorrectToolForDrops()),
+            null);
 
     public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_UNIT = block(
             "Quantum Crafting Unit",

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "ae2:cell_component_256k"
+    },
+    "P": {
+      "item": "advanced_ae:quantum_processor"
+    },
+    "Q": {
+      "item": "ae2:quartz_vibrant_glass"
+    },
+    "S": {
+      "item": "ae2:spatial_cell_component_2"
+    }
+  },
+  "pattern": [
+    "PSP",
+    "CQC",
+    "PCP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:quantum_storage_component"
+  }
+}

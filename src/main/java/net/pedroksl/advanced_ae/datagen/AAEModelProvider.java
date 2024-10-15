@@ -32,6 +32,14 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE);
         basicItem(AAEItems.ADV_PATTERN_ENCODER);
         basicItem(AAEItems.SHATTERED_SINGULARITY);
+        basicItem(AAEItems.QUANTUM_INFUSED_DUST);
+        basicItem(AAEItems.QUANTUM_ALLOY);
+        basicItem(AAEItems.QUANTUM_PROCESSOR_PRESS);
+        basicItem(AAEItems.QUANTUM_PROCESSOR_PRINT);
+        basicItem(AAEItems.QUANTUM_PROCESSOR);
+        basicItem(AAEItems.QUANTUM_STORAGE_COMPONENT);
+
+        basicBlock(AAEBlocks.QUANTUM_ALLOY_BLOCK);
 
         for (var card : AAEItems.getQuantumCards()) {
             basicItem(card, "upgrades");

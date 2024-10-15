@@ -80,15 +80,15 @@ public class AAEPlayerEvents {
             ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
             if (stack.getItem() instanceof QuantumHelmet helmet) {
                 if (helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.NIGHT_VISION, serverPlayer.level())) {
-                    if (nv == null || nv.getDuration() < 220) {
+                    if (nv == null || nv.getDuration() < 210) {
                         stack.set(AAEComponents.NIGHT_VISION_ACTIVATED, true);
                         serverPlayer.addEffect(
-                                new MobEffectInstance(MobEffects.NIGHT_VISION, 220, 0, false, false, false));
+                                new MobEffectInstance(MobEffects.NIGHT_VISION, 210, 0, false, false, false));
                     }
                 }
             }
             if (stack.getOrDefault(AAEComponents.NIGHT_VISION_ACTIVATED, false)) {
-                if (nv != null && nv.getDuration() < 220) {
+                if (nv != null && nv.getDuration() < 210) {
                     serverPlayer.removeEffect(MobEffects.NIGHT_VISION);
                     stack.remove(AAEComponents.NIGHT_VISION_ACTIVATED);
                 }

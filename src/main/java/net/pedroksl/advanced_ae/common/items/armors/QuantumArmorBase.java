@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
@@ -46,7 +47,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     public QuantumArmorBase(
             Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
-        super(material, type, properties.fireResistant().stacksTo(1), powerCapacity);
+        super(material, type, properties.fireResistant().rarity(Rarity.EPIC).stacksTo(1), powerCapacity);
     }
 
     @Override

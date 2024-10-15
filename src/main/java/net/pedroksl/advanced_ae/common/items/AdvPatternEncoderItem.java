@@ -23,7 +23,7 @@ import appeng.menu.locator.MenuLocators;
 public class AdvPatternEncoderItem extends AEBaseItem implements IMenuItem {
 
     public AdvPatternEncoderItem(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(1));
     }
 
     @Override

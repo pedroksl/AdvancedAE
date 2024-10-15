@@ -11,7 +11,6 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderCapacityUpgradeItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderUpgradeItem;
-import net.pedroksl.advanced_ae.common.items.ShatteredSingularityItem;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
@@ -26,6 +25,7 @@ import appeng.api.parts.IPart;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.PartModels;
 import appeng.core.definitions.ItemDefinition;
+import appeng.items.materials.MaterialItem;
 import appeng.items.parts.PartItem;
 import appeng.items.parts.PartModelsHelper;
 
@@ -78,11 +78,23 @@ public class AAEItems {
             "Advanced Pattern Provider Capacity Upgrade",
             "adv_pattern_provider_capacity_upgrade",
             AdvPatternProviderCapacityUpgradeItem::new);
-    public static final ItemDefinition<Item> SHATTERED_SINGULARITY =
-            item("Shattered Singularity", "shattered_singularity", ShatteredSingularityItem::new);
+    public static final ItemDefinition<MaterialItem> QUANTUM_INFUSED_DUST =
+            item("Quantum Infused Dust", "quantum_infused_dust", MaterialItem::new);
+    public static final ItemDefinition<MaterialItem> QUANTUM_ALLOY =
+            item("Quantum Alloy", "quantum_alloy", MaterialItem::new);
+    public static final ItemDefinition<MaterialItem> SHATTERED_SINGULARITY =
+            item("Shattered Singularity", "shattered_singularity", MaterialItem::new);
+    public static final ItemDefinition<MaterialItem> QUANTUM_PROCESSOR_PRESS =
+            item("Inscriber Quantum Press", "quantum_processor_press", MaterialItem::new);
+    public static final ItemDefinition<MaterialItem> QUANTUM_PROCESSOR_PRINT =
+            item("Printed Quantum Circuit", "printed_quantum_processor", MaterialItem::new);
+    public static final ItemDefinition<MaterialItem> QUANTUM_PROCESSOR =
+            item("Quantum Processor", "quantum_processor", MaterialItem::new);
+    public static final ItemDefinition<MaterialItem> QUANTUM_STORAGE_COMPONENT =
+            item("Quantum Storage Component", "quantum_storage_component", MaterialItem::new);
 
     public static final ItemDefinition<AdvPatternEncoderItem> ADV_PATTERN_ENCODER =
-            item("Advanced Pattern Encoder", "adv_pattern_encoder", p -> new AdvPatternEncoderItem(p.stacksTo(1)));
+            item("Advanced Pattern Encoder", "adv_pattern_encoder", AdvPatternEncoderItem::new);
 
     public static final ItemDefinition<QuantumHelmet> QUANTUM_HELMET =
             item("Quantum Helmet", "quantum_helmet", QuantumHelmet::new);

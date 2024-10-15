@@ -5,7 +5,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -22,6 +21,7 @@ import net.pedroksl.advanced_ae.events.AAEPlayerEvents;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
 import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
+import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AFCommonLoad;
 
 import appeng.api.AECapabilities;
@@ -37,6 +37,8 @@ import appeng.core.AELog;
 import appeng.core.definitions.AEBlockEntities;
 import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
+
+import mekanism.common.capabilities.radiation.item.RadiationShieldingHandler;
 
 @Mod(value = AdvancedAE.MOD_ID, dist = Dist.DEDICATED_SERVER)
 public class AdvancedAE {
@@ -113,7 +115,7 @@ public class AdvancedAE {
             Upgrades.add(AEItems.REDSTONE_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
             Upgrades.add(AEItems.CRAFTING_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
 
-            if (ModList.get().isLoaded("appflux")) {
+            if (Addons.APPFLUX.isLoaded()) {
                 AFCommonLoad.init();
             }
         });
@@ -168,6 +170,16 @@ public class AdvancedAE {
                 SmallAdvPatternProviderPart.class);
         ModLoader.postEvent(partEvent);
         RegisterPartCapabilitiesEventInternal.register(partEvent, event);
+
+        if (Addons.MEKANISM.isLoaded()) {
+            var cap = mekanism.common.capabilities.Capabilities.RADIATION_SHIELDING;
+            for (var armor : AAEItems.getQuantumArmor()) {
+                event.registerItem(
+                        cap,
+                        (stack, ctx) -> RadiationShieldingHandler.create(0.25),
+                        armor.get().asItem());
+            }
+        }
     }
 
     public static ResourceLocation makeId(String id) {

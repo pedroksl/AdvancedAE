@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-13T19:55:41.2757845	Block States / Models
+// 1.21.1	2024-10-14T22:04:11.8419535	Block States / Models
 95a299ecaf1f57e89c3507297d4be2fc99a2749c assets/advanced_ae/blockstates/adv_pattern_provider.json
 fef5598f6fe49cc3150d9233ce01bc5a7136fcf9 assets/advanced_ae/blockstates/data_entangler.json
 9f77870684c7b9108903c29765927a81ea7d4cfd assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -42,11 +42,17 @@ f35c490f4bbe7a90e37e79eb1c5e4a483f0dc173 assets/advanced_ae/models/item/flight_d
 cc11a19eaad2f958156a078c5584029b442ecbb7 assets/advanced_ae/models/item/luck_card.json
 8faf0798f508ec225cbeb17cbdfd67468d39e2d2 assets/advanced_ae/models/item/magnet_card.json
 82c90399585b5dec8380e6400b2a7e5595571f21 assets/advanced_ae/models/item/night_vision_card.json
+07074f00d204f9573456876375a5afde685b0e40 assets/advanced_ae/models/item/printed_quantum_processor.json
 239c6a7f0aa68fc828ab6caf0243fc25ce732ccd assets/advanced_ae/models/item/quantum_accelerator.json
+5484ded5e2fa8a2e04de039eb6be9712bdbeab74 assets/advanced_ae/models/item/quantum_alloy.json
 12aba676f3c587f4210877038cd8364ff6ae981c assets/advanced_ae/models/item/quantum_crafter.json
+502b166d70d5afd205d3503568ee4183596ea5ed assets/advanced_ae/models/item/quantum_infused_dust.json
 d76cb3cbc341923a40ba492803e851622feac77e assets/advanced_ae/models/item/quantum_multi_threader.json
+42b9934dcc16c1b2f608e0d79b438fac4d8e5751 assets/advanced_ae/models/item/quantum_processor.json
+2aaf70b82a03715463465612e7a5f17f8f4809fa assets/advanced_ae/models/item/quantum_processor_press.json
 27010241a6b0b91e70c43877ba66337b38806518 assets/advanced_ae/models/item/quantum_storage_128.json
 052279774e42bd5acc540f715d18fb4199773dbb assets/advanced_ae/models/item/quantum_storage_256.json
+117618eac43afb8e721ee41bab7ff0d95dcd12c1 assets/advanced_ae/models/item/quantum_storage_component.json
 f06d4bb85c083bf5f527787bf8e9ff0f6108a35d assets/advanced_ae/models/item/quantum_structure.json
 f71739f0baf970c037c00c4b1569c12f46057812 assets/advanced_ae/models/item/quantum_unit.json
 daa8f00cad531ec15cc81497c0eaf813130272ad assets/advanced_ae/models/item/quantum_upgrade_base.json

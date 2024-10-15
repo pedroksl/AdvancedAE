@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.glodblock.github.appflux.common.AFSingletons;
 import com.glodblock.github.extendedae.common.EAESingletons;
+import com.glodblock.github.extendedae.recipe.CircuitCutterRecipeBuilder;
 import com.glodblock.github.extendedae.recipe.CrystalAssemblerRecipeBuilder;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
@@ -28,6 +30,8 @@ import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
 import appeng.core.definitions.AEParts;
 import appeng.datagen.providers.tags.ConventionTags;
+import appeng.recipes.handlers.InscriberProcessType;
+import appeng.recipes.handlers.InscriberRecipeBuilder;
 
 import gripe._90.megacells.definition.MEGAItems;
 
@@ -96,6 +100,15 @@ public class AAERecipeProvider extends RecipeProvider {
                 .unlockedBy("hasItem", has(AAEItems.SHATTERED_SINGULARITY))
                 .save(c, AdvancedAE.makeId("quantumcrafter"));
 
+        // Blocks
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_ALLOY_BLOCK)
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .define('#', AAEItems.QUANTUM_ALLOY)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
+                .save(c, AdvancedAE.makeId("quantum_alloy_block"));
+
         // Items
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.STOCK_EXPORT_BUS)
                 .pattern("   ")
@@ -153,6 +166,42 @@ public class AAERecipeProvider extends RecipeProvider {
                 .requires(AEParts.STORAGE_MONITOR)
                 .unlockedBy("hasItem", has(AEParts.STORAGE_MONITOR))
                 .save(c, AdvancedAE.makeId("throughput_monitor"));
+        InscriberRecipeBuilder.inscribe(AAEItems.SHATTERED_SINGULARITY, AAEItems.QUANTUM_PROCESSOR_PRESS, 1)
+                .setTop(Ingredient.of(AEItems.ENGINEERING_PROCESSOR_PRESS))
+                .setBottom(Ingredient.of(AEItems.LOGIC_PROCESSOR_PRESS))
+                .setMode(InscriberProcessType.PRESS)
+                .save(c, AdvancedAE.makeId("quantum_processor_press"));
+        InscriberRecipeBuilder.inscribe(Items.IRON_BLOCK, AAEItems.QUANTUM_PROCESSOR_PRESS, 1)
+                .setTop(Ingredient.of(AAEItems.QUANTUM_PROCESSOR_PRESS))
+                .setMode(InscriberProcessType.INSCRIBE)
+                .save(c, AdvancedAE.makeId("quantum_processor_press_from_iron"));
+        InscriberRecipeBuilder.inscribe(AAEItems.QUANTUM_ALLOY, AAEItems.QUANTUM_PROCESSOR_PRINT, 1)
+                .setTop(Ingredient.of(AAEItems.QUANTUM_PROCESSOR_PRESS))
+                .setMode(InscriberProcessType.INSCRIBE)
+                .save(c, AdvancedAE.makeId("quantum_processor_print"));
+        CircuitCutterRecipeBuilder.cut(AAEItems.QUANTUM_PROCESSOR_PRINT, 9)
+                .input(AAEBlocks.QUANTUM_ALLOY_BLOCK, 9)
+                .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("quantum_processor_print_eae"));
+        InscriberRecipeBuilder.inscribe(AAEItems.QUANTUM_ALLOY, AAEItems.QUANTUM_PROCESSOR, 1)
+                .setTop(Ingredient.of(AAEItems.QUANTUM_PROCESSOR_PRINT))
+                .setBottom(Ingredient.of(AEItems.SILICON_PRINT))
+                .setMode(InscriberProcessType.PRESS)
+                .save(c, AdvancedAE.makeId("quantum_processor"));
+        CrystalAssemblerRecipeBuilder.assemble(AAEItems.QUANTUM_PROCESSOR, 4)
+                .input(AAEItems.QUANTUM_PROCESSOR_PRINT, 4)
+                .input(AEItems.SILICON_PRINT, 4)
+                .input(ConventionTags.REDSTONE, 4)
+                .save(c, AdvancedAE.makeId("quantum_processor_eae"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.QUANTUM_STORAGE_COMPONENT)
+                .pattern("PSP")
+                .pattern("CQC")
+                .pattern("PCP")
+                .define('P', AAEItems.QUANTUM_PROCESSOR)
+                .define('S', AEItems.SPATIAL_2_CELL_COMPONENT)
+                .define('C', AEItems.CELL_COMPONENT_256K)
+                .define('Q', AEBlocks.QUARTZ_VIBRANT_GLASS)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_PROCESSOR))
+                .save(c, AdvancedAE.makeId("quantum_storage_component"));
 
         // Quantum Computer
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STRUCTURE)
@@ -198,19 +247,10 @@ public class AAERecipeProvider extends RecipeProvider {
                 .pattern("CUC")
                 .pattern("ECE")
                 .define('E', AAEItems.SHATTERED_SINGULARITY)
-                .define('C', MEGAItems.BULK_CELL_COMPONENT)
+                .define('C', AAEItems.QUANTUM_STORAGE_COMPONENT)
                 .define('U', AAEBlocks.QUANTUM_UNIT)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-                .save(Addons.MEGACELLS.conditionalRecipe(c), AdvancedAE.makeId("megaquantumstorage128"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STORAGE_128M)
-                .pattern("ECE")
-                .pattern("CUC")
-                .pattern("ECE")
-                .define('E', AAEItems.SHATTERED_SINGULARITY)
-                .define('C', AEItems.CELL_COMPONENT_256K)
-                .define('U', AAEBlocks.QUANTUM_UNIT)
-                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-                .save(Addons.MEGACELLS.notConditionalRecipe(c), AdvancedAE.makeId("quantumstorage128"));
+                .save(c, AdvancedAE.makeId("quantumstorage128"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_STORAGE_256M)
                 .requires(AAEItems.SHATTERED_SINGULARITY)
                 .requires(AAEBlocks.QUANTUM_STORAGE_128M)
