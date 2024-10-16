@@ -7,11 +7,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.ArmorMaterial;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
-import net.pedroksl.advanced_ae.common.definitions.AAEItems;
-import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
-import net.pedroksl.advanced_ae.common.definitions.AAEText;
+import net.pedroksl.advanced_ae.common.definitions.*;
 
 public class AAELanguageProvider extends LanguageProvider {
     public AAELanguageProvider(PackOutput output) {
@@ -26,6 +25,10 @@ public class AAELanguageProvider extends LanguageProvider {
 
         for (var block : AAEBlocks.getBlocks()) {
             add(block.block(), block.getEnglishName());
+        }
+
+        for (var fluid : AAEFluids.getFluids()) {
+            add(fluid.fluidType(), fluid.getEnglishName());
         }
 
         for (var translation : AAEText.values()) {
@@ -44,8 +47,12 @@ public class AAELanguageProvider extends LanguageProvider {
         add("key.advanced_ae.quantum_armor_config", "Open Quantum Armor Configuration");
     }
 
-    public void add(ArmorMaterial key, String engishName) {
-        add(Util.makeDescriptionId("material", BuiltInRegistries.ARMOR_MATERIAL.getKey(key)), engishName);
+    public void add(FluidType key, String englishName) {
+        add(Util.makeDescriptionId("fluid_type", NeoForgeRegistries.FLUID_TYPES.getKey(key)), englishName);
+    }
+
+    public void add(ArmorMaterial key, String englishName) {
+        add(Util.makeDescriptionId("material", BuiltInRegistries.ARMOR_MATERIAL.getKey(key)), englishName);
     }
 
     @NotNull

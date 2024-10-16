@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public final class AAEConventionTags {
 
@@ -17,7 +18,13 @@ public final class AAEConventionTags {
 
     public static final TagKey<Item> CURIOS = tag("curios:curio");
 
+    public static final TagKey<Block> QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK = blockTag("c:storage_blocks/quantum_alloy");
+
     private static TagKey<Item> tag(String name) {
         return TagKey.create(Registries.ITEM, ResourceLocation.parse(name));
+    }
+
+    private static TagKey<Block> blockTag(String name) {
+        return TagKey.create(Registries.BLOCK, ResourceLocation.parse(name));
     }
 }

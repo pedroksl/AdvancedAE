@@ -11,6 +11,8 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.*;
@@ -19,6 +21,7 @@ import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
 import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
+import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 
@@ -42,6 +45,7 @@ public class AAEClient extends AdvancedAE {
         eventBus.addListener(AAEClient::initCraftingUnitModels);
         eventBus.addListener(AAEClient::initItemColours);
         eventBus.addListener(AAEClient::initRenderers);
+        eventBus.addListener(AAEClient::initClientExtensions);
         eventBus.addListener(this::registerHotkeys);
 
         INSTANCE = this;
@@ -143,6 +147,12 @@ public class AAEClient extends AdvancedAE {
 
     private static void initRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(AAEBlockEntities.REACTION_CHAMBER.get(), ReactionChamberTESR::new);
+    }
+
+    private static void initClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerFluidType(
+                (IClientFluidTypeExtensions) AAEFluids.QUANTUM_INFUSION.fluidType(),
+                AAEFluids.QUANTUM_INFUSION.fluidType());
     }
 
     private static ItemColor makeOpaque(ItemColor itemColor) {

@@ -1,17 +1,11 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "megacells"
-    }
-  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "hasItem": {
       "conditions": {
         "items": [
           {
-            "items": "ae2:singularity"
+            "items": "advanced_ae:quantum_alloy"
           }
         ]
       },
@@ -19,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:megaquantumstorage128"
+        "recipe": "advanced_ae:quantum_alloy_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -32,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "advanced_ae:megaquantumstorage128"
+      "advanced_ae:quantum_alloy_block"
     ]
   }
 }

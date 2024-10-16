@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "advanced_ae:block/quantum_infusion_block"
+    }
+  }
+}

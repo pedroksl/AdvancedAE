@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
+import static appeng.block.AEBaseBlock.metalProps;
 import static appeng.block.AEBaseBlock.stoneProps;
 
 import java.util.ArrayList;
@@ -8,9 +9,14 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.blocks.*;
@@ -33,8 +39,17 @@ public final class AAEBlocks {
     public static final BlockDefinition<AEDecorativeBlock> QUANTUM_ALLOY_BLOCK = block(
             "Quantum Alloy Block",
             "quantum_alloy_block",
-            () -> new AEDecorativeBlock(stoneProps().strength(50, 150).requiresCorrectToolForDrops()),
-            null);
+            () -> new AEDecorativeBlock(stoneProps().strength(25, 150).requiresCorrectToolForDrops()),
+            BlockItem::new);
+    public static final BlockDefinition<StairBlock> QUANTUM_ALLOY_STAIRS = block(
+            "Quantum Alloy Stairs",
+            "quantum_alloy_stairs",
+            () -> new StairBlock(QUANTUM_ALLOY_BLOCK.block().defaultBlockState(), metalProps()),
+            BlockItem::new);
+    public static final BlockDefinition<WallBlock> QUANTUM_ALLOY_WALL =
+            block("Quantum Alloy Wall", "quantum_alloy_wall", () -> new WallBlock(metalProps()), BlockItem::new);
+    public static final BlockDefinition<SlabBlock> QUANTUM_ALLOY_SLAB =
+            block("Quantum Alloy Slab", "quantum_alloy_slab", () -> new SlabBlock(metalProps()), BlockItem::new);
 
     public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_UNIT = block(
             "Quantum Crafting Unit",
@@ -97,7 +112,7 @@ public final class AAEBlocks {
             String englishName,
             String id,
             Supplier<T> blockSupplier,
-            BiFunction<Block, Item.Properties, BlockItem> itemFactory) {
+            @Nullable BiFunction<Block, Item.Properties, BlockItem> itemFactory) {
         var block = DR.register(id, blockSupplier);
         var item = AAEItems.DR.register(id, () -> itemFactory.apply(block.get(), new Item.Properties()));
 

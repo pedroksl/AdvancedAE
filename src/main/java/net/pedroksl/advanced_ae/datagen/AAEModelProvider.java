@@ -4,13 +4,24 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelProvider;
+import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.blocks.AAEAbstractCraftingUnitBlock;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 
 import appeng.api.orientation.BlockOrientation;
@@ -39,7 +50,9 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.QUANTUM_PROCESSOR);
         basicItem(AAEItems.QUANTUM_STORAGE_COMPONENT);
 
-        basicBlock(AAEBlocks.QUANTUM_ALLOY_BLOCK);
+        stairsBlock(AAEBlocks.QUANTUM_ALLOY_STAIRS, AAEBlocks.QUANTUM_ALLOY_BLOCK);
+        slabBlock(AAEBlocks.QUANTUM_ALLOY_SLAB, AAEBlocks.QUANTUM_ALLOY_BLOCK);
+        wall(AAEBlocks.QUANTUM_ALLOY_WALL, "block/quantum_alloy_block");
 
         for (var card : AAEItems.getQuantumCards()) {
             basicItem(card, "upgrades");
@@ -75,6 +88,10 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         // PATTERN PROVIDER
         patternProvider(AAEBlocks.ADV_PATTERN_PROVIDER);
         patternProvider(AAEBlocks.SMALL_ADV_PATTERN_PROVIDER);
+
+        // Fluids
+        fluidBlocks();
+        buckets();
     }
 
     private void basicItem(ItemDefinition<?> item) {
@@ -179,6 +196,65 @@ public class AAEModelProvider extends AE2BlockStateProvider {
                 }))
                 .with(createFacingSpinDispatch());
         simpleBlockItem(block, blockModelOn);
+    }
+
+    @Override
+    protected void stairsBlock(
+            BlockDefinition<StairBlock> stairs, String bottomTexture, String sideTexture, String topTexture) {
+        String baseName = stairs.id().getPath();
+        ResourceLocation side = AdvancedAE.makeId(sideTexture);
+        ResourceLocation bottom = AdvancedAE.makeId(bottomTexture);
+        ResourceLocation top = AdvancedAE.makeId(topTexture);
+        ModelFile stairsModel = this.models().stairs(baseName, side, bottom, top);
+        ModelFile stairsInner = this.models().stairsInner(baseName + "_inner", side, bottom, top);
+        ModelFile stairsOuter = this.models().stairsOuter(baseName + "_outer", side, bottom, top);
+        this.stairsBlock(stairs.block(), stairsModel, stairsInner, stairsOuter);
+        this.simpleBlockItem(stairs.block(), stairsModel);
+    }
+
+    @Override
+    protected void slabBlock(
+            BlockDefinition<SlabBlock> slab,
+            BlockDefinition<?> base,
+            String bottomTexture,
+            String sideTexture,
+            String topTexture) {
+        ResourceLocation side = AdvancedAE.makeId(sideTexture);
+        ResourceLocation bottom = AdvancedAE.makeId(bottomTexture);
+        ResourceLocation top = AdvancedAE.makeId(topTexture);
+        BlockModelBuilder bottomModel = this.models().slab(slab.id().getPath(), side, bottom, top);
+        this.simpleBlockItem(slab.block(), bottomModel);
+        this.slabBlock(
+                slab.block(),
+                bottomModel,
+                this.models().slabTop(slab.id().getPath() + "_top", side, bottom, top),
+                this.models().getExistingFile(base.id()));
+    }
+
+    @Override
+    protected void wall(BlockDefinition<WallBlock> block, String texture) {
+        wallBlock(block.block(), AdvancedAE.makeId(texture));
+        itemModels().wallInventory(block.id().getPath(), AdvancedAE.makeId(texture));
+    }
+
+    private void fluidBlocks() {
+        for (var fluidBlock : AAEFluids.DR_FLUID_BLOCKS.getEntries()) {
+            simpleBlock(
+                    fluidBlock.get(),
+                    models().getBuilder(fluidBlock.getId().getPath())
+                            .texture("particle", AdvancedAE.makeId(ModelProvider.BLOCK_FOLDER + "/" + "water_still")));
+        }
+    }
+
+    public void buckets() {
+        for (var bucket : AAEFluids.DR_BUCKET_ITEMS.getEntries()) {
+            itemModels()
+                    .withExistingParent(
+                            bucket.getId().getPath(),
+                            ResourceLocation.fromNamespaceAndPath(NeoForgeVersion.MOD_ID, "item/bucket"))
+                    .customLoader(DynamicFluidContainerModelBuilder::begin)
+                    .fluid(((BucketItem) bucket.get()).content);
+        }
     }
 
     @Override

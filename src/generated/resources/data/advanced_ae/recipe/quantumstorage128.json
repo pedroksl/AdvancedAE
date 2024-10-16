@@ -1,18 +1,9 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:mod_loaded",
-        "modid": "megacells"
-      }
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
     "C": {
-      "item": "ae2:cell_component_256k"
+      "item": "advanced_ae:quantum_storage_component"
     },
     "E": {
       "item": "advanced_ae:shattered_singularity"

@@ -108,6 +108,10 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('#', AAEItems.QUANTUM_ALLOY)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("quantum_alloy_block"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.QUANTUM_ALLOY, 9)
+                .requires(AAEBlocks.QUANTUM_ALLOY_BLOCK)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
+                .save(c, AdvancedAE.makeId("quantum_alloy_from_block"));
 
         // Items
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.STOCK_EXPORT_BUS)

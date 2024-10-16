@@ -61,6 +61,7 @@ public class AdvancedAE {
         AAEComponents.DR.register(eventBus);
         AAECreativeTab.DR.register(eventBus);
         AAEMaterials.DR.register(eventBus);
+        AAEFluids.init(eventBus);
 
         AAEComponents.init();
 

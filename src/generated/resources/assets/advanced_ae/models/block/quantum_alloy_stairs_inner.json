@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "advanced_ae:block/quantum_alloy_block",
+    "side": "advanced_ae:block/quantum_alloy_block",
+    "top": "advanced_ae:block/quantum_alloy_block"
+  }
+}
