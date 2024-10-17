@@ -5,7 +5,6 @@ import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
@@ -238,22 +237,22 @@ public class AAEModelProvider extends AE2BlockStateProvider {
     }
 
     private void fluidBlocks() {
-        for (var fluidBlock : AAEFluids.DR_FLUID_BLOCKS.getEntries()) {
+        for (var fluids : AAEFluids.getFluids()) {
             simpleBlock(
-                    fluidBlock.get(),
-                    models().getBuilder(fluidBlock.getId().getPath())
+                    fluids.block(),
+                    models().getBuilder(fluids.blockId().getId().getPath())
                             .texture("particle", AdvancedAE.makeId(ModelProvider.BLOCK_FOLDER + "/" + "water_still")));
         }
     }
 
     public void buckets() {
-        for (var bucket : AAEFluids.DR_BUCKET_ITEMS.getEntries()) {
+        for (var fluids : AAEFluids.getFluids()) {
             itemModels()
                     .withExistingParent(
-                            bucket.getId().getPath(),
+                            fluids.bucketItemId().id().getPath(),
                             ResourceLocation.fromNamespaceAndPath(NeoForgeVersion.MOD_ID, "item/bucket"))
                     .customLoader(DynamicFluidContainerModelBuilder::begin)
-                    .fluid(((BucketItem) bucket.get()).content);
+                    .fluid(fluids.bucketItem().content);
         }
     }
 

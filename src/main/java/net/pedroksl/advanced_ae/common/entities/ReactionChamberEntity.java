@@ -60,6 +60,7 @@ import appeng.util.inv.filter.AEItemFilters;
 
 public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         implements IGridTickable, IUpgradeableObject, IConfigurableObject, IDirectionalOutputHost {
+    private static final int MAX_INPUT_SLOTS = 9;
     private static final int MAX_PROCESSING_STEPS = 200;
     private static final int MAX_POWER_STORAGE = 500000;
     private static final int MAX_TANK_CAPACITY = 16000;
@@ -67,7 +68,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     private final IUpgradeInventory upgrades;
     private final IConfigManager configManager;
 
-    private final AppEngInternalInventory inputInv = new AppEngInternalInventory(this, 3, 64);
+    private final AppEngInternalInventory inputInv = new AppEngInternalInventory(this, MAX_INPUT_SLOTS, 64);
     private final AppEngInternalInventory outputInv = new AppEngInternalInventory(this, 1, 64);
     private final InternalInventory inv = new CombinedInternalInventory(this.inputInv, this.outputInv);
 
@@ -79,6 +80,8 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     private final GenericStackInv fluidInv =
             new GenericStackInv(Set.of(AEKeyType.fluids()), this::onChangeTank, GenericStackInv.Mode.STORAGE, 1);
+    private final OutputGenericInv outFluidInv =
+            new OutputGenericInv(Set.of(AEKeyType.fluids()), this::onChangeTank, GenericStackInv.Mode.STORAGE, 1);
 
     private boolean working = false;
     private int processingTime = 0;
@@ -95,6 +98,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         this.setInternalMaxPower(MAX_POWER_STORAGE);
 
         this.fluidInv.setCapacity(AEKeyType.fluids(), MAX_TANK_CAPACITY);
+        this.outFluidInv.setCapacity(AEKeyType.fluids(), MAX_TANK_CAPACITY);
 
         this.upgrades = UpgradeInventories.forMachine(AAEBlocks.REACTION_CHAMBER, 4, this::saveChanges);
 
@@ -178,6 +182,10 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         return this.fluidInv;
     }
 
+    public GenericStackInv getOutTank() {
+        return this.outFluidInv;
+    }
+
     @Override
     public EnumSet<RelativeSide> getAllowedOutputs() {
         return this.allowedOutputs;
@@ -240,9 +248,12 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         var task = this.getTask();
         if (task != null) {
             // Only process if the result would fit.
-            return this.outputInv
-                    .insertItem(0, task.getResultItem().copy(), true)
-                    .isEmpty();
+            if (task.isItemOutput()) {
+                return this.outputInv.insertItem(0, task.getResultItem(), true).isEmpty();
+            } else {
+                var fluid = task.getResultFluid();
+                return this.outFluidInv.canAdd(0, AEFluidKey.of(fluid), fluid.getAmount());
+            }
         }
 
         this.setProcessingTime(0);
@@ -259,12 +270,12 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     }
 
     private ReactionChamberRecipe findRecipe(Level level) {
-        return ReactionChamberRecipes.findRecipe(
-                level,
-                this.inputInv.getStackInSlot(0),
-                this.inputInv.getStackInSlot(1),
-                this.inputInv.getStackInSlot(2),
-                this.fluidInv.getStack(0));
+        List<ItemStack> inputs = new ArrayList<>();
+        for (var x = 0; x < this.inputInv.size(); x++) {
+            inputs.add(this.inputInv.getStackInSlot(x));
+        }
+
+        return ReactionChamberRecipes.findRecipe(level, inputs, this.fluidInv.getStack(0));
     }
 
     @Override
@@ -333,9 +344,16 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                 this.setProcessingTime(0);
                 final ReactionChamberRecipe out = this.getTask();
                 if (out != null) {
-                    final ItemStack outputCopy = out.getResultItem().copy();
+                    final ItemStack output = out.getResultItem();
+                    final FluidStack fluidOut = out.getResultFluid();
 
-                    if (this.outputInv.insertItem(0, outputCopy, false).isEmpty()) {
+                    if ((out.isItemOutput()
+                                    && this.outputInv
+                                            .insertItem(0, output, false)
+                                            .isEmpty())
+                            || (!out.isItemOutput()
+                                    && this.outFluidInv.add(0, AEFluidKey.of(fluidOut), fluidOut.getAmount())
+                                            >= fluidOut.getAmount() - 0.01)) {
                         this.setProcessingTime(0);
 
                         GenericStack fluid = this.fluidInv.getStack(0);
@@ -436,6 +454,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
         super.saveAdditional(data, registries);
         this.fluidInv.writeToChildTag(data, "tank", registries);
+        this.outFluidInv.writeToChildTag(data, "outTank", registries);
 
         ListTag outputTags = new ListTag();
         for (var side : this.allowedOutputs) {
@@ -451,6 +470,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
         super.loadTag(data, registries);
         this.fluidInv.readFromChildTag(data, "tank", registries);
+        this.outFluidInv.readFromChildTag(data, "outTank", registries);
 
         this.allowedOutputs.clear();
         ListTag outputTags = data.getList("outputs", Tag.TAG_STRING);
@@ -479,7 +499,9 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         for (int i = 0; i < this.inv.size(); i++) {
             this.inv.setItemDirect(i, ItemStack.OPTIONAL_STREAM_CODEC.decode(data));
         }
+
         this.fluidInv.setStack(0, GenericStack.readBuffer(data));
+        this.outFluidInv.setStack(0, GenericStack.readBuffer(data));
         this.cachedTask = null;
 
         return c;
@@ -493,7 +515,9 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         for (int i = 0; i < this.inv.size(); i++) {
             ItemStack.OPTIONAL_STREAM_CODEC.encode(data, this.inv.getStackInSlot(i));
         }
+
         GenericStack.writeBuffer(this.fluidInv.getStack(0), data);
+        GenericStack.writeBuffer(this.outFluidInv.getStack(0), data);
     }
 
     private void onConfigChanged(IConfigManager manager, Setting<?> setting) {
@@ -511,9 +535,15 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         for (var upgrade : upgrades) {
             drops.add(upgrade);
         }
+
         var fluid = this.fluidInv.getStack(0);
         if (fluid != null) {
             fluid.what().addDrops(fluid.amount(), drops, level, pos);
+        }
+
+        var outFluid = this.outFluidInv.getStack(0);
+        if (outFluid != null) {
+            outFluid.what().addDrops(outFluid.amount(), drops, level, pos);
         }
     }
 
@@ -521,11 +551,16 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void clearContent() {
         super.clearContent();
         this.fluidInv.clear();
+        this.outFluidInv.clear();
         this.upgrades.clear();
     }
 
     public void clearFluid() {
         this.fluidInv.clear();
+    }
+
+    public void clearFluidOut() {
+        this.outFluidInv.clear();
     }
 
     @Override
@@ -563,5 +598,34 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     @Override
     public ItemStack getMainMenuIcon() {
         return new ItemStack(AAEBlocks.REACTION_CHAMBER.asItem());
+    }
+
+    private static class OutputGenericInv extends GenericStackInv {
+        public OutputGenericInv(Set<AEKeyType> supportedKeyTypes, @Nullable Runnable listener, Mode mode, int size) {
+            super(supportedKeyTypes, listener, mode, size);
+        }
+
+        public boolean canAdd(int slot, AEFluidKey key, int amount) {
+            var stack = this.getStack(slot);
+            if (stack == null) return true;
+            if (!stack.what().equals(key)) return false;
+            return stack.amount() + amount <= this.getMaxAmount(key);
+        }
+
+        public int add(int slot, AEFluidKey key, int amount) {
+            if (!canAdd(slot, key, amount)) return 0;
+
+            var stack = this.getStack(slot);
+            var newAmount = amount;
+            if (stack != null) newAmount += (int) stack.amount();
+            assert stack != null;
+            this.setStack(slot, new GenericStack(key, newAmount));
+            return amount;
+        }
+
+        @Override
+        public boolean canInsert() {
+            return false;
+        }
     }
 }

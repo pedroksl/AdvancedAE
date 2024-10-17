@@ -2,8 +2,11 @@ package net.pedroksl.advanced_ae.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.glodblock.github.glodium.recipe.stack.IngredientStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -17,27 +20,41 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.pedroksl.advanced_ae.AdvancedAE;
 
+import appeng.api.stacks.GenericStack;
+
 public class ReactionChamberRecipeBuilder {
     private final List<IngredientStack.Item> inputs = new ArrayList<>();
     private IngredientStack.Fluid fluid = null;
     private final int energy;
-    private final ItemStack output;
+    private final GenericStack output;
 
-    public ReactionChamberRecipeBuilder(ItemStack output, int energy) {
+    public ReactionChamberRecipeBuilder(@NotNull GenericStack output, int energy) {
         this.output = output;
         this.energy = energy;
     }
 
     public static ReactionChamberRecipeBuilder react(ItemStack stack, int energy) {
-        return new ReactionChamberRecipeBuilder(stack, energy);
+        return new ReactionChamberRecipeBuilder(Objects.requireNonNull(GenericStack.fromItemStack(stack)), energy);
     }
 
     public static ReactionChamberRecipeBuilder react(ItemLike stack, int energy) {
-        return new ReactionChamberRecipeBuilder(new ItemStack(stack), energy);
+        return react(new ItemStack(stack), energy);
     }
 
     public static ReactionChamberRecipeBuilder react(ItemLike stack, int count, int energy) {
-        return new ReactionChamberRecipeBuilder(new ItemStack(stack, count), energy);
+        return react(new ItemStack(stack, count), energy);
+    }
+
+    public static ReactionChamberRecipeBuilder react(FluidStack stack, int energy) {
+        return new ReactionChamberRecipeBuilder(Objects.requireNonNull(GenericStack.fromFluidStack(stack)), energy);
+    }
+
+    public static ReactionChamberRecipeBuilder react(Fluid stack, int energy) {
+        return react(new FluidStack(stack, 1000), energy);
+    }
+
+    public static ReactionChamberRecipeBuilder react(Fluid stack, int count, int energy) {
+        return react(new FluidStack(stack, count), energy);
     }
 
     public ReactionChamberRecipeBuilder fluid(FluidStack fluid) {

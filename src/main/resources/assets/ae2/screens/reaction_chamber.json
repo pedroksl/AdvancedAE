@@ -18,21 +18,25 @@
 	},
 	"background": {
 		"texture": "guis/reaction_chamber.png",
-		"srcRect": [0, 0, 176, 175]
+		"srcRect": [0, 0, 176, 180]
 	},
 	"slots": {
 		"MACHINE_INPUT": {
-			"left": 32,
-			"top": 28,
-			"grid": "HORIZONTAL"
+			"left": 42,
+			"top": 24,
+			"grid": "BREAK_AFTER_3COLS"
 		},
 		"STORAGE": {
-			"left": 50,
-			"top": 47
+			"left": 9,
+			"top": 21
 		},
 		"MACHINE_OUTPUT": {
 			"left": 120,
-			"top": 28
+			"top": 43
+		},
+		"AAE_FLUID_OUT": {
+			"left": 151,
+			"top": 21
 		}
 	},
 	"images": {
@@ -43,12 +47,16 @@
 	},
 	"widgets": {
 		"clearFluid": {
-			"left": 70,
-			"top": 58
+			"left": 28,
+			"top": 73
+		},
+		"clearFluidOut": {
+			"left": 140,
+			"top": 73
 		},
 		"progressBar": {
-			"left": 142,
-			"top": 27
+			"left": 140,
+			"top": 42
 		}
 	}
 }

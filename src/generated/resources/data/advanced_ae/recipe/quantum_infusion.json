@@ -1,6 +1,6 @@
 {
   "type": "advanced_ae:reaction",
-  "input_energy": 1300000,
+  "input_energy": 1000,
   "input_fluid": {
     "amount": 1000,
     "ingredient": {
@@ -9,15 +9,14 @@
   },
   "input_items": [
     {
-      "amount": 64,
       "ingredient": {
-        "item": "ae2:certus_quartz_crystal"
+        "item": "advanced_ae:quantum_infused_dust"
       }
     }
   ],
   "output": {
-    "#": 64,
-    "#t": "ae2:i",
-    "id": "ae2:charged_certus_quartz_crystal"
+    "#": 1000,
+    "#t": "ae2:f",
+    "id": "advanced_ae:quantum_infusion_source"
   }
 }

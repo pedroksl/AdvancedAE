@@ -35,7 +35,11 @@ public class EMIReactionChamberRecipe extends BasicEmiRecipe {
         if (this.recipe.getFluid() != null) {
             this.inputs.add(EMIPlugin.stackOf(this.recipe.getFluid()));
         }
-        this.outputs.add(EmiStack.of(this.recipe.getResultItem()));
+        if (this.recipe.isItemOutput()) {
+            this.outputs.add(EmiStack.of(this.recipe.getResultItem()));
+        } else {
+            this.outputs.add(EmiStack.of(this.recipe.getResultFluid().getFluid()));
+        }
     }
 
     @Override
@@ -65,8 +69,14 @@ public class EMIReactionChamberRecipe extends BasicEmiRecipe {
         if (this.recipe.getFluid() != null) {
             widgets.addSlot(EMIPlugin.stackOf(this.recipe.getFluid()), 29, 24).drawBack(false);
         }
-        widgets.addSlot(EmiStack.of(recipe.getResultItem()), 99, 5)
-                .recipeContext(this)
-                .drawBack(false);
+        if (recipe.isItemOutput()) {
+            widgets.addSlot(EmiStack.of(recipe.getResultItem()), 99, 5)
+                    .recipeContext(this)
+                    .drawBack(false);
+        } else {
+            widgets.addSlot(EmiStack.of(recipe.getResultFluid().getFluid()), 99, 5)
+                    .recipeContext(this)
+                    .drawBack(false);
+        }
     }
 }

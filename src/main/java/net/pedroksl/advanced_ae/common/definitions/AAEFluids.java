@@ -20,6 +20,8 @@ import net.pedroksl.advanced_ae.common.fluids.QuantumInfusionBlock;
 import net.pedroksl.advanced_ae.common.fluids.QuantumInfusionFluid;
 import net.pedroksl.advanced_ae.common.fluids.QuantumInfusionFluidType;
 
+import appeng.core.definitions.ItemDefinition;
+
 public class AAEFluids {
     public static final DeferredRegister<FluidType> DR_FLUID_TYPES =
             DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, AdvancedAE.MOD_ID);
@@ -59,7 +61,8 @@ public class AAEFluids {
                         source.get(),
                         new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
-        var definition = new FluidDefinition<>(englishName, type, flowing, source, block, bucketItem);
+        var bucketDefinition = new ItemDefinition<>(englishName + " Bucket", bucketItem);
+        var definition = new FluidDefinition<>(englishName, type, flowing, source, block, bucketDefinition);
 
         FLUIDS.add(definition);
         return definition;

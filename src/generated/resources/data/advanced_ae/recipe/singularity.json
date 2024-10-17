@@ -16,7 +16,8 @@
     }
   ],
   "output": {
-    "count": 1,
+    "#": 1,
+    "#t": "ae2:i",
     "id": "ae2:singularity"
   }
 }

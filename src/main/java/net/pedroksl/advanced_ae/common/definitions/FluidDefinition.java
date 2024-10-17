@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;
@@ -12,13 +11,15 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
+import appeng.core.definitions.ItemDefinition;
+
 public class FluidDefinition<F extends Fluid, B extends LiquidBlock> {
     private final String englishName;
     private final DeferredHolder<FluidType, FluidType> fluidType;
     private final DeferredHolder<Fluid, F> flowing;
     private final DeferredHolder<Fluid, F> source;
     private final DeferredHolder<Block, B> block;
-    private final DeferredHolder<Item, BucketItem> bucketItem;
+    private final ItemDefinition<BucketItem> bucketItem;
 
     public FluidDefinition(
             String englishName,
@@ -26,7 +27,7 @@ public class FluidDefinition<F extends Fluid, B extends LiquidBlock> {
             DeferredHolder<Fluid, F> flowing,
             DeferredHolder<Fluid, F> source,
             DeferredHolder<Block, B> block,
-            DeferredHolder<Item, BucketItem> bucketItem) {
+            ItemDefinition<BucketItem> bucketItem) {
         this.englishName = englishName;
         this.fluidType = Objects.requireNonNull(fluidType);
         this.flowing = Objects.requireNonNull(flowing);
@@ -75,7 +76,7 @@ public class FluidDefinition<F extends Fluid, B extends LiquidBlock> {
         return this.block.get();
     }
 
-    public final DeferredHolder<Item, BucketItem> bucketItemId() {
+    public final ItemDefinition<BucketItem> bucketItemId() {
         return this.bucketItem;
     }
 

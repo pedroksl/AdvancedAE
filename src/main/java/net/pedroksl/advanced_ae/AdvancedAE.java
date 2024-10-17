@@ -57,11 +57,11 @@ public class AdvancedAE {
         AAEBlocks.DR.register(eventBus);
         AAEItems.DR.register(eventBus);
         AAEBlockEntities.DR.register(eventBus);
+        AAEFluids.init(eventBus);
         AAEMenus.DR.register(eventBus);
         AAEComponents.DR.register(eventBus);
-        AAECreativeTab.DR.register(eventBus);
         AAEMaterials.DR.register(eventBus);
-        AAEFluids.init(eventBus);
+        AAECreativeTab.DR.register(eventBus);
 
         AAEComponents.init();
 

@@ -30,6 +30,9 @@ public final class AAECreativeTab {
         itemDefs.addAll(AAEItems.getItems());
         itemDefs.addAll(
                 AAEBlocks.getBlocks().stream().map(BlockDefinition::item).toList());
+        itemDefs.addAll(AAEFluids.getFluids().stream()
+                .map(FluidDefinition::bucketItemId)
+                .toList());
 
         for (var itemDef : itemDefs) {
             var item = itemDef.asItem();

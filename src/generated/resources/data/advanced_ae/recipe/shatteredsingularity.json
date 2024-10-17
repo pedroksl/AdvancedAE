@@ -27,7 +27,8 @@
     }
   ],
   "output": {
-    "count": 2,
+    "#": 2,
+    "#t": "ae2:i",
     "id": "advanced_ae:shattered_singularity"
   }
 }

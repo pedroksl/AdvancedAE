@@ -23,20 +23,20 @@ public final class ReactionChamberRecipes {
     }
 
     @Nullable
-    public static ReactionChamberRecipe findRecipe(
-            Level level, ItemStack input1, ItemStack input2, ItemStack input3, GenericStack fluid) {
+    public static ReactionChamberRecipe findRecipe(Level level, List<ItemStack> inputs, GenericStack fluid) {
         List<ItemStack> machineInputs = new ArrayList<>();
-        if (!input1.isEmpty()) machineInputs.add(input1);
-        if (!input2.isEmpty()) machineInputs.add(input2);
-        if (!input3.isEmpty()) machineInputs.add(input3);
+        for (var stack : inputs)
+            if (!stack.isEmpty()) {
+                machineInputs.add(stack);
+            }
 
         for (var holder : getRecipes(level)) {
             var recipe = holder.value();
 
-            var inputs = recipe.getValidInputs();
+            var validInputs = recipe.getValidInputs();
 
             boolean failed = false;
-            for (var input : inputs) {
+            for (var input : validInputs) {
                 boolean found = false;
                 for (var machineInput : machineInputs) {
                     if (input.checkType(machineInput)) {

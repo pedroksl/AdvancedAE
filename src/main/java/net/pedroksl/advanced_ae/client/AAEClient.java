@@ -5,6 +5,7 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.item.BucketItem;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -42,7 +43,7 @@ public class AAEClient extends AdvancedAE {
         super(eventBus, container);
 
         eventBus.addListener(AAEClient::initScreens);
-        eventBus.addListener(AAEClient::initCraftingUnitModels);
+        eventBus.addListener(AAEClient::initItemBlockRenderTypes);
         eventBus.addListener(AAEClient::initItemColours);
         eventBus.addListener(AAEClient::initRenderers);
         eventBus.addListener(AAEClient::initClientExtensions);
@@ -112,7 +113,7 @@ public class AAEClient extends AdvancedAE {
     }
 
     @SuppressWarnings("deprecation")
-    private static void initCraftingUnitModels(FMLClientSetupEvent event) {
+    private static void initItemBlockRenderTypes(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             for (var type : AAECraftingUnitType.values()) {
                 if (type == AAECraftingUnitType.STRUCTURE) {
@@ -122,6 +123,9 @@ public class AAEClient extends AdvancedAE {
                 }
                 ItemBlockRenderTypes.setRenderLayer(type.getDefinition().block(), RenderType.cutout());
             }
+
+            ItemBlockRenderTypes.setRenderLayer(AAEFluids.QUANTUM_INFUSION.source(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AAEFluids.QUANTUM_INFUSION.flowing(), RenderType.translucent());
         });
     }
 
@@ -141,8 +145,22 @@ public class AAEClient extends AdvancedAE {
         Hotkeys.finalizeRegistration(e::register);
     }
 
+    @SuppressWarnings("deprecation")
     private static void initItemColours(RegisterColorHandlersEvent.Item event) {
         event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
+
+        for (var bucket : AAEFluids.getFluids()) {
+            event.getItemColors()
+                    .register(
+                            (stack, index) -> {
+                                if (index == 1 && stack.getItem() instanceof BucketItem bucketItem) {
+                                    return IClientFluidTypeExtensions.of(bucketItem.content)
+                                            .getTintColor();
+                                }
+                                return 0xFFFFFFFF;
+                            },
+                            bucket.bucketItem());
+        }
     }
 
     private static void initRenderers(EntityRenderersEvent.RegisterRenderers event) {

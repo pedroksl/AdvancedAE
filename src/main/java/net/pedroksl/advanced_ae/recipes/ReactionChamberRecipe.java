@@ -2,7 +2,6 @@ package net.pedroksl.advanced_ae.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.glodblock.github.glodium.recipe.stack.IngredientStack;
 
@@ -17,32 +16,25 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.pedroksl.advanced_ae.AdvancedAE;
 
+import appeng.api.stacks.AEFluidKey;
+import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.GenericStack;
+
 public class ReactionChamberRecipe implements Recipe<RecipeInput> {
 
     public static final ResourceLocation TYPE_ID = AdvancedAE.makeId("reaction");
     public static final RecipeType<ReactionChamberRecipe> TYPE = InitRecipeTypes.register(TYPE_ID.toString());
 
     protected final List<IngredientStack.Item> inputs;
-
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    protected final Optional<IngredientStack.Fluid> fluid;
+    protected final IngredientStack.Fluid fluid;
+    public final GenericStack output;
 
     protected final int energy;
 
-    public final ItemStack output;
-
     public ReactionChamberRecipe(
-            ItemStack output, List<IngredientStack.Item> inputs, IngredientStack.Fluid fluid, int energy) {
+            GenericStack output, List<IngredientStack.Item> inputs, IngredientStack.Fluid fluid, int energy) {
         this.inputs = inputs;
         this.output = output;
-        this.fluid = Optional.ofNullable(fluid);
-        this.energy = energy;
-    }
-
-    public ReactionChamberRecipe(
-            ItemStack output, List<IngredientStack.Item> inputs, Optional<IngredientStack.Fluid> fluid, int energy) {
-        this.output = output;
-        this.inputs = inputs;
         this.fluid = fluid;
         this.energy = energy;
     }
@@ -67,8 +59,22 @@ public class ReactionChamberRecipe implements Recipe<RecipeInput> {
         return getResultItem();
     }
 
+    public boolean isItemOutput() {
+        return this.output.what() instanceof AEItemKey;
+    }
+
     public ItemStack getResultItem() {
-        return this.output;
+        if (this.output.what() instanceof AEItemKey key) {
+            return key.toStack((int) this.output.amount());
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public FluidStack getResultFluid() {
+        if (this.output.what() instanceof AEFluidKey key) {
+            return key.toStack((int) this.output.amount());
+        }
+        return FluidStack.EMPTY;
     }
 
     @Override
@@ -94,13 +100,13 @@ public class ReactionChamberRecipe implements Recipe<RecipeInput> {
             }
         }
 
-        this.fluid.ifPresent((ingredientStack) -> validInputs.add(ingredientStack.sample()));
+        validInputs.add(this.fluid.sample());
         return validInputs;
     }
 
     @Nullable
-    public IngredientStack.@Nullable Fluid getFluid() {
-        return this.fluid.orElse(null);
+    public IngredientStack.Fluid getFluid() {
+        return this.fluid;
     }
 
     public int getEnergy() {
@@ -122,7 +128,6 @@ public class ReactionChamberRecipe implements Recipe<RecipeInput> {
     }
 
     public boolean containsIngredient(FluidStack stack) {
-        return fluid.map(ingredientStack -> ingredientStack.getIngredient().test(stack))
-                .orElse(true);
+        return this.fluid.getIngredient().test(stack);
     }
 }

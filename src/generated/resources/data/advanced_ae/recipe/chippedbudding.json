@@ -22,7 +22,8 @@
     }
   ],
   "output": {
-    "count": 8,
+    "#": 8,
+    "#t": "ae2:i",
     "id": "ae2:chipped_budding_quartz"
   }
 }

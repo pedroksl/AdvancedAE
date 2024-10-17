@@ -34,7 +34,8 @@
     }
   ],
   "output": {
-    "count": 64,
+    "#": 64,
+    "#t": "ae2:i",
     "id": "megacells:sky_steel_ingot"
   }
 }

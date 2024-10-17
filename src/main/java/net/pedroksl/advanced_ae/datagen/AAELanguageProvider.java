@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -29,6 +30,10 @@ public class AAELanguageProvider extends LanguageProvider {
 
         for (var fluid : AAEFluids.getFluids()) {
             add(fluid.fluidType(), fluid.getEnglishName());
+            add(fluid.flowing(), fluid.getEnglishName());
+            add(fluid.source(), fluid.getEnglishName());
+            add(fluid.block(), fluid.getEnglishName());
+            add(fluid.bucketItem(), fluid.bucketItemId().getEnglishName());
         }
 
         for (var translation : AAEText.values()) {
@@ -49,6 +54,10 @@ public class AAELanguageProvider extends LanguageProvider {
 
     public void add(FluidType key, String englishName) {
         add(Util.makeDescriptionId("fluid_type", NeoForgeRegistries.FLUID_TYPES.getKey(key)), englishName);
+    }
+
+    public void add(Fluid key, String englishName) {
+        add(Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(key)), englishName);
     }
 
     public void add(ArmorMaterial key, String englishName) {

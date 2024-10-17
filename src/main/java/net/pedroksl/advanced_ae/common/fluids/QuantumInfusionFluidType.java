@@ -9,13 +9,12 @@ import net.neoforged.neoforge.common.SoundActions;
 public class QuantumInfusionFluidType extends WaterBasedFluidType {
     public QuantumInfusionFluidType() {
         super(Properties.create()
-                .density(100)
+                .density(300)
                 .viscosity(1000)
                 .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
-                .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
-                .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH));
+                .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY));
 
-        tintColor = 0x7362D3;
+        tintColor = 0xFF7362D3;
     }
 
     @Override

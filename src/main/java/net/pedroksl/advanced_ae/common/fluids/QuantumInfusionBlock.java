@@ -1,7 +1,6 @@
 package net.pedroksl.advanced_ae.common.fluids;
 
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -12,13 +11,12 @@ public class QuantumInfusionBlock extends LiquidBlock {
         super(
                 (FlowingFluid) AAEFluids.QUANTUM_INFUSION.source(),
                 Properties.of()
-                        .mapColor(MapColor.COLOR_GRAY)
+                        .liquid()
+                        .strength(20.0F)
+                        .noLootTable()
                         .replaceable()
                         .noCollission()
-                        .strength(100.0F)
                         .pushReaction(PushReaction.DESTROY)
-                        .noLootTable()
-                        .liquid()
-                        .sound(SoundType.EMPTY));
+                        .mapColor(MapColor.COLOR_PURPLE));
     }
 }

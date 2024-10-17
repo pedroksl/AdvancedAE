@@ -22,6 +22,7 @@ import net.neoforged.neoforge.common.conditions.AndCondition;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipeBuilder;
 import net.pedroksl.advanced_ae.xmod.Addons;
@@ -206,6 +207,12 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('Q', AEBlocks.QUARTZ_VIBRANT_GLASS)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_PROCESSOR))
                 .save(c, AdvancedAE.makeId("quantum_storage_component"));
+
+        // Fluids
+        ReactionChamberRecipeBuilder.react(AAEFluids.QUANTUM_INFUSION.source(), 1000, 1000)
+                .input(AAEItems.QUANTUM_INFUSED_DUST)
+                .fluid(Fluids.WATER, 1000)
+                .save(c, "quantum_infusion");
 
         // Quantum Computer
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STRUCTURE)
