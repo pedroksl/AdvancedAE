@@ -187,7 +187,7 @@ public class AAERecipeProvider extends RecipeProvider {
         CircuitCutterRecipeBuilder.cut(AAEItems.QUANTUM_PROCESSOR_PRINT, 9)
                 .input(AAEBlocks.QUANTUM_ALLOY_BLOCK, 9)
                 .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("quantum_processor_print_eae"));
-        InscriberRecipeBuilder.inscribe(AAEItems.QUANTUM_ALLOY, AAEItems.QUANTUM_PROCESSOR, 1)
+        InscriberRecipeBuilder.inscribe(ConventionTags.REDSTONE, AAEItems.QUANTUM_PROCESSOR, 1)
                 .setTop(Ingredient.of(AAEItems.QUANTUM_PROCESSOR_PRINT))
                 .setBottom(Ingredient.of(AEItems.SILICON_PRINT))
                 .setMode(InscriberProcessType.PRESS)
@@ -211,7 +211,7 @@ public class AAERecipeProvider extends RecipeProvider {
         // Fluids
         ReactionChamberRecipeBuilder.react(AAEFluids.QUANTUM_INFUSION.source(), 1000, 1000)
                 .input(AAEItems.QUANTUM_INFUSED_DUST)
-                .fluid(Fluids.WATER, 1000)
+                .fluid(Fluids.WATER, 20000)
                 .save(c, "quantum_infusion");
 
         // Quantum Computer

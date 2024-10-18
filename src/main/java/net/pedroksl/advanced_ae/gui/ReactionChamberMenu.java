@@ -8,10 +8,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.pedroksl.advanced_ae.api.IFluidTankHandler;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
-import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
+import net.pedroksl.advanced_ae.network.packet.FluidTankClientAudioPacket;
 import net.pedroksl.advanced_ae.network.packet.FluidTankStackUpdatePacket;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 
@@ -19,7 +19,6 @@ import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.util.IConfigManager;
-import appeng.core.localization.Tooltips;
 import appeng.helpers.externalstorage.GenericStackInv;
 import appeng.menu.SlotSemantics;
 import appeng.menu.guisync.GuiSync;
@@ -27,9 +26,9 @@ import appeng.menu.implementations.UpgradeableMenu;
 import appeng.menu.interfaces.IProgressProvider;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.OutputSlot;
-import appeng.util.ConfigMenuInventory;
 
-public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity> implements IProgressProvider {
+public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
+        implements IProgressProvider, IFluidTankHandler {
 
     @GuiSync(2)
     public int maxProcessingTime = -1;
@@ -48,8 +47,6 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity> 
     private static final String CONFIGURE_OUTPUT = "configureOutput";
 
     private final List<Slot> inputs = new ArrayList<>(9);
-    private final AppEngSlot tank;
-    private final AppEngSlot outTank;
 
     public ReactionChamberMenu(int id, Inventory ip, ReactionChamberEntity host) {
         super(AAEMenus.REACTION_CHAMBER, id, ip, host);
@@ -62,16 +59,6 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity> 
 
         var output = new OutputSlot(host.getOutput(), 0, null);
         this.addSlot(output, SlotSemantics.MACHINE_OUTPUT);
-
-        this.addSlot(this.tank = new AppEngSlot(host.getTank().createMenuWrapper(), 0), SlotSemantics.STORAGE);
-        this.tank.setEmptyTooltip(() -> List.of(
-                AAEText.TankEmpty.text(), AAEText.TankAmount.text(0, 16000).withStyle(Tooltips.NORMAL_TOOLTIP_TEXT)));
-
-        this.addSlot(
-                this.outTank = new AppEngSlot(new OutputConfigInventory(host.getOutTank()), 0),
-                AAESlotSemantics.FLUID_OUT);
-        this.outTank.setEmptyTooltip(() -> List.of(
-                AAEText.TankEmpty.text(), AAEText.TankAmount.text(0, 16000).withStyle(Tooltips.NORMAL_TOOLTIP_TEXT)));
 
         registerClientAction(FLUSH_FLUID, this::clearFluid);
         registerClientAction(FLUSH_FLUID_OUT, this::clearFluidOut);
@@ -109,8 +96,6 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity> 
     public boolean isValidForSlot(Slot s, ItemStack is) {
         if (this.inputs.contains(s)) {
             return ReactionChamberRecipes.isValidIngredient(is, this.getHost().getLevel());
-        } else if (s == this.outTank) {
-            return false;
         }
         return true;
     }
@@ -162,15 +147,32 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity> 
         }
     }
 
-    public static class OutputConfigInventory extends ConfigMenuInventory {
+    @Override
+    public ItemStack getCarriedItem() {
+        return getCarried();
+    }
 
-        public OutputConfigInventory(GenericStackInv inv) {
-            super(inv);
-        }
+    @Override
+    public GenericStackInv getTank(int index) {
+        return switch (index) {
+            case 0 -> this.getHost().getTank();
+            case 1 -> this.getHost().getOutTank();
+            default -> null;
+        };
+    }
 
-        @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
-            return false;
-        }
+    @Override
+    public boolean canExtractFromTank(int index) {
+        return true;
+    }
+
+    @Override
+    public boolean canInsertInto(int index) {
+        return index == 0;
+    }
+
+    @Override
+    public void playAudioCues(FluidTankClientAudioPacket p) {
+        sendPacketToClient(p);
     }
 }

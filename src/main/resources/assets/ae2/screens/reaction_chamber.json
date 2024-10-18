@@ -26,17 +26,9 @@
 			"top": 24,
 			"grid": "BREAK_AFTER_3COLS"
 		},
-		"STORAGE": {
-			"left": 9,
-			"top": 21
-		},
 		"MACHINE_OUTPUT": {
 			"left": 120,
 			"top": 43
-		},
-		"AAE_FLUID_OUT": {
-			"left": 151,
-			"top": 21
 		}
 	},
 	"images": {

@@ -1,8 +1,10 @@
 package net.pedroksl.advanced_ae.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.pedroksl.advanced_ae.api.IFluidTankScreen;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionButton;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEToolbarActionButton;
@@ -15,7 +17,7 @@ import appeng.client.gui.implementations.UpgradeableScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.*;
 
-public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu> {
+public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu> implements IFluidTankScreen {
 
     private static final int INPUT_TANK_X = 9;
     private static final int OUTPUT_TANK_X = 151;
@@ -58,9 +60,9 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
 
     @Override
     protected void init() {
-        super.init();
-
         this.inputSlot = this.addRenderableWidget(new FluidTankSlot(
+                this,
+                0,
                 this.leftPos + INPUT_TANK_X,
                 this.topPos + TANKS_Y,
                 TANKS_WIDTH,
@@ -68,12 +70,16 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
                 this.menu.INPUT_FLUID_SIZE,
                 Component.empty()));
         this.outputSlot = this.addRenderableWidget(new FluidTankSlot(
+                this,
+                1,
                 this.leftPos + OUTPUT_TANK_X,
                 this.topPos + TANKS_Y,
                 TANKS_WIDTH,
                 TANKS_HEIGHT,
                 this.menu.OUTPUT_FLUID_SIZE,
                 Component.empty()));
+
+        super.init();
     }
 
     @Override
@@ -93,5 +99,10 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
     public void updateFluidTankContents(FluidStack inputFluid, FluidStack outputFluid) {
         this.inputSlot.setFluidStack(inputFluid);
         this.outputSlot.setFluidStack(outputFluid);
+    }
+
+    @Override
+    public void playSoundFeedback(boolean isInsert) {
+        this.inputSlot.playDownSound(Minecraft.getInstance().getSoundManager(), isInsert);
     }
 }

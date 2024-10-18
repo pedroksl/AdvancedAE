@@ -25,7 +25,7 @@ public class EMIReactionChamberRecipe extends BasicEmiRecipe {
     private final ReactionChamberRecipe recipe;
 
     public EMIReactionChamberRecipe(RecipeHolder<ReactionChamberRecipe> holder) {
-        super(CATEGORY, holder.id(), 135, 58);
+        super(CATEGORY, holder.id(), 168, 80);
         this.recipe = holder.value();
         for (var in : this.recipe.getInputs()) {
             if (!in.isEmpty()) {
@@ -35,46 +35,48 @@ public class EMIReactionChamberRecipe extends BasicEmiRecipe {
         if (this.recipe.getFluid() != null) {
             this.inputs.add(EMIPlugin.stackOf(this.recipe.getFluid()));
         }
-        if (this.recipe.isItemOutput()) {
-            this.outputs.add(EmiStack.of(this.recipe.getResultItem()));
-        } else {
-            this.outputs.add(EmiStack.of(this.recipe.getResultFluid().getFluid()));
-        }
+
+        this.outputs.add(EmiStack.of(this.recipe.getResultItem()));
+        this.outputs.add(EmiStack.of(this.recipe.getResultFluid().getFluid()));
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
         ResourceLocation background = AppEng.makeId("textures/guis/reaction_chamber.png");
-        widgets.addTexture(background, 0, 0, 135, 58, 20, 22);
-        widgets.addAnimatedTexture(background, 122, 5, 6, 18, 176, 0, 2000, false, true, false);
+        widgets.addTexture(background, 0, 0, 168, 80, 4, 13);
+        widgets.addAnimatedTexture(background, 136, 29, 6, 18, 176, 0, 2000, false, true, false);
 
         var energyLabel = widgets.addText(
                         AAEText.ReactionChamberEnergy.text(this.recipe.getEnergy() / 1000),
                         width / 2 + 4,
-                        46,
+                        70,
                         AAEText.TOOLTIP_DEFAULT_COLOR,
                         false)
                 .horizontalAlign(TextWidget.Alignment.CENTER);
         var energyLabelX = energyLabel.getBounds().x();
-        var energyLabelY = 48 + energyLabel.getBounds().height() / 2;
+        var energyLabelY = 72 + energyLabel.getBounds().height() / 2;
         widgets.addTexture(EMIPlugin.TEXTURE, energyLabelX - 16, energyLabelY - 8, 10, 12, 0, 0, 10, 12, 32, 32);
 
-        int x = 11;
-        for (var in : this.recipe.getInputs()) {
+        var index = 0;
+        var inputs = this.recipe.getInputs();
+        for (var in : inputs) {
+            var x = 37 + index % 3 * 18;
+            var y = 10 + index / 3 * 18;
             if (!in.isEmpty()) {
-                widgets.addSlot(EMIPlugin.stackOf(in), x, 5).drawBack(false);
-                x += 18;
+                widgets.addSlot(EMIPlugin.stackOf(in), x, y).drawBack(false);
             }
+            index++;
         }
         if (this.recipe.getFluid() != null) {
-            widgets.addSlot(EMIPlugin.stackOf(this.recipe.getFluid()), 29, 24).drawBack(false);
+            widgets.addTank(EMIPlugin.stackOf(this.recipe.getFluid()), 4, 7, 18, 60, 16000)
+                    .drawBack(false);
         }
         if (recipe.isItemOutput()) {
-            widgets.addSlot(EmiStack.of(recipe.getResultItem()), 99, 5)
+            widgets.addSlot(EmiStack.of(recipe.getResultItem()), 113, 29)
                     .recipeContext(this)
                     .drawBack(false);
         } else {
-            widgets.addSlot(EmiStack.of(recipe.getResultFluid().getFluid()), 99, 5)
+            widgets.addTank(EmiStack.of(recipe.getResultFluid().getFluid()), 146, 7, 18, 60, 16000)
                     .recipeContext(this)
                     .drawBack(false);
         }

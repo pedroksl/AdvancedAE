@@ -126,7 +126,11 @@ public class UpgradeCards {
     }
 
     public static boolean autoStock(Level level, Player player, ItemStack stack) {
-        if (stack.getItem() instanceof QuantumHelmet helmet && helmet.getLinkedPosition(stack) != null) {
+        if (stack.getItem() instanceof QuantumHelmet helmet
+                && helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.AUTO_STOCK)
+                && helmet.getLinkedPosition(stack) != null) {
+            if (player.containerMenu != null
+                    && !player.containerMenu.getCarried().isEmpty()) return false;
             MutableObject<Component> errorHolder = new MutableObject<>();
             var grid = helmet.getLinkedGrid(stack, level, errorHolder::setValue);
             if (grid != null) {

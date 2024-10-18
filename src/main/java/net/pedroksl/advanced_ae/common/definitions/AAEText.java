@@ -36,7 +36,7 @@ public enum AAEText implements LocalizationEnum {
     ClearFluidButtonHint("Flush the remaining fluid from the machine.", Type.TOOLTIP),
     ClearSidesButtonHint("Disable output from all sides of the machine.", Type.TOOLTIP),
     TankEmpty("Empty", Type.TOOLTIP),
-    TankAmount("%s mb / %s mb", Type.TOOLTIP),
+    TankAmount("%s / %s B", Type.TOOLTIP),
     QuantumArmorTooltip("Upgrades:", Type.TOOLTIP),
     UpgradeTooltip("Upgrade available for:", Type.TOOLTIP),
     UpgradeNotInstalled(" (Not Installed)", Type.TOOLTIP),
