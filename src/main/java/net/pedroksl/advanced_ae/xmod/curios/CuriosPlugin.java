@@ -1,19 +1,16 @@
 package net.pedroksl.advanced_ae.xmod.curios;
 
-import org.jetbrains.annotations.Nullable;
+import java.util.Optional;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.items.IItemHandler;
 
-import top.theillusivec4.curios.api.CuriosCapability;
+import appeng.core.definitions.ItemDefinition;
+
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 
 public class CuriosPlugin {
-
-    public static void addListeners(IEventBus eventBus) {}
-
-    @Nullable
-    public static IItemHandler getCuriosInventory(LivingEntity entity) {
-        return entity.getCapability(CuriosCapability.ITEM_HANDLER);
+    public static Optional<SlotResult> findFirstCurio(LivingEntity entity, ItemDefinition<?> item) {
+        return CuriosApi.getCuriosInventory(entity).flatMap(h -> h.findFirstCurio(item.get()));
     }
 }

@@ -88,7 +88,6 @@ public class AdvancedAE {
     public void registerHotkey(String id) {}
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        // NeoForge.EVENT_BUS.register(AAEEntityEvents.class);
         NeoForge.EVENT_BUS.register(AAELivingEntityEvents.class);
         NeoForge.EVENT_BUS.register(AAEPlayerEvents.class);
 

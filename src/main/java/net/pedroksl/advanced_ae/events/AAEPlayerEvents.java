@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.events;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -14,16 +15,21 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumBoots;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumChestplate;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumHelmet;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.advanced_ae.network.packet.NoKeyPressedPacket;
 
 public class AAEPlayerEvents {
     public static final AttributeModifier flight =
             new AttributeModifier(AdvancedAE.makeId("flight"), 1.0, AttributeModifier.Operation.ADD_VALUE);
+
+    public static final String NO_KEY_DATA = "aae$nokey";
 
     @SubscribeEvent
     public static void ItemAttributes(ItemAttributeModifierEvent event) {
@@ -91,6 +97,43 @@ public class AAEPlayerEvents {
                 if (nv != null && nv.getDuration() < 210) {
                     serverPlayer.removeEffect(MobEffects.NIGHT_VISION);
                     stack.remove(AAEComponents.NIGHT_VISION_ACTIVATED);
+                }
+            }
+        } else {
+            ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
+            if (stack.getItem() instanceof QuantumBoots boots) {
+                if (player.getAbilities().flying && boots.isUpgradeEnabledAndPowered(stack, UpgradeType.FLIGHT_DRIFT)) {
+                    if (player.getPersistentData().getBoolean(NO_KEY_DATA)) {
+                        var motion = player.getDeltaMovement();
+                        if (motion.x != 0 || motion.z != 0) {
+                            var value =
+                                    stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT_DRIFT), 100)
+                                            / 100f;
+                            player.setDeltaMovement(motion.x * value, motion.y, motion.z * value);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerTick(PlayerTickEvent.Post event) {
+        Player player = event.getEntity();
+        if (!(player instanceof ServerPlayer)) {
+            ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
+            if (stack.getItem() instanceof QuantumBoots boots) {
+                if (boots.isUpgradeEnabledAndPowered(stack, UpgradeType.FLIGHT_DRIFT)) {
+                    var options = Minecraft.getInstance().options;
+                    var noKey = !options.keyUp.isDown()
+                            && !options.keyRight.isDown()
+                            && !options.keyDown.isDown()
+                            && !options.keyLeft.isDown();
+                    if (player.getPersistentData().getBoolean(NO_KEY_DATA) != noKey) {
+                        // Send packet to server if data on player is different
+                        PacketDistributor.sendToServer(new NoKeyPressedPacket(noKey));
+                        player.getPersistentData().putBoolean(NO_KEY_DATA, noKey);
+                    }
                 }
             }
         }

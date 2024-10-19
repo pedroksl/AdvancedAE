@@ -61,6 +61,10 @@ public class AAEConfig {
         return common.hpBufferHearts.get();
     }
 
+    public int getMaxFlightSpeed() {
+        return common.maxFlightSpeed.get();
+    }
+
     public int getEvasionChance() {
         return common.evasionChance.get();
     }
@@ -87,6 +91,10 @@ public class AAEConfig {
 
     public int getMaxSwimSpeedBoost() {
         return common.swimSpeedBoost.get();
+    }
+
+    public int getRenegerationPerTick() {
+        return common.regenerationPerTick.get();
     }
 
     public void save() {
@@ -130,6 +138,7 @@ public class AAEConfig {
         public final ModConfigSpec.IntValue maxStepHeight;
         public final ModConfigSpec.IntValue maxJumpHeight;
         public final ModConfigSpec.IntValue hpBufferHearts;
+        public final ModConfigSpec.IntValue maxFlightSpeed;
         public final ModConfigSpec.IntValue evasionChance;
         public final ModConfigSpec.IntValue maxMagnetRange;
         public final ModConfigSpec.IntValue strengthBoost;
@@ -137,6 +146,7 @@ public class AAEConfig {
         public final ModConfigSpec.IntValue luckBoost;
         public final ModConfigSpec.IntValue maxReachBoost;
         public final ModConfigSpec.IntValue swimSpeedBoost;
+        public final ModConfigSpec.IntValue regenerationPerTick;
 
         public CommonConfig() {
             var builder = new ModConfigSpec.Builder();
@@ -214,6 +224,13 @@ public class AAEConfig {
                     "Define the maximum swim speed increase. Values are divided by 10 before use.");
             hpBufferHearts = define(
                     builder, "quantumArmorHpBuffer", 20, 5, 50, "Define the HP increased of the HP Buffer card.");
+            maxFlightSpeed = define(
+                    builder,
+                    "quantumArmorMaxFlightSpeed",
+                    10,
+                    1,
+                    15,
+                    "Define the maximum speed boost of the Flight Card.");
             evasionChance = define(
                     builder,
                     "quantumArmorEvasionChance",
@@ -236,7 +253,7 @@ public class AAEConfig {
                     5,
                     1,
                     10,
-                    "Define the Attack Speed Damage boost of the Attck Speed Card.");
+                    "Define the Attack Speed Damage boost of the Attack Speed Card.");
             luckBoost = define(builder, "quantumArmorLuckBoost", 2, 1, 5, "Define the luck boost of the Luck Card.");
             maxReachBoost = define(
                     builder,
@@ -245,6 +262,14 @@ public class AAEConfig {
                     1,
                     8,
                     "Define the max additional reach of the " + "Reach Card.");
+            regenerationPerTick = define(
+                    builder,
+                    "quantumArmorRenegerationPerTick",
+                    10,
+                    1,
+                    20,
+                    "Define the amount of hearts regenerated per tick with the Regeneration Card. Value will be "
+                            + "divided by 10 before use.");
             builder.pop();
 
             this.spec = builder.build();
