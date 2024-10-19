@@ -1,7 +1,5 @@
 package net.pedroksl.advanced_ae.client.gui.widgets;
 
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -20,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -157,7 +156,8 @@ public class FluidTankSlot extends AbstractWidget {
                     Component.literal("\n"),
                     Tooltips.ofAmount(genericStack),
                     Component.literal("\n"),
-                    Component.literal(getModDisplayNameFromId(genericStack.what().getModId()))
+                    Component.literal(
+                                    getModDisplayNameFromId(genericStack.what().getModId()))
                             .withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC))));
         }
     }
@@ -167,12 +167,13 @@ public class FluidTankSlot extends AbstractWidget {
 
         if (modId.equals("c")) {
             return "Common";
-        }
-        else if ((container = ModList.get().getModContainerById(modId)).isPresent()) {
+        } else if ((container = ModList.get().getModContainerById(modId)).isPresent()) {
             return container.get().getModInfo().getDisplayName();
         } else {
             container = ModList.get().getModContainerById(modId.replace('_', '-'));
-            return container.isPresent() ? container.get().getModInfo().getDisplayName() : WordUtils.capitalizeFully(modId.replace('_', ' '));
+            return container.isPresent()
+                    ? container.get().getModInfo().getDisplayName()
+                    : WordUtils.capitalizeFully(modId.replace('_', ' '));
         }
     }
 }
