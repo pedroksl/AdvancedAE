@@ -39,7 +39,7 @@ public enum UpgradeType {
             AAEItems.JUMP_HEIGHT_CARD),
     LAVA_IMMUNITY(
             "Lava Immunity", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.LAVA_IMMUNITY_CARD),
-    FLIGHT("Flight", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.FLIGHT_CARD),
+    FLIGHT("Flight", null, SettingType.NUM_INPUT, 10, ApplicationType.PASSIVE_USE, AAEItems.FLIGHT_CARD),
     WATER_BREATHING(
             "Water Breathing", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.WATER_BREATHING_CARD),
     AUTO_FEED(
@@ -80,7 +80,7 @@ public enum UpgradeType {
     REACH("Reach Boost", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.REACH_CARD),
     SWIM_SPEED("Swim Speed", null, SettingType.NONE, 5, ApplicationType.BUFF, AAEItems.SWIM_SPEED_CARD),
     NIGHT_VISION("Night Vision", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.NIGHT_VISION_CARD),
-    FLIGHT_DRIFT("No Flight Drift", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.FLIGHT_DRIFT_CARD);
+    FLIGHT_DRIFT("No Flight Drift", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.FLIGHT_DRIFT_CARD);
 
     public enum SettingType {
         NONE,
@@ -155,7 +155,6 @@ public enum UpgradeType {
         return switch (this) {
             case EMPTY,
                     LAVA_IMMUNITY,
-                    FLIGHT,
                     WATER_BREATHING,
                     AUTO_FEED,
                     AUTO_STOCK,
@@ -167,13 +166,14 @@ public enum UpgradeType {
             case JUMP_HEIGHT -> new UpgradeSettings(1, AAEConfig.instance().getMaxJumpHeight());
             case MAGNET -> new UpgradeSettings(3, AAEConfig.instance().getMaxMagnetRange());
             case HP_BUFFER -> new UpgradeSettings(AAEConfig.instance().getmaxHpBuffer());
+            case FLIGHT -> new UpgradeSettings(1, AAEConfig.instance().getMaxFlightSpeed());
             case EVASION -> new UpgradeSettings(AAEConfig.instance().getEvasionChance());
             case STRENGTH -> new UpgradeSettings(AAEConfig.instance().getStrengthBoost());
             case ATTACK_SPEED -> new UpgradeSettings(AAEConfig.instance().getAttackSpeedBoost());
             case LUCK -> new UpgradeSettings(AAEConfig.instance().getLuckBoost());
             case REACH -> new UpgradeSettings(AAEConfig.instance().getMaxReachBoost());
             case SWIM_SPEED -> new UpgradeSettings(AAEConfig.instance().getMaxSwimSpeedBoost());
-            case FLIGHT_DRIFT -> new UpgradeSettings(0, 100);
+            case FLIGHT_DRIFT -> new UpgradeSettings(0, 100, 1, 50);
         };
     }
 

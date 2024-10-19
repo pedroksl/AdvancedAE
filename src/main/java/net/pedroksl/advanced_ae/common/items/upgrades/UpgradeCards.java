@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.helpers.MagnetHelpers;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumChestplate;
@@ -39,6 +40,9 @@ public class UpgradeCards {
             var value = upgrade.getSettings().multiplier
                     * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 0)
                     / 25f;
+            if (canFly && player.getAbilities().flying) {
+                value += chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
+            }
             if (value > 0) {
                 if (!player.onGround()) value /= 4;
                 if (player.zza < 0F) value /= 2;
@@ -50,12 +54,19 @@ public class UpgradeCards {
     }
 
     public static boolean sprintSpeed(Level level, Player player, ItemStack stack) {
-        if (player.isSprinting() && !player.isFallFlying() && player.zza > 0F && !player.isInWaterOrBubble()) {
+        ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+        boolean canFly = chest.getItem() instanceof QuantumArmorBase armor
+                && armor.isUpgradeEnabledAndPowered(chest, UpgradeType.FLIGHT);
+        boolean isNotFlying = player.fallDistance <= 0 && !player.isFallFlying();
+        if (player.isSprinting() && (canFly || isNotFlying) && !player.isInWaterOrBubble()) {
             var upgrade = UpgradeType.SPRINT_SPEED;
             var value = upgrade.getSettings().multiplier
                     * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 0)
                     / 25f;
             if (value > 0) {
+                if (canFly && player.getAbilities().flying) {
+                    value += chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
+                }
                 if (!player.onGround()) value /= 4;
                 if (player.zza < 0F) value /= 2;
                 player.moveRelative(
@@ -223,7 +234,7 @@ public class UpgradeCards {
     public static boolean regeneration(Level level, Player player, ItemStack stack) {
         if (stack.getItem() instanceof QuantumChestplate chest) {
             if (chest.isUpgradeEnabledAndPowered(stack, UpgradeType.REGENERATION)) {
-                player.heal(1);
+                player.heal((float) (0.1 * AAEConfig.instance().getRenegerationPerTick()));
             }
         }
         return false;
