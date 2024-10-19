@@ -12,10 +12,12 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.xmod.rei.REIPlugin;
 
+import me.shedaniel.rei.api.client.util.ClientEntryStacks;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 
 public class REIReactionChamberDisplay implements Display {
 
@@ -35,13 +37,14 @@ public class REIReactionChamberDisplay implements Display {
                 .map(REIPlugin::stackOf)
                 .filter(o -> !o.isEmpty())
                 .toList();
-        this.fluid = recipe.getFluid() != null ? REIPlugin.stackOf(recipe.getFluid()) : EntryIngredient.empty();
+        this.fluid = recipe.getFluid() != null ? REIPlugin.stackOf(recipe.getFluid(), 16000) : EntryIngredient.empty();
 
+        var fluid = EntryStacks.of(
+                recipe.getResultFluid().getFluid(), recipe.getResultFluid().getAmount());
+        ClientEntryStacks.setFluidRenderRatio(fluid, recipe.getResultFluid().getAmount() / 16000f);
         this.outputs = ImmutableList.of(
                 EntryIngredients.of(recipe.getResultItem()),
-                EntryIngredients.of(
-                        recipe.getResultFluid().getFluid(),
-                        recipe.getResultFluid().getAmount()));
+                EntryIngredient.builder().add(fluid).build());
 
         this.combined = new ArrayList<>(this.inputs);
         if (!this.fluid.isEmpty()) {

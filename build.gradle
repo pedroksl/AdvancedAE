@@ -128,6 +128,7 @@ dependencies {
     compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.729"
     implementation "curse.maven:mega-cells-622112:5662141"
     implementation "curse.maven:mekanism-268560:5680395"
+    implementation "curse.maven:adorned-1036809:5740650"
     // setup Xei
     switch (use_Xei) {
         case "emi":

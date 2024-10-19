@@ -18,10 +18,14 @@ import appeng.integration.modules.itemlists.CompatLayerHelper;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.client.util.ClientEntryStacks;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.plugin.common.displays.DefaultInformationDisplay;
+
+import dev.architectury.fluid.FluidStack;
 
 @REIPluginClient
 public class REIPlugin implements REIClientPlugin {
@@ -72,13 +76,15 @@ public class REIPlugin implements REIClientPlugin {
         return EntryIngredient.empty();
     }
 
-    public static EntryIngredient stackOf(IngredientStack.Fluid stack) {
+    public static EntryIngredient stackOf(IngredientStack.Fluid stack, float tankSize) {
         if (!stack.isEmpty()) {
             var stacks = stack.getIngredient().getStacks();
             var result = EntryIngredient.builder(stacks.length);
             for (var ing : stacks) {
                 if (!ing.isEmpty()) {
-                    result.add(EntryStacks.of(ing.getFluid(), stack.getAmount()));
+                    EntryStack<FluidStack> f = EntryStacks.of(ing.getFluid(), stack.getAmount());
+                    ClientEntryStacks.setFluidRenderRatio(f, (float) stack.getAmount() / tankSize);
+                    result.add(f);
                 }
             }
             return result.build();
