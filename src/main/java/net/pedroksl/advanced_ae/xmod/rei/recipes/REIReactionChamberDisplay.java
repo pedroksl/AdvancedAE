@@ -36,12 +36,13 @@ public class REIReactionChamberDisplay implements Display {
                 .filter(o -> !o.isEmpty())
                 .toList();
         this.fluid = recipe.getFluid() != null ? REIPlugin.stackOf(recipe.getFluid()) : EntryIngredient.empty();
-        if (recipe.isItemOutput()) {
-            this.outputs = ImmutableList.of(EntryIngredients.of(recipe.getResultItem()));
-        } else {
-            this.outputs =
-                    ImmutableList.of(EntryIngredients.of(recipe.getResultFluid().getFluid()));
-        }
+
+        this.outputs = ImmutableList.of(
+                EntryIngredients.of(recipe.getResultItem()),
+                EntryIngredients.of(
+                        recipe.getResultFluid().getFluid(),
+                        recipe.getResultFluid().getAmount()));
+
         this.combined = new ArrayList<>(this.inputs);
         if (!this.fluid.isEmpty()) {
             this.combined.addLast(this.fluid);

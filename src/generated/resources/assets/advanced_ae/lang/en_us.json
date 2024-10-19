@@ -82,7 +82,7 @@
   "gui.tooltips.advanced_ae.StepAssistTooltip": "Enables step assist. Maximum step of %s.",
   "gui.tooltips.advanced_ae.StrengthTooltip": "Boosts the user's strength by %s.",
   "gui.tooltips.advanced_ae.SwimSpeedTooltip": "Boosts the user's swimming speed.",
-  "gui.tooltips.advanced_ae.TankAmount": "%s mb / %s mb",
+  "gui.tooltips.advanced_ae.TankAmount": "%s / %s B",
   "gui.tooltips.advanced_ae.TankEmpty": "Empty",
   "gui.tooltips.advanced_ae.UpButton": "Target the UP face of the machine.",
   "gui.tooltips.advanced_ae.UpgradeBaseTooltip": "Base upgrade card required to craft the others.",

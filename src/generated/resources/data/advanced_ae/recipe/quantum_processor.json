@@ -5,7 +5,7 @@
       "item": "ae2:printed_silicon"
     },
     "middle": {
-      "item": "advanced_ae:quantum_alloy"
+      "tag": "c:dusts/redstone"
     },
     "top": {
       "item": "advanced_ae:printed_quantum_processor"

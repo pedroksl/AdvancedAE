@@ -45,49 +45,60 @@ public class REIReactionChamberCategory implements DisplayCategory<REIReactionCh
 
         List<Widget> widgets = new ArrayList<>();
         widgets.add(Widgets.createRecipeBase(bounds));
-        widgets.add(Widgets.createTexturedWidget(location, bounds.x + PADDING, bounds.y + PADDING, 20, 22, 135, 58));
+        widgets.add(Widgets.createTexturedWidget(location, bounds.x + PADDING, bounds.y + PADDING, 4, 13, 168, 80));
 
         var energyLabel = Widgets.createLabel(
-                new Point(bounds.x + bounds.width / 2 + 4 + PADDING, bounds.y + 46 + PADDING),
+                new Point(bounds.x + bounds.width / 2 + 4 + PADDING, bounds.y + 70 + PADDING),
                 AAEText.ReactionChamberEnergy.text(recipeDisplay.getEnergy() / 1000));
         widgets.add(energyLabel);
         var energyLabelX = energyLabel.getBounds().getX();
-        var energyLabelY = 48 + energyLabel.getBounds().getHeight() / 2;
+        var energyLabelY = 72 + energyLabel.getBounds().getHeight() / 2;
         widgets.add(Widgets.createTexturedWidget(
                 REIPlugin.TEXTURE, energyLabelX - 16, energyLabelY - 8, 10, 12, 0, 0, 10, 12, 32, 32));
 
-        int x = 11;
+        int index = 0;
         for (var in : recipeDisplay.getInputItems()) {
+            var x = 37 + index % 3 * 18;
+            var y = 10 + index / 3 * 18;
             if (!in.isEmpty()) {
-                widgets.add(Widgets.createSlot(new Point(bounds.x + x + PADDING, bounds.y + 5 + PADDING))
+                widgets.add(Widgets.createSlot(new Point(bounds.x + x + PADDING, bounds.y + y + PADDING))
                         .disableBackground()
                         .markInput()
                         .entries(in));
-                x += 18;
             }
+            index++;
         }
+
         if (!recipeDisplay.getInputFluid().isEmpty()) {
-            widgets.add(Widgets.createSlot(new Point(bounds.x + 29 + PADDING, bounds.y + 24 + PADDING))
+            widgets.add(Widgets.createSlot(new Rectangle(bounds.x + 4 + PADDING, bounds.y + 7 + PADDING, 18, 60))
                     .disableBackground()
                     .markInput()
                     .entries(recipeDisplay.getInputFluid()));
         }
 
-        var output = recipeDisplay.getOutputEntries().getFirst();
-        widgets.add(Widgets.createSlot(new Point(bounds.x + 99 + PADDING, bounds.y + 5 + PADDING))
-                .disableBackground()
-                .markOutput()
-                .entries(output));
+        var output = recipeDisplay.getOutputEntries();
+        if (!output.getFirst().isEmpty()) {
+            widgets.add(Widgets.createSlot(new Point(bounds.x + 99 + PADDING, bounds.y + 5 + PADDING))
+                    .disableBackground()
+                    .markOutput()
+                    .entries(output.getFirst()));
+        }
+        if (!output.get(1).isEmpty()) {
+            widgets.add(Widgets.createSlot(new Rectangle(bounds.x + 146 + PADDING, bounds.y + 7 + PADDING, 18, 60))
+                    .disableBackground()
+                    .markOutput()
+                    .entries(output.get(1)));
+        }
         return widgets;
     }
 
     @Override
     public int getDisplayHeight() {
-        return 58 + 2 * PADDING;
+        return 80 + 2 * PADDING;
     }
 
     @Override
     public int getDisplayWidth(REIReactionChamberDisplay display) {
-        return 135 + 2 * PADDING;
+        return 168 + 2 * PADDING;
     }
 }

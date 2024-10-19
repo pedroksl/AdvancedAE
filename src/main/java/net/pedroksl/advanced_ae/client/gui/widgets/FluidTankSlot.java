@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.client.gui.widgets;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -118,10 +119,7 @@ public class FluidTankSlot extends AbstractWidget {
     public void setFluidStack(FluidStack fluidStack) {
         if (fluidStack.isEmpty()) {
             this.disableRender = true;
-            setTooltip(Tooltip.create(Tooltips.of(
-                    AAEText.TankEmpty.text(),
-                    Component.literal("\n"),
-                    AAEText.TankAmount.text(0, 16).withStyle(Tooltips.NUMBER_TEXT))));
+            updateTooltip(fluidStack);
             return;
         }
 
@@ -129,11 +127,7 @@ public class FluidTankSlot extends AbstractWidget {
         boolean updateTexture = this.content.isEmpty() || fluidStack.getFluid() != this.content.getFluid();
         this.content = fluidStack;
 
-        var genericStack = GenericStack.fromFluidStack(content);
-        if (genericStack != null) {
-            setTooltip(Tooltip.create(
-                    Tooltips.of(fluidStack.getHoverName(), Component.literal(": "), Tooltips.ofAmount(genericStack))));
-        }
+        updateTooltip(fluidStack);
 
         if (updateTexture && !this.content.isEmpty()) {
             IClientFluidTypeExtensions properties = IClientFluidTypeExtensions.of(this.content.getFluid());
@@ -141,6 +135,27 @@ public class FluidTankSlot extends AbstractWidget {
             this.fluidTexture = Minecraft.getInstance()
                     .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
                     .apply(texture);
+        }
+    }
+
+    private void updateTooltip(FluidStack stack) {
+        if (stack.isEmpty()) {
+            setTooltip(Tooltip.create(Tooltips.of(
+                    AAEText.TankEmpty.text(),
+                    Component.literal("\n"),
+                    AAEText.TankAmount.text(0, 16).withStyle(Tooltips.NUMBER_TEXT))));
+            return;
+        }
+
+        var genericStack = GenericStack.fromFluidStack(content);
+        if (genericStack != null) {
+            setTooltip(Tooltip.create(Tooltips.of(
+                    stack.getHoverName(),
+                    Component.literal("\n"),
+                    Tooltips.ofAmount(genericStack),
+                    Component.literal("\n"),
+                    Component.literal(genericStack.what().getModId())
+                            .withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC))));
         }
     }
 }
