@@ -21,7 +21,7 @@ import appeng.util.inv.InternalInventoryHost;
 public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHost<T>
         implements InternalInventoryHost, ISubMenuHost {
 
-    private static final int MAX_PROCESSING_TIME = 20;
+    private static final int MAX_PROCESSING_TIME = 10;
 
     private final AppEngInternalInventory input = new AppEngInternalInventory(this, 1, 1);
     private ProgressChangedHandler progressChangedHandler;
