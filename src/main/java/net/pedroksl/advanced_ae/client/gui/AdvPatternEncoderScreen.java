@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.client.Hotkeys;
 import net.pedroksl.advanced_ae.client.gui.widgets.DirectionInputButton;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
@@ -60,6 +61,27 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
         this.scrollbar = widgets.addScrollBar("scrollbar", Scrollbar.SMALL);
 
         AAENetworkHandler.INSTANCE.sendToServer(new AdvPatternEncoderUpdateRequestPacket());
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (isCloseHotkey(keyCode, scanCode)) {
+            this.getPlayer().closeContainer();
+            return true;
+        }
+
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    private boolean isCloseHotkey(int keyCode, int scanCode) {
+        var hotkeyId = getMenu().getHost().getCloseHotkey();
+        if (hotkeyId != null) {
+            var hotkey = Hotkeys.getHotkeyMapping(hotkeyId);
+            if (hotkey != null) {
+                return hotkey.mapping().matches(keyCode, scanCode);
+            }
+        }
+        return false;
     }
 
     @Override

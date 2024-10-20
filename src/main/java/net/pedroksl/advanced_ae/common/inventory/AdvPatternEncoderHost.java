@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.common.inventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
 
@@ -56,6 +57,10 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
         if (invChangeHandler != null) {
             invChangeHandler.handleChange(inv, slot);
         }
+    }
+
+    public String getCloseHotkey() {
+        return AAEHotkeys.PATTERN_ENCODER_HOTKEY;
     }
 
     public AppEngInternalInventory getInventory() {

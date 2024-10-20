@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -31,6 +32,7 @@ import appeng.api.stacks.AmountFormat;
 import appeng.api.util.AEColor;
 import appeng.client.render.BlockEntityRenderHelper;
 import appeng.core.AppEng;
+import appeng.core.definitions.AEItems;
 import appeng.hooks.ticking.TickHandler;
 import appeng.items.parts.PartModels;
 import appeng.parts.PartModel;
@@ -63,6 +65,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     protected long amountAtLastUpdate = -1;
     protected long lastReportedValue = -1;
     protected String lastHumanReadableValue = "";
+    private boolean overdrive = false;
 
     private static final int positiveColor = AEColor.GREEN.mediumVariant;
     private static final int negativeColor = AEColor.RED.mediumVariant;
@@ -118,9 +121,27 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     public boolean onUseItemOn(ItemStack heldItem, Player player, InteractionHand hand, Vec3 pos) {
         if (heldItem == ItemStack.EMPTY) {
             return super.onUseWithoutItem(player, pos);
+        } else if (heldItem.is(AEItems.SPEED_CARD.asItem()) && !isInOverdrive()) {
+            if (!isClientSide()) {
+                setOverdrive(true);
+            }
+            return true;
+        } else if (heldItem.is(Items.SLIME_BALL.asItem()) && isInOverdrive()) {
+            if (!isClientSide()) {
+                setOverdrive(false);
+            }
+            return true;
         } else {
             return super.onUseItemOn(heldItem, player, hand, pos);
         }
+    }
+
+    public boolean isInOverdrive() {
+        return this.overdrive;
+    }
+
+    private void setOverdrive(boolean value) {
+        this.overdrive = value;
     }
 
     private @Nullable AEKey getConfiguredItem() {
@@ -170,8 +191,10 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
                 var color = lastReportedValue > 0
                         ? positiveColor
                         : lastReportedValue == 0 ? this.getColor().contrastTextColor : negativeColor;
-                AAEBlockEntityRenderHelper.renderString(
-                        poseStack, buffers, AAEText.ThroughputMonitorValue.text(sign, lastHumanReadableValue), color);
+                var text = this.overdrive
+                        ? AAEText.OverdriveThroughputMonitorValue.text(sign, lastHumanReadableValue)
+                        : AAEText.ThroughputMonitorValue.text(sign, lastHumanReadableValue);
+                AAEBlockEntityRenderHelper.renderString(poseStack, buffers, text, color);
                 poseStack.popPose();
             }
         }
@@ -219,6 +242,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
 
         // Normal update schedule
         this.lastReportedValue = (getAmount() - amountAtLastUpdate) / timeInSeconds;
+        if (this.overdrive) this.lastReportedValue /= 20;
         this.lastHumanReadableValue = getConfiguredItem().formatAmount(Math.abs(lastReportedValue), AmountFormat.SLOT);
 
         updateState();

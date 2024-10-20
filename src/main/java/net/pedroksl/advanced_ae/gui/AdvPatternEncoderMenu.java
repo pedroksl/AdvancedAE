@@ -8,6 +8,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
+import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetailsEncoder;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
@@ -156,7 +158,11 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
         }
     }
 
-    public interface InventoryChangedHandler {
+	public AdvPatternEncoderHost getHost() {
+        return host;
+    }
+
+	public interface InventoryChangedHandler {
         void handleChange(InternalInventory inv, int slot);
     }
 }
