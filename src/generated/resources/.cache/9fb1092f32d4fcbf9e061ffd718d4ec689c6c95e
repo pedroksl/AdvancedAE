@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-18T02:12:57.0357122	Recipes
+// 1.21.1	2024-10-19T18:02:19.9737568	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -53,9 +53,12 @@ d56f682477fb7e271ea19e7619f178b066665810 data/advanced_ae/recipe/quantumstorage1
 e96c1d94b4c8609d0af44ecdeaf8256e1899e5b3 data/advanced_ae/recipe/quantumstorage256.json
 1b2d566a5d435c85638d9f14629e28019e29ca29 data/advanced_ae/recipe/quantumstructure.json
 fa06d42191c184ad9eb80e5da2933f5b614fda9a data/advanced_ae/recipe/quantumunit.json
+1b9c09da5ab58e168acf1726259028005fcc018d data/advanced_ae/recipe/quantum_alloy.json
 54a0c0286de08dddccc94cba382343ba56281797 data/advanced_ae/recipe/quantum_alloy_block.json
 81ddb09cf67df1ba4afd687ff361ac9fbdb084d8 data/advanced_ae/recipe/quantum_alloy_from_block.json
-7443cebc2a956d5996b05985690a5ddc48c22d36 data/advanced_ae/recipe/quantum_infusion.json
+2bce6a200b7e415b745c55a6d91295c86e917248 data/advanced_ae/recipe/quantum_infused_dust.json
+0068534c26626f5bc16a64cbc0fc91a30122cc2e data/advanced_ae/recipe/quantum_infused_dust_crushed.json
+1efef9b7dc225a0538641187f2e117ef44734d09 data/advanced_ae/recipe/quantum_infusion.json
 dfd021550410b8f4d043bdc106b059c964ef737e data/advanced_ae/recipe/quantum_processor.json
 75196eba34a3806ae484df0b38503b28295a76ae data/advanced_ae/recipe/quantum_processor_eae.json
 706fdf01e9e41ea4abf915e9f58c59a4d41510dd data/advanced_ae/recipe/quantum_processor_press.json

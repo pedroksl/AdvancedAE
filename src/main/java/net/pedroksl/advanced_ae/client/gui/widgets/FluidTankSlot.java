@@ -73,7 +73,7 @@ public class FluidTankSlot extends AbstractWidget {
     }
 
     @Override
-    public void playDownSound(SoundManager handler) {}
+    public void playDownSound(@NotNull SoundManager handler) {}
 
     public void playDownSound(SoundManager handler, boolean isInsert) {
         if (isInsert) {
@@ -116,7 +116,7 @@ public class FluidTankSlot extends AbstractWidget {
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narration) {}
+    protected void updateWidgetNarration(@NotNull NarrationElementOutput narration) {}
 
     public void setFluidStack(FluidStack fluidStack) {
         if (fluidStack.isEmpty()) {
@@ -162,6 +162,7 @@ public class FluidTankSlot extends AbstractWidget {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static String getModDisplayNameFromId(String modId) {
         var container = ModList.get().getModContainerById(modId);
 

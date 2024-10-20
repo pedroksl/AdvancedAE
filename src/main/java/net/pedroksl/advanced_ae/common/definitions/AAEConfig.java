@@ -218,9 +218,9 @@ public class AAEConfig {
             swimSpeedBoost = define(
                     builder,
                     "quantumArmorSwimSpeedBoost",
-                    40,
-                    10,
                     60,
+                    10,
+                    80,
                     "Define the maximum swim speed increase. Values are divided by 10 before use.");
             hpBufferHearts = define(
                     builder, "quantumArmorHpBuffer", 20, 5, 50, "Define the HP increased of the HP Buffer card.");

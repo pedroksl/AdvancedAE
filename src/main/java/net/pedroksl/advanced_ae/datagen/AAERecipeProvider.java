@@ -34,6 +34,9 @@ import appeng.datagen.providers.tags.ConventionTags;
 import appeng.recipes.handlers.InscriberProcessType;
 import appeng.recipes.handlers.InscriberRecipeBuilder;
 
+import mekanism.api.datagen.recipe.builder.ItemStackToItemStackRecipeBuilder;
+import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
+
 import gripe._90.megacells.definition.MEGAItems;
 
 public class AAERecipeProvider extends RecipeProvider {
@@ -166,6 +169,19 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(AEItems.SKY_DUST, 4)
                 .fluid(Fluids.LAVA, 100)
                 .save(c, "shatteredsingularity");
+        InscriberRecipeBuilder.inscribe(AAEItems.SHATTERED_SINGULARITY, AAEItems.QUANTUM_INFUSED_DUST, 1)
+                .setMode(InscriberProcessType.PRESS)
+                .save(c, AdvancedAE.makeId("quantum_infused_dust"));
+        ItemStackToItemStackRecipeBuilder.crushing(
+                        IngredientCreatorAccess.item().from(AAEItems.SHATTERED_SINGULARITY),
+                        AAEItems.QUANTUM_INFUSED_DUST.stack())
+                .build(Addons.MEKANISM.conditionalRecipe(c), AdvancedAE.makeId("quantum_infused_dust_crushed"));
+        ReactionChamberRecipeBuilder.react(AAEItems.QUANTUM_ALLOY, 1, 200000)
+                .input(Items.COPPER_INGOT, 4)
+                .input(AAEItems.SHATTERED_SINGULARITY, 4)
+                .input(AEItems.SINGULARITY, 4)
+                .fluid(AAEFluids.QUANTUM_INFUSION.source(), 1000)
+                .save(c, "quantum_alloy");
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.THROUGHPUT_MONITOR)
                 .requires(AEItems.CALCULATION_PROCESSOR)
                 .requires(AEParts.STORAGE_MONITOR)
@@ -209,9 +225,9 @@ public class AAERecipeProvider extends RecipeProvider {
                 .save(c, AdvancedAE.makeId("quantum_storage_component"));
 
         // Fluids
-        ReactionChamberRecipeBuilder.react(AAEFluids.QUANTUM_INFUSION.source(), 1000, 1000)
+        ReactionChamberRecipeBuilder.react(AAEFluids.QUANTUM_INFUSION.source(), 1000, 20000)
                 .input(AAEItems.QUANTUM_INFUSED_DUST)
-                .fluid(Fluids.WATER, 20000)
+                .fluid(Fluids.WATER, 5000)
                 .save(c, "quantum_infusion");
 
         // Quantum Computer

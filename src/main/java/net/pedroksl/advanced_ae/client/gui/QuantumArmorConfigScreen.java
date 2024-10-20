@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.pedroksl.advanced_ae.client.Hotkeys;
 import net.pedroksl.advanced_ae.client.widgets.QuantumUpgradeWidget;
 import net.pedroksl.advanced_ae.client.widgets.UpgradeState;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
@@ -73,6 +74,27 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         }
 
         return super.mouseClicked(xCoord, yCoord, btn);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (isCloseHotkey(keyCode, scanCode)) {
+            this.getPlayer().closeContainer();
+            return true;
+        }
+
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    private boolean isCloseHotkey(int keyCode, int scanCode) {
+        var hotkeyId = getMenu().getHost().getCloseHotkey();
+        if (hotkeyId != null) {
+            var hotkey = Hotkeys.getHotkeyMapping(hotkeyId);
+            if (hotkey != null) {
+                return hotkey.mapping().matches(keyCode, scanCode);
+            }
+        }
+        return false;
     }
 
     private boolean isArmorSlot(Slot slot) {

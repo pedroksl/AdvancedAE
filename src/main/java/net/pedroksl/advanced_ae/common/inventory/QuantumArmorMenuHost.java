@@ -7,6 +7,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
+import net.pedroksl.advanced_ae.common.helpers.ArmorHotkeyAction;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 
@@ -173,6 +175,10 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
 
     public AppEngInternalInventory getInventory() {
         return this.input;
+    }
+
+    public String getCloseHotkey() {
+        return AAEHotkeys.ARMOR_CONFIG;
     }
 
     @FunctionalInterface

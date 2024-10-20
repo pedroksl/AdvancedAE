@@ -28,6 +28,7 @@
   "gui.advanced_ae.MagnetRangeSlider": "Pickup Range",
   "gui.advanced_ae.ModName": "Advanced AE",
   "gui.advanced_ae.OutputInventory": "Output",
+  "gui.advanced_ae.OverdriveThroughputMonitorValue": "%s%s/t",
   "gui.advanced_ae.PatternInventory": "Pattern Input",
   "gui.advanced_ae.QuantumArmorConfig": "Quantum Armor Config",
   "gui.advanced_ae.QuantumArmorSetting": "Setting Config",

@@ -37,7 +37,9 @@ public class EMIReactionChamberRecipe extends BasicEmiRecipe {
         }
 
         this.outputs.add(EmiStack.of(this.recipe.getResultItem()));
-        this.outputs.add(EmiStack.of(this.recipe.getResultFluid().getFluid()));
+        this.outputs.add(EmiStack.of(
+                this.recipe.getResultFluid().getFluid(),
+                this.recipe.getResultFluid().getAmount()));
     }
 
     @Override

@@ -35,6 +35,7 @@ public class AAELivingEntityEvents {
                         || event.getSource().is(DamageTypes.ON_FIRE)) {
                     player.setRemainingFireTicks(0);
                     event.setInvulnerable(true);
+                    item.consumeEnergy(chestStack, UpgradeType.LAVA_IMMUNITY);
                 }
             }
             ItemStack bootStack = player.getItemBySlot(EquipmentSlot.FEET);
@@ -44,6 +45,7 @@ public class AAELivingEntityEvents {
                 var chance = randomGenerator.nextDouble(100);
                 if (chance < AAEConfig.instance().getEvasionChance()) {
                     event.setInvulnerable(true);
+                    item.consumeEnergy(bootStack, UpgradeType.EVASION);
                 }
             }
         }
@@ -55,8 +57,10 @@ public class AAELivingEntityEvents {
             ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
             Level level = player instanceof ServerPlayer serverPlayer ? serverPlayer.level() : null;
             if (stack.getItem() instanceof QuantumArmorBase item
-                    && item.isUpgradeEnabledAndPowered(stack, UpgradeType.WATER_BREATHING, level))
+                    && item.isUpgradeEnabledAndPowered(stack, UpgradeType.WATER_BREATHING, level)) {
                 event.setCanBreathe(true);
+                item.consumeEnergy(stack, UpgradeType.WATER_BREATHING);
+            }
         }
     }
 
@@ -66,8 +70,10 @@ public class AAELivingEntityEvents {
             ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
             Level level = player instanceof ServerPlayer serverPlayer ? serverPlayer.level() : null;
             if (stack.getItem() instanceof QuantumArmorBase item
-                    && item.isUpgradeEnabledAndPowered(stack, UpgradeType.JUMP_HEIGHT, level))
+                    && item.isUpgradeEnabledAndPowered(stack, UpgradeType.JUMP_HEIGHT, level)) {
                 UpgradeType.JUMP_HEIGHT.ability.execute(player.level(), player, stack);
+                item.consumeEnergy(stack, UpgradeType.JUMP_HEIGHT);
+            }
         }
     }
 
@@ -84,6 +90,7 @@ public class AAELivingEntityEvents {
                     int upgrade = stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.JUMP_HEIGHT), 0);
                     if (player.isSprinting()) upgrade += 2;
                     event.setDistance(event.getDistance() - upgrade);
+                    item.consumeEnergy(stack, UpgradeType.JUMP_HEIGHT);
                 }
             }
         }

@@ -78,7 +78,7 @@ public enum UpgradeType {
 
     LUCK("Luck Boost", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.LUCK_CARD),
     REACH("Reach Boost", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.REACH_CARD),
-    SWIM_SPEED("Swim Speed", null, SettingType.NONE, 5, ApplicationType.BUFF, AAEItems.SWIM_SPEED_CARD),
+    SWIM_SPEED("Swim Speed", null, SettingType.NUM_INPUT, 5, ApplicationType.BUFF, AAEItems.SWIM_SPEED_CARD),
     NIGHT_VISION("Night Vision", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.NIGHT_VISION_CARD),
     FLIGHT_DRIFT("No Flight Drift", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.FLIGHT_DRIFT_CARD);
 
@@ -172,7 +172,7 @@ public enum UpgradeType {
             case ATTACK_SPEED -> new UpgradeSettings(AAEConfig.instance().getAttackSpeedBoost());
             case LUCK -> new UpgradeSettings(AAEConfig.instance().getLuckBoost());
             case REACH -> new UpgradeSettings(AAEConfig.instance().getMaxReachBoost());
-            case SWIM_SPEED -> new UpgradeSettings(AAEConfig.instance().getMaxSwimSpeedBoost());
+            case SWIM_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxSwimSpeedBoost());
             case FLIGHT_DRIFT -> new UpgradeSettings(0, 100, 1, 50);
         };
     }

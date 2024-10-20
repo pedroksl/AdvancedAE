@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import appeng.core.definitions.AEItems;
+import appeng.datagen.providers.tags.ConventionTags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,6 +90,8 @@ public class AAETagProvider {
         protected void addTags(@NotNull HolderLookup.Provider provider) {
             tag(AAETags.ADV_PATTERN_PROVIDER)
                     .add(AAEBlocks.ADV_PATTERN_PROVIDER.asItem(), AAEItems.ADV_PATTERN_PROVIDER.asItem());
+
+            tag(AAEConventionTags.CURIOS).add(AAEItems.ADV_PATTERN_ENCODER.asItem());
         }
 
         @NotNull

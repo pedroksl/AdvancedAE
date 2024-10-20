@@ -72,6 +72,7 @@ public class AAEPlayerEvents {
             if (armor.getItem() instanceof QuantumChestplate chestplate) {
                 if (chestplate.isUpgradeEnabledAndPowered(armor, UpgradeType.FLIGHT)) {
                     event.setNewSpeed(event.getOriginalSpeed() * 5);
+                    chestplate.consumeEnergy(armor, UpgradeType.FLIGHT);
                 }
             }
         }
@@ -90,6 +91,7 @@ public class AAEPlayerEvents {
                         stack.set(AAEComponents.NIGHT_VISION_ACTIVATED, true);
                         serverPlayer.addEffect(
                                 new MobEffectInstance(MobEffects.NIGHT_VISION, 210, 0, false, false, false));
+                        helmet.consumeEnergy(stack, UpgradeType.NIGHT_VISION);
                     }
                 }
             }
@@ -110,6 +112,7 @@ public class AAEPlayerEvents {
                                     stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT_DRIFT), 100)
                                             / 100f;
                             player.setDeltaMovement(motion.x * value, motion.y, motion.z * value);
+                            boots.consumeEnergy(stack, UpgradeType.FLIGHT_DRIFT);
                         }
                     }
                 }

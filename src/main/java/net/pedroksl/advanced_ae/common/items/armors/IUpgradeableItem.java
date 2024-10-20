@@ -25,7 +25,8 @@ public interface IUpgradeableItem extends IGridLinkedItem {
     default List<UpgradeType> getPassiveUpgrades(ItemStack itemStack) {
         List<UpgradeType> abilityList = new ArrayList<>();
         getAppliedUpgrades(itemStack).forEach(up -> {
-            if (up.applicationType == UpgradeType.ApplicationType.PASSIVE) abilityList.add(up);
+            if (up.applicationType == UpgradeType.ApplicationType.PASSIVE
+                    || up.applicationType == UpgradeType.ApplicationType.BUFF) abilityList.add(up);
         });
         return abilityList;
     }
@@ -103,7 +104,18 @@ public interface IUpgradeableItem extends IGridLinkedItem {
         for (var upgrade : getAppliedUpgrades(stack)) {
             if (upgrade.applicationType == UpgradeType.ApplicationType.PASSIVE && isUpgradeEnabled(stack, upgrade)) {
                 upgrade.ability.execute(level, player, stack);
+                consumeEnergy(stack, upgrade);
+            } else if (upgrade.applicationType == UpgradeType.ApplicationType.BUFF
+                    && isUpgradeEnabled(stack, upgrade)) {
+                consumeEnergy(stack, upgrade);
             }
+        }
+    }
+
+    default void consumeEnergy(ItemStack stack, UpgradeType upgrade) {
+        var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        if (energy != null) {
+            energy.extractEnergy(upgrade.getCost(), false);
         }
     }
 }
