@@ -49,6 +49,11 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.QUANTUM_PROCESSOR);
         basicItem(AAEItems.QUANTUM_STORAGE_COMPONENT);
 
+        basicItem(AAEItems.QUANTUM_HELMET);
+        basicItem(AAEItems.QUANTUM_CHESTPLATE);
+        basicItem(AAEItems.QUANTUM_LEGGINGS);
+        basicItem(AAEItems.QUANTUM_BOOTS);
+
         stairsBlock(AAEBlocks.QUANTUM_ALLOY_STAIRS, AAEBlocks.QUANTUM_ALLOY_BLOCK);
         slabBlock(AAEBlocks.QUANTUM_ALLOY_SLAB, AAEBlocks.QUANTUM_ALLOY_BLOCK);
         wall(AAEBlocks.QUANTUM_ALLOY_WALL, "block/quantum_alloy_block");

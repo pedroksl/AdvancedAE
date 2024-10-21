@@ -16,6 +16,7 @@
   "block.advanced_ae.quantum_unit": "Quantum Crafting Unit",
   "block.advanced_ae.reaction_chamber": "Reaction Chamber",
   "block.advanced_ae.small_adv_pattern_provider": "Advanced Pattern Provider",
+  "curios.identifier.adv_pattern_encoder": "Pattern Encoder",
   "emi.category.advanced_ae.EmiReactionChamber": "Reaction Chamber",
   "emi.text.advanced_ae.AdvPatternProviderEmiDesc": "Created by upgrading an Advanced Pattern Provider with a capacity upgrade",
   "emi.text.advanced_ae.ReactionChamberEnergy": "Used Power: %dk FE",

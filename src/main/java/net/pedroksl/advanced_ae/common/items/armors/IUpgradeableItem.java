@@ -102,20 +102,36 @@ public interface IUpgradeableItem extends IGridLinkedItem {
 
     default void tickUpgrades(Level level, Player player, ItemStack stack) {
         for (var upgrade : getAppliedUpgrades(stack)) {
-            if (upgrade.applicationType == UpgradeType.ApplicationType.PASSIVE && isUpgradeEnabled(stack, upgrade)) {
-                upgrade.ability.execute(level, player, stack);
-                consumeEnergy(stack, upgrade);
+            if (upgrade.applicationType == UpgradeType.ApplicationType.PASSIVE
+                    && isUpgradeEnabled(stack, upgrade)
+                    && upgrade.ability != null) {
+                if (upgrade.ability.execute(level, player, stack)) {
+                    consumeEnergy(stack, upgrade);
+                }
             } else if (upgrade.applicationType == UpgradeType.ApplicationType.BUFF
                     && isUpgradeEnabled(stack, upgrade)) {
+                consumeEnergy(stack, upgrade);
+            }
+            if (upgrade == UpgradeType.FLIGHT && player.getAbilities().flying) {
                 consumeEnergy(stack, upgrade);
             }
         }
     }
 
     default void consumeEnergy(ItemStack stack, UpgradeType upgrade) {
-        var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        if (energy != null) {
-            energy.extractEnergy(upgrade.getCost(), false);
+        consumeEnergy(stack, upgrade.getCost());
+    }
+
+    default void consumeEnergy(ItemStack stack, int amount) {
+        if (stack.getItem() instanceof PoweredItem item) {
+            var multi = PowerMultiplier.CONFIG;
+            item.extractAEPower(stack, multi.multiply(amount), Actionable.MODULATE);
+        }
+        else {
+            var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            if (energy != null) {
+                energy.extractEnergy(amount, false);
+            }
         }
     }
 }

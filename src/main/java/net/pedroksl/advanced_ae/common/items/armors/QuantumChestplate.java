@@ -1,18 +1,11 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import java.util.function.Consumer;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
@@ -40,15 +33,5 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem {
                 && entity instanceof Player player) {
             tickUpgrades(level, player, stack);
         }
-    }
-
-    @Override
-    public <T extends LivingEntity> int damageItem(
-            ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
-        IEnergyStorage energyStorage = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        if (energyStorage == null) return amount;
-
-        energyStorage.extractEnergy(amount, false);
-        return 0;
     }
 }

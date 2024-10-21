@@ -7,9 +7,9 @@ import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 
 public class QuantumAlloy {
     public static ArmorMaterial get() {
@@ -23,7 +23,7 @@ public class QuantumAlloy {
                 }),
                 15,
                 SoundEvents.ARMOR_EQUIP_NETHERITE,
-                () -> Ingredient.of(Items.IRON_INGOT),
+                () -> Ingredient.of(AAEItems.QUANTUM_ALLOY),
                 List.of(new ArmorMaterial.Layer(AdvancedAE.makeId("quantum_alloy"), "", true)),
                 3.0F,
                 0.1F);

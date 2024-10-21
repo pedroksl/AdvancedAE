@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-16T04:07:19.35201	Block States / Models
+// 1.21.1	2024-10-20T13:33:51.9190732	Block States / Models
 95a299ecaf1f57e89c3507297d4be2fc99a2749c assets/advanced_ae/blockstates/adv_pattern_provider.json
 fef5598f6fe49cc3150d9233ce01bc5a7136fcf9 assets/advanced_ae/blockstates/data_entangler.json
 9f77870684c7b9108903c29765927a81ea7d4cfd assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -61,9 +61,13 @@ cc11a19eaad2f958156a078c5584029b442ecbb7 assets/advanced_ae/models/item/luck_car
 0f7cd3dd25ff88ca7de4b1f712eca1bb5707f8c7 assets/advanced_ae/models/item/quantum_alloy_slab.json
 d22cc585adca9760ef76816fc62d01d6239ec6d1 assets/advanced_ae/models/item/quantum_alloy_stairs.json
 f5a7ef17e6dcbd8e4bb5392310bcfdfeb4134dad assets/advanced_ae/models/item/quantum_alloy_wall.json
+9e11ab75577f93da5000b0de728ae81a3454eb7f assets/advanced_ae/models/item/quantum_boots.json
+61a8ca8c893cc1672c0388558dc34208d3884167 assets/advanced_ae/models/item/quantum_chestplate.json
 12aba676f3c587f4210877038cd8364ff6ae981c assets/advanced_ae/models/item/quantum_crafter.json
+2fb262e025be09806d68850b63b007bcba02cdb5 assets/advanced_ae/models/item/quantum_helmet.json
 502b166d70d5afd205d3503568ee4183596ea5ed assets/advanced_ae/models/item/quantum_infused_dust.json
 d14b4358e99ed3814797641b7d80173b340f020d assets/advanced_ae/models/item/quantum_infusion_bucket.json
+f769b3a056d8e9aa8983568725869c0488f96613 assets/advanced_ae/models/item/quantum_leggings.json
 d76cb3cbc341923a40ba492803e851622feac77e assets/advanced_ae/models/item/quantum_multi_threader.json
 42b9934dcc16c1b2f608e0d79b438fac4d8e5751 assets/advanced_ae/models/item/quantum_processor.json
 2aaf70b82a03715463465612e7a5f17f8f4809fa assets/advanced_ae/models/item/quantum_processor_press.json

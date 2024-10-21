@@ -20,9 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.helpers.MagnetHelpers;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumChestplate;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumHelmet;
+import net.pedroksl.advanced_ae.common.items.armors.*;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
@@ -48,6 +46,7 @@ public class UpgradeCards {
                 if (player.zza < 0F) value /= 2;
                 player.moveRelative(
                         value, new Vec3(Math.signum(player.xxa), Math.signum(player.yya), Math.signum(player.zza)));
+                return true;
             }
         }
         return false;
@@ -60,17 +59,20 @@ public class UpgradeCards {
         boolean isNotFlying = player.fallDistance <= 0 && !player.isFallFlying();
         if (player.isSprinting() && (canFly || isNotFlying) && !player.isInWaterOrBubble()) {
             var upgrade = UpgradeType.SPRINT_SPEED;
-            var value = upgrade.getSettings().multiplier
-                    * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 0)
-                    / 25f;
-            if (value > 0) {
-                if (canFly && player.getAbilities().flying) {
-                    value += chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
+            if (stack.getItem() instanceof QuantumLeggings legs && legs.isUpgradeEnabledAndPowered(stack, upgrade)) {
+                var value = upgrade.getSettings().multiplier
+                        * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 0)
+                        / 25f;
+                if (value > 0) {
+                    if (canFly && player.getAbilities().flying) {
+                        value += chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
+                    }
+                    if (!player.onGround()) value /= 4;
+                    if (player.zza < 0F) value /= 2;
+                    player.moveRelative(
+                            value, new Vec3(Math.signum(player.xxa), Math.signum(player.yya), Math.signum(player.zza)));
+                    return true;
                 }
-                if (!player.onGround()) value /= 4;
-                if (player.zza < 0F) value /= 2;
-                player.moveRelative(
-                        value, new Vec3(Math.signum(player.xxa), Math.signum(player.yya), Math.signum(player.zza)));
             }
         }
         return false;
@@ -79,12 +81,15 @@ public class UpgradeCards {
     public static boolean jumpHeight(Level level, Player player, ItemStack stack) {
         if (!player.isInWaterOrBubble() && !player.isFallFlying()) {
             var upgrade = UpgradeType.JUMP_HEIGHT;
-            var value = upgrade.getSettings().multiplier
-                    * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), -1)
-                    / 8f;
-            if (value > 0) {
-                if (player.isSprinting()) value *= 2;
-                player.moveRelative(value, new Vec3(0, 1, 0));
+            if (stack.getItem() instanceof QuantumBoots boots && boots.isUpgradeEnabledAndPowered(stack, upgrade)) {
+                var value = upgrade.getSettings().multiplier
+                        * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), -1)
+                        / 8f;
+                if (value > 0) {
+                    if (player.isSprinting()) value *= 2;
+                    player.moveRelative(value, new Vec3(0, 1, 0));
+                    return true;
+                }
             }
         }
         return false;
@@ -93,6 +98,7 @@ public class UpgradeCards {
     public static boolean autoFeed(Level level, Player player, ItemStack stack) {
         if (player.getFoodData().needsFood()
                 && stack.getItem() instanceof QuantumHelmet helmet
+                && helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.AUTO_FEED)
                 && helmet.getLinkedPosition(stack) != null) {
             MutableObject<Component> errorHolder = new MutableObject<>();
             var grid = helmet.getLinkedGrid(stack, level, errorHolder::setValue);
@@ -124,7 +130,7 @@ public class UpgradeCards {
                                                         Actionable.MODULATE,
                                                         IActionSource.ofPlayer(player));
                                     }
-                                    return false;
+                                    return true;
                                 }
                             }
                         }
@@ -176,6 +182,7 @@ public class UpgradeCards {
                                             stackToInsert.getCount(),
                                             Actionable.MODULATE,
                                             IActionSource.ofPlayer(player));
+                            return true;
                         } else if (amountDelta < 0) {
                             amountDelta = -amountDelta;
                             var inserted = storage.getInventory()
@@ -191,6 +198,7 @@ public class UpgradeCards {
                                 player.getInventory().setItem(slot, new ItemStack(item.getItem(), amountToSet));
                                 amountToLeave = Math.max(0, amountToLeave - amountToSet);
                             }
+                            return true;
                         }
                     }
                 }
@@ -226,6 +234,7 @@ public class UpgradeCards {
                     player.takeXpDelay = 0;
                     xp.playerTouch(player);
                 });
+                return true;
             }
         }
         return false;
@@ -235,6 +244,7 @@ public class UpgradeCards {
         if (stack.getItem() instanceof QuantumChestplate chest) {
             if (chest.isUpgradeEnabledAndPowered(stack, UpgradeType.REGENERATION)) {
                 player.heal((float) (0.1 * AAEConfig.instance().getRenegerationPerTick()));
+                return true;
             }
         }
         return false;

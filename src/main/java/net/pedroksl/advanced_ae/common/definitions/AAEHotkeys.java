@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import appeng.hotkeys.CuriosHotkeyAction;
-import appeng.hotkeys.InventoryHotkeyAction;
 import net.minecraft.world.level.ItemLike;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.helpers.ArmorHotkeyAction;
 
 import appeng.api.features.HotkeyAction;
+import appeng.hotkeys.CuriosHotkeyAction;
+import appeng.hotkeys.InventoryHotkeyAction;
 
 public class AAEHotkeys {
     public static final Map<String, List<HotkeyAction>> REGISTRY = new HashMap<>();
@@ -36,7 +36,8 @@ public class AAEHotkeys {
                 AAEItems.QUANTUM_BOOTS,
                 (player, locator) -> AAEItems.QUANTUM_BOOTS.get().openFromEquipmentSlot(player, locator),
                 ARMOR_CONFIG);
-        register(AAEItems.ADV_PATTERN_ENCODER,
+        register(
+                AAEItems.ADV_PATTERN_ENCODER,
                 (player, locator) -> AAEItems.ADV_PATTERN_ENCODER.get().openFromInventory(player, locator),
                 PATTERN_ENCODER_HOTKEY);
     }

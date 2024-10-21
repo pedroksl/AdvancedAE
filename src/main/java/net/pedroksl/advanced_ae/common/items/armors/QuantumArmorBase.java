@@ -2,21 +2,24 @@ package net.pedroksl.advanced_ae.common.items.armors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 
 import org.jetbrains.annotations.Nullable;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
@@ -32,12 +35,19 @@ import appeng.core.localization.Tooltips;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.ItemMenuHostLocator;
 
+import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import static software.bernie.geckolib.constant.DefaultAnimations.IDLE;
 
 public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem, IUpgradeableItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -112,6 +122,15 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     }
 
     @Override
+    public <T extends LivingEntity> int damageItem(
+            ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+        consumeEnergy(stack, amount);
+        return 0;
+    }
+
+
+
+    @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
             private GeoArmorRenderer<?> renderer;
@@ -131,41 +150,39 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        /*
         controllers.add(new AnimationController<GeoAnimatable>(this, 20, state -> {
-        				// Apply our generic idle animation.
-        				// Whether it plays or not is decided down below.
-        				state.getController().setAnimation(IDLE);
+            // Apply our generic idle animation.
+            // Whether it plays or not is decided down below.
+            state.getController().setAnimation(RawAnimation.begin().thenLoop("animation.quantum_armor.idle"));
 
-        				// Let's gather some data from the state to use below
-        				// This is the entity that is currently wearing/holding the item
-        				Entity entity = state.getData(DataTickets.ENTITY);
+            // Let's gather some data from the state to use below
+            // This is the entity that is currently wearing/holding the item
+            Entity entity = state.getData(DataTickets.ENTITY);
 
-        				// We'll just have ArmorStands always animate, so we can return here
-        				if (entity instanceof ArmorStand) return PlayState.CONTINUE;
+            // We'll just have ArmorStands always animate, so we can return here
+            if (entity instanceof ArmorStand) return PlayState.CONTINUE;
 
-        				// For this example, we only want the animation to play if the entity is wearing all pieces of the armor
-        				// Let's collect the armor pieces the entity is currently wearing
-        				Set<Item> wornArmor = new ObjectOpenHashSet<>();
+            // For this example, we only want the animation to play if the entity is wearing all pieces of the armor
+            // Let's collect the armor pieces the entity is currently wearing
+            Set<Item> wornArmor = new ObjectOpenHashSet<>();
 
-        				for (ItemStack stack : ((Player) entity).getArmorSlots()) {
-        								// We can stop immediately if any of the slots are empty
-        								if (stack.isEmpty()) return PlayState.STOP;
+            for (ItemStack stack : ((Player) entity).getArmorSlots()) {
+                // We can stop immediately if any of the slots are empty
+                if (stack.isEmpty()) return PlayState.STOP;
 
-        								wornArmor.add(stack.getItem());
-        				}
+                wornArmor.add(stack.getItem());
+            }
 
-        				// Check each of the pieces match our set
-        				boolean isFullSet = wornArmor.containsAll(ObjectArrayList.of(
-        												AAEItems.QUANTUM_BOOTS.get(),
-        												AAEItems.QUANTUM_LEGGINGS.get(),
-        												AAEItems.QUANTUM_ARMOR.get(),
-        												AAEItems.QUANTUM_HELMET.get()));
+            // Check each of the pieces match our set
+            boolean isFullSet = wornArmor.containsAll(ObjectArrayList.of(
+                    AAEItems.QUANTUM_BOOTS.get(),
+                    AAEItems.QUANTUM_LEGGINGS.get(),
+                    AAEItems.QUANTUM_CHESTPLATE.get(),
+                    AAEItems.QUANTUM_HELMET.get()));
 
-        				// Play the animation if the full set is being worn, otherwise stop
-        				return isFullSet ? PlayState.CONTINUE : PlayState.STOP;
+            // Play the animation if the full set is being worn, otherwise stop
+            return isFullSet ? PlayState.CONTINUE : PlayState.STOP;
         }));
-        	*/
     }
 
     @Override

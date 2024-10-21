@@ -37,6 +37,7 @@ import appeng.hooks.ticking.TickHandler;
 import appeng.items.parts.PartModels;
 import appeng.parts.PartModel;
 import appeng.parts.reporting.AbstractMonitorPart;
+import appeng.util.InteractionUtil;
 
 public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridTickable {
 
@@ -121,12 +122,16 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     public boolean onUseItemOn(ItemStack heldItem, Player player, InteractionHand hand, Vec3 pos) {
         if (heldItem == ItemStack.EMPTY) {
             return super.onUseWithoutItem(player, pos);
-        } else if (heldItem.is(AEItems.SPEED_CARD.asItem()) && !isInOverdrive()) {
+        } else if (heldItem.is(AEItems.SPEED_CARD.asItem())
+                && !isInOverdrive()
+                && InteractionUtil.isInAlternateUseMode(player)) {
             if (!isClientSide()) {
                 setOverdrive(true);
             }
             return true;
-        } else if (heldItem.is(Items.SLIME_BALL.asItem()) && isInOverdrive()) {
+        } else if (heldItem.is(Items.SLIME_BALL.asItem())
+                && isInOverdrive()
+                && InteractionUtil.isInAlternateUseMode(player)) {
             if (!isClientSide()) {
                 setOverdrive(false);
             }
