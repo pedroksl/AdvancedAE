@@ -126,8 +126,7 @@ public interface IUpgradeableItem extends IGridLinkedItem {
         if (stack.getItem() instanceof PoweredItem item) {
             var multi = PowerMultiplier.CONFIG;
             item.extractAEPower(stack, multi.multiply(amount), Actionable.MODULATE);
-        }
-        else {
+        } else {
             var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
             if (energy != null) {
                 energy.extractEnergy(amount, false);

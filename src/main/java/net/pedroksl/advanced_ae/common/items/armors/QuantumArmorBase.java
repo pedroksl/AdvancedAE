@@ -47,8 +47,6 @@ import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import static software.bernie.geckolib.constant.DefaultAnimations.IDLE;
-
 public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem, IUpgradeableItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -127,8 +125,6 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
         consumeEnergy(stack, amount);
         return 0;
     }
-
-
 
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {

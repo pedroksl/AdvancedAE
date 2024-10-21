@@ -1,5 +1,7 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
+import java.util.Set;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -38,6 +40,13 @@ public class SimulatedStorageImportStrategy<T, S> {
 
         var adjacentStorage = conversion.getFacade(adjacentHandler);
         var amount = adjacentStorage.extract(what, toImport, Actionable.SIMULATE, src);
+
+        // Check if slots are locked for extraction
+        if (amount == 0 && adjacentStorage.containsAnyFuzzy(Set.of(what))) {
+            var stacks = adjacentStorage.getAvailableStacks();
+            amount = stacks.get(what);
+        }
+
         return Math.max(0, amount);
     }
 }
