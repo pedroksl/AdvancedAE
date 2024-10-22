@@ -6,12 +6,16 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
+import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+
 public class QuantumHelmet extends QuantumArmorBase {
 
-    private static final double MAX_POWER_STORAGE = 100000;
+    private static final double MAX_POWER_STORAGE = 200000000;
 
     public QuantumHelmet(Properties properties) {
         super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.HELMET, properties, () -> MAX_POWER_STORAGE);
@@ -26,10 +30,26 @@ public class QuantumHelmet extends QuantumArmorBase {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex()
-                && !getPassiveUpgrades(stack).isEmpty()
-                && entity instanceof Player player) {
-            tickUpgrades(level, player, stack);
+        if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex()) {
+            if (entity instanceof Player player) {
+                if (!getPassiveUpgrades(stack).isEmpty()) {
+                    tickUpgrades(level, player, stack);
+                }
+
+                toggleBoneVisibilities(stack, player);
+            }
+        }
+    }
+
+    private void toggleBoneVisibilities(ItemStack stack, Player player) {
+        var item = (QuantumArmorBase) stack.getItem();
+        var renderProvider = item.getRenderProvider();
+        if (renderProvider instanceof GeoRenderProvider provider) {
+            var renderer = provider.getGeoArmorRenderer(player, stack, EquipmentSlot.HEAD, null);
+            if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
+                var visible = stack.has(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.AUTO_FEED));
+                quantumRenderer.setBoneVisible(QuantumArmorRenderer.HUD_BONE, visible);
+            }
         }
     }
 }

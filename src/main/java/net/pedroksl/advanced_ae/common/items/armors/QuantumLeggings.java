@@ -11,7 +11,7 @@ import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
 public class QuantumLeggings extends QuantumArmorBase {
 
-    private static final double MAX_POWER_STORAGE = 100000;
+    private static final double MAX_POWER_STORAGE = 250000000;
 
     public QuantumLeggings(Properties properties) {
         super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.LEGGINGS, properties, () -> MAX_POWER_STORAGE);
