@@ -27,7 +27,8 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem {
                 UpgradeType.LAVA_IMMUNITY,
                 UpgradeType.REGENERATION,
                 UpgradeType.STRENGTH,
-                UpgradeType.ATTACK_SPEED);
+                UpgradeType.ATTACK_SPEED,
+                UpgradeType.CHARGING);
     }
 
     @Override

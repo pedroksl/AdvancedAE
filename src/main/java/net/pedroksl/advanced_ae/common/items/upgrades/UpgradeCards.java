@@ -3,6 +3,9 @@ package net.pedroksl.advanced_ae.common.items.upgrades;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.glodblock.github.appflux.common.me.key.FluxKey;
+import com.glodblock.github.appflux.common.me.key.type.EnergyType;
+
 import org.apache.commons.lang3.mutable.MutableObject;
 
 import net.minecraft.core.component.DataComponents;
@@ -12,20 +15,28 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.helpers.MagnetHelpers;
 import net.pedroksl.advanced_ae.common.items.armors.*;
+import net.pedroksl.advanced_ae.xmod.Addons;
 
 import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.energy.IEnergyService;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.GenericStack;
+
+import top.theillusivec4.curios.api.CuriosCapability;
 
 public class UpgradeCards {
     public static boolean walkSpeed(Level level, Player player, ItemStack stack) {
@@ -252,5 +263,99 @@ public class UpgradeCards {
             }
         }
         return false;
+    }
+
+    public static boolean recharging(Level level, Player player, ItemStack stack) {
+        if (stack.getItem() instanceof QuantumArmorBase armor
+                && armor.isUpgradeEnabledAndPowered(stack, UpgradeType.CHARGING)
+                && armor.getLinkedPosition(stack) != null) {
+            MutableObject<Component> errorHolder = new MutableObject<>();
+            var grid = armor.getLinkedGrid(stack, level, errorHolder::setValue);
+            if (grid != null) {
+                var energy = grid.getEnergyService();
+
+                var currentPower = armor.getAECurrentPower(stack);
+                var rate = armor.getChargeRate(stack);
+                var afRate = Integer.MAX_VALUE;
+                var maxPower = armor.getAEMaxPower(stack);
+                var neededPower = Math.min(rate, maxPower - currentPower);
+
+                if (neededPower > 0 && Addons.APPFLUX.isLoaded()) {
+                    neededPower = Math.min(afRate, maxPower - currentPower);
+                    var storage = grid.getStorageService();
+                    var extracted = storage.getInventory()
+                            .extract(
+                                    FluxKey.of(EnergyType.FE),
+                                    (long) (neededPower / PowerMultiplier.CONFIG.multiplier),
+                                    Actionable.MODULATE,
+                                    IActionSource.ofPlayer(player));
+
+                    armor.injectAEPower(stack, extracted * PowerMultiplier.CONFIG.multiplier, Actionable.MODULATE);
+
+                    neededPower -= extracted;
+                }
+
+                if (neededPower > 0 && energy.getStoredPower() > 0) {
+                    var extracted = energy.extractAEPower(rate, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                    var inserted = armor.injectAEPower(stack, extracted, Actionable.MODULATE);
+                    energy.injectPower(inserted, Actionable.MODULATE);
+                }
+
+                if (stack.getItem() instanceof QuantumChestplate) {
+                    // Recharge Inventory
+                    for (var i = 0; i < Inventory.INVENTORY_SIZE; i++) {
+                        var item = player.getInventory().getItem(i);
+                        if (item.isEmpty()) continue;
+
+                        rechargeItem(player, item, grid, rate, energy);
+                    }
+
+                    if (Addons.CURIOS.isLoaded()) {
+                        var curiosInventory = player.getCapability(CuriosCapability.INVENTORY);
+                        if (curiosInventory != null) {
+                            var handler = curiosInventory.getEquippedCurios();
+                            for (var i = 0; i < handler.getSlots(); i++) {
+                                var item = handler.getStackInSlot(i);
+                                if (item.isEmpty()) continue;
+                                rechargeItem(player, item, grid, rate, energy);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static void rechargeItem(
+            Player player, ItemStack stack, IGrid grid, double rate, IEnergyService energyService) {
+        var cap = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        var afRate = Integer.MAX_VALUE;
+        if (cap != null && cap.canReceive()) {
+            if (Addons.APPFLUX.isLoaded()) {
+                var storage = grid.getStorageService();
+
+                var extracted = storage.getInventory()
+                        .extract(
+                                FluxKey.of(EnergyType.FE),
+                                (long) (afRate / PowerMultiplier.CONFIG.multiplier),
+                                Actionable.MODULATE,
+                                IActionSource.ofPlayer(player));
+                var inserted = cap.receiveEnergy((int) extracted, false);
+                storage.getInventory()
+                        .insert(
+                                FluxKey.of(EnergyType.FE),
+                                inserted,
+                                Actionable.MODULATE,
+                                IActionSource.ofPlayer(player));
+            }
+
+            if (energyService.getStoredPower() > 0) {
+                var extracted = energyService.extractAEPower(rate, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                var inserted = cap.receiveEnergy((int) extracted, false);
+                energyService.injectPower(inserted, Actionable.MODULATE);
+            }
+        }
     }
 }

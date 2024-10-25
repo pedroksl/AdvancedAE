@@ -12,7 +12,8 @@ public enum Addons {
     APPFLUX("Applied Flux"),
     MEGACELLS("MEGACells"),
     MEKANISM("Mekanism"),
-    IRIS(" Iris");
+    IRIS("Iris"),
+    CURIOS("Curios");
 
     private final String modName;
 

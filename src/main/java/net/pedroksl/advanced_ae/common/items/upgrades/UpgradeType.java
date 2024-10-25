@@ -80,7 +80,14 @@ public enum UpgradeType {
     REACH("Reach Boost", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.REACH_CARD),
     SWIM_SPEED("Swim Speed", null, SettingType.NUM_INPUT, 5, ApplicationType.BUFF, AAEItems.SWIM_SPEED_CARD),
     NIGHT_VISION("Night Vision", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.NIGHT_VISION_CARD),
-    FLIGHT_DRIFT("No Flight Drift", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.FLIGHT_DRIFT_CARD);
+    FLIGHT_DRIFT("No Flight Drift", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.FLIGHT_DRIFT_CARD),
+    CHARGING(
+            "ME Recharging",
+            UpgradeCards::recharging,
+            SettingType.NONE,
+            0,
+            ApplicationType.PASSIVE,
+            AAEItems.RECHARGING_CARD);
 
     public enum SettingType {
         NONE,
@@ -159,7 +166,8 @@ public enum UpgradeType {
                     AUTO_FEED,
                     AUTO_STOCK,
                     REGENERATION,
-                    NIGHT_VISION -> new UpgradeSettings(1);
+                    NIGHT_VISION,
+                    CHARGING -> new UpgradeSettings(1);
             case WALK_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxWalkSpeed(), 0.1f);
             case SPRINT_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxSprintSpeed(), 0.1f);
             case STEP_ASSIST -> new UpgradeSettings(1, AAEConfig.instance().getMaxStepHeight());
@@ -203,6 +211,7 @@ public enum UpgradeType {
             case SWIM_SPEED -> AAEText.SwimSpeedTooltip.text();
             case NIGHT_VISION -> AAEText.NightVisionTooltip.text();
             case FLIGHT_DRIFT -> AAEText.FlightDriftTooltip.text();
+            case CHARGING -> AAEText.RechargingTooltip.text();
         };
     }
 

@@ -11,14 +11,17 @@
     "F": {
       "item": "minecraft:feather"
     },
+    "P": {
+      "item": "advanced_ae:quantum_alloy_plate"
+    },
     "T": {
       "item": "minecraft:tnt"
     }
   },
   "pattern": [
-    " E ",
+    "PEP",
     "FCF",
-    " T "
+    "PTP"
   ],
   "result": {
     "count": 1,

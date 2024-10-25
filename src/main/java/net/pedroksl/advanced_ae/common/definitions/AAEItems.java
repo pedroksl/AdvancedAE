@@ -151,6 +151,8 @@ public class AAEItems {
             "Night Vision Card", "night_vision_card", p -> new QuantumUpgradeBaseItem(UpgradeType.NIGHT_VISION, p));
     public static final ItemDefinition<QuantumUpgradeBaseItem> FLIGHT_DRIFT_CARD = item(
             "Flight Drift Card", "flight_drift_card", p -> new QuantumUpgradeBaseItem(UpgradeType.FLIGHT_DRIFT, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> RECHARGING_CARD =
+            item("ME Recharging Card", "recharging_card", p -> new QuantumUpgradeBaseItem(UpgradeType.CHARGING, p));
 
     private static <T extends Item> ItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {

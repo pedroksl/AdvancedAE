@@ -15,6 +15,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
@@ -30,6 +31,7 @@ import net.pedroksl.advanced_ae.xmod.Addons;
 import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
 import appeng.core.definitions.AEParts;
+import appeng.core.definitions.BlockDefinition;
 import appeng.datagen.providers.tags.ConventionTags;
 import appeng.recipes.handlers.InscriberProcessType;
 import appeng.recipes.handlers.InscriberRecipeBuilder;
@@ -116,6 +118,9 @@ public class AAERecipeProvider extends RecipeProvider {
                 .requires(AAEBlocks.QUANTUM_ALLOY_BLOCK)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("quantum_alloy_from_block"));
+        stairRecipe(c, AAEBlocks.QUANTUM_ALLOY_BLOCK, AAEBlocks.QUANTUM_ALLOY_STAIRS);
+        wallRecipe(c, AAEBlocks.QUANTUM_ALLOY_BLOCK, AAEBlocks.QUANTUM_ALLOY_WALL);
+        slabRecipe(c, AAEBlocks.QUANTUM_ALLOY_BLOCK, AAEBlocks.QUANTUM_ALLOY_SLAB);
 
         // Items
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.STOCK_EXPORT_BUS)
@@ -462,12 +467,11 @@ public class AAERecipeProvider extends RecipeProvider {
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("sprint_speed_card"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.STEP_ASSIST_CARD)
-                .pattern("   ")
-                .pattern(" C ")
-                .pattern("SFS")
+                .pattern(" S ")
+                .pattern("SCS")
+                .pattern(" S ")
                 .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
-                .define('S', Items.SHULKER_SHELL)
-                .define('F', Items.FIREWORK_ROCKET)
+                .define('S', AAEBlocks.QUANTUM_ALLOY_STAIRS)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("step_assist_card"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.JUMP_HEIGHT_CARD)
@@ -491,13 +495,14 @@ public class AAERecipeProvider extends RecipeProvider {
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("lava_immunity_card"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.FLIGHT_CARD)
-                .pattern(" E ")
+                .pattern("PEP")
                 .pattern("FCF")
-                .pattern(" T ")
+                .pattern("PTP")
                 .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
                 .define('E', Items.ELYTRA)
                 .define('F', Items.FEATHER)
                 .define('T', Items.TNT)
+                .define('P', AAEItems.QUANTUM_ALLOY_PLATE)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("flight_card"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.WATER_BREATHING_CARD)
@@ -552,7 +557,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("hp_buffer_card"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.EVASION_CARD)
-                .pattern("   ")
+                .pattern("SSS")
                 .pattern("HCH")
                 .pattern("SSS")
                 .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
@@ -683,5 +688,53 @@ public class AAERecipeProvider extends RecipeProvider {
                                 new ModLoadedCondition(Addons.MEGACELLS.getModId()),
                                 new ModLoadedCondition(Addons.MEKANISM.getModId())))),
                         "skyosmium");
+    }
+
+    private void slabRecipe(RecipeOutput consumer, BlockDefinition<?> block, BlockDefinition<?> slabs) {
+        Block inputBlock = block.block();
+        Block outputBlock = slabs.block();
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, outputBlock, 6)
+                .pattern("###")
+                .define('#', inputBlock)
+                .unlockedBy("hasItem", has(inputBlock))
+                .save(consumer, block.id() + "_slab");
+
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(inputBlock), RecipeCategory.MISC, outputBlock, 2)
+                .unlockedBy("hasItem", has(inputBlock))
+                .save(consumer, slabs.id());
+    }
+
+    private void stairRecipe(RecipeOutput consumer, BlockDefinition<?> block, BlockDefinition<?> stairs) {
+        Block inputBlock = block.block();
+        Block outputBlock = stairs.block();
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, outputBlock, 4)
+                .pattern("#  ")
+                .pattern("## ")
+                .pattern("###")
+                .define('#', inputBlock)
+                .unlockedBy("hasItem", has(inputBlock))
+                .save(consumer, block.id() + "_stair");
+
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(inputBlock), RecipeCategory.MISC, outputBlock)
+                .unlockedBy("hasItem", has(inputBlock))
+                .save(consumer, stairs.id());
+    }
+
+    private void wallRecipe(RecipeOutput consumer, BlockDefinition<?> block, BlockDefinition<?> wall) {
+        Block inputBlock = block.block();
+        Block outputBlock = wall.block();
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, outputBlock, 6)
+                .pattern("###")
+                .pattern("###")
+                .define('#', inputBlock)
+                .unlockedBy("hasItem", has(inputBlock))
+                .save(consumer, block.id() + "_wall");
+
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(inputBlock), RecipeCategory.MISC, outputBlock)
+                .unlockedBy("hasItem", has(inputBlock))
+                .save(consumer, wall.id());
     }
 }

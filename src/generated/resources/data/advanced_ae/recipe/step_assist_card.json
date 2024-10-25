@@ -5,17 +5,14 @@
     "C": {
       "item": "advanced_ae:quantum_upgrade_base"
     },
-    "F": {
-      "item": "minecraft:firework_rocket"
-    },
     "S": {
-      "item": "minecraft:shulker_shell"
+      "item": "advanced_ae:quantum_alloy_stairs"
     }
   },
   "pattern": [
-    "   ",
-    " C ",
-    "SFS"
+    " S ",
+    "SCS",
+    " S "
   ],
   "result": {
     "count": 1,

@@ -100,7 +100,10 @@ public enum AAEText implements LocalizationEnum {
     ReachTooltip("Boosts the user's reach by %s.", Type.TOOLTIP),
     SwimSpeedTooltip("Boosts the user's swimming speed.", Type.TOOLTIP),
     NightVisionTooltip("Enables Night Vision.", Type.TOOLTIP),
-    FlightDriftTooltip("Removed flight drift. Requires basic flight upgrade.", Type.TOOLTIP);
+    FlightDriftTooltip("Removes flight drift. Requires basic flight upgrade.", Type.TOOLTIP),
+    RechargingTooltip(
+            "Enables armor recharging if linked to the grid. When installed in the chest slot, also recharges the inventory slots.",
+            Type.TOOLTIP);
 
     private final String englishText;
     private final Type type;
