@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
+import net.irisshaders.iris.api.v0.IrisApi;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -10,6 +11,7 @@ import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.advanced_ae.xmod.Addons;
 
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 
@@ -20,12 +22,13 @@ public class QuantumHelmet extends QuantumArmorBase {
     public QuantumHelmet(Properties properties) {
         super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.HELMET, properties, () -> MAX_POWER_STORAGE);
 
-        this.possibleUpgrades.add(UpgradeType.WATER_BREATHING);
-        this.possibleUpgrades.add(UpgradeType.AUTO_FEED);
-        this.possibleUpgrades.add(UpgradeType.AUTO_STOCK);
-        this.possibleUpgrades.add(UpgradeType.MAGNET);
-        this.possibleUpgrades.add(UpgradeType.LUCK);
-        this.possibleUpgrades.add(UpgradeType.NIGHT_VISION);
+        registerUpgrades(
+                UpgradeType.WATER_BREATHING,
+                UpgradeType.AUTO_FEED,
+                UpgradeType.AUTO_STOCK,
+                UpgradeType.MAGNET,
+                UpgradeType.LUCK,
+                UpgradeType.NIGHT_VISION);
     }
 
     @Override
@@ -48,6 +51,13 @@ public class QuantumHelmet extends QuantumArmorBase {
             var renderer = provider.getGeoArmorRenderer(player, stack, EquipmentSlot.HEAD, null);
             if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
                 var visible = stack.has(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.AUTO_FEED));
+
+                if (!Addons.IRIS.isLoaded()) {
+                    visible = false;
+                } else {
+                    visible &= IrisApi.getInstance().isShaderPackInUse();
+                }
+
                 quantumRenderer.setBoneVisible(QuantumArmorRenderer.HUD_BONE, visible);
             }
         }

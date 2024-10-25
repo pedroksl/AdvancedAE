@@ -40,20 +40,21 @@ public final class AAEComponents {
     public static void init() {
         for (var upgrade : UpgradeType.values()) {
             DataComponentType<Boolean> toggle =
-                    register(upgrade.name() + "_toggle", builder -> builder.persistent(Codec.BOOL)
+                    register(upgrade.name().toLowerCase() + "_toggle", builder -> builder.persistent(Codec.BOOL)
                             .networkSynchronized(ByteBufCodecs.BOOL));
             DataComponentType<Integer> value =
-                    register(upgrade.name() + "_value", builder -> builder.persistent(Codec.INT)
+                    register(upgrade.name().toLowerCase() + "_value", builder -> builder.persistent(Codec.INT)
                             .networkSynchronized(ByteBufCodecs.INT));
             DataComponentType<List<GenericStack>> filter =
-                    register(upgrade.name() + "_filter", builder -> builder.persistent(Codec.list(GenericStack.CODEC))
+                    register(upgrade.name().toLowerCase() + "_filter", builder -> builder.persistent(
+                                    Codec.list(GenericStack.CODEC))
                             .networkSynchronized(GenericStack.STREAM_CODEC.apply(ByteBufCodecs.list())));
             UPGRADE_TOGGLE.put(upgrade, toggle);
             UPGRADE_VALUE.put(upgrade, value);
             UPGRADE_FILTER.put(upgrade, filter);
             if (upgrade.getExtraSettings() != UpgradeType.ExtraSettings.NONE) {
                 DataComponentType<Boolean> extra =
-                        register(upgrade.name() + "_extra", builder -> builder.persistent(Codec.BOOL)
+                        register(upgrade.name().toLowerCase() + "_extra", builder -> builder.persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL));
                 UPGRADE_EXTRA.put(upgrade, extra);
             }

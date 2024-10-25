@@ -82,6 +82,8 @@ public class AAEItems {
             item("Quantum Infused Dust", "quantum_infused_dust", MaterialItem::new);
     public static final ItemDefinition<MaterialItem> QUANTUM_ALLOY =
             item("Quantum Alloy", "quantum_alloy", MaterialItem::new);
+    public static final ItemDefinition<MaterialItem> QUANTUM_ALLOY_PLATE =
+            item("Quantum Alloy Plate", "quantum_alloy_plate", MaterialItem::new);
     public static final ItemDefinition<MaterialItem> SHATTERED_SINGULARITY =
             item("Shattered Singularity", "shattered_singularity", MaterialItem::new);
     public static final ItemDefinition<MaterialItem> QUANTUM_PROCESSOR_PRESS =

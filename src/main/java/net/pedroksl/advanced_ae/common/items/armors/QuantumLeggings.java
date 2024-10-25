@@ -16,10 +16,7 @@ public class QuantumLeggings extends QuantumArmorBase {
     public QuantumLeggings(Properties properties) {
         super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.LEGGINGS, properties, () -> MAX_POWER_STORAGE);
 
-        this.possibleUpgrades.add(UpgradeType.WALK_SPEED);
-        this.possibleUpgrades.add(UpgradeType.SPRINT_SPEED);
-        this.possibleUpgrades.add(UpgradeType.SWIM_SPEED);
-        this.possibleUpgrades.add(UpgradeType.REACH);
+        registerUpgrades(UpgradeType.WALK_SPEED, UpgradeType.SPRINT_SPEED, UpgradeType.SWIM_SPEED, UpgradeType.REACH);
     }
 
     @Override

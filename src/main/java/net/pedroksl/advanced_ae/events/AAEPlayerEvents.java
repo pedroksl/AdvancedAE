@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -18,10 +19,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumBoots;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumChestplate;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumHelmet;
+import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.packet.NoKeyPressedPacket;
 
@@ -77,6 +75,62 @@ public class AAEPlayerEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void playerRender(RenderPlayerEvent.Pre event) {
+        Player player = event.getEntity();
+        if (!(player instanceof ServerPlayer)) {
+            var renderer = event.getRenderer();
+            var model = renderer.getModel();
+
+            ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+            if (chestStack.getItem() instanceof QuantumChestplate) {
+                model.leftSleeve.visible = false;
+                model.rightSleeve.visible = false;
+                model.leftPants.visible = false;
+                model.rightPants.visible = false;
+                model.jacket.visible = false;
+            }
+
+            ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
+            if (leggingsStack.getItem() instanceof QuantumLeggings) {
+                model.leftPants.visible = false;
+                model.rightPants.visible = false;
+            }
+        }
+    }
+
+    //    @SubscribeEvent
+    //    public static void playerArmRender(RenderArmEvent event) {
+    //        Player player = event.getPlayer();
+    //
+    //        ItemStack stack = player.getItemBySlot(EquipmentSlot.CHEST);
+    //        if (stack.getItem() instanceof QuantumChestplate chest) {
+    //            var renderProvider = chest.getAnimatableInstanceCache().getRenderProvider();
+    //            if (renderProvider instanceof GeoRenderProvider provider) {
+    //                var renderer = provider.getGeoArmorRenderer(player, stack, EquipmentSlot.CHEST, null);
+    //                if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
+    //                    var boneName = event.getArm() == HumanoidArm.RIGHT ? QuantumArmorRenderer.RIGHT_ARM :
+    //                            QuantumArmorRenderer.LEFT_ARM;
+    //                    var model = quantumRenderer.getGeoModel();
+    //                    var renderType = RenderType.armorCutoutNoCull(model.getTextureResource(chest));
+    //
+    //                    var poseStack = event.getPoseStack();
+    //                    poseStack.pushPose();
+    //                    poseStack.last().pose().rotate((float) Math.PI,0, 0, 1);
+    //                    poseStack.translate(-1, 0.5f, 0);
+    //                    poseStack.translate(-0.3125F, -0.125F, 0);
+    //                    var source = event.getMultiBufferSource();
+    //                    var buffer = source.getBuffer(renderType);
+    //                    quantumRenderer.renderChildBones(boneName, poseStack, chest, renderType,
+    //                            source, buffer, false, 0, event.getPackedLight(), OverlayTexture.NO_OVERLAY, 0);
+    //                    poseStack.popPose();
+    //
+    //                    event.setCanceled(true);
+    //                }
+    //            }
+    //        }
+    //    }
 
     @SubscribeEvent
     public static void playerTick(PlayerTickEvent.Pre event) {

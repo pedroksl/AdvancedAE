@@ -11,7 +11,8 @@ public enum Addons {
     EXTENDEDAE("Extended AE"),
     APPFLUX("Applied Flux"),
     MEGACELLS("MEGACells"),
-    MEKANISM("Mekanism");
+    MEKANISM("Mekanism"),
+    IRIS(" Iris");
 
     private final String modName;
 

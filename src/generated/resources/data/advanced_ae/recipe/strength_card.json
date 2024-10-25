@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "D": {
+      "item": "minecraft:diamond_sword"
+    },
+    "F": {
+      "item": "ae2:fluix_sword"
+    },
+    "N": {
+      "item": "minecraft:netherite_sword"
+    },
+    "Q": {
+      "item": "ae2:certus_quartz_sword"
+    }
+  },
+  "pattern": [
+    " N ",
+    "FCQ",
+    " D "
+  ],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:strength_card"
+  }
+}

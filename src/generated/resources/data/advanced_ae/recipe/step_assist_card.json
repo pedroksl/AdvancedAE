@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "F": {
+      "item": "minecraft:firework_rocket"
+    },
+    "S": {
+      "item": "minecraft:shulker_shell"
+    }
+  },
+  "pattern": [
+    "   ",
+    " C ",
+    "SFS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:step_assist_card"
+  }
+}

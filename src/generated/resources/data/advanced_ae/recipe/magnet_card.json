@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "advanced_ae:quantum_alloy"
+    },
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "P": {
+      "item": "advanced_ae:quantum_alloy_plate"
+    }
+  },
+  "pattern": [
+    "P P",
+    "ACA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:magnet_card"
+  }
+}

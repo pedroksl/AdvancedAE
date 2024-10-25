@@ -44,6 +44,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.SHATTERED_SINGULARITY);
         basicItem(AAEItems.QUANTUM_INFUSED_DUST);
         basicItem(AAEItems.QUANTUM_ALLOY);
+        basicItem(AAEItems.QUANTUM_ALLOY_PLATE);
         basicItem(AAEItems.QUANTUM_PROCESSOR_PRESS);
         basicItem(AAEItems.QUANTUM_PROCESSOR_PRINT);
         basicItem(AAEItems.QUANTUM_PROCESSOR);

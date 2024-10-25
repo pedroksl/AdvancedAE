@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-20T13:33:51.9190732	Block States / Models
+// 1.21.1	2024-10-24T19:14:25.561507	Block States / Models
 95a299ecaf1f57e89c3507297d4be2fc99a2749c assets/advanced_ae/blockstates/adv_pattern_provider.json
 fef5598f6fe49cc3150d9233ce01bc5a7136fcf9 assets/advanced_ae/blockstates/data_entangler.json
 9f77870684c7b9108903c29765927a81ea7d4cfd assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -58,6 +58,7 @@ cc11a19eaad2f958156a078c5584029b442ecbb7 assets/advanced_ae/models/item/luck_car
 07074f00d204f9573456876375a5afde685b0e40 assets/advanced_ae/models/item/printed_quantum_processor.json
 239c6a7f0aa68fc828ab6caf0243fc25ce732ccd assets/advanced_ae/models/item/quantum_accelerator.json
 5484ded5e2fa8a2e04de039eb6be9712bdbeab74 assets/advanced_ae/models/item/quantum_alloy.json
+19588fe0bd509e091ac5f956426225e53c8d2051 assets/advanced_ae/models/item/quantum_alloy_plate.json
 0f7cd3dd25ff88ca7de4b1f712eca1bb5707f8c7 assets/advanced_ae/models/item/quantum_alloy_slab.json
 d22cc585adca9760ef76816fc62d01d6239ec6d1 assets/advanced_ae/models/item/quantum_alloy_stairs.json
 f5a7ef17e6dcbd8e4bb5392310bcfdfeb4134dad assets/advanced_ae/models/item/quantum_alloy_wall.json

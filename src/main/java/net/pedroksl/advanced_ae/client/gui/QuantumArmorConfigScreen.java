@@ -109,11 +109,6 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
         super.drawFG(guiGraphics, offsetX, offsetY, mouseX, mouseY);
 
-        if (selectedIndex != -1) {
-            var slot = this.menu.getSlot(selectedIndex);
-            AEBaseScreen.renderSlotHighlight(guiGraphics, slot.x, slot.y, 0, 0x787d53c1);
-        }
-
         Color color = this.style.getColor(PaletteColor.DEFAULT_TEXT_COLOR);
 
         final int scrollLevel = scrollbar.getCurrentScroll();
@@ -153,6 +148,11 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
                     LIST_BACK_BBOX.getWidth(),
                     LIST_BACK_BBOX.getHeight());
             currentY += LIST_LINE_HEIGHT;
+        }
+
+        if (selectedIndex != -1) {
+            var slot = this.menu.getSlot(selectedIndex);
+            AEBaseScreen.renderSlotHighlight(guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, 0x787d53c1);
         }
     }
 

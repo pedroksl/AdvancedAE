@@ -16,10 +16,8 @@ public class QuantumBoots extends QuantumArmorBase {
     public QuantumBoots(Properties properties) {
         super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.BOOTS, properties, () -> MAX_POWER_STORAGE);
 
-        this.possibleUpgrades.add(UpgradeType.STEP_ASSIST);
-        this.possibleUpgrades.add(UpgradeType.JUMP_HEIGHT);
-        this.possibleUpgrades.add(UpgradeType.EVASION);
-        this.possibleUpgrades.add(UpgradeType.FLIGHT_DRIFT);
+        registerUpgrades(
+                UpgradeType.STEP_ASSIST, UpgradeType.JUMP_HEIGHT, UpgradeType.EVASION, UpgradeType.FLIGHT_DRIFT);
     }
 
     @Override

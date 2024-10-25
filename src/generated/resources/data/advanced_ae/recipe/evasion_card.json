@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "H": {
+      "item": "minecraft:rabbit_hide"
+    },
+    "S": {
+      "item": "ae2:speed_card"
+    }
+  },
+  "pattern": [
+    "   ",
+    "HCH",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:evasion_card"
+  }
+}

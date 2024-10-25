@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -49,7 +50,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem, IUpgradeableItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    public static final String HUD_BONE = "hud";
 
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
     private List<UpgradeType> appliedUpgrades;
@@ -57,6 +57,10 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     public QuantumArmorBase(
             Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
         super(material, type, properties.fireResistant().rarity(Rarity.EPIC).stacksTo(1), powerCapacity);
+    }
+
+    protected void registerUpgrades(UpgradeType... upgrades) {
+        this.possibleUpgrades.addAll(Arrays.asList(upgrades));
     }
 
     @Override
