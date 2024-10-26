@@ -10,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,12 +27,14 @@ import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 
+import appeng.api.behaviors.ExternalStorageStrategy;
 import appeng.api.config.*;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyService;
 import appeng.api.networking.energy.IEnergySource;
+import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
@@ -41,6 +44,7 @@ import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AEKeyType;
 import appeng.api.stacks.GenericStack;
+import appeng.api.storage.MEStorage;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.UpgradeInventories;
@@ -50,9 +54,11 @@ import appeng.api.util.IConfigurableObject;
 import appeng.blockentity.grid.AENetworkedPoweredBlockEntity;
 import appeng.core.definitions.AEItems;
 import appeng.helpers.externalstorage.GenericStackInv;
+import appeng.me.storage.CompositeStorage;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
+import appeng.parts.automation.StackWorldBehaviors;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.CombinedInternalInventory;
 import appeng.util.inv.FilteredInternalInventory;
@@ -78,10 +84,8 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
             new FilteredInternalInventory(this.outputInv, AEItemFilters.EXTRACT_ONLY);
     private final InternalInventory invExposed = new CombinedInternalInventory(this.inputExposed, this.outputExposed);
 
-    private final GenericStackInv fluidInv =
-            new GenericStackInv(Set.of(AEKeyType.fluids()), this::onChangeTank, GenericStackInv.Mode.STORAGE, 1);
-    private final OutputGenericInv outFluidInv =
-            new OutputGenericInv(Set.of(AEKeyType.fluids()), this::onChangeTank, GenericStackInv.Mode.STORAGE, 1);
+    private final CustomGenericInv fluidInv =
+            new CustomGenericInv(Set.of(AEKeyType.fluids()), this::onChangeTank, GenericStackInv.Mode.STORAGE, 2);
 
     private boolean working = false;
     private int processingTime = 0;
@@ -90,6 +94,9 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     private ReactionChamberRecipe cachedTask = null;
 
     private EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
+
+    @SuppressWarnings("UnstableApiUsage")
+    private final HashMap<Direction, Map<AEKeyType, ExternalStorageStrategy>> exportStrategies = new HashMap<>();
 
     private boolean showWarning = false;
 
@@ -100,7 +107,6 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         this.setInternalMaxPower(MAX_POWER_STORAGE);
 
         this.fluidInv.setCapacity(AEKeyType.fluids(), MAX_TANK_CAPACITY);
-        this.outFluidInv.setCapacity(AEKeyType.fluids(), MAX_TANK_CAPACITY);
 
         this.upgrades = UpgradeInventories.forMachine(AAEBlocks.REACTION_CHAMBER, 4, this::saveChanges);
 
@@ -184,10 +190,6 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         return this.fluidInv;
     }
 
-    public GenericStackInv getOutTank() {
-        return this.outFluidInv;
-    }
-
     public void setShowWarning(boolean show) {
         this.showWarning = show;
     }
@@ -250,7 +252,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     }
 
     private boolean hasAutoExportWork() {
-        return !this.outputInv.getStackInSlot(0).isEmpty()
+        return (!this.outputInv.getStackInSlot(0).isEmpty() || this.fluidInv.getAmount(1) > 0)
                 && configManager.getSetting(Settings.AUTO_EXPORT) == YesNo.YES;
     }
 
@@ -262,7 +264,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                 return this.outputInv.insertItem(0, task.getResultItem(), true).isEmpty();
             } else {
                 var fluid = task.getResultFluid();
-                return this.outFluidInv.canAdd(0, AEFluidKey.of(fluid), fluid.getAmount());
+                return this.fluidInv.canAdd(1, AEFluidKey.of(fluid), fluid.getAmount());
             }
         }
 
@@ -372,7 +374,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                                             .insertItem(0, output, false)
                                             .isEmpty())
                             || (!out.isItemOutput()
-                                    && this.outFluidInv.add(0, AEFluidKey.of(fluidOut), fluidOut.getAmount())
+                                    && this.fluidInv.add(1, AEFluidKey.of(fluidOut), fluidOut.getAmount())
                                             >= fluidOut.getAmount() - 0.01)) {
                         this.setProcessingTime(0);
 
@@ -442,24 +444,61 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
         for (var side : allowedOutputs) {
             var dir = orientation.getSide(side);
-            var targetPos = getBlockPos().relative(dir);
-            BlockEntity te = level.getBlockEntity(targetPos);
-            if (te instanceof ReactionChamberEntity) continue;
-
-            var target = InternalInventory.wrapExternal(level, getBlockPos().relative(dir), dir.getOpposite());
+            var target = getTarget(dir);
 
             if (target != null) {
-                int startItems = this.outputInv.getStackInSlot(0).getCount();
-                this.outputInv.insertItem(0, target.addItems(this.outputInv.extractItem(0, 64, false)), false);
-                int endItems = this.outputInv.getStackInSlot(0).getCount();
+                var source = IActionSource.ofMachine(this);
+                var movedStacks = false;
+                var genStack = GenericStack.fromItemStack(this.outputInv.getStackInSlot(0));
+                if (genStack != null && genStack.what() != null) {
+                    var extractedStack = this.outputInv.extractItem(0, 64, false);
+                    var inserted =
+                            target.insert(genStack.what(), extractedStack.getCount(), Actionable.MODULATE, source);
+                    extractedStack.setCount(extractedStack.getCount() - (int) inserted);
+                    this.outputInv.insertItem(0, extractedStack, false);
+                    movedStacks |= inserted > 0;
+                }
 
-                if (startItems != endItems) {
+                var outFluid = this.fluidInv.getStack(1);
+                if (outFluid != null && outFluid.what() != null) {
+                    var extracted =
+                            this.fluidInv.extract(outFluid.what(), outFluid.amount(), Actionable.MODULATE, source);
+                    var inserted = target.insert(outFluid.what(), extracted, Actionable.MODULATE, source);
+                    this.fluidInv.add(1, ((AEFluidKey) outFluid.what()), (int) (extracted - inserted));
+                    movedStacks |= inserted > 0;
+                }
+
+                if (movedStacks) {
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private CompositeStorage getTarget(Direction dir) {
+        if (this.exportStrategies.get(dir) == null) {
+            var be = this.getBlockEntity();
+            this.exportStrategies.put(
+                    dir,
+                    StackWorldBehaviors.createExternalStorageStrategies(
+                            (ServerLevel) be.getLevel(), be.getBlockPos().relative(dir), dir));
+        }
+
+        var externalStorages = new IdentityHashMap<AEKeyType, MEStorage>(2);
+        for (var entry : exportStrategies.get(dir).entrySet()) {
+            var wrapper = entry.getValue().createWrapper(false, () -> {});
+            if (wrapper != null) {
+                externalStorages.put(entry.getKey(), wrapper);
+            }
+        }
+
+        if (!externalStorages.isEmpty()) {
+            return new CompositeStorage(externalStorages);
+        }
+        return null;
     }
 
     @Override
@@ -476,7 +515,6 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
         super.saveAdditional(data, registries);
         this.fluidInv.writeToChildTag(data, "tank", registries);
-        this.outFluidInv.writeToChildTag(data, "outTank", registries);
 
         ListTag outputTags = new ListTag();
         for (var side : this.allowedOutputs) {
@@ -492,7 +530,6 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
         super.loadTag(data, registries);
         this.fluidInv.readFromChildTag(data, "tank", registries);
-        this.outFluidInv.readFromChildTag(data, "outTank", registries);
 
         this.allowedOutputs.clear();
         ListTag outputTags = data.getList("outputs", Tag.TAG_STRING);
@@ -523,7 +560,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         }
 
         this.fluidInv.setStack(0, GenericStack.readBuffer(data));
-        this.outFluidInv.setStack(0, GenericStack.readBuffer(data));
+        this.fluidInv.setStack(1, GenericStack.readBuffer(data));
         this.cachedTask = null;
 
         return c;
@@ -539,7 +576,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         }
 
         GenericStack.writeBuffer(this.fluidInv.getStack(0), data);
-        GenericStack.writeBuffer(this.outFluidInv.getStack(0), data);
+        GenericStack.writeBuffer(this.fluidInv.getStack(1), data);
     }
 
     private void onConfigChanged(IConfigManager manager, Setting<?> setting) {
@@ -558,14 +595,11 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
             drops.add(upgrade);
         }
 
-        var fluid = this.fluidInv.getStack(0);
-        if (fluid != null) {
-            fluid.what().addDrops(fluid.amount(), drops, level, pos);
-        }
-
-        var outFluid = this.outFluidInv.getStack(0);
-        if (outFluid != null) {
-            outFluid.what().addDrops(outFluid.amount(), drops, level, pos);
+        for (var i = 0; i < this.fluidInv.size(); i++) {
+            var fluid = this.fluidInv.getStack(i);
+            if (fluid != null) {
+                fluid.what().addDrops(fluid.amount(), drops, level, pos);
+            }
         }
     }
 
@@ -573,16 +607,15 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void clearContent() {
         super.clearContent();
         this.fluidInv.clear();
-        this.outFluidInv.clear();
         this.upgrades.clear();
     }
 
     public void clearFluid() {
-        this.fluidInv.clear();
+       this.fluidInv.clear(0);
     }
 
     public void clearFluidOut() {
-        this.outFluidInv.clear();
+        this.fluidInv.clear(1);
     }
 
     @Override
@@ -622,9 +655,24 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         return new ItemStack(AAEBlocks.REACTION_CHAMBER.asItem());
     }
 
-    private static class OutputGenericInv extends GenericStackInv {
-        public OutputGenericInv(Set<AEKeyType> supportedKeyTypes, @Nullable Runnable listener, Mode mode, int size) {
+    private static class CustomGenericInv extends GenericStackInv {
+        public CustomGenericInv(Set<AEKeyType> supportedKeyTypes, @Nullable Runnable listener, Mode mode, int size) {
             super(supportedKeyTypes, listener, mode, size);
+        }
+
+        @Override
+        public @Nullable AEKey getKey(int slot) {
+            return super.getKey(1);
+        }
+
+        @Override
+        public long insert(int slot, AEKey what, long amount, Actionable mode) {
+            return super.insert(0, what, amount, mode);
+        }
+
+        @Override
+        public long extract(int slot, AEKey what, long amount, Actionable mode) {
+            return super.extract(1, what, amount, mode);
         }
 
         public boolean canAdd(int slot, AEFluidKey key, int amount) {
@@ -645,9 +693,13 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
             return amount;
         }
 
-        @Override
-        public boolean canInsert() {
-            return false;
+        public void clear(int slot) {
+            boolean changed = this.stacks[slot] != null;
+            this.setStack(slot, null);
+
+            if (changed) {
+                onChange();
+            }
         }
     }
 }

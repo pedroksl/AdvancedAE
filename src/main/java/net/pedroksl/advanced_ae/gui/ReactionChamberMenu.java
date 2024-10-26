@@ -85,7 +85,7 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
                 inputFluid = ((AEFluidKey) genInput.what()).toStack(((int) genInput.amount()));
             }
 
-            var genOutput = this.getHost().getOutTank().getStack(0);
+            var genOutput = this.getHost().getTank().getStack(1);
             FluidStack outputFluid = FluidStack.EMPTY;
             if (genOutput != null && genOutput.what() != null) {
                 outputFluid = ((AEFluidKey) genOutput.what()).toStack(((int) genOutput.amount()));
@@ -161,12 +161,8 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     }
 
     @Override
-    public GenericStackInv getTank(int index) {
-        return switch (index) {
-            case 0 -> this.getHost().getTank();
-            case 1 -> this.getHost().getOutTank();
-            default -> null;
-        };
+    public GenericStackInv getTank() {
+        return this.getHost().getTank();
     }
 
     @Override

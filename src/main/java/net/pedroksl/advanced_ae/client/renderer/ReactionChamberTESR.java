@@ -42,7 +42,7 @@ public class ReactionChamberTESR implements BlockEntityRenderer<ReactionChamberE
     public void render(
             ReactionChamberEntity be, float v, PoseStack poseStack, MultiBufferSource buffers, int light, int overlay) {
         var fluidStack = be.getFluidStack();
-        if (fluidStack == null) {
+        if (fluidStack == null || fluidStack.isEmpty()) {
             return;
         }
 

@@ -17,7 +17,7 @@ public interface IFluidTankHandler {
 
     ItemStack getCarriedItem();
 
-    GenericStackInv getTank(int index);
+    GenericStackInv getTank();
 
     boolean canExtractFromTank(int index);
 
@@ -31,28 +31,22 @@ public interface IFluidTankHandler {
             var cap = stack.getCapability(Capabilities.FluidHandler.ITEM);
             if (cap != null) {
 
-                var tank = getTank(index);
+                var tank = getTank();
                 if (tank == null) return;
 
                 if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
                     if (!canExtractFromTank(index)) return;
 
-                    var genStack = tank.getStack(0);
+                    var genStack = tank.getStack(index);
                     if (genStack != null && genStack.what() != null) {
                         var fluid = ((AEFluidKey) genStack.what()).toStack((int) genStack.amount());
-                        if (cap.fill(
-                                        new FluidStack(fluid.getFluid(), (int)
-                                                tank.extract(0, genStack.what(), 1000, Actionable.SIMULATE)),
-                                        IFluidHandler.FluidAction.SIMULATE)
-                                > 0) {
-                            tank.extract(
-                                    0,
-                                    genStack.what(),
-                                    cap.fill(new FluidStack(fluid.getFluid(), 1000), IFluidHandler.FluidAction.EXECUTE),
-                                    Actionable.MODULATE);
 
-                            playAudioCues(new FluidTankClientAudioPacket(false));
-                        }
+                        var extracted = tank.extract(index, genStack.what(), 1000, Actionable.MODULATE);
+                        var inserted = cap.fill(
+                                new FluidStack(fluid.getFluid(), (int) extracted), IFluidHandler.FluidAction.EXECUTE);
+                        tank.insert(index, genStack.what(), extracted - inserted, Actionable.MODULATE);
+
+                        playAudioCues(new FluidTankClientAudioPacket(false));
                     }
                 } else {
                     if (!canInsertInto(index) || cap.getFluidInTank(0) == FluidStack.EMPTY) return;
@@ -60,22 +54,15 @@ public interface IFluidTankHandler {
                     var fluid = cap.getFluidInTank(0);
                     var genStack = GenericStack.fromFluidStack(fluid);
                     if (genStack != null && genStack.what() != null) {
-                        if (cap.drain(
-                                                (int) tank.insert(0, genStack.what(), 1000, Actionable.SIMULATE),
-                                                IFluidHandler.FluidAction.SIMULATE)
-                                        .getAmount()
-                                > 0) {
-                            cap.fill(
-                                    new FluidStack(fluid.getFluid(), (int) tank.insert(
-                                            0,
-                                            genStack.what(),
-                                            cap.drain(1000, IFluidHandler.FluidAction.EXECUTE)
-                                                    .getAmount(),
-                                            Actionable.MODULATE)),
-                                    IFluidHandler.FluidAction.EXECUTE);
 
-                            playAudioCues(new FluidTankClientAudioPacket(true));
-                        }
+                        var extracted = cap.drain(1000, IFluidHandler.FluidAction.EXECUTE)
+                                .getAmount();
+                        var inserted = tank.insert(index, genStack.what(), extracted, Actionable.MODULATE);
+                        cap.fill(
+                                new FluidStack(fluid.getFluid(), (int) (extracted - inserted)),
+                                IFluidHandler.FluidAction.EXECUTE);
+
+                        playAudioCues(new FluidTankClientAudioPacket(true));
                     }
                 }
             }
