@@ -15,13 +15,12 @@
       }
     },
     {
-      "amount": 8,
+      "amount": 2,
       "ingredient": {
         "item": "minecraft:netherite_ingot"
       }
     },
     {
-      "amount": 2,
       "ingredient": {
         "item": "minecraft:nether_star"
       }

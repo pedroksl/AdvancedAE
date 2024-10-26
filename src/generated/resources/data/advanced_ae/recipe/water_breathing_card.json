@@ -8,8 +8,8 @@
     "E": {
       "item": "ae2:entropy_manipulator"
     },
-    "O": {
-      "item": "minecraft:conduit"
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
     },
     "P": {
       "item": "minecraft:pufferfish"
@@ -18,7 +18,7 @@
   "pattern": [
     " E ",
     "PCP",
-    " O "
+    " H "
   ],
   "result": {
     "count": 1,

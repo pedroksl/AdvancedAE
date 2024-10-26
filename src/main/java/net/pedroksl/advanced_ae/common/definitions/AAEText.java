@@ -78,6 +78,7 @@ public enum AAEText implements LocalizationEnum {
 
     ThroughputMonitorValue("%s" + "%s" + "/s", Type.GUI),
     OverdriveThroughputMonitorValue("%s" + "%s" + "/t", Type.GUI),
+    SlowThroughputMonitorValue("%s" + "%s" + "/m", Type.GUI),
 
     QuantumUpgradeTooltip("Quantum Armor Upgrade", Type.TOOLTIP),
     UpgradeBaseTooltip("Base upgrade card required to craft the others.", Type.TOOLTIP),
