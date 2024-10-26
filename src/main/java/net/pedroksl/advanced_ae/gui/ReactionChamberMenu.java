@@ -39,6 +39,9 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     @GuiSync(7)
     public YesNo autoExport = YesNo.NO;
 
+    @GuiSync(8)
+    public boolean showWarning = false;
+
     public final int INPUT_FLUID_SIZE = 16;
     public final int OUTPUT_FLUID_SIZE = 16;
 
@@ -74,6 +77,7 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
         if (isServerSide()) {
             this.maxProcessingTime = getHost().getMaxProcessingTime();
             this.processingTime = getHost().getProcessingTime();
+            this.showWarning = getHost().showWarning();
 
             var genInput = this.getHost().getTank().getStack(0);
             FluidStack inputFluid = FluidStack.EMPTY;
@@ -112,6 +116,10 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
 
     public YesNo getAutoExport() {
         return autoExport;
+    }
+
+    public boolean getShowWarning() {
+        return this.showWarning;
     }
 
     public void clearFluid() {

@@ -61,6 +61,8 @@
   "gui.tooltips.advanced_ae.FlightDriftTooltip": "Removes flight drift. Requires basic flight upgrade.",
   "gui.tooltips.advanced_ae.FlightTooltip": "Enables Creative Flight.",
   "gui.tooltips.advanced_ae.HpBufferTooltip": "Boosts the user's max health by +%s.",
+  "gui.tooltips.advanced_ae.InsufficientPower": "Insufficient Power",
+  "gui.tooltips.advanced_ae.InsufficientPowerDetails": "Unable to extract enough power for full speed progress. Check guide for possible solutions.",
   "gui.tooltips.advanced_ae.JumpHeightTooltip": "Boosts the jump height by %s.",
   "gui.tooltips.advanced_ae.LavaImmunityTooltip": "Makes the user immune to lava and fire.",
   "gui.tooltips.advanced_ae.LuckTooltip": "Boosts the user's luck by %s.",

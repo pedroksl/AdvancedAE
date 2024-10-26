@@ -104,6 +104,11 @@ public enum AAEText implements LocalizationEnum {
     FlightDriftTooltip("Removes flight drift. Requires basic flight upgrade.", Type.TOOLTIP),
     RechargingTooltip(
             "Enables armor recharging if linked to the grid. When installed in the chest slot, also recharges the inventory slots.",
+            Type.TOOLTIP),
+
+    InsufficientPower("Insufficient Power", Type.TOOLTIP),
+    InsufficientPowerDetails(
+            "Unable to extract enough power for full speed progress. Check guide for possible " + "solutions.",
             Type.TOOLTIP);
 
     private final String englishText;

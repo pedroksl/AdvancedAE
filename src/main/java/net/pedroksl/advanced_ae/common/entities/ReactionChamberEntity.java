@@ -91,6 +91,8 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     private EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
 
+    private boolean showWarning = false;
+
     public ReactionChamberEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
 
@@ -184,6 +186,14 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     public GenericStackInv getOutTank() {
         return this.outFluidInv;
+    }
+
+    public void setShowWarning(boolean show) {
+        this.showWarning = show;
+    }
+
+    public boolean showWarning() {
+        return this.showWarning;
     }
 
     @Override
@@ -322,14 +332,22 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
                 if (powerReq <= powerThreshold) {
                     src = eg;
+                    var oldPowerReq = powerReq;
                     powerReq = eg.extractAEPower(powerConsumption, Actionable.SIMULATE, PowerMultiplier.CONFIG);
+                    if (oldPowerReq > powerReq) {
+                        src = this;
+                        powerReq = oldPowerReq;
+                    }
                 }
 
                 if (powerReq > powerThreshold) {
                     src.extractAEPower(powerConsumption, Actionable.MODULATE, PowerMultiplier.CONFIG);
                     this.setProcessingTime(this.getProcessingTime() + speedFactor);
+                    setShowWarning(false);
                 } else if (powerReq != 0) {
-                    var factor = Mth.floor(speedFactor / (powerConsumption - powerReq));
+                    var progressRatio = (powerConsumption - powerReq - 20 * eg.getIdlePowerUsage()) / powerConsumption;
+                    var factor = Mth.floor(progressRatio * speedFactor);
+
                     if (factor > 1) {
                         src.extractAEPower(
                                 (double) (powerConsumption * factor) / speedFactor,
@@ -337,6 +355,8 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                                 PowerMultiplier.CONFIG);
                         this.setProcessingTime(this.getProcessingTime() + factor);
                     }
+                    // Add warning
+                    setShowWarning(true);
                 }
             });
 
@@ -400,6 +420,8 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                 this.cachedTask = null;
                 this.setWorking(false);
             }
+        } else {
+            setShowWarning(false);
         }
 
         if (this.pushOutResult()) {

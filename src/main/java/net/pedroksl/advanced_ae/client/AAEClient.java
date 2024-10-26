@@ -121,7 +121,6 @@ public class AAEClient extends AdvancedAE {
                             AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
                             new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
                 }
-                ItemBlockRenderTypes.setRenderLayer(type.getDefinition().block(), RenderType.cutout());
             }
 
             ItemBlockRenderTypes.setRenderLayer(AAEFluids.QUANTUM_INFUSION.source(), RenderType.translucent());

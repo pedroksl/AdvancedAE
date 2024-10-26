@@ -1,21 +1,25 @@
 package net.pedroksl.advanced_ae.client.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.pedroksl.advanced_ae.api.IFluidTankScreen;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionButton;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEToolbarActionButton;
-import net.pedroksl.advanced_ae.client.gui.widgets.FluidTankSlot;
+import net.pedroksl.advanced_ae.client.gui.widgets.*;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.ReactionChamberMenu;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
 import appeng.client.gui.implementations.UpgradeableScreen;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.*;
+import appeng.core.localization.Tooltips;
 
 public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu> implements IFluidTankScreen {
 
@@ -28,6 +32,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
     private final ProgressBar pb;
     private final SettingToggleButton<YesNo> autoExportBtn;
     private final AAEToolbarActionButton outputConfigure;
+    private final AlertWidget powerAlert;
 
     private FluidTankSlot inputSlot;
     private FluidTankSlot outputSlot;
@@ -56,6 +61,14 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
         clearOutBtn.setHalfSize(true);
         clearOutBtn.setDisableBackground(true);
         widgets.add("clearFluidOut", clearOutBtn);
+
+        this.powerAlert = new AlertWidget(style.getImage("powerAlert"));
+        this.powerAlert.setTooltip(Tooltip.create(Tooltips.of(
+                AAEText.InsufficientPower.text().withStyle(Tooltips.RED),
+                Component.literal("\n")
+                        .append(AAEText.InsufficientPowerDetails.text())
+                        .withStyle(Tooltips.NORMAL_TOOLTIP_TEXT))));
+        this.widgets.add("powerAlert", this.powerAlert);
     }
 
     @Override
@@ -94,6 +107,8 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
 
         this.inputSlot.setPosition(this.leftPos + INPUT_TANK_X, this.topPos + TANKS_Y);
         this.outputSlot.setPosition(this.leftPos + OUTPUT_TANK_X, this.topPos + TANKS_Y);
+
+        this.powerAlert.visible = this.getMenu().getShowWarning();
     }
 
     public void updateFluidTankContents(FluidStack inputFluid, FluidStack outputFluid) {
@@ -104,5 +119,23 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
     @Override
     public void playSoundFeedback(boolean isInsert) {
         this.inputSlot.playDownSound(Minecraft.getInstance().getSoundManager(), isInsert);
+    }
+
+    private static class AlertWidget extends AbstractWidget {
+
+        private final Blitter powerAlert;
+
+        public AlertWidget(Blitter powerAlert) {
+            super(0, 0, 18, 18, Component.empty());
+            this.powerAlert = powerAlert;
+        }
+
+        @Override
+        protected void renderWidget(GuiGraphics guiGraphics, int i, int i1, float v) {
+            this.powerAlert.dest(this.getX(), this.getY()).blit(guiGraphics);
+        }
+
+        @Override
+        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
     }
 }
