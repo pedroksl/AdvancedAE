@@ -11,11 +11,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.renderer.AAEBlockEntityRenderHelper;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.mixins.MixinAbstractMonitorPartAccessor;
 
@@ -32,12 +32,10 @@ import appeng.api.stacks.AmountFormat;
 import appeng.api.util.AEColor;
 import appeng.client.render.BlockEntityRenderHelper;
 import appeng.core.AppEng;
-import appeng.core.definitions.AEItems;
 import appeng.hooks.ticking.TickHandler;
 import appeng.items.parts.PartModels;
 import appeng.parts.PartModel;
 import appeng.parts.reporting.AbstractMonitorPart;
-import appeng.util.InteractionUtil;
 
 public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridTickable {
 
@@ -66,10 +64,25 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     protected long amountAtLastUpdate = -1;
     protected long lastReportedValue = -1;
     protected String lastHumanReadableValue = "";
-    private boolean overdrive = false;
+    private WorkRoutine workRoutine = WorkRoutine.SECOND;
+    private WorkRoutine lastWorkRoutine = WorkRoutine.SECOND;
 
     private static final int positiveColor = AEColor.GREEN.mediumVariant;
     private static final int negativeColor = AEColor.RED.mediumVariant;
+
+    private enum WorkRoutine {
+        TICK,
+        SECOND,
+        MINUTE;
+
+        public static WorkRoutine cycle(WorkRoutine routine) {
+            return switch (routine) {
+                case TICK -> SECOND;
+                case SECOND -> MINUTE;
+                case MINUTE -> TICK;
+            };
+        }
+    }
 
     public ThroughputMonitorPart(IPartItem<?> partItem) {
         super(partItem, false);
@@ -85,6 +98,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         data.writeLong(this.amountAtLastUpdate);
         data.writeLong(this.lastReportedValue);
         data.writeUtf(this.lastHumanReadableValue);
+        data.writeEnum(this.workRoutine);
     }
 
     @Override
@@ -101,6 +115,8 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
 
         this.lastHumanReadableValue = data.readUtf();
 
+        this.workRoutine = data.readEnum(WorkRoutine.class);
+
         return needRedraw;
     }
 
@@ -109,6 +125,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         super.writeVisualStateToNBT(data);
         data.putLong("lastValue", this.lastReportedValue);
         data.putString("throughput", this.lastHumanReadableValue);
+        data.putString("routine", this.workRoutine.name());
     }
 
     @Override
@@ -116,24 +133,16 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         super.readVisualStateFromNBT(data);
         this.lastReportedValue = data.getLong("lastValue");
         this.lastHumanReadableValue = data.getString("throughput");
+        this.workRoutine = WorkRoutine.valueOf(data.getString("routine"));
     }
 
     @Override
     public boolean onUseItemOn(ItemStack heldItem, Player player, InteractionHand hand, Vec3 pos) {
         if (heldItem == ItemStack.EMPTY) {
             return super.onUseWithoutItem(player, pos);
-        } else if (heldItem.is(AEItems.SPEED_CARD.asItem())
-                && !isInOverdrive()
-                && InteractionUtil.isInAlternateUseMode(player)) {
+        } else if (heldItem.is(AAEItems.MONITOR_CONFIGURATOR.asItem())) {
             if (!isClientSide()) {
-                setOverdrive(true);
-            }
-            return true;
-        } else if (heldItem.is(Items.SLIME_BALL.asItem())
-                && isInOverdrive()
-                && InteractionUtil.isInAlternateUseMode(player)) {
-            if (!isClientSide()) {
-                setOverdrive(false);
+                cycleWorkRoutine();
             }
             return true;
         } else {
@@ -141,12 +150,10 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         }
     }
 
-    public boolean isInOverdrive() {
-        return this.overdrive;
-    }
+    private void cycleWorkRoutine() {
+        this.workRoutine = WorkRoutine.cycle(this.workRoutine);
 
-    private void setOverdrive(boolean value) {
-        this.overdrive = value;
+        getMainNode().ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
     }
 
     private @Nullable AEKey getConfiguredItem() {
@@ -156,7 +163,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     @Override
     protected void configureWatchers() {
         if (getConfiguredItem() != null) {
-            updateState();
+            updateState(TickHandler.instance().getCurrentTick());
             getMainNode().ifPresent((grid, node) -> grid.getTickManager().wakeDevice(node));
         } else {
             getMainNode().ifPresent((grid, node) -> grid.getTickManager().sleepDevice(node));
@@ -196,9 +203,11 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
                 var color = lastReportedValue > 0
                         ? positiveColor
                         : lastReportedValue == 0 ? this.getColor().contrastTextColor : negativeColor;
-                var text = this.overdrive
-                        ? AAEText.OverdriveThroughputMonitorValue.text(sign, lastHumanReadableValue)
-                        : AAEText.ThroughputMonitorValue.text(sign, lastHumanReadableValue);
+                var text = switch (this.workRoutine) {
+                    case TICK -> AAEText.OverdriveThroughputMonitorValue.text(sign, lastHumanReadableValue);
+                    case SECOND -> AAEText.ThroughputMonitorValue.text(sign, lastHumanReadableValue);
+                    case MINUTE -> AAEText.SlowThroughputMonitorValue.text(sign, lastHumanReadableValue);
+                };
                 AAEBlockEntityRenderHelper.renderString(poseStack, buffers, text, color);
                 poseStack.popPose();
             }
@@ -225,7 +234,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
 
     @Override
     public TickingRequest getTickingRequest(IGridNode iGridNode) {
-        return new TickingRequest(20, 100, !isActive() || getConfiguredItem() == null);
+        return new TickingRequest(20, 400, !isActive() || getConfiguredItem() == null);
     }
 
     @Override
@@ -235,22 +244,32 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
             return TickRateModulation.SLEEP;
         }
 
-        var currentTick = TickHandler.instance().getCurrentTick();
-        var tickAmount = currentTick - lastUpdateTick;
-        var timeInSeconds = tickAmount / 20;
+        long currentTick = TickHandler.instance().getCurrentTick();
+        long tickAmount = currentTick - lastUpdateTick;
+        var timeInSeconds = tickAmount / 20f;
 
         // Long time without updates, do a fast one
         if (lastUpdateTick == -1 || timeInSeconds <= 0) {
-            updateState();
+            updateState(currentTick);
+            this.lastHumanReadableValue = "-";
             return TickRateModulation.URGENT;
         }
 
         // Normal update schedule
-        this.lastReportedValue = (getAmount() - amountAtLastUpdate) / timeInSeconds;
-        if (this.overdrive) this.lastReportedValue /= 20;
-        this.lastHumanReadableValue = getConfiguredItem().formatAmount(Math.abs(lastReportedValue), AmountFormat.SLOT);
+        if (this.workRoutine == this.lastWorkRoutine) {
+            var amountPerSecond = (getAmount() - amountAtLastUpdate) / timeInSeconds;
+            this.lastReportedValue = Math.round(switch (this.workRoutine) {
+                case TICK -> amountPerSecond / 20f;
+                case SECOND -> amountPerSecond;
+                case MINUTE -> amountPerSecond * 60f;
+            });
+            this.lastHumanReadableValue = getConfiguredItem().formatAmount(Math.abs(lastReportedValue), AmountFormat.SLOT);
+        }
+        else {
+            this.lastHumanReadableValue = "-";
+        }
 
-        updateState();
+        updateState(currentTick);
         this.getHost().markForUpdate();
 
         return TickRateModulation.SLOWER;
@@ -262,8 +281,9 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         this.lastHumanReadableValue = "";
     }
 
-    private void updateState() {
-        this.lastUpdateTick = TickHandler.instance().getCurrentTick();
+    private void updateState(long tick) {
+        this.lastUpdateTick = tick;
         this.amountAtLastUpdate = getAmount();
+        this.lastWorkRoutine = this.workRoutine;
     }
 }
