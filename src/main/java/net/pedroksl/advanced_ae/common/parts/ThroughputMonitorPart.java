@@ -203,11 +203,12 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
                 var color = lastReportedValue > 0
                         ? positiveColor
                         : lastReportedValue == 0 ? this.getColor().contrastTextColor : negativeColor;
-                var text = switch (this.workRoutine) {
-                    case TICK -> AAEText.OverdriveThroughputMonitorValue.text(sign, lastHumanReadableValue);
-                    case SECOND -> AAEText.ThroughputMonitorValue.text(sign, lastHumanReadableValue);
-                    case MINUTE -> AAEText.SlowThroughputMonitorValue.text(sign, lastHumanReadableValue);
-                };
+                var text =
+                        switch (this.workRoutine) {
+                            case TICK -> AAEText.OverdriveThroughputMonitorValue.text(sign, lastHumanReadableValue);
+                            case SECOND -> AAEText.ThroughputMonitorValue.text(sign, lastHumanReadableValue);
+                            case MINUTE -> AAEText.SlowThroughputMonitorValue.text(sign, lastHumanReadableValue);
+                        };
                 AAEBlockEntityRenderHelper.renderString(poseStack, buffers, text, color);
                 poseStack.popPose();
             }
@@ -258,14 +259,15 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         // Normal update schedule
         if (this.workRoutine == this.lastWorkRoutine) {
             var amountPerSecond = (getAmount() - amountAtLastUpdate) / timeInSeconds;
-            this.lastReportedValue = Math.round(switch (this.workRoutine) {
-                case TICK -> amountPerSecond / 20f;
-                case SECOND -> amountPerSecond;
-                case MINUTE -> amountPerSecond * 60f;
-            });
-            this.lastHumanReadableValue = getConfiguredItem().formatAmount(Math.abs(lastReportedValue), AmountFormat.SLOT);
-        }
-        else {
+            this.lastReportedValue = Math.round(
+                    switch (this.workRoutine) {
+                        case TICK -> amountPerSecond / 20f;
+                        case SECOND -> amountPerSecond;
+                        case MINUTE -> amountPerSecond * 60f;
+                    });
+            this.lastHumanReadableValue =
+                    getConfiguredItem().formatAmount(Math.abs(lastReportedValue), AmountFormat.SLOT);
+        } else {
             this.lastHumanReadableValue = "-";
         }
 

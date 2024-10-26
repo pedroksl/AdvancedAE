@@ -98,6 +98,9 @@ public class AAEItems {
     public static final ItemDefinition<AdvPatternEncoderItem> ADV_PATTERN_ENCODER =
             item("Advanced Pattern Encoder", "adv_pattern_encoder", AdvPatternEncoderItem::new);
 
+    public static final ItemDefinition<Item> MONITOR_CONFIGURATOR =
+            item("Throughput Monitor Configurator", "throughput_monitor_configurator", Item::new);
+
     public static final ItemDefinition<QuantumHelmet> QUANTUM_HELMET =
             item("Quantum Helmet", "quantum_helmet", QuantumHelmet::new);
     public static final ItemDefinition<QuantumChestplate> QUANTUM_CHESTPLATE =

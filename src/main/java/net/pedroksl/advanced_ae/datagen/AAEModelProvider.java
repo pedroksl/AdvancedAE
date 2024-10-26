@@ -49,6 +49,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.QUANTUM_PROCESSOR_PRINT);
         basicItem(AAEItems.QUANTUM_PROCESSOR);
         basicItem(AAEItems.QUANTUM_STORAGE_COMPONENT);
+        basicItem(AAEItems.MONITOR_CONFIGURATOR);
 
         basicItem(AAEItems.QUANTUM_HELMET);
         basicItem(AAEItems.QUANTUM_CHESTPLATE);

@@ -298,7 +298,7 @@ public class UpgradeCards {
                 if (neededPower > 0 && energy.getStoredPower() > 0) {
                     var extracted = energy.extractAEPower(rate, Actionable.MODULATE, PowerMultiplier.CONFIG);
                     var inserted = armor.injectAEPower(stack, extracted, Actionable.MODULATE);
-                    energy.injectPower(inserted, Actionable.MODULATE);
+                    energy.injectPower(extracted - inserted, Actionable.MODULATE);
                 }
 
                 if (stack.getItem() instanceof QuantumChestplate) {
@@ -346,7 +346,7 @@ public class UpgradeCards {
                 storage.getInventory()
                         .insert(
                                 FluxKey.of(EnergyType.FE),
-                                inserted,
+                                extracted - inserted,
                                 Actionable.MODULATE,
                                 IActionSource.ofPlayer(player));
             }
@@ -354,7 +354,7 @@ public class UpgradeCards {
             if (energyService.getStoredPower() > 0) {
                 var extracted = energyService.extractAEPower(rate, Actionable.MODULATE, PowerMultiplier.CONFIG);
                 var inserted = cap.receiveEnergy((int) extracted, false);
-                energyService.injectPower(inserted, Actionable.MODULATE);
+                energyService.injectPower(extracted - inserted, Actionable.MODULATE);
             }
         }
     }
