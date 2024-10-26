@@ -90,6 +90,9 @@ public class AAEPlayerEvents {
                 model.leftPants.visible = false;
                 model.rightPants.visible = false;
                 model.jacket.visible = false;
+
+                model.leftArm.visible = false;
+                model.rightArm.visible = false;
             }
 
             ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
@@ -205,11 +208,11 @@ public class AAEPlayerEvents {
     }
 
     private static AttributeModifier getStrengthBoost(int value) {
-        return new AttributeModifier(AdvancedAE.makeId("hp_buffer"), value, AttributeModifier.Operation.ADD_VALUE);
+        return new AttributeModifier(AdvancedAE.makeId("strength_boost"), value, AttributeModifier.Operation.ADD_VALUE);
     }
 
     private static AttributeModifier getAttackSpeedBoost(int value) {
-        return new AttributeModifier(AdvancedAE.makeId("hp_buffer"), value, AttributeModifier.Operation.ADD_VALUE);
+        return new AttributeModifier(AdvancedAE.makeId("attack_speed"), value, AttributeModifier.Operation.ADD_VALUE);
     }
 
     private static AttributeModifier getLuckBoost(int value) {
@@ -217,6 +220,6 @@ public class AAEPlayerEvents {
     }
 
     private static AttributeModifier getReachBoost(int value) {
-        return new AttributeModifier(AdvancedAE.makeId("hp_buffer"), value, AttributeModifier.Operation.ADD_VALUE);
+        return new AttributeModifier(AdvancedAE.makeId("reach_boost"), value, AttributeModifier.Operation.ADD_VALUE);
     }
 }
