@@ -179,8 +179,8 @@ public enum UpgradeType {
             case STRENGTH -> new UpgradeSettings(AAEConfig.instance().getStrengthBoost());
             case ATTACK_SPEED -> new UpgradeSettings(AAEConfig.instance().getAttackSpeedBoost());
             case LUCK -> new UpgradeSettings(AAEConfig.instance().getLuckBoost());
-            case REACH -> new UpgradeSettings(AAEConfig.instance().getMaxReachBoost());
-            case SWIM_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxSwimSpeedBoost());
+            case REACH -> new UpgradeSettings(1, AAEConfig.instance().getMaxReachBoost());
+            case SWIM_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxSwimSpeedBoost(), 0.1f);
             case FLIGHT_DRIFT -> new UpgradeSettings(0, 100, 1, 50);
         };
     }

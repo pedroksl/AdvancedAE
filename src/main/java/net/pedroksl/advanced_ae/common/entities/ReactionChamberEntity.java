@@ -611,7 +611,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     }
 
     public void clearFluid() {
-       this.fluidInv.clear(0);
+        this.fluidInv.clear(0);
     }
 
     public void clearFluidOut() {
