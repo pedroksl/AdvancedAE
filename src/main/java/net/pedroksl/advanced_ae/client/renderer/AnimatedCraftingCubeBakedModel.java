@@ -39,12 +39,15 @@ public class AnimatedCraftingCubeBakedModel extends AAECraftingCubeBakedModel {
             float y2,
             float z2) {
         boolean powered = state.getValue(AAEAbstractCraftingUnitBlock.POWERED);
+        var lightLevel = state.getValue(AAEAbstractCraftingUnitBlock.LIGHT_LEVEL);
 
         builder.setTexture(this.baseTexture);
         builder.addCube(x1, y1, z1, x2, y2, z2);
 
         if (powered) {
-            builder.setEmissiveMaterial(true);
+            if (lightLevel > 0) {
+                builder.setEmissiveMaterial(true);
+            }
             builder.setTexture(this.animationTexture);
             builder.addCube(x1, y1, z1, x2, y2, z2);
             // Reset back to default

@@ -136,9 +136,10 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
 
         // The block entity might try to update while being destroyed
         if (current.getBlock() instanceof AAEAbstractCraftingUnitBlock) {
-            int lightLevel = formed && power && this.getUnitBlock().type == AAECraftingUnitType.QUANTUM_CORE
+            int lightLevel = this.getUnitBlock().type == AAECraftingUnitType.QUANTUM_CORE
                     ? 10
                     : this.getUnitBlock().type == AAECraftingUnitType.STRUCTURE ? 5 : 0;
+            lightLevel = formed && power ? lightLevel : 0;
 
             final BlockState newState = current.setValue(AAEAbstractCraftingUnitBlock.POWERED, power)
                     .setValue(AAEAbstractCraftingUnitBlock.FORMED, formed)
