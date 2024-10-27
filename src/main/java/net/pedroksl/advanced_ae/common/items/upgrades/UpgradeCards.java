@@ -43,21 +43,13 @@ public class UpgradeCards {
         ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
         boolean canFly = chest.getItem() instanceof QuantumArmorBase armor
                 && armor.isUpgradeEnabledAndPowered(chest, UpgradeType.FLIGHT);
-        boolean isNotFlying = player.fallDistance <= 0 && !player.isFallFlying();
+        boolean isNotFlying = !player.getAbilities().flying;
         if (!player.isSprinting() && (canFly || isNotFlying) && !player.isInWaterOrBubble()) {
             var upgrade = UpgradeType.WALK_SPEED;
-            var value = upgrade.getSettings().multiplier
-                    * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 0)
-                    / 25f;
-            if (canFly && player.getAbilities().flying) {
-                value += chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
-            }
-            if (value > 0) {
-                if (!player.onGround()) value /= 4;
-                if (player.zza < 0F) value /= 2;
-                player.moveRelative(
-                        value, new Vec3(Math.signum(player.xxa), Math.signum(player.yya), Math.signum(player.zza)));
-                return true;
+            if (stack.getItem() instanceof QuantumLeggings legs && legs.isUpgradeEnabledAndPowered(stack, upgrade)) {
+                return processMovementSpeed(upgrade, player, canFly, stack, chest);
+            } else if (canFly && player.getAbilities().flying) {
+                return processFlightSpeed(player, chest);
             }
         }
         return false;
@@ -71,20 +63,51 @@ public class UpgradeCards {
         if (player.isSprinting() && (canFly || isNotFlying) && !player.isInWaterOrBubble()) {
             var upgrade = UpgradeType.SPRINT_SPEED;
             if (stack.getItem() instanceof QuantumLeggings legs && legs.isUpgradeEnabledAndPowered(stack, upgrade)) {
-                var value = upgrade.getSettings().multiplier
-                        * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 0)
-                        / 25f;
-                if (value > 0) {
-                    if (canFly && player.getAbilities().flying) {
-                        value += chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
-                    }
-                    if (!player.onGround()) value /= 4;
-                    if (player.zza < 0F) value /= 2;
-                    player.moveRelative(
-                            value, new Vec3(Math.signum(player.xxa), Math.signum(player.yya), Math.signum(player.zza)));
-                    return true;
-                }
+                return processMovementSpeed(upgrade, player, canFly, stack, chest);
+            } else if (canFly && player.getAbilities().flying) {
+                return processFlightSpeed(player, chest);
             }
+        }
+        return false;
+    }
+
+    private static boolean processMovementSpeed(
+            UpgradeType upgrade, Player player, boolean canFly, ItemStack stack, ItemStack chest) {
+        boolean slowDown = true;
+        var value = upgrade.getSettings().multiplier * stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 0);
+
+        if (!(value > 0 && value < 1)) {
+            slowDown = false;
+            value /= 25f;
+        }
+
+        if (canFly && player.getAbilities().flying) {
+            slowDown = false;
+            value = chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
+        }
+
+        if (slowDown && player.onGround()) {
+            var motion = player.getDeltaMovement();
+            player.setDeltaMovement(motion.multiply(value, 1, value));
+            return true;
+        } else if (!slowDown && value > 0) {
+            if (!player.onGround()) value /= 4;
+            if (player.zza < 0F) value /= 2;
+            player.moveRelative(
+                    value, new Vec3(Math.signum(player.xxa), Math.signum(player.yya), Math.signum(player.zza)));
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean processFlightSpeed(Player player, ItemStack chest) {
+        var value = chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
+        if (value > 0) {
+            if (!player.onGround()) value /= 4;
+            if (player.zza < 0F) value /= 2;
+            player.moveRelative(
+                    value, new Vec3(Math.signum(player.xxa), Math.signum(player.yya), Math.signum(player.zza)));
+            return true;
         }
         return false;
     }
