@@ -3,25 +3,16 @@
 # Advanced AE!
 
 Advanced AE focuses on convenience and improving user experience when handling your ME System.
-It features a unique pattern provider and a very powerful crafting unit, with more to come!
 
-![aae_intro](https://github.com/user-attachments/assets/dd963d52-fd07-425a-a783-b06eed97e7ee)
+![aae_intro](images/aae_intro.png)
 
 ## Features
 
 ### Advanced Pattern Providers
 
-AdvancedAE adds Advanced Pattern Providers. They are crafted using standard or extended pattern providers, and retain the same inventory size but with additional features!
-There are also upgrade items that can convert placed pattern providers or improve their capacity without the need to remove the patterns inside.
-
 By utilizing an Advanced Pattern Encoder, you can modify Processing Patterns to select to which face each input will be sent, eliminating the need for multiple pipes and used sides to interact with machines that require them.
 
-![AdvancedAE-encoder](https://github.com/user-attachments/assets/83efe9aa-f8be-493b-994a-bcd39efa401b)
-![ape_pattern](https://github.com/user-attachments/assets/7172ef29-7771-4334-b989-8ffed808bbb3)
-
-This enables insane setups like this:
-
-<img src="https://github.com/user-attachments/assets/b8c4fbd6-a3d4-44c8-a518-28846c7e6115" width="500">
+![ape_pattern](images/ape_pattern.png)
 
 ### Quantum Computer
 
@@ -31,7 +22,50 @@ The Quantum Core can be used as a standalone crafting unit with 256M storage and
 Specially when using two special block types: The Quantum Data Entangler and the Quantum Multi-Threader, which multiply storage and co-processors present in the multiblock by 4, respectively.
 The multiblock can be scaled up to a 5x5x5, and consumes a single channel for all of this computing power!
 
-<img src="https://github.com/user-attachments/assets/4016908f-8303-4e0f-8efb-0951198d8c21" height="500"><img src="https://github.com/user-attachments/assets/8c18e183-7515-40fe-9699-e214a95e197b" height="500">
+![ape_pattern](images/quantum_computer.png)
+
+### Quantum Crafter
+
+![img.png](images/quantum_crafter.png)
+
+A very powerful auto crafter that can perform a series of crafting operations every tick while accessing the ME System's
+inventory directly. It is also capable of doing recursive crafting (like smithing templates) and multiple crafts that
+require a non-consumed ingredient (Like Mystical Agriculture's essence upgrading). It can be configured to keep stacks
+of the ingredients to avoid consuming all of it, or limit the end product, to keep an amount in stock.
+
+### Quantum Armor Set
+
+![img.png](images/quantum_armor.png)
+
+An armor set capable of connecting to the ME System to harness its resources for various quality of life functionality.
+It is also very powerful defensively and includes various quality of life upgrades, like flight with no inertia,
+night vision, magnet, auto feeding directly from ME Storage, immunity to various damage sources, and much more!
+
+* Special thanks to Jm<sup>3</sup> for the base models and textures
+
+### Reaction Chamber
+
+![img.png](images/reaction_chamber.png)
+
+The reaction chamber is a machine that uses a ton of power to provide very efficient ways of processing materials. It is
+used in the creation of various items needed to progress in AdvancedAE as well as offering efficient recipes for other mods.
+
+### Stock Export Bus
+
+![img.png](images/stock_export_bus.png)
+
+An Export bus that reads the contents of the target inventory and regulates an exact amount to be kept in it at all times,
+provided that the ME system has them available. It accepts a crafting card, enabling the export bus to craft the items
+needed.
+
+### ME Throughput Monitor
+
+![img.png](images/me_throughput_monitor.png)
+
+A special monitor that can be used to keep a close watch on the development of resources on your system. It can track
+items, fluids and even energy in FE Cells (from AppliedFlux). To set it to track fluids or energy, right click with a
+container with the desired ingredient twice. You can also configure the scale by using the Throughput Monitor Configurator.
+Right-clicking a monitor with it will cycle between the options of "per tick", "per second" and "per minute".
 
 Found a bug? Missing a feature?
 
