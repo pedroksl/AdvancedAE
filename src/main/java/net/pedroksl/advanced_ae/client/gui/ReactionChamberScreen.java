@@ -75,7 +75,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
     protected void init() {
         this.inputSlot = this.addRenderableWidget(new FluidTankSlot(
                 this,
-                0,
+                1,
                 this.leftPos + INPUT_TANK_X,
                 this.topPos + TANKS_Y,
                 TANKS_WIDTH,
@@ -84,7 +84,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
                 Component.empty()));
         this.outputSlot = this.addRenderableWidget(new FluidTankSlot(
                 this,
-                1,
+                0,
                 this.leftPos + OUTPUT_TANK_X,
                 this.topPos + TANKS_Y,
                 TANKS_WIDTH,

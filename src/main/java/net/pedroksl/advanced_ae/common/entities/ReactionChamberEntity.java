@@ -204,7 +204,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     }
 
     public FluidStack getFluidStack() {
-        var fluid = this.fluidInv.getStack(0);
+        var fluid = this.fluidInv.getStack(1);
         FluidStack fluidStack = null;
         if (fluid != null) {
             AEKey aeKey = fluid.what();
@@ -253,8 +253,8 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     private boolean hasAutoExportWork() {
         return (!this.outputInv.getStackInSlot(0).isEmpty()
-                        || this.fluidInv.getStack(1) != null
-                        || this.fluidInv.getAmount(1) > 0)
+                        || this.fluidInv.getStack(0) != null
+                        || this.fluidInv.getAmount(0) > 0)
                 && configManager.getSetting(Settings.AUTO_EXPORT) == YesNo.YES;
     }
 
@@ -266,7 +266,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                 return this.outputInv.insertItem(0, task.getResultItem(), true).isEmpty();
             } else {
                 var fluid = task.getResultFluid();
-                return this.fluidInv.canAdd(1, AEFluidKey.of(fluid), fluid.getAmount());
+                return this.fluidInv.canAdd(0, AEFluidKey.of(fluid), fluid.getAmount());
             }
         }
 
@@ -289,7 +289,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
             inputs.add(this.inputInv.getStackInSlot(x));
         }
 
-        return ReactionChamberRecipes.findRecipe(level, inputs, this.fluidInv.getStack(0));
+        return ReactionChamberRecipes.findRecipe(level, inputs, this.fluidInv.getStack(1));
     }
 
     @Override
@@ -309,6 +309,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                     this.cachedTask = null;
                 }
             }
+            this.markForUpdate();
             this.dirty = false;
         }
 
@@ -376,11 +377,11 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                                             .insertItem(0, output, false)
                                             .isEmpty())
                             || (!out.isItemOutput()
-                                    && this.fluidInv.add(1, AEFluidKey.of(fluidOut), fluidOut.getAmount())
+                                    && this.fluidInv.add(0, AEFluidKey.of(fluidOut), fluidOut.getAmount())
                                             >= fluidOut.getAmount() - 0.01)) {
                         this.setProcessingTime(0);
 
-                        GenericStack fluid = this.fluidInv.getStack(0);
+                        GenericStack fluid = this.fluidInv.getStack(1);
                         FluidStack fluidStack = null;
                         if (fluid != null) {
                             AEKey aeKey = fluid.what();
@@ -409,10 +410,10 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
                         if (fluidStack != null) {
                             if (fluidStack.isEmpty()) {
-                                this.fluidInv.setStack(0, null);
+                                this.fluidInv.setStack(1, null);
                             } else {
                                 this.fluidInv.setStack(
-                                        0,
+                                        1,
                                         new GenericStack(
                                                 Objects.requireNonNull(AEFluidKey.of(fluidStack)),
                                                 fluidStack.getAmount()));
@@ -461,13 +462,13 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                     movedStacks |= inserted > 0;
                 }
 
-                var outFluid = this.fluidInv.getStack(1);
+                var outFluid = this.fluidInv.getStack(0);
                 if (outFluid != null && outFluid.what() != null) {
-                    var extracted = this.fluidInv.extract(1, outFluid.what(), outFluid.amount(), Actionable.MODULATE);
+                    var extracted = this.fluidInv.extract(0, outFluid.what(), outFluid.amount(), Actionable.MODULATE);
                     var inserted = target.insert(outFluid.what(), extracted, Actionable.MODULATE, source);
-                    this.fluidInv.add(1, ((AEFluidKey) outFluid.what()), (int) (extracted - inserted));
+                    this.fluidInv.add(0, ((AEFluidKey) outFluid.what()), (int) (extracted - inserted));
 
-                    if (this.fluidInv.getAmount(1) == 0) clearFluidOut();
+                    if (this.fluidInv.getAmount(0) == 0) clearFluidOut();
 
                     movedStacks |= inserted > 0;
                 }
@@ -615,11 +616,11 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     }
 
     public void clearFluid() {
-        this.fluidInv.clear(0);
+        this.fluidInv.clear(1);
     }
 
     public void clearFluidOut() {
-        this.fluidInv.clear(1);
+        this.fluidInv.clear(0);
     }
 
     @Override
@@ -665,20 +666,17 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         }
 
         @Override
-        public @Nullable AEKey getKey(int slot) {
-            return super.getKey(1);
-        }
-
-        @Override
         public boolean isAllowedIn(int slot, AEKey what) {
-            if (slot == 1) return false;
+            if (slot == 0) return false;
 
             return super.isAllowedIn(slot, what);
         }
 
         @Override
         public long extract(int slot, AEKey what, long amount, Actionable mode) {
-            return super.extract(1, what, amount, mode);
+            if (slot == 1) return 0L;
+
+            return super.extract(slot, what, amount, mode);
         }
 
         public boolean canAdd(int slot, AEFluidKey key, int amount) {

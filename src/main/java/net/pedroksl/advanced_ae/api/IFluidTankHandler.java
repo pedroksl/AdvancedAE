@@ -41,10 +41,15 @@ public interface IFluidTankHandler {
                     if (genStack != null && genStack.what() != null) {
                         var fluid = ((AEFluidKey) genStack.what()).toStack((int) genStack.amount());
 
-                        var extracted = tank.extract(index, genStack.what(), 1000, Actionable.MODULATE);
+                        var extracted = Math.min(genStack.amount(), 1000);
                         var inserted = cap.fill(
                                 new FluidStack(fluid.getFluid(), (int) extracted), IFluidHandler.FluidAction.EXECUTE);
-                        tank.insert(index, genStack.what(), extracted - inserted, Actionable.MODULATE);
+                        var endAmount = genStack.amount() - inserted;
+                        if (endAmount > 0) {
+                            tank.setStack(index, new GenericStack(genStack.what(), genStack.amount() - inserted));
+                        } else {
+                            tank.setStack(index, null);
+                        }
 
                         playAudioCues(new FluidTankClientAudioPacket(false));
                     }

@@ -79,13 +79,13 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
             this.processingTime = getHost().getProcessingTime();
             this.showWarning = getHost().showWarning();
 
-            var genInput = this.getHost().getTank().getStack(0);
+            var genInput = this.getHost().getTank().getStack(1);
             FluidStack inputFluid = FluidStack.EMPTY;
             if (genInput != null && genInput.what() != null) {
                 inputFluid = ((AEFluidKey) genInput.what()).toStack(((int) genInput.amount()));
             }
 
-            var genOutput = this.getHost().getTank().getStack(1);
+            var genOutput = this.getHost().getTank().getStack(0);
             FluidStack outputFluid = FluidStack.EMPTY;
             if (genOutput != null && genOutput.what() != null) {
                 outputFluid = ((AEFluidKey) genOutput.what()).toStack(((int) genOutput.amount()));
@@ -172,7 +172,7 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
 
     @Override
     public boolean canInsertInto(int index) {
-        return index == 0;
+        return index == 1;
     }
 
     @Override
