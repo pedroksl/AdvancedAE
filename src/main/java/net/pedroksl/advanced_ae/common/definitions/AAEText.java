@@ -93,7 +93,7 @@ public enum AAEText implements LocalizationEnum {
     AutoStockTooltip("Configurable to regulate an exact amount of items to be in the user's inventory.", Type.TOOLTIP),
     MagnetTooltip("Configurable to pull items from the world to user inventory. Maximum range of %s.", Type.TOOLTIP),
     HpBufferTooltip("Boosts the user's max health by +%s.", Type.TOOLTIP),
-    EvasionTooltip("Enables damage avoidance of any type with a %s" + "%4% chance.", Type.TOOLTIP),
+    EvasionTooltip("Enables damage avoidance of any type with a %s" + "%% chance.", Type.TOOLTIP),
     RegenerationTooltip("Enables a regeneration effect.", Type.TOOLTIP),
     StrengthTooltip("Boosts the user's strength by %s.", Type.TOOLTIP),
     AttackSpeedTooltip("Boosts the user's attack speed by %s.", Type.TOOLTIP),
@@ -109,7 +109,9 @@ public enum AAEText implements LocalizationEnum {
     InsufficientPower("Insufficient Power", Type.TOOLTIP),
     InsufficientPowerDetails(
             "Unable to extract enough power for full speed progress. Check guide for possible " + "solutions.",
-            Type.TOOLTIP);
+            Type.TOOLTIP),
+
+    QuantumArmorHotkeyTooltip("Press [%s] with this equipped to configure.", Type.TOOLTIP);
 
     private final String englishText;
     private final Type type;
