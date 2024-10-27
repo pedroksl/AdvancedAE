@@ -27,7 +27,7 @@ import appeng.core.definitions.BlockDefinition;
 import appeng.core.definitions.ItemDefinition;
 import appeng.decorative.AEDecorativeBlock;
 
-public final class AAEBlocks {
+public final class AAEBlock {
     public static final DeferredRegister.Blocks DR = DeferredRegister.createBlocks(AdvancedAE.MOD_ID);
 
     private static final List<BlockDefinition<?>> BLOCKS = new ArrayList<>();
