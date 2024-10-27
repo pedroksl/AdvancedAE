@@ -133,7 +133,8 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         super.readVisualStateFromNBT(data);
         this.lastReportedValue = data.getLong("lastValue");
         this.lastHumanReadableValue = data.getString("throughput");
-        this.workRoutine = WorkRoutine.valueOf(data.getString("routine"));
+        var routine = data.getString("routine");
+        this.workRoutine = routine.isEmpty() ? WorkRoutine.SECOND : WorkRoutine.valueOf(routine);
     }
 
     @Override

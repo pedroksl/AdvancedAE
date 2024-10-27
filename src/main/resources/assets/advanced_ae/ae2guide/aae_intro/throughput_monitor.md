@@ -7,6 +7,7 @@ categories:
   - advanced items
 item_ids:
   - advanced_ae:throughput_monitor
+  - advanced_ae:throughput_monitor_configurator
 ---
 
 # ME Throughput Monitor
@@ -27,3 +28,16 @@ It does *not* require a channel.
 *   Right-click with an item or double-right-click with a fluid container to set the monitor to that item/fluid.
 *   Right-click with an empty hand to clear the monitor.
 *   Shift-right-click with an empty hand to lock the monitor.
+
+## Throughput Monitor Configurator
+
+<ItemImage id="advanced_ae:throughput_monitor_configurator" scale="4"></ItemImage>
+
+The Throughput monitor configurator is a tool that can be used to change the presented data. Right-clicking a monitor
+with one in hand will cycle between three options:
+
+* Items per tick
+* Items per second
+* Items per minute
+
+Note: It may take some time before the readings stabilize when changing the modes, so don't trust initial values!
