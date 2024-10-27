@@ -170,8 +170,8 @@ public class AAERecipeProvider extends RecipeProvider {
                 .save(Addons.EXTENDEDAE.notConditionalRecipe(c), AdvancedAE.makeId("largeappupgrade"));
         ReactionChamberRecipeBuilder.react(AAEItems.SHATTERED_SINGULARITY, 2, 200000)
                 .input(AEItems.SINGULARITY)
-                .input(ConventionTags.ENDER_PEARL_DUST, 4)
-                .input(AEItems.SKY_DUST, 4)
+                .input(ConventionTags.ENDER_PEARL_DUST, 2)
+                .input(AEItems.SKY_DUST, 2)
                 .fluid(Fluids.LAVA, 100)
                 .save(c, "shatteredsingularity");
         InscriberRecipeBuilder.inscribe(AAEItems.SHATTERED_SINGULARITY, AAEItems.QUANTUM_INFUSED_DUST, 1)
@@ -311,12 +311,12 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(AAEBlocks.QUANTUM_UNIT)
                 .input(AAEBlocks.QUANTUM_CORE)
                 .input(AAEItems.SHATTERED_SINGULARITY, 8)
-                .input(AAEBlocks.QUANTUM_STORAGE_256M, 4)
+                .input(AAEBlocks.QUANTUM_STORAGE_256M, 3)
                 .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("eaequantumdataentangler"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.DATA_ENTANGLER)
-                .pattern("SSS")
-                .pattern("QUQ")
-                .pattern("QCQ")
+                .pattern("QQQ")
+                .pattern("SUS")
+                .pattern("SCS")
                 .define('U', AAEBlocks.QUANTUM_UNIT)
                 .define('C', AAEBlocks.QUANTUM_CORE)
                 .define('S', AAEItems.SHATTERED_SINGULARITY)

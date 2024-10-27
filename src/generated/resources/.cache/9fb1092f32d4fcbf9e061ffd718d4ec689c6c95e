@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-25T20:42:57.0995858	Recipes
+// 1.21.1	2024-10-27T04:32:19.2719327	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -69,7 +69,7 @@ c2b3d3c9fd50378ed8642f3bb91fcfc42c658449 data/advanced_ae/recipe/chippedbudding.
 9fb6980062ff8cb33bc01407e6832a3c8c0ae681 data/advanced_ae/recipe/eaeadvpatpro.json
 7b25c28e42e08e4bab0bae4cff40981ae87a73c1 data/advanced_ae/recipe/eaelargeappupgrade.json
 11a97595fdafc77be7ba104e7b6290fd51210d25 data/advanced_ae/recipe/eaequantumaccel.json
-3acc59776dbf2df359dde720bdbea244d6e94e4f data/advanced_ae/recipe/eaequantumdataentangler.json
+727f93a38424a317b9b04d210d49086a0adca8ce data/advanced_ae/recipe/eaequantumdataentangler.json
 297402c1a0ed65a95e22216fe5c6e85c30f986e3 data/advanced_ae/recipe/eaequantummultithreader.json
 ae0a82a8cdb61065098b90ec37bd9d6ec38996a8 data/advanced_ae/recipe/eaequantumunit.json
 79b51cf6e16b32506c86f7a3455976ddae2cc6b3 data/advanced_ae/recipe/entrocrystal.json
@@ -90,7 +90,7 @@ ff54b2545fa6d877fa4a88bc3a2b5789f8dd9906 data/advanced_ae/recipe/night_vision_ca
 18896ddd55412bba9f201068ca1c7edcf8b2216f data/advanced_ae/recipe/quantumaccel.json
 faf416e7a6125f5f852a3b2c5e08d1e0e66b0d5b data/advanced_ae/recipe/quantumcore.json
 ff13db5ae870a9d9aa7459f28aad17f16c79033d data/advanced_ae/recipe/quantumcrafter.json
-7150a83f51f8f8ccad7f0eeb302360c067043d1f data/advanced_ae/recipe/quantumdataentangler.json
+c9dc0ac008285c2aec0e9bfc6b9b5b045caf3a7f data/advanced_ae/recipe/quantumdataentangler.json
 b3047f1dbecc14e2fe185fdc10ddbc6610cc9e14 data/advanced_ae/recipe/quantummultithreader.json
 d56f682477fb7e271ea19e7619f178b066665810 data/advanced_ae/recipe/quantumstorage128.json
 e96c1d94b4c8609d0af44ecdeaf8256e1899e5b3 data/advanced_ae/recipe/quantumstorage256.json
@@ -126,7 +126,7 @@ b95ee91d59d0ad296944993c581123e5344f22f3 data/advanced_ae/recipe/reach_card.json
 25898dbaf0ac91d2334ce960bfd34a96080ac932 data/advanced_ae/recipe/reactionchamber.json
 cd1df2203585fba277450067cdd22e4f1a969097 data/advanced_ae/recipe/redstonecrystal.json
 f3e8afc599b969883def2529319b69e83e98bd91 data/advanced_ae/recipe/regeneration_card.json
-8eb72cf439dc6366a7208994036c5bf99e27b63a data/advanced_ae/recipe/shatteredsingularity.json
+8ac70da635d3998d6fdc1699ccd32cc5c91842e8 data/advanced_ae/recipe/shatteredsingularity.json
 ea3cbe029590b350458de4987c9aa480ada86f11 data/advanced_ae/recipe/singularity.json
 e29b0bd078541126f0f494799b8cab7a8d26a86d data/advanced_ae/recipe/skybronze.json
 ee50bb8c9bbf21179169e5411f52aca590db1828 data/advanced_ae/recipe/skyosmium.json

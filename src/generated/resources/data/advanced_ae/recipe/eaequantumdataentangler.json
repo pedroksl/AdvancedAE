@@ -24,7 +24,7 @@
       }
     },
     {
-      "amount": 4,
+      "amount": 3,
       "ingredient": {
         "item": "advanced_ae:quantum_storage_256"
       }

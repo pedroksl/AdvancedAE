@@ -14,13 +14,13 @@
       }
     },
     {
-      "amount": 4,
+      "amount": 2,
       "ingredient": {
         "tag": "c:dusts/ender_pearl"
       }
     },
     {
-      "amount": 4,
+      "amount": 2,
       "ingredient": {
         "item": "ae2:sky_dust"
       }

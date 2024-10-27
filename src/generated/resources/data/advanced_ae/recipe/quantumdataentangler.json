@@ -25,9 +25,9 @@
     }
   },
   "pattern": [
-    "SSS",
-    "QUQ",
-    "QCQ"
+    "QQQ",
+    "SUS",
+    "SCS"
   ],
   "result": {
     "count": 1,
