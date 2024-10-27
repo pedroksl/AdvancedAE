@@ -8,14 +8,17 @@
     "H": {
       "item": "minecraft:rabbit_hide"
     },
+    "P": {
+      "item": "advanced_ae:quantum_alloy_plate"
+    },
     "S": {
       "item": "ae2:speed_card"
     }
   },
   "pattern": [
-    "SSS",
+    "PSP",
     "HCH",
-    "SSS"
+    "PSP"
   ],
   "result": {
     "count": 1,

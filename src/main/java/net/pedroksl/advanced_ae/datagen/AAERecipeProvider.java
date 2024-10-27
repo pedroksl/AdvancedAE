@@ -537,11 +537,11 @@ public class AAERecipeProvider extends RecipeProvider {
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("auto_stock_card"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.MAGNET_CARD)
-                .pattern("P P")
-                .pattern("ACA")
-                .pattern("AAA")
+                .pattern("IIA")
+                .pattern("IC ")
+                .pattern("IIA")
                 .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
-                .define('P', AAEItems.QUANTUM_ALLOY_PLATE)
+                .define('I', Items.IRON_INGOT)
                 .define('A', AAEItems.QUANTUM_ALLOY)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("magnet_card"));
@@ -557,12 +557,13 @@ public class AAERecipeProvider extends RecipeProvider {
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("hp_buffer_card"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.EVASION_CARD)
-                .pattern("SSS")
+                .pattern("PSP")
                 .pattern("HCH")
-                .pattern("SSS")
+                .pattern("PSP")
                 .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
                 .define('H', Items.RABBIT_HIDE)
                 .define('S', AEItems.SPEED_CARD)
+                .define('P', AAEItems.QUANTUM_ALLOY_PLATE)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("evasion_card"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.REGENERATION_CARD)

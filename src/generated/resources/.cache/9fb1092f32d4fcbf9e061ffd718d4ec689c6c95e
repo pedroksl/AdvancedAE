@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-27T04:32:19.2719327	Recipes
+// 1.21.1	2024-10-27T17:31:29.7748557	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -74,7 +74,7 @@ c2b3d3c9fd50378ed8642f3bb91fcfc42c658449 data/advanced_ae/recipe/chippedbudding.
 ae0a82a8cdb61065098b90ec37bd9d6ec38996a8 data/advanced_ae/recipe/eaequantumunit.json
 79b51cf6e16b32506c86f7a3455976ddae2cc6b3 data/advanced_ae/recipe/entrocrystal.json
 0453b1028ca12bed0511324884fa54a03f093847 data/advanced_ae/recipe/entroingot.json
-388ada30d0481e5ca15853a55bd2e72074d2618b data/advanced_ae/recipe/evasion_card.json
+8eee183d27a31cc9017b98cd922c3d21c4ee67de data/advanced_ae/recipe/evasion_card.json
 3fc9cea3ae6265391762c1c2e861a9585d95c645 data/advanced_ae/recipe/flawedbudding.json
 63d82099a95ca0ed8dcb9b14696a4a0ac34fc75c data/advanced_ae/recipe/flight_card.json
 763226373fe9f88794f5f7d9b1b740a311edff15 data/advanced_ae/recipe/flight_drift_card.json
@@ -85,7 +85,7 @@ ae0a82a8cdb61065098b90ec37bd9d6ec38996a8 data/advanced_ae/recipe/eaequantumunit.
 95082831618d16d2b33e0b3d1f91cb14fcdf381d data/advanced_ae/recipe/largeappupgrade.json
 ed946a4c79b9d94fd8009edbfc022f907b0b52b5 data/advanced_ae/recipe/lava_immunity_card.json
 a1030f7b38a59a7b35a8352504fd085d2ef9156c data/advanced_ae/recipe/luck_card.json
-c8a657920dca01b3a1c5e9077af2a6a9b85e9f6a data/advanced_ae/recipe/magnet_card.json
+ffb961eef872d41206856c8e6ef16aa2bff8a18d data/advanced_ae/recipe/magnet_card.json
 ff54b2545fa6d877fa4a88bc3a2b5789f8dd9906 data/advanced_ae/recipe/night_vision_card.json
 18896ddd55412bba9f201068ca1c7edcf8b2216f data/advanced_ae/recipe/quantumaccel.json
 faf416e7a6125f5f852a3b2c5e08d1e0e66b0d5b data/advanced_ae/recipe/quantumcore.json

@@ -252,7 +252,9 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     }
 
     private boolean hasAutoExportWork() {
-        return (!this.outputInv.getStackInSlot(0).isEmpty() || this.fluidInv.getAmount(1) > 0)
+        return (!this.outputInv.getStackInSlot(0).isEmpty()
+                        || this.fluidInv.getStack(1) != null
+                        || this.fluidInv.getAmount(1) > 0)
                 && configManager.getSetting(Settings.AUTO_EXPORT) == YesNo.YES;
     }
 
@@ -461,10 +463,12 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
                 var outFluid = this.fluidInv.getStack(1);
                 if (outFluid != null && outFluid.what() != null) {
-                    var extracted =
-                            this.fluidInv.extract(outFluid.what(), outFluid.amount(), Actionable.MODULATE, source);
+                    var extracted = this.fluidInv.extract(1, outFluid.what(), outFluid.amount(), Actionable.MODULATE);
                     var inserted = target.insert(outFluid.what(), extracted, Actionable.MODULATE, source);
                     this.fluidInv.add(1, ((AEFluidKey) outFluid.what()), (int) (extracted - inserted));
+
+                    if (this.fluidInv.getAmount(1) == 0) clearFluidOut();
+
                     movedStacks |= inserted > 0;
                 }
 
@@ -666,8 +670,10 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         }
 
         @Override
-        public long insert(int slot, AEKey what, long amount, Actionable mode) {
-            return super.insert(0, what, amount, mode);
+        public boolean isAllowedIn(int slot, AEKey what) {
+            if (slot == 1) return false;
+
+            return super.isAllowedIn(slot, what);
         }
 
         @Override
