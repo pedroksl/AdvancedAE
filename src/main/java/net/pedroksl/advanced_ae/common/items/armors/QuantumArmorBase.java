@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -22,7 +23,9 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.phys.BlockHitResult;
+import net.pedroksl.advanced_ae.client.Hotkeys;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
@@ -67,6 +70,13 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     public void appendHoverText(
             ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {
         super.appendHoverText(stack, context, lines, advancedTooltips);
+
+        var hotkey = Hotkeys.getHotkeyMapping(AAEHotkeys.ARMOR_CONFIG);
+        if (hotkey != null) {
+            lines.add(AAEText.QuantumArmorHotkeyTooltip.text(
+                            hotkey.mapping().getTranslatedKeyMessage().copy().withStyle(ChatFormatting.GRAY))
+                    .withStyle(ChatFormatting.DARK_GRAY));
+        }
 
         if (getLinkedPosition(stack) == null) {
             lines.add(Tooltips.of(GuiText.Unlinked, Tooltips.RED));

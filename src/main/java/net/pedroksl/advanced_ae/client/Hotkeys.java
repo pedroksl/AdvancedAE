@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.KeyMapping;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
 import net.pedroksl.advanced_ae.network.packet.AAEHotkeyPacket;
 
 import appeng.core.network.ServerboundPacket;
@@ -18,11 +19,12 @@ public class Hotkeys {
     private static boolean finalized;
 
     private static AAEHotkey createHotkey(String id) {
+        var defaultHotkey = getDefaultHotkey(id);
+
         if (finalized) {
             throw new IllegalStateException("Hotkey registration already finalized!");
         }
-        return new AAEHotkey(
-                id, new KeyMapping("key.advanced_ae." + id, GLFW.GLFW_KEY_UNKNOWN, "key.advanced_ae.category"));
+        return new AAEHotkey(id, new KeyMapping("key.advanced_ae." + id, defaultHotkey, "key.advanced_ae.category"));
     }
 
     private static void registerHotkey(AAEHotkey hotkey) {
@@ -69,5 +71,13 @@ public class Hotkeys {
         public KeyMapping mapping() {
             return this.mapping;
         }
+    }
+
+    private static int getDefaultHotkey(String id) {
+        return switch (id) {
+            case AAEHotkeys.ARMOR_CONFIG -> GLFW.GLFW_KEY_N;
+            case AAEHotkeys.PATTERN_ENCODER_HOTKEY -> GLFW.GLFW_KEY_I;
+            default -> GLFW.GLFW_KEY_UNKNOWN;
+        };
     }
 }
