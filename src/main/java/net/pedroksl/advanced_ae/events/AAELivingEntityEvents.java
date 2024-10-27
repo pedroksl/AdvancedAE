@@ -84,13 +84,6 @@ public class AAELivingEntityEvents {
             if (stack.getItem() instanceof QuantumArmorBase item) {
                 if (item.extractAEPower(stack, 10, Actionable.SIMULATE) > 0) {
                     event.setDistance(0.0f);
-                    return;
-                }
-                if (item.isUpgradeEnabledAndPowered(stack, UpgradeType.JUMP_HEIGHT, player.level())) {
-                    int upgrade = stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.JUMP_HEIGHT), 0);
-                    if (player.isSprinting()) upgrade += 2;
-                    event.setDistance(event.getDistance() - upgrade);
-                    item.consumeEnergy(stack, UpgradeType.JUMP_HEIGHT);
                 }
             }
         }
