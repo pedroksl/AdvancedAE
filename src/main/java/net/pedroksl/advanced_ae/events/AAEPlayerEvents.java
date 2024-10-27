@@ -73,6 +73,8 @@ public class AAEPlayerEvents {
                     chestplate.consumeEnergy(armor, UpgradeType.FLIGHT);
                 }
             }
+        } else if (player.isInWaterOrBubble()) {
+            event.setNewSpeed(event.getOriginalSpeed() * 5);
         }
     }
 
@@ -87,8 +89,6 @@ public class AAEPlayerEvents {
             if (chestStack.getItem() instanceof QuantumChestplate) {
                 model.leftSleeve.visible = false;
                 model.rightSleeve.visible = false;
-                model.leftPants.visible = false;
-                model.rightPants.visible = false;
                 model.jacket.visible = false;
 
                 model.leftArm.visible = false;
@@ -96,9 +96,15 @@ public class AAEPlayerEvents {
             }
 
             ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
+            ItemStack bootsStack = player.getItemBySlot(EquipmentSlot.FEET);
             if (leggingsStack.getItem() instanceof QuantumLeggings) {
                 model.leftPants.visible = false;
                 model.rightPants.visible = false;
+
+                if (bootsStack.getItem() instanceof QuantumBoots) {
+                    model.leftLeg.visible = false;
+                    model.rightLeg.visible = false;
+                }
             }
         }
     }
