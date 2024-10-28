@@ -143,6 +143,7 @@
   "item.advanced_ae.walk_speed_card": "Walk Speed Card",
   "item.advanced_ae.water_breathing_card": "Water Breathing Card",
   "key.advanced_ae.category": "Advanced AE",
+  "key.advanced_ae.pattern_encoder_action": "Open Adv. Pattern Encoder",
   "key.advanced_ae.quantum_armor_config": "Open Quantum Armor Configuration",
   "material.advanced_ae.quantum_alloy": "Quantum Alloy"
 }
