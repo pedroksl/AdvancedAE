@@ -42,7 +42,7 @@ public interface IUpgradeableItem extends IGridLinkedItem {
     default boolean isUpgradePowered(ItemStack stack, UpgradeType upgrade, Level level) {
         // Use internal buffer
         var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        if (energy != null && energy.getEnergyStored() > upgrade.getCost()) return true;
+        if (energy != null && energy.getEnergyStored() >= upgrade.getCost()) return true;
 
         // If that failed, try to pull from the grid
         if (level != null && getLinkedPosition(stack) != null) {
