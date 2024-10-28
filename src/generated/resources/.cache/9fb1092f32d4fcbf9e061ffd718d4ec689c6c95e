@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-27T23:00:49.1967694	Recipes
+// 1.21.1	2024-10-28T00:40:44.2407222	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -55,6 +55,7 @@ e6f353e7750d93599a055888c6d0daf893cf8736 data/advanced_ae/advancement/recipes/mi
 178e1e744fc224387ca82149e722026eaab5d9c6 data/advanced_ae/advancement/recipes/misc/strength_card.json
 e316f95111b09b219f4f00499a4d8148703cff61 data/advanced_ae/advancement/recipes/misc/swim_speed_card.json
 423c20f44d3ee0a836a21a3e475699394d959ba2 data/advanced_ae/advancement/recipes/misc/throughput_monitor.json
+b9adc2ac97bed7857880dfc0f739c92476d9c3f4 data/advanced_ae/advancement/recipes/misc/throughput_monitor_configurator.json
 fba30925f4dc67a95da74953562cb34e4c0b77a4 data/advanced_ae/advancement/recipes/misc/walk_speed_card.json
 82b0e69bdf21bad794360fbe1411e2d928d9f4b8 data/advanced_ae/advancement/recipes/misc/water_breathing_card.json
 d094766f49f8c9cb85ed4125e167da047536790b data/advanced_ae/recipe/advpartenc.json
@@ -143,5 +144,6 @@ f990ce53a95cd91dee316c9655c98392bc5179bf data/advanced_ae/recipe/step_assist_car
 eb6db933fd026bc25b38e0083690e203182ac248 data/advanced_ae/recipe/strength_card.json
 20c61bc967e32b4df4a8f7fe0ca4764e0d0ce63d data/advanced_ae/recipe/swim_speed_card.json
 a8d7cca6a040782fd5e6d6772a61884f37de1446 data/advanced_ae/recipe/throughput_monitor.json
+dc43499d480e76a63181e661870e5ceeb6a41eb9 data/advanced_ae/recipe/throughput_monitor_configurator.json
 2c2b0a421c7e2d2bc1cba331837d205a43a47f95 data/advanced_ae/recipe/walk_speed_card.json
 e000988a7425bfd97a1cd97b4e3db8553dab76f8 data/advanced_ae/recipe/water_breathing_card.json

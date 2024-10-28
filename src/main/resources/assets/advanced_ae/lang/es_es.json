@@ -112,6 +112,7 @@
 	"item.advanced_ae.walk_speed_card": "Tarjeta de Velocidad de Caminata",
 	"item.advanced_ae.water_breathing_card": "Tarjeta de Respiración Acuática",
 	"key.advanced_ae.category": "Advanced AE",
+	"key.advanced_ae.pattern_encoder_action": "Abrir Codificador de Patrones Avanzado",
 	"key.advanced_ae.quantum_armor_config": "Abrir Configuración de Armadura Cuántica",
 	"material.advanced_ae.quantum_alloy": "Aleación Cuántica"
 }

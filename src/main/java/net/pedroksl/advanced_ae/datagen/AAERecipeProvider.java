@@ -234,6 +234,14 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('Q', AEBlocks.QUARTZ_VIBRANT_GLASS)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_PROCESSOR))
                 .save(c, AdvancedAE.makeId("quantum_storage_component"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.MONITOR_CONFIGURATOR)
+                .pattern("  S")
+                .pattern(" I ")
+                .pattern("I  ")
+                .define('I', Items.IRON_INGOT)
+                .define('S', AEItems.SPEED_CARD)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_PROCESSOR))
+                .save(c, AdvancedAE.makeId("throughput_monitor_configurator"));
 
         // Fluids
         ReactionChamberRecipeBuilder.react(AAEFluids.QUANTUM_INFUSION.source(), 1000, 20000)
