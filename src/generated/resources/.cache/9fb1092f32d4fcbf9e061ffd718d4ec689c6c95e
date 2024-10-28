@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-27T17:31:29.7748557	Recipes
+// 1.21.1	2024-10-27T23:00:49.1967694	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -43,6 +43,7 @@ dcefe8e0e795de1b68f709e81c05d8f974d37922 data/advanced_ae/advancement/recipes/mi
 bce0f3295e5802364add215d82c4b77449379af5 data/advanced_ae/advancement/recipes/misc/quantum_storage_component.json
 35495e9a480f5221c0eea267c5831bd4b80785a9 data/advanced_ae/advancement/recipes/misc/reach_card.json
 c0a14cdefd30e0680d517cd9083b6c21ab38d7a6 data/advanced_ae/advancement/recipes/misc/reactionchamber.json
+625f9c80bebeee98aa6831ea8a3e52754ccd4038 data/advanced_ae/advancement/recipes/misc/recharging_card.json
 c025a712bc4e698ce71547ab8085a6f303f85486 data/advanced_ae/advancement/recipes/misc/regeneration_card.json
 9be747dde74e7a7fbdcf522ea8936dd43e8d49d9 data/advanced_ae/advancement/recipes/misc/smalladvpatpro.json
 f5b69a588049e082b7ae4148cd85f179875639b4 data/advanced_ae/advancement/recipes/misc/smalladvpatpro2.json
@@ -124,6 +125,7 @@ dfd021550410b8f4d043bdc106b059c964ef737e data/advanced_ae/recipe/quantum_process
 9a7731a15f429b481ac4ebb9410fb5884ad6dd3c data/advanced_ae/recipe/quartzcrystal.json
 b95ee91d59d0ad296944993c581123e5344f22f3 data/advanced_ae/recipe/reach_card.json
 25898dbaf0ac91d2334ce960bfd34a96080ac932 data/advanced_ae/recipe/reactionchamber.json
+e1ef44d42b6be38acba56bfacf0bbebb29262179 data/advanced_ae/recipe/recharging_card.json
 cd1df2203585fba277450067cdd22e4f1a969097 data/advanced_ae/recipe/redstonecrystal.json
 f3e8afc599b969883def2529319b69e83e98bd91 data/advanced_ae/recipe/regeneration_card.json
 8ac70da635d3998d6fdc1699ccd32cc5c91842e8 data/advanced_ae/recipe/shatteredsingularity.json

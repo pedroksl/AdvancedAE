@@ -647,6 +647,18 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('Q', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("flight_drift_card"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.RECHARGING_CARD)
+                .pattern("SWS")
+                .pattern("QCQ")
+                .pattern("EDE")
+                .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
+                .define('W', AEBlocks.WIRELESS_ACCESS_POINT)
+                .define('S', AEItems.CHARGED_STAFF)
+                .define('Q', AAEItems.QUANTUM_PROCESSOR)
+                .define('E', AEItems.ENERGY_CARD)
+                .define('D', AEBlocks.DENSE_ENERGY_CELL)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
+                .save(c, AdvancedAE.makeId("recharging_card"));
 
         loadAppFluxRecipes(c);
         loadMegaCellsRecipes(c);

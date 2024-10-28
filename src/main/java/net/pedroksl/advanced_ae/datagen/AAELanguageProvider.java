@@ -50,6 +50,7 @@ public class AAELanguageProvider extends LanguageProvider {
     private void generateLocalizations() {
         add("key.advanced_ae.category", "Advanced AE");
         add("key.advanced_ae.quantum_armor_config", "Open Quantum Armor Configuration");
+        add("key.advanced_ae.pattern_encoder_action", "Open Adv. Pattern Encoder");
         add("curios.identifier.adv_pattern_encoder", "Pattern Encoder");
     }
 
