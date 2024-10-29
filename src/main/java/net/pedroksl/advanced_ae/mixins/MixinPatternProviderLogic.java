@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.core.Direction;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 
 import appeng.api.networking.IManagedGridNode;
@@ -24,6 +26,7 @@ public class MixinPatternProviderLogic {
     @Shadow
     IManagedGridNode mainNode;
 
+    @OnlyIn(Dist.CLIENT)
     @Inject(method = "getActiveSides", at = @At("TAIL"), cancellable = true)
     private void onGetActiveSides(CallbackInfoReturnable<EnumSet<Direction>> cir, @Local EnumSet<Direction> sides) {
         // Additionally skip sides with grid connections to advanced pattern providers

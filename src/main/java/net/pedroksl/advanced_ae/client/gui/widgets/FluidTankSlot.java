@@ -120,6 +120,7 @@ public class FluidTankSlot extends AbstractWidget {
 
     public void setFluidStack(FluidStack fluidStack) {
         if (fluidStack.isEmpty()) {
+            this.content = FluidStack.EMPTY;
             this.disableRender = true;
             updateTooltip(fluidStack);
             return;

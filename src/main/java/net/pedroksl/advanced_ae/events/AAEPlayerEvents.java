@@ -85,6 +85,11 @@ public class AAEPlayerEvents {
             var renderer = event.getRenderer();
             var model = renderer.getModel();
 
+            ItemStack helmetStack = player.getItemBySlot(EquipmentSlot.HEAD);
+            if (helmetStack.getItem() instanceof QuantumHelmet) {
+                model.hat.visible = false;
+            }
+
             ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
             if (chestStack.getItem() instanceof QuantumChestplate) {
                 model.leftSleeve.visible = false;

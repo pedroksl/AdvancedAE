@@ -17,6 +17,8 @@ public interface IFluidTankHandler {
 
     ItemStack getCarriedItem();
 
+    void setCarriedItem(ItemStack stack);
+
     GenericStackInv getTank();
 
     boolean canExtractFromTank(int index);
@@ -51,23 +53,37 @@ public interface IFluidTankHandler {
                             tank.setStack(index, null);
                         }
 
-                        playAudioCues(new FluidTankClientAudioPacket(false));
+                        setCarriedItem(cap.getContainer());
+
+                        if (inserted > 0) {
+                            playAudioCues(new FluidTankClientAudioPacket(false));
+                        }
                     }
                 } else {
-                    if (!canInsertInto(index) || cap.getFluidInTank(0) == FluidStack.EMPTY) return;
+                    if (!canInsertInto(index) || cap.getFluidInTank(0).isEmpty()) return;
 
                     var fluid = cap.getFluidInTank(0);
                     var genStack = GenericStack.fromFluidStack(fluid);
                     if (genStack != null && genStack.what() != null) {
 
-                        var extracted = cap.drain(1000, IFluidHandler.FluidAction.EXECUTE)
-                                .getAmount();
-                        var inserted = tank.insert(index, genStack.what(), extracted, Actionable.MODULATE);
-                        cap.fill(
-                                new FluidStack(fluid.getFluid(), (int) (extracted - inserted)),
-                                IFluidHandler.FluidAction.EXECUTE);
+                        if (!cap.drain(
+                                        (int) tank.insert(index, genStack.what(), 1000, Actionable.SIMULATE),
+                                        IFluidHandler.FluidAction.SIMULATE)
+                                .isEmpty()) {
 
-                        playAudioCues(new FluidTankClientAudioPacket(true));
+                            var extracted = cap.drain(1000, IFluidHandler.FluidAction.EXECUTE)
+                                    .getAmount();
+                            var inserted = tank.insert(index, genStack.what(), extracted, Actionable.MODULATE);
+                            if (extracted - inserted > 0) {
+                                cap.fill(
+                                        new FluidStack(fluid.getFluid(), (int) (extracted - inserted)),
+                                        IFluidHandler.FluidAction.EXECUTE);
+                            }
+
+                            setCarriedItem(cap.getContainer());
+
+                            playAudioCues(new FluidTankClientAudioPacket(true));
+                        }
                     }
                 }
             }
