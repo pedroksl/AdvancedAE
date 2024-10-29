@@ -89,7 +89,7 @@ public class AAETagProvider {
             tag(AAETags.ADV_PATTERN_PROVIDER)
                     .add(AAEBlocks.ADV_PATTERN_PROVIDER.asItem(), AAEItems.ADV_PATTERN_PROVIDER.asItem());
 
-            tag(AAEConventionTags.CURIOS).add(AAEItems.ADV_PATTERN_ENCODER.asItem());
+            tag(AAEConventionTags.ENCODER_CURIO).add(AAEItems.ADV_PATTERN_ENCODER.asItem());
         }
 
         @NotNull

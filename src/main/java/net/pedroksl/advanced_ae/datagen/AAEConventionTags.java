@@ -17,6 +17,7 @@ public final class AAEConventionTags {
     public static final TagKey<Item> OSMIUM_INGOT = tag("c:ingots/osmium");
 
     public static final TagKey<Item> CURIOS = tag("curios:curio");
+    public static final TagKey<Item> ENCODER_CURIO = tag("curios:adv_pattern_encoder");
 
     public static final TagKey<Block> QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK = blockTag("c:storage_blocks/quantum_alloy");
 
