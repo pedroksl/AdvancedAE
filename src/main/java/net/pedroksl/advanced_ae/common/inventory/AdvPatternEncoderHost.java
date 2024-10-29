@@ -60,7 +60,7 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
     }
 
     public String getCloseHotkey() {
-        return AAEHotkeys.PATTERN_ENCODER_HOTKEY;
+        return AAEHotkeys.Keys.PATTERN_ENCODER_HOTKEY.getId();
     }
 
     public AppEngInternalInventory getInventory() {

@@ -71,7 +71,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
             ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {
         super.appendHoverText(stack, context, lines, advancedTooltips);
 
-        var hotkey = Hotkeys.getHotkeyMapping(AAEHotkeys.ARMOR_CONFIG);
+        var hotkey = Hotkeys.getHotkeyMapping(AAEHotkeys.Keys.ARMOR_CONFIG.getId());
         if (hotkey != null) {
             lines.add(AAEText.QuantumArmorHotkeyTooltip.text(
                             hotkey.mapping().getTranslatedKeyMessage().copy().withStyle(ChatFormatting.GRAY))

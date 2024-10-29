@@ -100,6 +100,18 @@ public interface IUpgradeableItem extends IGridLinkedItem {
         return false;
     }
 
+    default boolean toggleUpgrade(ItemStack stack, UpgradeType type) {
+        if (hasUpgrade(stack, type)) {
+            var component = AAEComponents.UPGRADE_TOGGLE.get(type);
+            var value = stack.get(component);
+            if (value != null) {
+                stack.set(AAEComponents.UPGRADE_TOGGLE.get(type), !value);
+                return true;
+            }
+        }
+        return false;
+    }
+
     default void tickUpgrades(Level level, Player player, ItemStack stack) {
         for (var upgrade : getAppliedUpgrades(stack)) {
             if (upgrade.applicationType == UpgradeType.ApplicationType.PASSIVE

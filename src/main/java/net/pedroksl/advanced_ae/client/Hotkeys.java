@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.KeyMapping;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -74,10 +73,6 @@ public class Hotkeys {
     }
 
     private static int getDefaultHotkey(String id) {
-        return switch (id) {
-            case AAEHotkeys.ARMOR_CONFIG -> GLFW.GLFW_KEY_N;
-            case AAEHotkeys.PATTERN_ENCODER_HOTKEY -> GLFW.GLFW_KEY_I;
-            default -> GLFW.GLFW_KEY_UNKNOWN;
-        };
+        return AAEHotkeys.getDefaultHotkey(id);
     }
 }

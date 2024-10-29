@@ -44,13 +44,15 @@ public class AAELanguageProvider extends LanguageProvider {
             add(material.get(), material.getEnglishName());
         }
 
+        for (var key : AAEHotkeys.Keys.values()) {
+            add("key.advanced_ae." + key.getId(), key.getEnglishTranslation());
+        }
+
         generateLocalizations();
     }
 
     private void generateLocalizations() {
         add("key.advanced_ae.category", "Advanced AE");
-        add("key.advanced_ae.quantum_armor_config", "Open Quantum Armor Configuration");
-        add("key.advanced_ae.pattern_encoder_action", "Open Advanced Pattern Encoder");
         add("curios.identifier.adv_pattern_encoder", "Pattern Encoder");
     }
 

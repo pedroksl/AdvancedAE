@@ -177,7 +177,7 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     }
 
     public String getCloseHotkey() {
-        return AAEHotkeys.ARMOR_CONFIG;
+        return AAEHotkeys.Keys.ARMOR_CONFIG.getId();
     }
 
     @FunctionalInterface

@@ -257,7 +257,9 @@ public class UpgradeCards {
                 List<ItemEntity> items = level.getEntities(
                         EntityType.ITEM, area, obj -> MagnetHelpers.validEntities(obj, player, filter, blacklist));
                 items.forEach(itemEntity -> {
-                    itemEntity.playerTouch(player);
+                    if (player.getInventory().getSlotWithRemainingSpace(itemEntity.getItem()) != -1) {
+                        itemEntity.playerTouch(player);
+                    }
                     // Still move the items close to the player in case inventory is full
                     itemEntity.setPos(pos);
                 });
@@ -345,7 +347,7 @@ public class UpgradeCards {
         var afRate = Integer.MAX_VALUE;
         if (cap != null && cap.canReceive()) {
             if (Addons.APPFLUX.isLoaded()) {
-                AppliedFluxApi.rechargeInventory(grid, afRate, player, cap);
+                AppliedFluxApi.rechargeCap(grid, afRate, IActionSource.ofPlayer(player), cap);
             }
 
             if (energyService.getStoredPower() > 0) {
