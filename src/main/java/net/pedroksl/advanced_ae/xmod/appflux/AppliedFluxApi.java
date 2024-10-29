@@ -59,7 +59,7 @@ public class AppliedFluxApi {
         return neededPower;
     }
 
-    public static void rechargeInventory(IGrid grid, int afRate, Player player, IEnergyStorage cap) {
+    public static void rechargeCap(IGrid grid, int afRate, IActionSource source, IEnergyStorage cap) {
         try {
             var storage = grid.getStorageService();
 
@@ -68,14 +68,9 @@ public class AppliedFluxApi {
                             FluxKey.of(EnergyType.FE),
                             (long) (afRate / PowerMultiplier.CONFIG.multiplier),
                             Actionable.MODULATE,
-                            IActionSource.ofPlayer(player));
+                            source);
             var inserted = cap.receiveEnergy((int) extracted, false);
-            storage.getInventory()
-                    .insert(
-                            FluxKey.of(EnergyType.FE),
-                            extracted - inserted,
-                            Actionable.MODULATE,
-                            IActionSource.ofPlayer(player));
+            storage.getInventory().insert(FluxKey.of(EnergyType.FE), extracted - inserted, Actionable.MODULATE, source);
         } catch (Throwable ignored) {
             // NO_OP
         }

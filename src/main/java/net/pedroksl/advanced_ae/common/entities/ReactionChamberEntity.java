@@ -26,6 +26,8 @@ import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
+import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxApi;
 
 import appeng.api.behaviors.ExternalStorageStrategy;
 import appeng.api.config.*;
@@ -333,6 +335,16 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                 final int requiredTicks = Mth.ceil((float) MAX_PROCESSING_STEPS / speedFactor);
                 final int powerConsumption = Mth.floor(((float) getTask().getEnergy() / requiredTicks) * powerRatio);
                 final double powerThreshold = powerConsumption - 0.01;
+
+                // Try to recharge from fe cells
+                if (Addons.APPFLUX.isLoaded()) {
+                    AppliedFluxApi.rechargeCap(
+                            grid,
+                            Integer.MAX_VALUE,
+                            IActionSource.ofMachine(this),
+                            this.getEnergyStorage(Direction.UP));
+                }
+
                 double powerReq = this.extractAEPower(powerConsumption, Actionable.SIMULATE, PowerMultiplier.CONFIG);
 
                 if (powerReq <= powerThreshold) {
