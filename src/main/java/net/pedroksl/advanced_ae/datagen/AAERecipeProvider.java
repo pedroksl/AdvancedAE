@@ -212,7 +212,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .setMode(InscriberProcessType.INSCRIBE)
                 .save(c, AdvancedAE.makeId("quantum_processor_print"));
         CircuitCutterRecipeBuilder.cut(AAEItems.QUANTUM_PROCESSOR_PRINT, 9)
-                .input(AAEBlocks.QUANTUM_ALLOY_BLOCK, 9)
+                .input(AAEBlocks.QUANTUM_ALLOY_BLOCK, 1)
                 .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("quantum_processor_print_eae"));
         InscriberRecipeBuilder.inscribe(ConventionTags.REDSTONE, AAEItems.QUANTUM_PROCESSOR, 1)
                 .setTop(Ingredient.of(AAEItems.QUANTUM_PROCESSOR_PRINT))

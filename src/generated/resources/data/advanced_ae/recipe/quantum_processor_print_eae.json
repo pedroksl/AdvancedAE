@@ -7,7 +7,6 @@
   ],
   "type": "extendedae:circuit_cutter",
   "input": {
-    "amount": 9,
     "ingredient": {
       "item": "advanced_ae:quantum_alloy_block"
     }
