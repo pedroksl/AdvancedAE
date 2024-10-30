@@ -116,12 +116,11 @@ public interface IUpgradeableItem extends IGridLinkedItem {
                 } else {
                     msg.append(Component.literal(" OFF").withStyle(Tooltips.RED));
                 }
-
-                player.sendSystemMessage(msg);
+                player.displayClientMessage(msg, true);
                 return true;
             }
         }
-        player.sendSystemMessage(AAEText.UpgradeNotInstalledMessage.text(id));
+        player.displayClientMessage(AAEText.UpgradeNotInstalledMessage.text(id), true);
         return false;
     }
 
