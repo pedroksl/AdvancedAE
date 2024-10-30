@@ -17,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -504,7 +503,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
             this.exportStrategies.put(
                     dir,
                     StackWorldBehaviors.createExternalStorageStrategies(
-                            (ServerLevel) be.getLevel(), be.getBlockPos().relative(dir), dir));
+                            (ServerLevel) be.getLevel(), be.getBlockPos().relative(dir), dir.getOpposite()));
         }
 
         var externalStorages = new IdentityHashMap<AEKeyType, MEStorage>(2);
@@ -679,27 +678,6 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     public void updateOutputSides(EnumSet<RelativeSide> allowedOutputs) {
         this.allowedOutputs = allowedOutputs;
         saveChanges();
-    }
-
-    @Override
-    public ItemStack getAdjacentBlock(RelativeSide side) {
-        var dir = getOrientation().getSide(side);
-        BlockPos blockPos = getBlockPos().relative(dir);
-
-        Level level = getLevel();
-        if (level == null) {
-            return null;
-        }
-
-        BlockState blockState = level.getBlockState(blockPos);
-        ItemStack itemStack = blockState.getBlock().asItem().getDefaultInstance();
-        if (blockState.hasBlockEntity()) {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity != null) {
-                blockEntity.saveToItem(itemStack, level.registryAccess());
-            }
-        }
-        return itemStack;
     }
 
     @Override
