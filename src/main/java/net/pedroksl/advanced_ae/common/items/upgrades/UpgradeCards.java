@@ -308,7 +308,7 @@ public class UpgradeCards {
 
                 if (neededPower > 0 && Addons.APPFLUX.isLoaded()) {
                     neededPower = Math.min(afRate, maxPower - currentPower);
-                    neededPower = AppliedFluxApi.rechargeQuantumGear(grid, neededPower, player, stack, armor);
+                    neededPower = AppliedFluxApi.rechargeAeStorageItem(grid, neededPower, player, stack, armor);
                 }
 
                 if (neededPower > 0 && energy.getStoredPower() > 0) {
@@ -351,7 +351,7 @@ public class UpgradeCards {
         var afRate = Integer.MAX_VALUE;
         if (cap != null && cap.canReceive()) {
             if (Addons.APPFLUX.isLoaded()) {
-                AppliedFluxApi.rechargeCap(grid, afRate, IActionSource.ofPlayer(player), cap);
+                AppliedFluxApi.rechargeEnergyStorage(grid, afRate, IActionSource.ofPlayer(player), cap);
             }
 
             if (energyService.getStoredPower() > 0) {

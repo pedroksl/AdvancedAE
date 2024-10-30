@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.xmod.appflux;
 
+import appeng.api.implementations.items.IAEItemPowerStorage;
 import com.glodblock.github.appflux.common.AFSingletons;
 import com.glodblock.github.appflux.common.me.key.FluxKey;
 import com.glodblock.github.appflux.common.me.key.type.EnergyType;
@@ -10,7 +11,6 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -39,8 +39,8 @@ public class AppliedFluxApi {
         }
     }
 
-    public static double rechargeQuantumGear(
-            IGrid grid, double neededPower, Player player, ItemStack stack, QuantumArmorBase armor) {
+    public static double rechargeAeStorageItem(
+            IGrid grid, double neededPower, Player player, ItemStack stack, IAEItemPowerStorage aePowerStorage) {
         try {
             var storage = grid.getStorageService();
             var extracted = storage.getInventory()
@@ -50,7 +50,7 @@ public class AppliedFluxApi {
                             Actionable.MODULATE,
                             IActionSource.ofPlayer(player));
 
-            armor.injectAEPower(stack, extracted * PowerMultiplier.CONFIG.multiplier, Actionable.MODULATE);
+            aePowerStorage.injectAEPower(stack, extracted * PowerMultiplier.CONFIG.multiplier, Actionable.MODULATE);
 
             neededPower -= extracted;
         } catch (Throwable ignored) {
@@ -59,7 +59,7 @@ public class AppliedFluxApi {
         return neededPower;
     }
 
-    public static void rechargeCap(IGrid grid, int afRate, IActionSource source, IEnergyStorage cap) {
+    public static void rechargeEnergyStorage(IGrid grid, int afRate, IActionSource source, IEnergyStorage cap) {
         try {
             var storage = grid.getStorageService();
 

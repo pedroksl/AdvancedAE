@@ -340,7 +340,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
                 // Try to recharge from fe cells
                 if (Addons.APPFLUX.isLoaded()) {
-                    AppliedFluxApi.rechargeCap(
+                    AppliedFluxApi.rechargeEnergyStorage(
                             grid,
                             Integer.MAX_VALUE,
                             IActionSource.ofMachine(this),
