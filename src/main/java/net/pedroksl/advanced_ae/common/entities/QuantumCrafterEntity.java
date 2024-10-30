@@ -851,27 +851,6 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     @Override
-    public ItemStack getAdjacentBlock(RelativeSide side) {
-        var dir = getOrientation().getSide(side);
-        BlockPos blockPos = getBlockPos().relative(dir);
-
-        Level level = getLevel();
-        if (level == null) {
-            return null;
-        }
-
-        BlockState blockState = level.getBlockState(blockPos);
-        ItemStack itemStack = blockState.getBlock().asItem().getDefaultInstance();
-        if (blockState.hasBlockEntity()) {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity != null) {
-                blockEntity.saveToItem(itemStack, level.registryAccess());
-            }
-        }
-        return itemStack;
-    }
-
-    @Override
     public void returnToMainMenu(Player player, ISubMenu iSubMenu) {
         MenuOpener.returnTo(AAEMenus.QUANTUM_CRAFTER, player, MenuLocators.forBlockEntity(this));
     }
