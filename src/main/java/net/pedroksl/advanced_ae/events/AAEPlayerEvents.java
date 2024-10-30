@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -21,13 +22,15 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
-import net.pedroksl.advanced_ae.network.packet.NoKeyPressedPacket;
+import net.pedroksl.advanced_ae.network.packet.KeysPressedPacket;
 
 public class AAEPlayerEvents {
     public static final AttributeModifier flight =
             new AttributeModifier(AdvancedAE.makeId("flight"), 1.0, AttributeModifier.Operation.ADD_VALUE);
 
     public static final String NO_KEY_DATA = "aae$nokey";
+    public static final String UP_KEY_DATA = "aae$upkey";
+    public static final String DOWN_KEY_DATA = "aae$downkey";
 
     @SubscribeEvent
     public static void ItemAttributes(ItemAttributeModifierEvent event) {
@@ -57,7 +60,9 @@ public class AAEPlayerEvents {
             }
             if (armor.isUpgradeEnabledAndPowered(itemStack, UpgradeType.REACH)) {
                 int value = itemStack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.REACH), 0);
-                event.addModifier(Attributes.BLOCK_INTERACTION_RANGE, getReachBoost(value), EquipmentSlotGroup.LEGS);
+                var attValue = getReachBoost(value);
+                event.addModifier(Attributes.BLOCK_INTERACTION_RANGE, attValue, EquipmentSlotGroup.LEGS);
+                event.addModifier(Attributes.ENTITY_INTERACTION_RANGE, attValue, EquipmentSlotGroup.LEGS);
             }
         }
     }
@@ -67,11 +72,8 @@ public class AAEPlayerEvents {
         Player player = event.getEntity();
         if (player.getAbilities().flying) {
             ItemStack armor = player.getItemBySlot(EquipmentSlot.CHEST);
-            if (armor.getItem() instanceof QuantumChestplate chestplate) {
-                if (chestplate.isUpgradeEnabledAndPowered(armor, UpgradeType.FLIGHT)) {
-                    event.setNewSpeed(event.getOriginalSpeed() * 5);
-                    chestplate.consumeEnergy(armor, UpgradeType.FLIGHT);
-                }
+            if (armor.getItem() instanceof QuantumChestplate) {
+                event.setNewSpeed(event.getOriginalSpeed() * 5);
             }
         } else if (player.isInWaterOrBubble()) {
             event.setNewSpeed(event.getOriginalSpeed() * 5);
@@ -170,18 +172,34 @@ public class AAEPlayerEvents {
                 }
             }
         } else {
-            ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
-            if (stack.getItem() instanceof QuantumBoots boots) {
-                if (player.getAbilities().flying && boots.isUpgradeEnabledAndPowered(stack, UpgradeType.FLIGHT_DRIFT)) {
+            ItemStack bootStack = player.getItemBySlot(EquipmentSlot.FEET);
+            if (bootStack.getItem() instanceof QuantumBoots boots) {
+                if (player.getAbilities().flying
+                        && boots.isUpgradeEnabledAndPowered(bootStack, UpgradeType.FLIGHT_DRIFT)) {
                     if (player.getPersistentData().getBoolean(NO_KEY_DATA)) {
                         var motion = player.getDeltaMovement();
                         if (motion.x != 0 || motion.z != 0) {
-                            var value =
-                                    stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT_DRIFT), 100)
-                                            / 100f;
+                            var value = bootStack.getOrDefault(
+                                            AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT_DRIFT), 100)
+                                    / 100f;
                             player.setDeltaMovement(motion.x * value, motion.y, motion.z * value);
-                            boots.consumeEnergy(stack, UpgradeType.FLIGHT_DRIFT);
+                            boots.consumeEnergy(bootStack, UpgradeType.FLIGHT_DRIFT);
                         }
+                    }
+                }
+            }
+            var upKey = player.getPersistentData().getBoolean(UP_KEY_DATA);
+            var downKey = player.getPersistentData().getBoolean(DOWN_KEY_DATA);
+            if (upKey != downKey) {
+                ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+                if (chestStack.getItem() instanceof QuantumChestplate chest) {
+                    var upgrade = UpgradeType.FLIGHT;
+                    if (player.getAbilities().flying && chest.isUpgradeEnabledAndPowered(chestStack, upgrade)) {
+                        var value = upgrade.getSettings().multiplier
+                                * chestStack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 0)
+                                / 25f;
+                        var direction = upKey ? 1 : -1;
+                        player.moveRelative(value, new Vec3(0, direction, 0));
                     }
                 }
             }
@@ -192,9 +210,9 @@ public class AAEPlayerEvents {
     public static void playerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
         if (!(player instanceof ServerPlayer)) {
-            ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
-            if (stack.getItem() instanceof QuantumBoots boots) {
-                if (boots.isUpgradeEnabledAndPowered(stack, UpgradeType.FLIGHT_DRIFT)) {
+            ItemStack bootStack = player.getItemBySlot(EquipmentSlot.FEET);
+            if (bootStack.getItem() instanceof QuantumBoots boots) {
+                if (boots.isUpgradeEnabledAndPowered(bootStack, UpgradeType.FLIGHT_DRIFT)) {
                     var options = Minecraft.getInstance().options;
                     var noKey = !options.keyUp.isDown()
                             && !options.keyRight.isDown()
@@ -202,9 +220,27 @@ public class AAEPlayerEvents {
                             && !options.keyLeft.isDown();
                     if (player.getPersistentData().getBoolean(NO_KEY_DATA) != noKey) {
                         // Send packet to server if data on player is different
-                        PacketDistributor.sendToServer(new NoKeyPressedPacket(noKey));
+                        PacketDistributor.sendToServer(new KeysPressedPacket(NO_KEY_DATA, noKey));
                         player.getPersistentData().putBoolean(NO_KEY_DATA, noKey);
                     }
+                }
+            }
+
+            ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+            if (chestStack.getItem() instanceof QuantumChestplate) {
+                var options = Minecraft.getInstance().options;
+                var downKey = options.keyShift.isDown();
+                if (player.getPersistentData().getBoolean(DOWN_KEY_DATA) != downKey) {
+                    // Send packet to server if data on player is different
+                    PacketDistributor.sendToServer(new KeysPressedPacket(DOWN_KEY_DATA, downKey));
+                    player.getPersistentData().putBoolean(DOWN_KEY_DATA, downKey);
+                }
+
+                var upKey = options.keyJump.isDown();
+                if (player.getPersistentData().getBoolean(UP_KEY_DATA) != upKey) {
+                    // Send packet to server if data on player is different
+                    PacketDistributor.sendToServer(new KeysPressedPacket(UP_KEY_DATA, upKey));
+                    player.getPersistentData().putBoolean(UP_KEY_DATA, upKey);
                 }
             }
         }

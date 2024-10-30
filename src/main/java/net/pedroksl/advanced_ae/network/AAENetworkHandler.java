@@ -40,7 +40,7 @@ public class AAENetworkHandler extends NetworkHandler {
         serverbound(this.registrar, QuantumArmorUpgradeFilterPacket.TYPE, QuantumArmorUpgradeFilterPacket.STREAM_CODEC);
         serverbound(this.registrar, QuantumArmorMagnetPacket.TYPE, QuantumArmorMagnetPacket.STREAM_CODEC);
         serverbound(this.registrar, FluidTankItemUsePacket.TYPE, FluidTankItemUsePacket.STREAM_CODEC);
-        serverbound(this.registrar, NoKeyPressedPacket.TYPE, NoKeyPressedPacket.STREAM_CODEC);
+        serverbound(this.registrar, KeysPressedPacket.TYPE, KeysPressedPacket.STREAM_CODEC);
 
         clientbound(this.registrar, PatternConfigServerUpdatePacket.TYPE, PatternConfigServerUpdatePacket.STREAM_CODEC);
         clientbound(this.registrar, EnabledPatternsUpdatePacket.TYPE, EnabledPatternsUpdatePacket.STREAM_CODEC);
