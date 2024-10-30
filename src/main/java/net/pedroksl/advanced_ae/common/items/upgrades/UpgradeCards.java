@@ -326,6 +326,10 @@ public class UpgradeCards {
                         rechargeItem(player, item, grid, rate, energy);
                     }
 
+                    if (!player.getOffhandItem().isEmpty()) {
+                        rechargeItem(player, player.getOffhandItem(), grid, rate, energy);
+                    }
+
                     if (Addons.CURIOS.isLoaded()) {
                         var optionalInv = CuriosInv.getCuriosInventory(player);
                         if (optionalInv.isPresent()) {
