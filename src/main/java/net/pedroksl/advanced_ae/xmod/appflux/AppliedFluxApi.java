@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.xmod.appflux;
 
-import appeng.api.implementations.items.IAEItemPowerStorage;
 import com.glodblock.github.appflux.common.AFSingletons;
 import com.glodblock.github.appflux.common.me.key.FluxKey;
 import com.glodblock.github.appflux.common.me.key.type.EnergyType;
@@ -14,6 +13,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEText;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.implementations.items.IAEItemPowerStorage;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.upgrades.Upgrades;

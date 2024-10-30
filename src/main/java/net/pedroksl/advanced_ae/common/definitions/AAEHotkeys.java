@@ -75,15 +75,15 @@ public final class AAEHotkeys {
 
         registerToggleUpgradeAction(
                 AAEItems.QUANTUM_HELMET,
-                (stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.MAGNET),
+                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.MAGNET, player),
                 Keys.QUANTUM_MAGNET_UPGRADE.id);
         registerToggleUpgradeAction(
                 AAEItems.QUANTUM_HELMET,
-                (stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.AUTO_STOCK),
+                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.AUTO_STOCK, player),
                 Keys.QUANTUM_AUTO_STOCK_UPGRADE.id);
         registerToggleUpgradeAction(
                 AAEItems.QUANTUM_HELMET,
-                (stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.NIGHT_VISION),
+                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.NIGHT_VISION, player),
                 Keys.QUANTUM_NIGHT_VISION_UPGRADE.id);
     }
 

@@ -40,6 +40,7 @@ public enum AAEText implements LocalizationEnum {
     QuantumArmorTooltip("Upgrades:", Type.TOOLTIP),
     UpgradeTooltip("Upgrade available for:", Type.TOOLTIP),
     UpgradeNotInstalled(" (Not Installed)", Type.TOOLTIP),
+    UpgradeNotInstalledMessage("%s is not installed.", Type.GUI),
     QuantumArmorConfig("Quantum Armor Config", Type.GUI),
     QuantumArmorSetting("Setting Config", Type.GUI),
     MagnetRangeSlider("Pickup Range", Type.GUI),

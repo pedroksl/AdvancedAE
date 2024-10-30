@@ -41,6 +41,7 @@
   "gui.advanced_ae.SlowThroughputMonitorValue": "%s%s/m",
   "gui.advanced_ae.StockExportBus": "Stock Export Bus",
   "gui.advanced_ae.ThroughputMonitorValue": "%s%s/s",
+  "gui.advanced_ae.UpgradeNotInstalledMessage": "%s is not installed.",
   "gui.tooltips.advanced_ae.AcceleratorThreads": "Provides %d co-processing threads per block.",
   "gui.tooltips.advanced_ae.AnyButton": "Target the face adjacent to the adv. pattern provider",
   "gui.tooltips.advanced_ae.AttackSpeedTooltip": "Boosts the user's attack speed by %s.",

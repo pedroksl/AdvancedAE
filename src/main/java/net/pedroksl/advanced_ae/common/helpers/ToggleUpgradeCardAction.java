@@ -24,7 +24,7 @@ public record ToggleUpgradeCardAction(Predicate<ItemStack> locatable, Opener ope
         int i = 0;
         for (var item : items) {
             if (this.locatable.test(item)) {
-                if (opener.open(item)) {
+                if (opener.open(player, item)) {
                     return true;
                 }
             }
@@ -44,6 +44,6 @@ public record ToggleUpgradeCardAction(Predicate<ItemStack> locatable, Opener ope
 
     @FunctionalInterface
     public interface Opener {
-        boolean open(ItemStack stack);
+        boolean open(Player player, ItemStack stack);
     }
 }
