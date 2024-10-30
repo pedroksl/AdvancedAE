@@ -79,8 +79,12 @@ public class UpgradeCards {
         }
 
         if (canFly && player.getAbilities().flying) {
+            if (!slowDown) {
+                value += chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
+            } else {
+                value = chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;;
+            }
             slowDown = false;
-            value = chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
         }
 
         if (slowDown && player.onGround()) {
