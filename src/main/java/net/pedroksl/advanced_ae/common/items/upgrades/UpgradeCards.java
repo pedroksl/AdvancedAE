@@ -82,7 +82,7 @@ public class UpgradeCards {
             if (!slowDown) {
                 value += chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
             } else {
-                value = chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;;
+                value = chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
             }
             slowDown = false;
         }

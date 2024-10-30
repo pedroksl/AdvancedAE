@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +27,7 @@ import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 
 import appeng.api.config.*;
@@ -63,6 +65,7 @@ import appeng.me.helpers.MachineSource;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
+import appeng.util.SettingsFrom;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.CombinedInternalInventory;
 import appeng.util.inv.FilteredInternalInventory;
@@ -735,6 +738,43 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
         data.writeBoolean(isWorking());
         data.writeBoolean(isActive());
+    }
+
+    @Override
+    public void exportSettings(SettingsFrom mode, DataComponentMap.Builder builder, @Nullable Player player) {
+        super.exportSettings(mode, builder, player);
+
+        if (mode == SettingsFrom.MEMORY_CARD) {
+            var outputs = getAllowedOutputs();
+            var list = new ArrayList<Integer>();
+            for (var output : outputs) {
+                list.add(output.getUnrotatedSide().get3DDataValue());
+            }
+            builder.set(AAEComponents.EXPORTED_ALLOWED_SIDES, list);
+        }
+    }
+
+    @Override
+    public void importSettings(SettingsFrom mode, DataComponentMap input, @Nullable Player player) {
+        super.importSettings(mode, input, player);
+
+        if (mode == SettingsFrom.MEMORY_CARD) {
+            var list = input.get(AAEComponents.EXPORTED_ALLOWED_SIDES);
+            if (list != null) {
+                var level = getLevel();
+                if (level != null) {
+                    var be = level.getBlockEntity(getBlockPos());
+                    if (be instanceof IDirectionalOutputHost host) {
+
+                        var outputs = EnumSet.noneOf(RelativeSide.class);
+                        for (var item : list) {
+                            outputs.add(RelativeSide.fromUnrotatedSide(Direction.from3DDataValue(item)));
+                        }
+                        host.updateOutputSides(outputs);
+                    }
+                }
+            }
+        }
     }
 
     private void onConfigChanged() {

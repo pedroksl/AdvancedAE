@@ -32,6 +32,10 @@ public final class AAEComponents {
             register("night_vision_activated", builder -> builder.persistent(Codec.BOOL)
                     .networkSynchronized(ByteBufCodecs.BOOL));
 
+    public static final DataComponentType<List<Integer>> EXPORTED_ALLOWED_SIDES =
+            register("allowed_output_sides", builder -> builder.persistent(Codec.list(Codec.of(Codec.INT, Codec.INT)))
+                    .networkSynchronized(ByteBufCodecs.INT.apply(ByteBufCodecs.list())));
+
     public static final Map<UpgradeType, DataComponentType<Boolean>> UPGRADE_TOGGLE = new HashMap<>();
     public static final Map<UpgradeType, DataComponentType<Integer>> UPGRADE_VALUE = new HashMap<>();
     public static final Map<UpgradeType, DataComponentType<List<GenericStack>>> UPGRADE_FILTER = new HashMap<>();
