@@ -22,8 +22,8 @@ import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
 import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
 import net.pedroksl.advanced_ae.xmod.Addons;
-import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxApi;
-import net.pedroksl.advanced_ae.xmod.mekansim.MekCap;
+import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
+import net.pedroksl.advanced_ae.xmod.mekansim.MekanismPlugin;
 
 import appeng.api.AECapabilities;
 import appeng.api.features.GridLinkables;
@@ -115,7 +115,7 @@ public class AdvancedAE {
             Upgrades.add(AEItems.CRAFTING_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
 
             if (Addons.APPFLUX.isLoaded()) {
-                AppliedFluxApi.init();
+                AppliedFluxPlugin.init();
             }
         });
     }
@@ -171,7 +171,7 @@ public class AdvancedAE {
         RegisterPartCapabilitiesEventInternal.register(partEvent, event);
 
         if (Addons.MEKANISM.isLoaded()) {
-            MekCap.initCap(event);
+            MekanismPlugin.initCap(event);
         }
     }
 

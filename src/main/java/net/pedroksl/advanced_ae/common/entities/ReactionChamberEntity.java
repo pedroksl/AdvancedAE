@@ -28,7 +28,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 import net.pedroksl.advanced_ae.xmod.Addons;
-import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxApi;
+import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 
 import appeng.api.behaviors.ExternalStorageStrategy;
 import appeng.api.config.*;
@@ -340,7 +340,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
                 // Try to recharge from fe cells
                 if (Addons.APPFLUX.isLoaded()) {
-                    AppliedFluxApi.rechargeEnergyStorage(
+                    AppliedFluxPlugin.rechargeEnergyStorage(
                             grid,
                             Integer.MAX_VALUE,
                             IActionSource.ofMachine(this),

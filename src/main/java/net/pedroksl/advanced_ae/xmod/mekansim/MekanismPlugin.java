@@ -5,7 +5,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 
 import mekanism.common.capabilities.radiation.item.RadiationShieldingHandler;
 
-public class MekCap {
+public class MekanismPlugin {
 
     public static void initCap(RegisterCapabilitiesEvent event) {
         try {

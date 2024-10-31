@@ -24,8 +24,8 @@ import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.helpers.MagnetHelpers;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.xmod.Addons;
-import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxApi;
-import net.pedroksl.advanced_ae.xmod.curios.CuriosInv;
+import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
+import net.pedroksl.advanced_ae.xmod.curios.CuriosPlugin;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -308,7 +308,7 @@ public class UpgradeCards {
 
                 if (neededPower > 0 && Addons.APPFLUX.isLoaded()) {
                     neededPower = Math.min(afRate, maxPower - currentPower);
-                    neededPower = AppliedFluxApi.rechargeAeStorageItem(grid, neededPower, player, stack, armor);
+                    neededPower = AppliedFluxPlugin.rechargeAeStorageItem(grid, neededPower, player, stack, armor);
                 }
 
                 if (neededPower > 0 && energy.getStoredPower() > 0) {
@@ -331,7 +331,7 @@ public class UpgradeCards {
                     }
 
                     if (Addons.CURIOS.isLoaded()) {
-                        var optionalInv = CuriosInv.getCuriosInventory(player);
+                        var optionalInv = CuriosPlugin.getCuriosInventory(player);
                         if (optionalInv.isPresent()) {
                             var curiosInventory = optionalInv.get();
                             var handler = curiosInventory.getEquippedCurios();
@@ -355,7 +355,7 @@ public class UpgradeCards {
         var afRate = Integer.MAX_VALUE;
         if (cap != null && cap.canReceive()) {
             if (Addons.APPFLUX.isLoaded()) {
-                AppliedFluxApi.rechargeEnergyStorage(grid, afRate, IActionSource.ofPlayer(player), cap);
+                AppliedFluxPlugin.rechargeEnergyStorage(grid, afRate, IActionSource.ofPlayer(player), cap);
             }
 
             if (energyService.getStoredPower() > 0) {

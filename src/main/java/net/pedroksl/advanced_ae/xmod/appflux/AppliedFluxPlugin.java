@@ -18,7 +18,7 @@ import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.upgrades.Upgrades;
 
-public class AppliedFluxApi {
+public class AppliedFluxPlugin {
 
     public static void init() {
         try {
