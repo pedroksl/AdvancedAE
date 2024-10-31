@@ -40,7 +40,7 @@ public class PoweredItem extends ArmorItem implements IAEItemPowerStorage {
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return this.getAECurrentPower(stack) + 0.1 < this.getAEMaxPower(stack);
+        return this.getAECurrentPower(stack) / this.getAEMaxPower(stack) < 0.99f;
     }
 
     @Override
