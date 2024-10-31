@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -33,6 +34,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import appeng.api.config.*;
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.crafting.PatternDetailsHelper;
+import appeng.api.ids.AEComponents;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.inventories.ItemTransfer;
@@ -59,7 +61,9 @@ import appeng.api.util.AECableType;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import appeng.blockentity.grid.AENetworkedPoweredBlockEntity;
+import appeng.core.AELog;
 import appeng.core.definitions.AEItems;
+import appeng.core.localization.PlayerMessages;
 import appeng.crafting.pattern.AECraftingPattern;
 import appeng.me.helpers.MachineSource;
 import appeng.menu.ISubMenu;
@@ -69,6 +73,7 @@ import appeng.util.SettingsFrom;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.CombinedInternalInventory;
 import appeng.util.inv.FilteredInternalInventory;
+import appeng.util.inv.PlayerInternalInventory;
 import appeng.util.inv.filter.AEItemFilters;
 
 public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
@@ -664,20 +669,9 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
         data.put("enabledPatterns", enabledTags);
 
-        try {
-            ListTag jobTags = new ListTag();
-            for (var job : craftingJobs) {
-                CompoundTag tag = new CompoundTag();
-                if (job != null) {
-                    job.writeToNBT(tag, registries);
-                    jobTags.add(tag);
-                } else {
-                    jobTags.add(tag);
-                }
-            }
+        var jobTags = makeJobsTag(registries);
+        if (jobTags != null) {
             data.put("craftingJobs", jobTags);
-        } catch (NullPointerException ignored) {
-
         }
 
         this.upgrades.writeToNBT(data, "upgrades", registries);
@@ -705,19 +699,42 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
 
         if (data.contains("craftingJobs")) {
-            ListTag jobTags = data.getList("craftingJobs", Tag.TAG_COMPOUND);
-            if (!jobTags.isEmpty()) {
-                for (var x = 0; x < jobTags.size(); x++) {
-                    CompoundTag tag = ((CompoundTag) jobTags.get(x));
-                    if (!tag.isEmpty()) {
-                        craftingJobs.set(x, CraftingJob.fromTag(tag, registries));
-                    }
-                }
-            }
+            readJobs(data, registries);
         }
 
         this.upgrades.readFromNBT(data, "upgrades", registries);
         this.configManager.readFromNBT(data, registries);
+    }
+
+    public ListTag makeJobsTag(HolderLookup.Provider registries) {
+        try {
+            ListTag jobTags = new ListTag();
+            for (var job : craftingJobs) {
+                CompoundTag tag = new CompoundTag();
+                if (job != null) {
+                    job.writeToNBT(tag, registries);
+                    jobTags.add(tag);
+                } else {
+                    jobTags.add(tag);
+                }
+            }
+            return jobTags;
+
+        } catch (NullPointerException ignored) {
+            return null;
+        }
+    }
+
+    private void readJobs(CompoundTag data, HolderLookup.Provider registries) {
+        ListTag jobTags = data.getList("craftingJobs", Tag.TAG_COMPOUND);
+        if (!jobTags.isEmpty()) {
+            for (var x = 0; x < jobTags.size(); x++) {
+                CompoundTag tag = ((CompoundTag) jobTags.get(x));
+                if (!tag.isEmpty()) {
+                    craftingJobs.set(x, CraftingJob.fromTag(tag, registries));
+                }
+            }
+        }
     }
 
     @Override
@@ -751,6 +768,8 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 list.add(output.getUnrotatedSide().get3DDataValue());
             }
             builder.set(AAEComponents.EXPORTED_ALLOWED_SIDES, list);
+
+            builder.set(AEComponents.EXPORTED_PATTERNS, this.patternInv.toItemContainerContents());
         }
     }
 
@@ -774,6 +793,97 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                     }
                 }
             }
+
+            importPatterns(player, input);
+        }
+    }
+
+    private void importPatterns(@Nullable Player player, DataComponentMap input) {
+        var patterns = input.getOrDefault(AEComponents.EXPORTED_PATTERNS, ItemContainerContents.EMPTY);
+
+        if (player != null && !player.level().isClientSide) {
+            clearPatternInventory(player);
+
+            var desiredPatterns = new AppEngInternalInventory(this.patternInv.size());
+            desiredPatterns.fromItemContainerContents(patterns);
+
+            // Restore from blank patterns in the player inv
+            var playerInv = player.getInventory();
+            var blankPatternsAvailable = player.getAbilities().instabuild
+                    ? Integer.MAX_VALUE
+                    : playerInv.countItem(AEItems.BLANK_PATTERN.asItem());
+            var blankPatternsUsed = 0;
+            for (int i = 0; i < desiredPatterns.size(); i++) {
+                if (desiredPatterns.getStackInSlot(i).isEmpty()) {
+                    continue;
+                }
+
+                // Don't restore junk
+                var pattern = PatternDetailsHelper.decodePattern(
+                        desiredPatterns.getStackInSlot(i), this.getBlockEntity().getLevel());
+                if (pattern == null) {
+                    continue; // Skip junk / broken recipes
+                }
+
+                // Keep track of how many blank patterns we need
+                ++blankPatternsUsed;
+                if (blankPatternsAvailable >= blankPatternsUsed) {
+                    if (!this.patternInv
+                            .addItems(pattern.getDefinition().toStack())
+                            .isEmpty()) {
+                        AELog.warn("Failed to add pattern to quantum crafter");
+                        blankPatternsUsed--;
+                    }
+                }
+            }
+
+            // Deduct the used blank patterns
+            if (blankPatternsUsed > 0 && !player.getAbilities().instabuild) {
+                new PlayerInternalInventory(playerInv)
+                        .removeItems(blankPatternsUsed, AEItems.BLANK_PATTERN.stack(), null);
+            }
+
+            // Warn about not being able to restore all patterns due to lack of blank patterns
+            if (blankPatternsUsed > blankPatternsAvailable) {
+                player.sendSystemMessage(
+                        PlayerMessages.MissingBlankPatterns.text(blankPatternsUsed - blankPatternsAvailable));
+            }
+        }
+    }
+
+    // Converts all patterns in this provider to blank patterns and give them to the player
+    private void clearPatternInventory(Player player) {
+        // Just clear it for creative mode players
+        if (player.getAbilities().instabuild) {
+            for (int i = 0; i < this.patternInv.size(); i++) {
+                this.patternInv.setItemDirect(i, ItemStack.EMPTY);
+            }
+            return;
+        }
+
+        var playerInv = player.getInventory();
+
+        // Clear out any existing patterns and give them to the player
+        var blankPatternCount = 0;
+        for (int i = 0; i < this.patternInv.size(); i++) {
+            var pattern = this.patternInv.getStackInSlot(i);
+            // Auto-Clear encoded patterns to allow them to stack
+            if (pattern.is(AEItems.CRAFTING_PATTERN.asItem())
+                    || pattern.is(AEItems.PROCESSING_PATTERN.asItem())
+                    || pattern.is(AEItems.SMITHING_TABLE_PATTERN.asItem())
+                    || pattern.is(AEItems.STONECUTTING_PATTERN.asItem())
+                    || pattern.is(AEItems.BLANK_PATTERN.asItem())) {
+                blankPatternCount += pattern.getCount();
+            } else {
+                // Give back any non-blank-patterns individually
+                playerInv.placeItemBackInInventory(pattern);
+            }
+            this.patternInv.setItemDirect(i, ItemStack.EMPTY);
+        }
+
+        // Place back the removed blank patterns all at once
+        if (blankPatternCount > 0) {
+            playerInv.placeItemBackInInventory(AEItems.BLANK_PATTERN.stack(blankPatternCount), false);
         }
     }
 
