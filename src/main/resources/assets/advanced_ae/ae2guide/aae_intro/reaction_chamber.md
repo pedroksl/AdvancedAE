@@ -19,13 +19,16 @@ more efficient results, due to the controlled environment.
 
 ## Powering the Chamber
 
-The reaction chamber can be quite power hungry when sped up. Using Acceleration Cards increase the rate at which the
+The reaction chamber can be quite power hungry when sped up. Using Acceleration Cards increases the rate at which the
 total power cost is consumed, increasing the required power per tick. When using power straight through the ME system,
 the chamber will try to draw the amount required for a tick of processing and if this fails you might experience
 flickering, when the power of the system toggles on and off. To remedy this effect, the AE system needs to be equipped
-with energy buffers in the form of <ItemLink id="ae2:dense_energy_cell" />s. Reducing the amount of accelerations cards
-is also an option if there is no more power generation available at the moment. To be able to power it properly, there
-are a few options.
+with energy buffers in the form of <ItemLink id="ae2:dense_energy_cell" />s. The Chamber is also capable of pulling
+energy directly from energy cells (from Applied Flux) if they are available in the drives, to recharge itself and craft
+without consuming from ME power buffers. Reducing the amount of accelerations cards is also an option if there is no
+more power generation available at the moment. To be able to power it properly, there are a few options.
+* Note: Pattern Providers or Interfaces in part form (attached to a cable) do not provide a grid connection. To be able
+to power the chamber with those you will also need to connect a fluix cable directly to it.
 
 ### Full Block Pattern Provider
 
