@@ -667,6 +667,17 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('D', AEBlocks.DENSE_ENERGY_CELL)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("recharging_card"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.WORKBENCH_CARD)
+                .pattern(" W ")
+                .pattern("PCP")
+                .pattern("ABA")
+                .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
+                .define('W', AEBlocks.WIRELESS_ACCESS_POINT)
+                .define('B', AEBlocks.CELL_WORKBENCH)
+                .define('A', AAEItems.QUANTUM_ALLOY)
+                .define('P', AAEItems.QUANTUM_PROCESSOR)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
+                .save(c, AdvancedAE.makeId("portable_workbench_card"));
 
         loadAppFluxRecipes(c);
         loadMegaCellsRecipes(c);
