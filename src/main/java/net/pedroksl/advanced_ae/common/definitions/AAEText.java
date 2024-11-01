@@ -106,6 +106,7 @@ public enum AAEText implements LocalizationEnum {
     RechargingTooltip(
             "Enables armor recharging if linked to the grid. When installed in the chest slot, also recharges the inventory slots.",
             Type.TOOLTIP),
+    PortableWorkbenchTooltip("Enables the use of a portable cell workbench.", Type.TOOLTIP),
 
     InsufficientPower("Insufficient Power", Type.TOOLTIP),
     InsufficientPowerDetails(

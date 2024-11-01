@@ -47,6 +47,7 @@ public class AAENetworkHandler extends NetworkHandler {
         clientbound(this.registrar, QuantumArmorUpgradeStatePacket.TYPE, QuantumArmorUpgradeStatePacket.STREAM_CODEC);
         clientbound(this.registrar, FluidTankStackUpdatePacket.TYPE, FluidTankStackUpdatePacket.STREAM_CODEC);
         clientbound(this.registrar, FluidTankClientAudioPacket.TYPE, FluidTankClientAudioPacket.STREAM_CODEC);
+        clientbound(this.registrar, MenuSelectionPacket.TYPE, MenuSelectionPacket.STREAM_CODEC);
     }
 
     private static <T extends ClientboundPacket> void clientbound(

@@ -110,6 +110,8 @@ public class AAEClient extends AdvancedAE {
                 AAEMenus.QUANTUM_ARMOR_MAGNET,
                 QuantumArmorMagnetScreen::new,
                 "/screens/quantum_armor_magnet.json");
+        InitScreens.register(
+                event, AAEMenus.PORTABLE_WORKBENCH, PortableWorkbenchScreen::new, "/screens/portable_workbench.json");
     }
 
     @SuppressWarnings("deprecation")

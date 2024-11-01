@@ -8,6 +8,7 @@ import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
+import net.pedroksl.advanced_ae.common.helpers.PortableCellWorkbenchMenuHost;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
@@ -56,6 +57,8 @@ public class AAEMenus {
             create("quantum_armor_filter_config", QuantumArmorFilterConfigMenu::new, ISubMenuHost.class);
     public static final MenuType<QuantumArmorMagnetMenu> QUANTUM_ARMOR_MAGNET =
             create("quantum_armor_magnet", QuantumArmorMagnetMenu::new, ISubMenuHost.class);
+    public static final MenuType<PortableWorkbenchMenu> PORTABLE_WORKBENCH =
+            create("portable_workbench", PortableWorkbenchMenu::new, PortableCellWorkbenchMenuHost.class);
 
     private static <M extends AEBaseMenu, H> MenuType<M> create(
             String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {

@@ -87,7 +87,8 @@ public enum UpgradeType {
             SettingType.NONE,
             0,
             ApplicationType.PASSIVE,
-            AAEItems.RECHARGING_CARD);
+            AAEItems.RECHARGING_CARD),
+    WORKBENCH("Portable Workbench", null, SettingType.NONE, 0, ApplicationType.PASSIVE_USE, AAEItems.WORKBENCH_CARD);
 
     public enum SettingType {
         NONE,
@@ -167,7 +168,8 @@ public enum UpgradeType {
                     AUTO_STOCK,
                     REGENERATION,
                     NIGHT_VISION,
-                    CHARGING -> new UpgradeSettings(1);
+                    CHARGING,
+                    WORKBENCH -> new UpgradeSettings(1);
             case WALK_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxWalkSpeed(), 0.1f);
             case SPRINT_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxSprintSpeed(), 0.1f);
             case STEP_ASSIST -> new UpgradeSettings(1, AAEConfig.instance().getMaxStepHeight());
@@ -212,6 +214,7 @@ public enum UpgradeType {
             case NIGHT_VISION -> AAEText.NightVisionTooltip.text();
             case FLIGHT_DRIFT -> AAEText.FlightDriftTooltip.text();
             case CHARGING -> AAEText.RechargingTooltip.text();
+            case WORKBENCH -> AAEText.PortableWorkbenchTooltip.text();
         };
     }
 

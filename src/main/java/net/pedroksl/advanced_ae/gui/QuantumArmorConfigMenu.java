@@ -63,7 +63,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
                 }
 
                 if (savedIndex == -1) {
-                    savedIndex = slot.getItem().getOrDefault(AAEComponents.INT_TAG, -1);
+                    savedIndex = slot.getItem().getOrDefault(AAEComponents.LAST_STACK_SLOT_USED, -1);
                 }
             }
             this.addSlot(slot, AAESlotSemantics.ARMOR);
