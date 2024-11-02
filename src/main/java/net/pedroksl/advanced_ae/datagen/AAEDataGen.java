@@ -16,15 +16,19 @@ public class AAEDataGen {
         var out = gen.getPackOutput();
         var fileHelper = event.getExistingFileHelper();
         var lookup = event.getLookupProvider();
+        var languageProvider = new AAELanguageProvider(out);
 
-        gen.addProvider(event.includeClient(), new AAELanguageProvider(out));
         gen.addProvider(event.includeClient(), new AAEModelProvider(out, fileHelper));
         gen.addProvider(event.includeServer(), new AAERecipeProvider(out, lookup));
         gen.addProvider(event.includeServer(), new AAELootTableProvider(out, lookup));
 
         var blockTags = new AAETagProvider.AAEBlockTagProvider(out, lookup, fileHelper);
         var itemTags = new AAETagProvider.AAEItemTagProvider(out, lookup, blockTags.contentsGetter(), fileHelper);
+        var componentTags =
+                new AAETagProvider.AAEDataComponentTypeTagProvider(out, lookup, fileHelper, languageProvider);
         gen.addProvider(event.includeServer(), blockTags);
         gen.addProvider(event.includeServer(), itemTags);
+
+        gen.addProvider(event.includeClient(), languageProvider);
     }
 }

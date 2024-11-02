@@ -1,31 +1,33 @@
 package net.pedroksl.advanced_ae.datagen;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
-import net.pedroksl.advanced_ae.common.definitions.AAEItems;
-import net.pedroksl.advanced_ae.common.definitions.AAETags;
+import net.pedroksl.advanced_ae.common.definitions.*;
 
+import appeng.core.AppEng;
 import appeng.core.definitions.BlockDefinition;
+import appeng.datagen.providers.tags.ConventionTags;
+import appeng.items.tools.MemoryCardItem;
 
 public class AAETagProvider {
     public static class AAEBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
@@ -87,15 +89,78 @@ public class AAETagProvider {
         @Override
         protected void addTags(@NotNull HolderLookup.Provider provider) {
             tag(AAETags.ADV_PATTERN_PROVIDER)
-                    .add(AAEBlocks.ADV_PATTERN_PROVIDER.asItem(), AAEItems.ADV_PATTERN_PROVIDER.asItem());
+                    .add(
+                            AAEBlocks.ADV_PATTERN_PROVIDER.asItem(),
+                            AAEItems.ADV_PATTERN_PROVIDER.asItem(),
+                            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER.asItem(),
+                            AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
+            tag(ConventionTags.PATTERN_PROVIDER)
+                    .add(
+                            AAEBlocks.ADV_PATTERN_PROVIDER.asItem(),
+                            AAEItems.ADV_PATTERN_PROVIDER.asItem(),
+                            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER.asItem(),
+                            AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
 
             tag(AAEConventionTags.ENCODER_CURIO).add(AAEItems.ADV_PATTERN_ENCODER.asItem());
+            tag(ConventionTags.INSCRIBER_PRESSES).add(AAEItems.QUANTUM_PROCESSOR_PRESS.asItem());
+
+            tag(Tags.Items.INGOTS).add(AAEItems.QUANTUM_ALLOY.asItem());
+
+            tag(Tags.Items.ARMORS)
+                    .add(
+                            AAEItems.QUANTUM_HELMET.asItem(),
+                            AAEItems.QUANTUM_CHESTPLATE.asItem(),
+                            AAEItems.QUANTUM_LEGGINGS.asItem(),
+                            AAEItems.QUANTUM_BOOTS.asItem());
+            tag(ItemTags.HEAD_ARMOR).add(AAEItems.QUANTUM_HELMET.asItem());
+            tag(ItemTags.CHEST_ARMOR).add(AAEItems.QUANTUM_CHESTPLATE.asItem());
+            tag(ItemTags.LEG_ARMOR).add(AAEItems.QUANTUM_LEGGINGS.asItem());
+            tag(ItemTags.FOOT_ARMOR).add(AAEItems.QUANTUM_BOOTS.asItem());
+            tag(Tags.Items.BUCKETS).add(AAEFluids.QUANTUM_INFUSION.bucketItem());
         }
 
         @NotNull
         @Override
         public String getName() {
             return "Tags (Item)";
+        }
+    }
+
+    public static class AAEDataComponentTypeTagProvider extends TagsProvider<DataComponentType<?>> {
+        private final AAELanguageProvider localization;
+
+        public AAEDataComponentTypeTagProvider(
+                PackOutput output,
+                CompletableFuture<HolderLookup.Provider> registries,
+                @Nullable ExistingFileHelper existingFileHelper,
+                AAELanguageProvider localization) {
+            super(output, Registries.DATA_COMPONENT_TYPE, registries, AppEng.MOD_ID, existingFileHelper);
+            this.localization = localization;
+        }
+
+        private final HashSet<DataComponentType<?>> translated = new HashSet<>();
+
+        @Override
+        protected void addTags(HolderLookup.Provider registries) {
+
+            Map<DataComponentType<?>, ResourceKey<DataComponentType<?>>> componentKeys = new IdentityHashMap<>();
+            for (var entry : AAEComponents.DR.getEntries()) {
+                componentKeys.put(entry.get(), entry.getKey());
+            }
+
+            addExportedComponentCategory("Allowed Sides", AAEComponents.EXPORTED_ALLOWED_SIDES);
+        }
+
+        private void addExportedComponentCategory(String englishCategoryName, DataComponentType<?>... types) {
+            for (var type : types) {
+                translated.add(type);
+                var key = BuiltInRegistries.DATA_COMPONENT_TYPE
+                        .getResourceKey(type)
+                        .get();
+                tag(ConventionTags.EXPORTED_SETTINGS).add(key);
+
+                localization.add(MemoryCardItem.getSettingTranslationKey(type), englishCategoryName);
+            }
         }
     }
 }
