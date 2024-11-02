@@ -132,6 +132,6 @@ public class PoweredItem extends ArmorItem implements IAEItemPowerStorage {
 
     @Override
     public double getChargeRate(ItemStack itemStack) {
-        return 100000d;
+        return 2000d;
     }
 }
