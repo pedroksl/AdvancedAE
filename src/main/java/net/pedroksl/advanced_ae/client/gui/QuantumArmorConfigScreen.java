@@ -160,13 +160,14 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
             currentY += LIST_LINE_HEIGHT;
         }
 
-        if (selectedIndex != -1) {
+        if (selectedIndex != -1 && selectedIndex < this.menu.slots.size()) {
             var slot = this.menu.getSlot(selectedIndex);
             AEBaseScreen.renderSlotHighlight(guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, 0x787d53c1);
         }
     }
 
-    public void refreshList(ItemStack stack) {
+    public void refreshList(int selectedIndex, ItemStack stack) {
+        this.selectedIndex = selectedIndex;
         this.refreshList(stack, false);
     }
 
@@ -185,7 +186,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
             this.upgradeList.clear();
         }
 
-        if (this.selectedIndex == -1) return;
+        if (stack.isEmpty() && (this.selectedIndex == -1 || this.selectedIndex > this.menu.slots.size())) return;
 
         int index = 0;
         var armorStack = stack.isEmpty() ? this.menu.getSlot(this.selectedIndex).getItem() : stack;
@@ -247,15 +248,6 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
     public void requestUninstall(UpgradeType upgradeType) {
         this.menu.requestUninstall(upgradeType);
-    }
-
-    @Override
-    protected void init() {
-        super.init();
-
-        var index = this.menu.getSelectedSlotIndex();
-        this.selectedIndex = 4 - (index - Inventory.INVENTORY_SIZE) + Inventory.INVENTORY_SIZE;
-        refreshList(null, true);
     }
 
     private void resetScrollbar() {
