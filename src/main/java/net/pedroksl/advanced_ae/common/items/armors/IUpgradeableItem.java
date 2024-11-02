@@ -102,25 +102,34 @@ public interface IUpgradeableItem extends IGridLinkedItem {
         return false;
     }
 
+    default boolean toggleUpgrade(ItemStack stack, UpgradeType type) {
+        return toggleUpgrade(stack, type, null);
+    }
+
     default boolean toggleUpgrade(ItemStack stack, UpgradeType type, Player player) {
-        var id = Component.translatable(type.item().asItem().getDescriptionId());
         if (hasUpgrade(stack, type)) {
             var component = AAEComponents.UPGRADE_TOGGLE.get(type);
             var value = stack.get(component);
             if (value != null) {
                 stack.set(AAEComponents.UPGRADE_TOGGLE.get(type), !value);
 
-                var msg = id.withStyle(Tooltips.NORMAL_TOOLTIP_TEXT);
-                if (!value) {
-                    msg.append(Component.literal(" ON").withStyle(Tooltips.GREEN));
-                } else {
-                    msg.append(Component.literal(" OFF").withStyle(Tooltips.RED));
+                if (player != null) {
+                    var id = Component.translatable(type.item().asItem().getDescriptionId());
+                    var msg = id.withStyle(Tooltips.NORMAL_TOOLTIP_TEXT);
+                    if (!value) {
+                        msg.append(Component.literal(" ON").withStyle(Tooltips.GREEN));
+                    } else {
+                        msg.append(Component.literal(" OFF").withStyle(Tooltips.RED));
+                    }
+                    player.displayClientMessage(msg, true);
                 }
-                player.displayClientMessage(msg, true);
                 return true;
             }
         }
-        player.displayClientMessage(AAEText.UpgradeNotInstalledMessage.text(id), true);
+        if (player != null) {
+            var id = Component.translatable(type.item().asItem().getDescriptionId());
+            player.displayClientMessage(AAEText.UpgradeNotInstalledMessage.text(id), true);
+        }
         return false;
     }
 

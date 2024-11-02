@@ -63,9 +63,9 @@ public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
 
         var stack = getPlayer().getInventory().getItem(this.slotIndex);
         if (stack.getItem() instanceof QuantumArmorBase item) {
-            if (item.getPossibleUpgrades().contains(this.type)) {
-                if (item.hasUpgrade(stack, this.type)) {
-                    stack.set(AAEComponents.UPGRADE_EXTRA.get(this.type), blacklist);
+            if (item.getPossibleUpgrades().contains(this.upgradeType)) {
+                if (item.hasUpgrade(stack, this.upgradeType)) {
+                    stack.set(AAEComponents.UPGRADE_EXTRA.get(this.upgradeType), blacklist);
                 }
             }
         }
@@ -81,11 +81,11 @@ public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
 
         var stack = getPlayer().getInventory().getItem(this.slotIndex);
         if (stack.getItem() instanceof QuantumArmorBase item) {
-            if (item.getPossibleUpgrades().contains(this.type)) {
-                if (stack.has(AAEComponents.UPGRADE_VALUE.get(this.type))) {
-                    var currentValue = stack.get(AAEComponents.UPGRADE_VALUE.get(this.type));
+            if (item.getPossibleUpgrades().contains(this.upgradeType)) {
+                if (stack.has(AAEComponents.UPGRADE_VALUE.get(this.upgradeType))) {
+                    var currentValue = stack.get(AAEComponents.UPGRADE_VALUE.get(this.upgradeType));
                     if (currentValue == null || currentValue != value) {
-                        stack.set(AAEComponents.UPGRADE_VALUE.get(this.type), value);
+                        stack.set(AAEComponents.UPGRADE_VALUE.get(this.upgradeType), value);
                     }
                 }
             }

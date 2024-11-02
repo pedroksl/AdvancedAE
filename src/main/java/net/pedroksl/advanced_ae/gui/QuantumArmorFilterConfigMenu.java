@@ -3,6 +3,8 @@ package net.pedroksl.advanced_ae.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import appeng.api.stacks.AEKey;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +35,7 @@ import appeng.util.ConfigInventory;
 public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu, ISetAmountMenuHost {
 
     @GuiSync(7)
-    public UpgradeType type;
+    public UpgradeType upgradeType;
 
     public int slotIndex;
     private final ISubMenuHost host;
@@ -53,6 +55,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
         if (filterQuantities) {
             this.inv = ConfigInventory.configStacks(9)
                     .changeListener(this::onSlotChanged)
+                    .slotFilter(this::typeFilter)
                     .allowOverstacking(true)
                     .build();
         } else {
@@ -70,6 +73,16 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
         registerClientAction(OPEN_AMOUNT_MENU, Integer.class, this::openAmountMenu);
     }
 
+    private boolean typeFilter(AEKey aeKey) {
+        if (upgradeType == UpgradeType.AUTO_FEED) {
+            if (aeKey instanceof AEItemKey key) {
+                return key.toStack().has(DataComponents.FOOD);
+            }
+            return false;
+        }
+        return true;
+    }
+
     public QuantumArmorFilterConfigMenu(int id, Inventory playerInventory, ISubMenuHost host) {
         this(AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG, id, playerInventory, host);
     }
@@ -84,12 +97,12 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
             MenuHostLocator locator,
             int slotIndex,
             List<GenericStack> filterList,
-            UpgradeType type) {
+            UpgradeType upgradeType) {
         MenuOpener.open(AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG, player, locator);
 
         if (player.containerMenu instanceof QuantumArmorFilterConfigMenu cca) {
             cca.setSlotIndex(slotIndex);
-            cca.setUpgradeType(type);
+            cca.setUpgradeType(upgradeType);
             cca.setFilterList(filterList);
             cca.broadcastChanges();
         }
@@ -99,8 +112,8 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
         this.slotIndex = index;
     }
 
-    public void setUpgradeType(UpgradeType type) {
-        this.type = type;
+    public void setUpgradeType(UpgradeType upgradeType) {
+        this.upgradeType = upgradeType;
     }
 
     public boolean isConfigSlot(Slot slot) {
@@ -137,9 +150,9 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
 
         var stack = getPlayer().getInventory().getItem(this.slotIndex);
         if (stack.getItem() instanceof QuantumArmorBase item) {
-            if (item.getPossibleUpgrades().contains(this.type)) {
-                if (item.hasUpgrade(stack, this.type)) {
-                    stack.set(AAEComponents.UPGRADE_FILTER.get(this.type), filterList);
+            if (item.getPossibleUpgrades().contains(this.upgradeType)) {
+                if (item.hasUpgrade(stack, this.upgradeType)) {
+                    stack.set(AAEComponents.UPGRADE_FILTER.get(this.upgradeType), filterList);
                 }
             }
         }
@@ -187,7 +200,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
 
         Player player = getPlayerInventory().player;
         if (player instanceof ServerPlayer serverPlayer) {
-            QuantumArmorFilterConfigMenu.open(serverPlayer, getLocator(), this.slotIndex, filterList, this.type);
+            QuantumArmorFilterConfigMenu.open(serverPlayer, getLocator(), this.slotIndex, filterList, this.upgradeType);
         }
     }
 }
