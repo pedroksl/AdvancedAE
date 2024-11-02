@@ -78,7 +78,13 @@ public enum UpgradeType {
 
     LUCK("Luck Boost", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.LUCK_CARD),
     REACH("Reach Boost", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.REACH_CARD),
-    SWIM_SPEED("Swim Speed", null, SettingType.NUM_INPUT, 5, ApplicationType.BUFF, AAEItems.SWIM_SPEED_CARD),
+    SWIM_SPEED(
+            "Swim Speed",
+            UpgradeCards::swimSpeed,
+            SettingType.NUM_INPUT,
+            5,
+            ApplicationType.PASSIVE,
+            AAEItems.SWIM_SPEED_CARD),
     NIGHT_VISION("Night Vision", null, SettingType.NONE, 10, ApplicationType.BUFF, AAEItems.NIGHT_VISION_CARD),
     FLIGHT_DRIFT("No Flight Drift", null, SettingType.NUM_INPUT, 10, ApplicationType.BUFF, AAEItems.FLIGHT_DRIFT_CARD),
     CHARGING(

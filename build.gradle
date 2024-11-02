@@ -49,7 +49,8 @@ neoForge {
 
         server {
             server()
-            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            //programArgument '--nogui'
         }
 
         gametestWorld {
@@ -128,7 +129,9 @@ dependencies {
     implementation "curse.maven:mega-cells-622112:5662141"
     implementation "curse.maven:mekanism-268560:5680395"
     implementation "curse.maven:adorned-1036809:5740650"
+
     compileOnly "curse.maven:irisshaders-455508:5765375"
+    //runtimeOnly "curse.maven:sodium-394468:5852522"
     // setup Xei
     switch (use_Xei) {
         case "emi":

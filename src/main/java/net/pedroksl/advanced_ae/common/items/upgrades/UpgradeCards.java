@@ -68,6 +68,16 @@ public class UpgradeCards {
         return false;
     }
 
+    public static boolean swimSpeed(Level level, Player player, ItemStack stack) {
+        if (player.isInWaterOrBubble()) {
+            var upgrade = UpgradeType.SWIM_SPEED;
+            if (stack.getItem() instanceof QuantumLeggings legs && legs.isUpgradeEnabledAndPowered(stack, upgrade)) {
+                return processMovementSpeed(upgrade, player, false, stack, null);
+            }
+        }
+        return false;
+    }
+
     private static boolean processMovementSpeed(
             UpgradeType upgrade, Player player, boolean canFly, ItemStack stack, ItemStack chest) {
         boolean slowDown = true;
@@ -78,7 +88,7 @@ public class UpgradeCards {
             value /= 25f;
         }
 
-        if (canFly && player.getAbilities().flying) {
+        if (canFly && player.getAbilities().flying && chest != null) {
             if (!slowDown) {
                 value += chest.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT), 0) / 25f;
             } else {
