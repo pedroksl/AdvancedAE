@@ -91,7 +91,6 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     public void setSelectedItemSlot(int slot) {
         resetProgress();
         selectedItemSlot = slot;
-        getItemStack().set(AAEComponents.LAST_STACK_SLOT_USED, slot);
     }
 
     public int getSelectedSlotIndex() {

@@ -120,7 +120,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
                     }
                 }
             }
-            this.slots[x].setFilterTo(ItemStack.EMPTY);
+            this.slots[x].set(ItemStack.EMPTY);
         }
     }
 
