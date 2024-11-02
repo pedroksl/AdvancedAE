@@ -70,7 +70,7 @@ public class AAEPlayerEvents {
     @SubscribeEvent
     public static void BreakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
-        if (player.getAbilities().flying) {
+        if (!player.onGround()) {
             ItemStack armor = player.getItemBySlot(EquipmentSlot.CHEST);
             if (armor.getItem() instanceof QuantumChestplate) {
                 event.setNewSpeed(event.getOriginalSpeed() * 5);
