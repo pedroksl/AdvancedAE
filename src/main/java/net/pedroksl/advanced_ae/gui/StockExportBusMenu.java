@@ -4,14 +4,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
 
 import appeng.api.stacks.GenericStack;
 import appeng.core.definitions.AEItems;
-import appeng.core.network.serverbound.InventoryActionPacket;
-import appeng.helpers.InventoryAction;
 import appeng.menu.SlotSemantics;
 import appeng.menu.implementations.UpgradeableMenu;
 
@@ -60,8 +57,7 @@ public class StockExportBusMenu extends UpgradeableMenu<StockExportBusPart> {
                         ((ServerPlayer) this.getPlayer()),
                         getLocator(),
                         currentStack,
-                        (newStack) -> PacketDistributor.sendToServer(new InventoryActionPacket(
-                                InventoryAction.SET_FILTER, slot.index, GenericStack.wrapInItemStack(newStack))));
+                        (newStack) -> this.setFilter(slot.index, GenericStack.wrapInItemStack(newStack)));
             }
         }
     }

@@ -3,7 +3,6 @@ package net.pedroksl.advanced_ae.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import appeng.api.stacks.AEKey;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.api.ISetAmountMenuHost;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
@@ -19,10 +17,9 @@ import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
 import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
 import appeng.api.storage.ISubMenuHost;
-import appeng.core.network.serverbound.InventoryActionPacket;
-import appeng.helpers.InventoryAction;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
@@ -186,8 +183,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
                         ((ServerPlayer) this.getPlayer()),
                         getLocator(),
                         currentStack,
-                        (newStack) -> PacketDistributor.sendToServer(new InventoryActionPacket(
-                                InventoryAction.SET_FILTER, slot.index, GenericStack.wrapInItemStack(newStack))),
+                        (newStack) -> this.setFilter(slot.index, GenericStack.wrapInItemStack(newStack)),
                         this,
                         slot.getMaxStackSize());
             }
