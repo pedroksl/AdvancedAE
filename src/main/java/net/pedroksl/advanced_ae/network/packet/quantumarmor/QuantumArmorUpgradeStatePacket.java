@@ -4,14 +4,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.client.gui.QuantumArmorConfigScreen;
 
 import appeng.core.network.ClientboundPacket;
 import appeng.core.network.CustomAppEngPayload;
 
-public record QuantumArmorUpgradeStatePacket() implements ClientboundPacket {
+public record QuantumArmorUpgradeStatePacket(ItemStack stack) implements ClientboundPacket {
     public static final StreamCodec<RegistryFriendlyByteBuf, QuantumArmorUpgradeStatePacket> STREAM_CODEC =
-            StreamCodec.ofMember(QuantumArmorUpgradeStatePacket::write, QuantumArmorUpgradeStatePacket::decode);
+            StreamCodec.composite(
+                    ItemStack.STREAM_CODEC, QuantumArmorUpgradeStatePacket::stack, QuantumArmorUpgradeStatePacket::new);
 
     public static final Type<QuantumArmorUpgradeStatePacket> TYPE = CustomAppEngPayload.createType("aae_upgrade_state");
 
@@ -20,16 +22,10 @@ public record QuantumArmorUpgradeStatePacket() implements ClientboundPacket {
         return TYPE;
     }
 
-    public static QuantumArmorUpgradeStatePacket decode(RegistryFriendlyByteBuf stream) {
-        return new QuantumArmorUpgradeStatePacket();
-    }
-
-    public void write(RegistryFriendlyByteBuf data) {}
-
     @Override
     public void handleOnClient(Player player) {
         if (Minecraft.getInstance().screen instanceof QuantumArmorConfigScreen screen) {
-            screen.refreshList();
+            screen.refreshList(stack);
         }
     }
 }

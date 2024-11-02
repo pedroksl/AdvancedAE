@@ -41,6 +41,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
 
     private boolean markDirty = false;
 
+    private static final String REQUEST_UPDATE = "request_update";
     private static final String SELECT_SLOT = "select_slot";
     private static final String REQUEST_UNINSTALL = "request_uninstall";
     private static final String EMPTY_SLOT = "empty_slot";
@@ -80,6 +81,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         this.host.setUpgradeAppliedWatcher(() -> this.markDirty = true);
         this.host.setInventoryChangedHandler(this::onChangeInventory);
 
+        registerClientAction(REQUEST_UPDATE, this::updateClient);
         registerClientAction(SELECT_SLOT, Integer.class, this::setSelectedItemSlot);
         registerClientAction(REQUEST_UNINSTALL, UpgradeType.class, this::requestUninstall);
         registerClientAction(EMPTY_SLOT, this::emptyUpgradeSlot);
@@ -204,8 +206,15 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         this.markDirty = true;
     }
 
-    private void updateClient() {
-        sendPacketToClient(new QuantumArmorUpgradeStatePacket());
+    public void updateClient() {
+        if (isClientSide()) {
+            sendClientAction(REQUEST_UPDATE);
+            return;
+        }
+
+        var slotIndex = this.host.getSelectedSlotIndex();
+        var stack = getPlayer().getInventory().getItem(slotIndex);
+        sendPacketToClient(new QuantumArmorUpgradeStatePacket(stack));
     }
 
     @Override

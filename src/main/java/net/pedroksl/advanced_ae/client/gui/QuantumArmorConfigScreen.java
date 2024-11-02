@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
@@ -11,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.Hotkeys;
 import net.pedroksl.advanced_ae.client.widgets.QuantumUpgradeWidget;
@@ -125,8 +130,13 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
             upgrade.setY(y, this.topPos);
             upgrade.show();
 
+            PoseStack poseStack = guiGraphics.pose();
+            poseStack.pushPose();
+            poseStack.translate(10.0F, 8.0F + (i * 3.5F), 0.0F);
+            poseStack.scale(0.8F, 0.8F, 1.0F);
             guiGraphics.drawString(
                     this.font, upgrade.getName(), upgrade.getX() + 2, upgrade.getY() + 3, color.toARGB(), false);
+            poseStack.popPose();
         }
     }
 
@@ -156,11 +166,20 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         }
     }
 
-    public void refreshList() {
-        this.refreshList(false);
+    public void refreshList(ItemStack stack) {
+        this.refreshList(stack, false);
     }
 
     public void refreshList(boolean removeWidgets) {
+        this.refreshList(ItemStack.EMPTY, removeWidgets);
+    }
+
+    public void refreshList(@Nullable ItemStack stack, boolean removeWidgets) {
+        if (stack == null) {
+            this.menu.updateClient();
+            return;
+        }
+
         if (removeWidgets) {
             this.upgradeList.forEach(w -> w.children().forEach(this::removeWidget));
             this.upgradeList.clear();
@@ -169,11 +188,11 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         if (this.selectedIndex == -1) return;
 
         int index = 0;
-        var stack = this.menu.getSlot(selectedIndex).getItem();
-        if (stack.getItem() instanceof QuantumArmorBase item) {
+        var armorStack = stack.isEmpty() ? this.menu.getSlot(this.selectedIndex).getItem() : stack;
+        if (armorStack.getItem() instanceof QuantumArmorBase item) {
             for (var upgrade : item.getPossibleUpgrades()) {
-                if (item.hasUpgrade(stack, upgrade)) {
-                    var components = stack.getComponents();
+                if (item.hasUpgrade(armorStack, upgrade)) {
+                    var components = armorStack.getComponents();
 
                     boolean enabled = Boolean.TRUE.equals(components.get(AAEComponents.UPGRADE_TOGGLE.get(upgrade)));
                     int value = components.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 1);
@@ -236,7 +255,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
         var index = this.menu.getSelectedSlotIndex();
         this.selectedIndex = 4 - (index - Inventory.INVENTORY_SIZE) + Inventory.INVENTORY_SIZE;
-        refreshList(true);
+        refreshList(null, true);
     }
 
     private void resetScrollbar() {
