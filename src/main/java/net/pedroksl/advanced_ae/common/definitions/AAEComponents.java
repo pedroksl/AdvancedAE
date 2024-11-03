@@ -29,8 +29,6 @@ public final class AAEComponents {
     public static final DataComponentType<CompoundTag> PORTABLE_CELL_STACK_TAG =
             register("portable_cell_stack", builder -> builder.persistent(CompoundTag.CODEC)
                     .networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
-    public static final DataComponentType<Integer> LAST_STACK_SLOT_USED = register(
-            "last_stack_slot_used", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final DataComponentType<Boolean> NIGHT_VISION_ACTIVATED =
             register("night_vision_activated", builder -> builder.persistent(Codec.BOOL)
                     .networkSynchronized(ByteBufCodecs.BOOL));

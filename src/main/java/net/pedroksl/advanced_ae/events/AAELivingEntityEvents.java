@@ -14,6 +14,7 @@ import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
@@ -46,6 +47,25 @@ public class AAELivingEntityEvents {
                     event.setInvulnerable(true);
                     item.consumeEnergy(bootStack, UpgradeType.EVASION);
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void incomingDamage(LivingIncomingDamageEvent event) {
+        Entity target = event.getEntity();
+        if (target.isAlive() && event.getAmount() > 0 && target instanceof Player player) {
+            var maxAbsorption = event.getAmount() * AAEConfig.instance().getPercentageDamageAbsorption() / 100f;
+            var amountPerPiece = maxAbsorption / 4f;
+            float absorbed = 0;
+            for (var stack : player.getArmorSlots()) {
+                if (stack != null && !stack.isEmpty() && stack.getItem() instanceof QuantumArmorBase item) {
+                    var extracted = item.extractAEPower(stack, amountPerPiece * 1000f, Actionable.MODULATE);
+                    absorbed += (float) extracted / 1000f;
+                }
+            }
+            if (absorbed > 0) {
+                event.setAmount(Math.max(0, event.getAmount() - absorbed));
             }
         }
     }

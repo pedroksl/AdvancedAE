@@ -97,6 +97,10 @@ public class AAEConfig {
         return common.regenerationPerTick.get();
     }
 
+    public int getPercentageDamageAbsorption() {
+        return common.percentageDamageAbsorption.get();
+    }
+
     public void save() {
         common.spec.save();
         client.spec.save();
@@ -147,6 +151,7 @@ public class AAEConfig {
         public final ModConfigSpec.IntValue maxReachBoost;
         public final ModConfigSpec.IntValue swimSpeedBoost;
         public final ModConfigSpec.IntValue regenerationPerTick;
+        public final ModConfigSpec.IntValue percentageDamageAbsorption;
 
         public CommonConfig() {
             var builder = new ModConfigSpec.Builder();
@@ -270,6 +275,13 @@ public class AAEConfig {
                     20,
                     "Define the amount of hearts regenerated per tick with the Regeneration Card. Value will be "
                             + "divided by 10 before use.");
+            percentageDamageAbsorption = define(
+                    builder,
+                    "quantumArmorPercentageDamageAbsorption",
+                    30,
+                    5,
+                    100,
+                    "Define the maximum percentage of incoming damage absorbed by the Quantum Armor. This value is still limited by the energy buffer in the equipment.");
             builder.pop();
 
             this.spec = builder.build();
