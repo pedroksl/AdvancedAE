@@ -26,6 +26,6 @@ public class QuantumAlloy {
                 () -> Ingredient.of(AAEItems.QUANTUM_ALLOY),
                 List.of(new ArmorMaterial.Layer(AdvancedAE.makeId("quantum_alloy"), "", true)),
                 3.0F,
-                0.1F);
+                0.25F);
     }
 }
