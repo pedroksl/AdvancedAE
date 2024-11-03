@@ -81,6 +81,8 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
                     .withStyle(ChatFormatting.DARK_GRAY));
         }
 
+        appendExtraHoverText(stack, context, lines, advancedTooltips);
+
         if (getLinkedPosition(stack) == null) {
             lines.add(Tooltips.of(GuiText.Unlinked, Tooltips.RED));
         } else {
@@ -101,6 +103,9 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
             lines.add(upgradeComponent);
         }
     }
+
+    protected void appendExtraHoverText(
+            ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {}
 
     @Override
     public List<UpgradeType> getPossibleUpgrades() {

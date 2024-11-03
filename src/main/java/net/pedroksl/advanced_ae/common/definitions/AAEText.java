@@ -107,13 +107,19 @@ public enum AAEText implements LocalizationEnum {
             "Enables armor recharging if linked to the grid. When installed in the chest slot, also recharges the inventory slots.",
             Type.TOOLTIP),
     PortableWorkbenchTooltip("Enables the use of a portable cell workbench.", Type.TOOLTIP),
+    PickCraftTooltip(
+            "Enables the ability to request craft of the targeted block if a pattern is available in the ME system.",
+            Type.TOOLTIP),
+    HudTooltip("Adds a HUD with configurable safety checks and information about the ME System.", Type.TOOLTIP),
 
     InsufficientPower("Insufficient Power", Type.TOOLTIP),
     InsufficientPowerDetails(
             "Unable to extract enough power for full speed progress. Check guide for possible " + "solutions.",
             Type.TOOLTIP),
 
-    QuantumArmorHotkeyTooltip("Press [%s] with this equipped to configure.", Type.TOOLTIP);
+    QuantumArmorHotkeyTooltip("Press [%s] with this equipped to configure.", Type.TOOLTIP),
+    QuantumArmorStableFootingTooltip("Negates mining speed penalty when flying.", Type.TOOLTIP),
+    QuantumArmorFallDamageTooltip("Negates fall damage when worn.", Type.TOOLTIP);
 
     private final String englishText;
     private final Type type;

@@ -1,13 +1,20 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
+import java.util.List;
+
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+
+import appeng.core.localization.Tooltips;
 
 public class QuantumBoots extends QuantumArmorBase {
 
@@ -22,6 +29,12 @@ public class QuantumBoots extends QuantumArmorBase {
                 UpgradeType.EVASION,
                 UpgradeType.FLIGHT_DRIFT,
                 UpgradeType.CHARGING);
+    }
+
+    @Override
+    protected void appendExtraHoverText(
+            ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {
+        lines.add(AAEText.QuantumArmorFallDamageTooltip.text().withStyle(Tooltips.NUMBER_TEXT));
     }
 
     @Override

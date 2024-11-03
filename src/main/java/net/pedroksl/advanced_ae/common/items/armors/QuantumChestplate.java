@@ -1,5 +1,8 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
+import java.util.List;
+
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -9,7 +12,10 @@ import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+
+import appeng.core.localization.Tooltips;
 
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -29,6 +35,12 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem {
                 UpgradeType.STRENGTH,
                 UpgradeType.ATTACK_SPEED,
                 UpgradeType.CHARGING);
+    }
+
+    @Override
+    protected void appendExtraHoverText(
+            ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {
+        lines.add(AAEText.QuantumArmorStableFootingTooltip.text().withStyle(Tooltips.NUMBER_TEXT));
     }
 
     @Override
