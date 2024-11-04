@@ -44,8 +44,9 @@ public interface IDirectionalOutputHost extends ISubMenuHost {
                     if (part != null) {
                         itemStack = new ItemStack(part.getPartItem().asItem(), 1);
                     }
+                } else {
+                    blockEntity.saveToItem(itemStack, level.registryAccess());
                 }
-                blockEntity.saveToItem(itemStack, level.registryAccess());
             }
         }
         return itemStack;

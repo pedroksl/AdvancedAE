@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-01T10:38:10.374203	Recipes
+// 1.21.1	2024-11-04T02:09:08.2263402	Recipes
 2cc379f3eeb84b4d9eeb014db2854841c785f472 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 828b1236efbaa89691afb2969beabb8ba02286c5 data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 183306c693387e207e828284e1b68df9f2472ce4 data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -18,6 +18,7 @@ d7ce17fdd3a979b80c2336360df0656c386a64cb data/advanced_ae/advancement/recipes/mi
 7d6c48a94c85018c6c1f226b8c4e8aad15eb18de data/advanced_ae/advancement/recipes/misc/luck_card.json
 77be0e4694d26332e97b69481f53ea335c66890d data/advanced_ae/advancement/recipes/misc/magnet_card.json
 e79b6a5861c4a5da532e559c88f6bdd13f4601db data/advanced_ae/advancement/recipes/misc/night_vision_card.json
+385b327485f38532c78f149ec86fd41614dd51c8 data/advanced_ae/advancement/recipes/misc/pick_craft_card.json
 6f084355c02aab351e4acd3eb1f6c901a070de80 data/advanced_ae/advancement/recipes/misc/portable_workbench_card.json
 1b7257a3e7b5799ceb7ea0d9e1358dc69353c987 data/advanced_ae/advancement/recipes/misc/quantumaccel.json
 87d88422d89e4899e9346040c9addd8dc3af2ab6 data/advanced_ae/advancement/recipes/misc/quantumcore.json
@@ -90,6 +91,7 @@ ed946a4c79b9d94fd8009edbfc022f907b0b52b5 data/advanced_ae/recipe/lava_immunity_c
 a1030f7b38a59a7b35a8352504fd085d2ef9156c data/advanced_ae/recipe/luck_card.json
 ffb961eef872d41206856c8e6ef16aa2bff8a18d data/advanced_ae/recipe/magnet_card.json
 ff54b2545fa6d877fa4a88bc3a2b5789f8dd9906 data/advanced_ae/recipe/night_vision_card.json
+5147ac2146173523f0ad74080bafbbc1bca83151 data/advanced_ae/recipe/pick_craft_card.json
 6841bc83586d747a683cad5446729105ba418542 data/advanced_ae/recipe/portable_workbench_card.json
 18896ddd55412bba9f201068ca1c7edcf8b2216f data/advanced_ae/recipe/quantumaccel.json
 faf416e7a6125f5f852a3b2c5e08d1e0e66b0d5b data/advanced_ae/recipe/quantumcore.json

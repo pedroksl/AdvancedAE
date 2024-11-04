@@ -21,13 +21,19 @@ import appeng.util.Platform;
 public interface IGridLinkedItem {
     IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
 
+    default void updateStatus() {}
+
     default @Nullable GlobalPos getLinkedPosition(ItemStack item) {
         return item.get(AEComponents.WIRELESS_LINK_TARGET);
     }
 
-    default @Nullable IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Consumer<Component> errorConsumer) {
+    default @Nullable IGrid getLinkedGrid(ItemStack stack, Level level) {
+        return getLinkedGrid(stack, level, null);
+    }
+
+    default @Nullable IGrid getLinkedGrid(ItemStack stack, Level level, @Nullable Consumer<Component> errorConsumer) {
         if (level instanceof ServerLevel serverLevel) {
-            GlobalPos linkedPos = this.getLinkedPosition(item);
+            GlobalPos linkedPos = this.getLinkedPosition(stack);
             if (linkedPos == null) {
                 if (errorConsumer != null) {
                     errorConsumer.accept(PlayerMessages.DeviceNotLinked.text());

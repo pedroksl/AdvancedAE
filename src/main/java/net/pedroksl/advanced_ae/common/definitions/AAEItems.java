@@ -160,6 +160,10 @@ public class AAEItems {
             "Portable Workbench Card",
             "portable_workbench_card",
             p -> new QuantumUpgradeBaseItem(UpgradeType.WORKBENCH, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> PICK_CRAFT_CARD =
+            item("Pick Craft Card", "pick_craft_card", p -> new QuantumUpgradeBaseItem(UpgradeType.PICK_CRAFT, p));
+    //    public static final ItemDefinition<QuantumUpgradeBaseItem> HUD_CARD =
+    //            item("HUD Card", "hud_card", p -> new QuantumUpgradeBaseItem(UpgradeType.HUD, p));
 
     private static <T extends Item> ItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {

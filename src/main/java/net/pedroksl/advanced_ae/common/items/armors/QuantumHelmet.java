@@ -30,10 +30,6 @@ import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 public class QuantumHelmet extends QuantumArmorBase {
     private static final double MAX_POWER_STORAGE = 200000000;
 
-    private static final String MENU_TYPE = "aae$menutype";
-    private static final int STANDARD_MENU = 0;
-    private static final int WORKBENCH_MENU = 1;
-
     public QuantumHelmet(Properties properties) {
         super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.HELMET, properties, () -> MAX_POWER_STORAGE);
 
@@ -77,8 +73,9 @@ public class QuantumHelmet extends QuantumArmorBase {
     public boolean openFromEquipmentSlot(Player player, ItemMenuHostLocator locator, boolean returningFromSubmenu) {
         var is = locator.locateItem(player);
         if (!player.level().isClientSide() && checkPreconditions(is)) {
-            player.getPersistentData().putInt(MENU_TYPE, STANDARD_MENU);
-            PacketDistributor.sendToPlayer(((ServerPlayer) player), new MenuSelectionPacket(MENU_TYPE, STANDARD_MENU));
+            player.getPersistentData().putInt(MENU_TYPE, MenuId.STANDARD.id);
+            PacketDistributor.sendToPlayer(
+                    ((ServerPlayer) player), new MenuSelectionPacket(MENU_TYPE, MenuId.STANDARD.id));
         }
         return super.openFromEquipmentSlot(player, locator, returningFromSubmenu);
     }
@@ -92,9 +89,9 @@ public class QuantumHelmet extends QuantumArmorBase {
 
         if (!player.level().isClientSide() && checkPreconditions(is)) {
             if (((QuantumHelmet) is.getItem()).isUpgradeEnabled(is, UpgradeType.WORKBENCH)) {
-                player.getPersistentData().putInt(MENU_TYPE, WORKBENCH_MENU);
+                player.getPersistentData().putInt(MENU_TYPE, MenuId.WORKBENCH.id);
                 PacketDistributor.sendToPlayer(
-                        ((ServerPlayer) player), new MenuSelectionPacket(MENU_TYPE, WORKBENCH_MENU));
+                        ((ServerPlayer) player), new MenuSelectionPacket(MENU_TYPE, MenuId.WORKBENCH.id));
                 return MenuOpener.open(AAEMenus.PORTABLE_WORKBENCH, player, locator, returningFromSubmenu);
             } else {
                 var id = Component.translatable(
@@ -108,7 +105,7 @@ public class QuantumHelmet extends QuantumArmorBase {
     @Override
     public ItemMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator, @Nullable BlockHitResult hitResult) {
         if (player.getPersistentData().contains(MENU_TYPE)
-                && player.getPersistentData().getInt(MENU_TYPE) == WORKBENCH_MENU) {
+                && player.getPersistentData().getInt(MENU_TYPE) == MenuId.WORKBENCH.id) {
             player.getPersistentData().remove(MENU_TYPE);
             return new PortableCellWorkbenchMenuHost(this, player, locator);
         }

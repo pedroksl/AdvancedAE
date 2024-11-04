@@ -59,6 +59,20 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
     private List<UpgradeType> appliedUpgrades;
 
+    protected static final String MENU_TYPE = "aae$menutype";
+
+    protected enum MenuId {
+        STANDARD(0),
+        WORKBENCH(1),
+        CRAFTING(2);
+
+        public final int id;
+
+        MenuId(int id) {
+            this.id = id;
+        }
+    }
+
     public QuantumArmorBase(
             Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
         super(material, type, properties.fireResistant().rarity(Rarity.EPIC).stacksTo(1), powerCapacity);
@@ -146,7 +160,6 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     public <T extends LivingEntity> int damageItem(
             ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
         consumeEnergy(stack, amount);
-        var renderer = ((GeoArmorRenderer<?>) getRenderProvider()).getGeoModel();
         return 0;
     }
 

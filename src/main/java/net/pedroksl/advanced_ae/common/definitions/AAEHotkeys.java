@@ -23,7 +23,8 @@ public final class AAEHotkeys {
         QUANTUM_MAGNET_UPGRADE("quantum_magnet_upgrade", "Toggle Quantum Armor Magnet", GLFW.GLFW_KEY_G),
         QUANTUM_AUTO_STOCK_UPGRADE("quantum_auto_stock_upgrade", "Toggle Quantum Armor Auto Stock", GLFW.GLFW_KEY_J),
         QUANTUM_NIGHT_VISION_UPGRADE("quantum_night_vision_upgrade", "Toggle Quantum Armor Night Vision"),
-        PORTABLE_WORKBENCH("portable_workbench", "Open Portable Workbench", GLFW.GLFW_KEY_C);
+        PORTABLE_WORKBENCH("portable_workbench", "Open Portable Workbench", GLFW.GLFW_KEY_C),
+        PICK_CRAFT("pick_craft", "Attempt crafting targeted block", GLFW.GLFW_KEY_V);
 
         private final String id;
         private final String englishTranslation;
@@ -91,6 +92,10 @@ public final class AAEHotkeys {
                 AAEItems.QUANTUM_HELMET,
                 (player, locator) -> AAEItems.QUANTUM_HELMET.get().openPortableWorkbench(player, locator),
                 Keys.PORTABLE_WORKBENCH.id);
+        registerArmorAction(
+                AAEItems.QUANTUM_CHESTPLATE,
+                (player, locator) -> AAEItems.QUANTUM_CHESTPLATE.get().attemptCraftingTarget(player, locator),
+                Keys.PICK_CRAFT.id);
     }
 
     public static void register(ItemLike item, InventoryHotkeyAction.Opener opener, String id) {

@@ -678,6 +678,17 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('P', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("portable_workbench_card"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.PICK_CRAFT_CARD)
+                .pattern(" W ")
+                .pattern("PCP")
+                .pattern("ABA")
+                .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
+                .define('W', AEBlocks.WIRELESS_ACCESS_POINT)
+                .define('B', Blocks.CRAFTING_TABLE)
+                .define('A', AAEItems.QUANTUM_ALLOY)
+                .define('P', AAEItems.QUANTUM_PROCESSOR)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
+                .save(c, AdvancedAE.makeId("pick_craft_card"));
 
         loadAppFluxRecipes(c);
         loadMegaCellsRecipes(c);
