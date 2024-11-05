@@ -186,9 +186,9 @@ it, you need to press the configured hotkey. It works in the same way the block 
 <ItemImage id="advanced_ae:pick_craft_card" scale="2"></ItemImage>
 
 The <ItemLink id="advanced_ae:pick_craft_card" /> adds a new hotkey feature to the armor. Pressing it will attempt to
-craft the block currently being targeted by the player. This feature requires that the a pattern matching the target.
-A popup will appear requiring the desired amount and the process follows exactly the same as a normal auto-craft request
-would.
+craft the block currently being targeted by the player. This feature requires that a link to the grid and a pattern
+that matches the target. A popup will appear requiring the desired amount and the process follows exactly the same as a
+normal auto-craft request would.
 
 <br/>
 
