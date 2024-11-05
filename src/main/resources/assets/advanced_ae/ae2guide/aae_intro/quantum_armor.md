@@ -32,6 +32,8 @@ item_ids:
   - advanced_ae:night_vision_card
   - advanced_ae:flight_drift_card
   - advanced_ae:recharging_card
+  - advanced_ae:portable_workbench_card
+  - advanced_ae:pick_craft_card
 ---
 
 # Quantum Armor Set
@@ -50,8 +52,10 @@ item_ids:
 
 Have you ever wondered what would it be like to wear you AE System? Well, you don't have to wonder anymore. The quantum
 armor set is a highly technological stealthy apparel that connects to the AE2 system to provide convenient access to
-everything on the go! By default, it's an energy powered suit with defenses comparable to Netherite gear, but the upgrade
-cards push it to the next level.
+everything on the go! By default, it's an energy powered suit with defenses comparable to Netherite gear. It is capable
+of using its buffer to create an energy shield, providing a healthy amount of damage absorption. The boots also provide
+fall damage negation while the chestplate can eliminate flying mining penalties. However, the true power of this suit is
+only unlocked when you fill it with upgrades!
 
 <br/>
 
@@ -66,8 +70,8 @@ the connected access point.
 
 ## Installing Upgrades
 
-To install upgrades, you need to have the pieces equipped and then open the Quantum Armor Configuration Menu, by pressing
-the hotkey, (N by default).
+To install upgrades, you need to have the pieces equipped and then open the Quantum Armor Configuration Menu, by
+pressing the hotkey, (N by default).
 
 ![QAGUI](../pic/quantum_armor_config.png)
 
@@ -80,7 +84,8 @@ upgrades that have them.
 
 <ItemImage id="advanced_ae:quantum_upgrade_base" scale="2"></ItemImage>
 
-The <ItemLink id="advanced_ae:quantum_upgrade_base" /> doesn't do anything special on its own, but it is used as a crafting ingredient for all upgrade cards.
+The <ItemLink id="advanced_ae:quantum_upgrade_base" /> doesn't do anything special on its own, but it is used as a
+crafting ingredient for all upgrade cards.
 
 <br/>
 
@@ -88,9 +93,9 @@ The <ItemLink id="advanced_ae:quantum_upgrade_base" /> doesn't do anything speci
 
 <ItemImage id="advanced_ae:auto_feeding_card" scale="2"></ItemImage>
 
-The <ItemLink id="advanced_ae:auto_feeding_card" /> enables the selection of specific items to be used to feed the player. Simply drag the desired
-items into the filter slots and if the equipment is linked to the AE2 grid, it will try to find them in the system to
-feed the player when hungry.
+The <ItemLink id="advanced_ae:auto_feeding_card" /> enables the selection of specific items to be used to feed the
+player. Simply drag the desired items into the filter slots and if the equipment is linked to the AE2 grid, it will try
+to find them in the system to feed the player when hungry.
 
 <br/>
 
@@ -98,10 +103,10 @@ feed the player when hungry.
 
 <ItemImage id="advanced_ae:auto_stock_card" scale="2"></ItemImage>
 
-The <ItemLink id="advanced_ae:auto_stock_card" /> also requires the equipment piece to be linked to the AE2 system and the proper range to the access
-point. It enables the configuration of a few stacks to be always kept at specific amounts in the user inventory. The
-slots are not limited to a stack, so you can set them to have more than one slot filled in inventory at all times if you
-so desire.
+The <ItemLink id="advanced_ae:auto_stock_card" /> also requires the equipment piece to be linked to the AE2 system and
+the proper range to the access point. It enables the configuration of a few stacks to be always kept at specific amounts
+in the user inventory. The slots are not limited to a stack, so you can set them to have more than one slot filled in
+inventory at all times if you so desire.
 
 <br/>
 
@@ -146,14 +151,14 @@ These upgrades change vertical movement, allowing for configurable higher jump h
 
 ### Flight Card
 
-The <ItemLink id="advanced_ae:flight_card" /> enables creative flight when installed. The flight speed can be configured using the slider in the UI.
-It is also affected by the walk/sprint speed upgrades additively.
+The <ItemLink id="advanced_ae:flight_card" /> enables creative flight when installed. The flight speed can be configured
+using the slider in the UI. It is also affected by the walk/sprint speed upgrades additively.
 
 ### Flight Drift Card
 
-The <ItemLink id="advanced_ae:flight_drift_card" /> only works when the Flight Card is installed, and it adds another configuration slider to change
-the inertia affecting the creative flight. Lower values make you stop faster, stopping instantly when the value is set
-to 0.
+The <ItemLink id="advanced_ae:flight_drift_card" /> only works when the Flight Card is installed, and it adds another
+configuration slider to change the inertia affecting the creative flight. Lower values make you stop faster, stopping
+instantly when the value is set to 0.
 
 <br/>
 
@@ -161,12 +166,31 @@ to 0.
 
 <ItemImage id="advanced_ae:recharging_card" scale="2"></ItemImage>
 
-The <ItemLink id="advanced_ae:recharging_card" /> enables wireless recharging for the equipped piece. This requires a link to the grid and being in range of the
-access point. Installing this upgrade in the chestplate has the added benefit of also charging the inventory slots.
+The <ItemLink id="advanced_ae:recharging_card" /> enables wireless recharging for the equipped piece. This requires a
+link to the grid and being in range of the access point. Installing this upgrade in the chestplate has the added benefit
+of also charging the inventory slots.
 
+<br/>
 
+## Portable Workbench Card
 
+<ItemImage id="advanced_ae:portable_workbench_card" scale="2"></ItemImage>
 
+The <ItemLink id="advanced_ae:portable_workbench_card" /> adds a portable cell workbench to the quantum suit. To open
+it, you need to press the configured hotkey. It works in the same way the block form does.
+
+<br/>
+
+## Pick Craft Card
+
+<ItemImage id="advanced_ae:pick_craft_card" scale="2"></ItemImage>
+
+The <ItemLink id="advanced_ae:pick_craft_card" /> adds a new hotkey feature to the armor. Pressing it will attempt to
+craft the block currently being targeted by the player. This feature requires that the a pattern matching the target.
+A popup will appear requiring the desired amount and the process follows exactly the same as a normal auto-craft request
+would.
+
+<br/>
 
 ## Utilities Cards
 
@@ -186,6 +210,8 @@ These cards provide several utilities for the set wearer, bringing immunity to s
 vision. The magnet card, in particular, has a configuration screen where you can set filters for what to pick up or not
 and to configure its range.
 
+<br/>
+
 ## Defensive Cards
 
 <Row gap="10">
@@ -202,6 +228,8 @@ These upgrades provide defensive benefits to the set wearer, in various forms. T
 health, while the regeneration card will increase that speed at which it recovers. The evasion card provides full
 immunity to any damage source at a chance.
 
+<br/>
+
 ## Offensive Cards
 
 <Row gap="10">
@@ -213,6 +241,8 @@ immunity to any damage source at a chance.
 * <ItemLink id="advanced_ae:attack_speed_card" />
 
 These upgrades increase the offensive capabilities of the wearer. They provide a boost to attack damage and attack speed.
+
+<br/>
 
 ## Stats Cards
 
@@ -226,6 +256,8 @@ These upgrades increase the offensive capabilities of the wearer. They provide a
 
 These upgrade cards provide flat stat increases to the wearer, affecting luck for better loot rolls and block reach
 distance. The reach card can be configured to a specific desired value.
+
+<br/>
 
 ## More to come
 

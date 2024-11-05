@@ -5,8 +5,6 @@ import java.util.List;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
@@ -29,6 +28,7 @@ import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.packet.MenuSelectionPacket;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.api.parts.SelectedPart;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.storage.ISubMenuHost;
@@ -155,7 +155,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
     }
 
     private AEKey targetKey(Player player) {
-        var hitResult = Minecraft.getInstance().hitResult;
+        var hitResult = player.pick(player.blockInteractionRange(), 0f, false);
         if (hitResult instanceof BlockHitResult blockHitResult && blockHitResult.getType() == HitResult.Type.BLOCK) {
             var blockPos = blockHitResult.getBlockPos();
             var blockState = player.level().getBlockState(blockPos);
@@ -164,11 +164,11 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
                 BlockEntity blockEntity = player.level().getBlockEntity(blockPos);
                 if (blockEntity != null) {
                     if (blockEntity instanceof CableBusBlockEntity cable) {
-                        Direction dir = player.getNearestViewDirection();
-                        var part = cable.getPart(dir.getOpposite());
-                        if (part != null) {
-                            itemStack = new ItemStack(part.getPartItem().asItem(), 1);
+                        var part = getSelectedPart(cable, hitResult);
+                        if (part != null && part.part != null) {
+                            itemStack = new ItemStack(part.part.getPartItem().asItem(), 1);
                         }
+
                     } else {
                         blockEntity.saveToItem(itemStack, player.registryAccess());
                     }
@@ -177,6 +177,18 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
             return AEItemKey.of(itemStack.getItem().getDefaultInstance());
         }
         return null;
+    }
+
+    private static SelectedPart getSelectedPart(CableBusBlockEntity cable, HitResult hitResult) {
+        var loc = hitResult.getLocation();
+        var x = loc.x - (int) loc.x;
+        if (x < 0) x++;
+        var y = loc.y - (int) loc.y;
+        if (y < 0) y++;
+        var z = loc.z - (int) loc.z;
+        if (z < 0) z++;
+        var vec = new Vec3(x, y, z);
+        return cable.selectPartLocal(vec);
     }
 
     public boolean keyIsCraftable(Player player, ItemStack stack, AEKey whatToCraft) {

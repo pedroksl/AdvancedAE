@@ -130,7 +130,7 @@ dependencies {
     implementation "curse.maven:mekanism-268560:5680395"
     implementation "curse.maven:adorned-1036809:5740650"
 
-    implementation "curse.maven:irisshaders-455508:5765375"
+    compileOnly "curse.maven:irisshaders-455508:5765375"
     // setup Xei
     switch (use_Xei) {
         case "emi":
