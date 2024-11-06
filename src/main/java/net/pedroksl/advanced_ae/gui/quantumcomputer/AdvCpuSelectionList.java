@@ -25,7 +25,6 @@ import appeng.client.gui.widgets.Scrollbar;
 import appeng.core.localization.ButtonToolTips;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.Tooltips;
-import appeng.menu.me.crafting.CraftingStatusMenu;
 
 public class AdvCpuSelectionList implements ICompositeWidget {
     private static final int ROWS = 6;
@@ -134,7 +133,7 @@ public class AdvCpuSelectionList implements ICompositeWidget {
     }
 
     @Nullable
-    private CraftingStatusMenu.CraftingCpuListEntry hitTestCpu(Point mousePos) {
+    private QuantumComputerMenu.CraftingCpuListEntry hitTestCpu(Point mousePos) {
         var relX = mousePos.getX() - bounds.getX();
         var relY = mousePos.getY() - bounds.getY();
         relX -= 8;
@@ -251,7 +250,7 @@ public class AdvCpuSelectionList implements ICompositeWidget {
         }
     }
 
-    private String formatStorage(CraftingStatusMenu.CraftingCpuListEntry cpu) {
+    private String formatStorage(QuantumComputerMenu.CraftingCpuListEntry cpu) {
         var storage = cpu.storage();
         var unit = -1;
 
@@ -269,7 +268,7 @@ public class AdvCpuSelectionList implements ICompositeWidget {
                 };
     }
 
-    private Component getCpuName(CraftingStatusMenu.CraftingCpuListEntry cpu) {
+    private Component getCpuName(QuantumComputerMenu.CraftingCpuListEntry cpu) {
         return cpu.name() != null ? cpu.name() : GuiText.CPUs.text().append(String.format(" #%d", cpu.serial()));
     }
 }

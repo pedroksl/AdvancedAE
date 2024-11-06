@@ -364,15 +364,18 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                     this.setProcessingTime(this.getProcessingTime() + speedFactor);
                     setShowWarning(false);
                 } else if (powerReq != 0) {
-                    var progressRatio = (powerConsumption - powerReq - 20 * eg.getIdlePowerUsage()) / powerConsumption;
+                    var progressRatio = src == this
+                            ? powerReq / powerConsumption
+                            : (powerReq - 10 * eg.getIdlePowerUsage()) / powerConsumption;
                     var factor = Mth.floor(progressRatio * speedFactor);
 
                     if (factor > 1) {
-                        src.extractAEPower(
+                        var extracted = src.extractAEPower(
                                 (double) (powerConsumption * factor) / speedFactor,
                                 Actionable.MODULATE,
                                 PowerMultiplier.CONFIG);
-                        this.setProcessingTime(this.getProcessingTime() + factor);
+                        var actualFactor = (int) Math.floor(extracted / powerConsumption * speedFactor);
+                        this.setProcessingTime(this.getProcessingTime() + actualFactor);
                     }
                     // Add warning
                     setShowWarning(true);

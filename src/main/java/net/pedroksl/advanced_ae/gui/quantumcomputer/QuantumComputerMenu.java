@@ -19,7 +19,6 @@ import appeng.api.stacks.GenericStack;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.guisync.PacketWritable;
 import appeng.menu.me.crafting.CraftingCPUMenu;
-import appeng.menu.me.crafting.CraftingStatusMenu;
 
 public class QuantumComputerMenu extends CraftingCPUMenu {
 
@@ -34,7 +33,7 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
     private int lastUpdate = 0;
 
     @GuiSync(8)
-    public CraftingStatusMenu.CraftingCpuList cpuList = EMPTY_CPU_LIST;
+    public CraftingCpuList cpuList = EMPTY_CPU_LIST;
 
     // This is server-side
     @Nullable
@@ -66,13 +65,12 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
         this.registerClientAction("selectCpu", Integer.class, this::selectCpu);
     }
 
-    private static final CraftingStatusMenu.CraftingCpuList EMPTY_CPU_LIST =
-            new CraftingStatusMenu.CraftingCpuList(Collections.emptyList());
+    private static final CraftingCpuList EMPTY_CPU_LIST = new CraftingCpuList(Collections.emptyList());
 
-    private static final Comparator<CraftingStatusMenu.CraftingCpuListEntry> CPU_COMPARATOR = Comparator.comparing(
-                    (CraftingStatusMenu.CraftingCpuListEntry e) -> e.name() == null)
+    private static final Comparator<CraftingCpuListEntry> CPU_COMPARATOR = Comparator.comparing(
+                    (CraftingCpuListEntry e) -> e.name() == null)
             .thenComparing(e -> e.name() != null ? e.name().getString() : "")
-            .thenComparingInt(CraftingStatusMenu.CraftingCpuListEntry::serial);
+            .thenComparingInt(CraftingCpuListEntry::serial);
 
     @Override
     protected void setCPU(ICraftingCPU c) {
@@ -133,12 +131,12 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
         super.broadcastChanges();
     }
 
-    private CraftingStatusMenu.CraftingCpuList createCpuList() {
-        var entries = new ArrayList<CraftingStatusMenu.CraftingCpuListEntry>(lastCpuSet.size());
+    private CraftingCpuList createCpuList() {
+        var entries = new ArrayList<CraftingCpuListEntry>(lastCpuSet.size());
         for (var cpu : lastCpuSet) {
             var serial = getOrAssignCpuSerial(cpu);
             var status = cpu.getJobStatus();
-            entries.add(new CraftingStatusMenu.CraftingCpuListEntry(
+            entries.add(new CraftingCpuListEntry(
                     serial,
                     cpu.getAvailableStorage(),
                     cpu.getCoProcessors(),
@@ -150,7 +148,7 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
                     status != null ? status.elapsedTimeNanos() : 0));
         }
         entries.sort(CPU_COMPARATOR);
-        return new CraftingStatusMenu.CraftingCpuList(entries);
+        return new CraftingCpuList(entries);
     }
 
     private int getOrAssignCpuSerial(ICraftingCPU cpu) {
@@ -194,16 +192,16 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
         return this.selectionMode;
     }
 
-    public record CraftingCpuList(List<CraftingStatusMenu.CraftingCpuListEntry> cpus) implements PacketWritable {
+    public record CraftingCpuList(List<CraftingCpuListEntry> cpus) implements PacketWritable {
         public CraftingCpuList(RegistryFriendlyByteBuf data) {
             this(readFromPacket(data));
         }
 
-        private static List<CraftingStatusMenu.CraftingCpuListEntry> readFromPacket(RegistryFriendlyByteBuf data) {
+        private static List<CraftingCpuListEntry> readFromPacket(RegistryFriendlyByteBuf data) {
             var count = data.readInt();
-            var result = new ArrayList<CraftingStatusMenu.CraftingCpuListEntry>(count);
+            var result = new ArrayList<CraftingCpuListEntry>(count);
             for (int i = 0; i < count; i++) {
-                result.add(CraftingStatusMenu.CraftingCpuListEntry.readFromPacket(data));
+                result.add(CraftingCpuListEntry.readFromPacket(data));
             }
             return result;
         }
@@ -227,8 +225,8 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
             long totalItems,
             long progress,
             long elapsedTimeNanos) {
-        public static CraftingStatusMenu.CraftingCpuListEntry readFromPacket(RegistryFriendlyByteBuf data) {
-            return new CraftingStatusMenu.CraftingCpuListEntry(
+        public static CraftingCpuListEntry readFromPacket(RegistryFriendlyByteBuf data) {
+            return new CraftingCpuListEntry(
                     data.readInt(),
                     data.readLong(),
                     data.readInt(),
