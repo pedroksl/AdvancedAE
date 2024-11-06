@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.common.helpers;
 
 import java.util.List;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
@@ -17,16 +18,18 @@ public class MagnetHelpers {
     }
 
     public static boolean validEntities(ItemEntity item, Player player, List<GenericStack> filter, boolean blacklist) {
-        if (item.isAlive() && !item.getItem().isEmpty()) {
+        if (item.isAlive()
+                && (player instanceof ServerPlayer || item.tickCount > 1)
+                && !item.getItem().isEmpty()) {
             // Don't pick if thrown by the player
-            if ((item.thrower != null && item.thrower.equals(player.getUUID())) || item.hasPickUpDelay()) return false;
+            if (!(item.thrower == null || !item.thrower.equals(player.getUUID()) || !item.hasPickUpDelay()))
+                return false;
 
             // Compatibility with demagnetization tool
             if (item.getPersistentData().contains("PreventRemoteMovement")) return false;
 
             if (filter.isEmpty()) return true;
 
-            GenericStack stack = GenericStack.fromItemStack(item.getItem());
             var filteredList =
                     filter.stream().filter(gen -> AEItemKey.of(item.getItem()).matches(gen));
             var containedInFilter = filteredList.findAny().isPresent();
