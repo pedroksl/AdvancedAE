@@ -7,7 +7,6 @@ import org.apache.commons.lang3.mutable.MutableObject;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -203,6 +202,7 @@ public class UpgradeCards {
                 var storage = grid.getStorageService();
                 var filter = stack.getOrDefault(
                         AAEComponents.UPGRADE_FILTER.get(UpgradeType.AUTO_STOCK), new ArrayList<GenericStack>());
+                boolean didSomething = false;
                 for (var genStack : filter) {
                     if (genStack.what() instanceof AEItemKey itemKey) {
                         var desiredAmount = genStack.amount();
@@ -231,7 +231,7 @@ public class UpgradeCards {
                                             stackToInsert.getCount(),
                                             Actionable.MODULATE,
                                             IActionSource.ofPlayer(player));
-                            return true;
+                            didSomething |= extracted > 0;
                         } else if (amountDelta < 0) {
                             amountDelta = -amountDelta;
                             var inserted = storage.getInventory()
@@ -247,20 +247,21 @@ public class UpgradeCards {
                                 player.getInventory().setItem(slot, new ItemStack(item.getItem(), amountToSet));
                                 amountToLeave = Math.max(0, amountToLeave - amountToSet);
                             }
-                            return true;
+                            didSomething |= inserted > 0;
                         }
                     }
                 }
+                return didSomething;
             }
         }
         return false;
     }
 
     public static boolean magnet(Level level, Player player, ItemStack stack) {
-        if (player instanceof ServerPlayer serverPlayer && stack.getItem() instanceof QuantumHelmet helmet) {
+        if (!player.isSpectator() && stack.getItem() instanceof QuantumHelmet helmet) {
             if (helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.MAGNET, level)) {
                 var range = stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.MAGNET), 5);
-                var pos = serverPlayer.position();
+                var pos = player.position();
 
                 AABB area = MagnetHelpers.getBoundingBox(pos, range);
 
@@ -271,7 +272,8 @@ public class UpgradeCards {
                 List<ItemEntity> items = level.getEntities(
                         EntityType.ITEM, area, obj -> MagnetHelpers.validEntities(obj, player, filter, blacklist));
                 items.forEach(itemEntity -> {
-                    if (player.getInventory().getSlotWithRemainingSpace(itemEntity.getItem()) != -1) {
+                    if (!level.isClientSide()
+                            && player.getInventory().getSlotWithRemainingSpace(itemEntity.getItem()) != -1) {
                         itemEntity.playerTouch(player);
                     }
                     // Still move the items close to the player in case inventory is full
@@ -279,12 +281,14 @@ public class UpgradeCards {
                 });
 
                 // Pick up experience
-                List<ExperienceOrb> xps = level.getEntitiesOfClass(ExperienceOrb.class, area);
-                xps.forEach(xp -> {
-                    xp.invulnerableTime = 0;
-                    player.takeXpDelay = 0;
-                    xp.playerTouch(player);
-                });
+                if (!level.isClientSide()) {
+                    List<ExperienceOrb> xps = level.getEntitiesOfClass(ExperienceOrb.class, area);
+                    xps.forEach(xp -> {
+                        xp.invulnerableTime = 0;
+                        player.takeXpDelay = 0;
+                        xp.playerTouch(player);
+                    });
+                }
                 return true;
             }
         }
