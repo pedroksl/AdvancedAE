@@ -2,7 +2,7 @@
   "type": "advanced_ae:reaction",
   "input_energy": 20000,
   "input_fluid": {
-    "amount": 5000,
+    "amount": 4000,
     "ingredient": {
       "fluid": "minecraft:water"
     }
