@@ -346,7 +346,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             var amountInOutput = 0;
             for (int x = 0; x < this.outputInv.size(); x++) {
                 var stack = this.outputInv.getStackInSlot(x);
-                if (stack.is(GenericStack.wrapInItemStack(output).getItem())) {
+                if (stack.is(output.what().wrapForDisplayOrFilter().getItem())) {
                     amountInOutput += stack.getCount();
                 }
             }

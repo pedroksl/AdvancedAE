@@ -2,17 +2,17 @@ package net.pedroksl.advanced_ae.common.helpers;
 
 import java.util.Set;
 
-import appeng.api.AECapabilities;
-import appeng.api.storage.MEStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 
+import appeng.api.AECapabilities;
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEKey;
+import appeng.api.storage.MEStorage;
 import appeng.parts.automation.HandlerStrategy;
 
 public class SimulatedStorageImportStrategy<T, S> {
