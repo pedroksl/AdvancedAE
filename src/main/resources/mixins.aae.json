@@ -9,6 +9,7 @@
 		"MixinAbstractMonitorPartAccessor",
 		"MixinContainerPatternModifier",
 		"MixinEncodedPatternItem",
+		"MixinLivingEntity",
 		"MixinPatternEncodingLogic",
 		"MixinPatternEncodingTermMenu",
 		"MixinPatternProviderLogic",
