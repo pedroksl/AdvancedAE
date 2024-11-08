@@ -118,6 +118,11 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
         }
     }
 
+    @Override
+    public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+        return true;
+    }
+
     protected void appendExtraHoverText(
             ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {}
 
