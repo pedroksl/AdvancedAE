@@ -28,10 +28,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipeBuilder;
 import net.pedroksl.advanced_ae.xmod.Addons;
 
-import appeng.core.definitions.AEBlocks;
-import appeng.core.definitions.AEItems;
-import appeng.core.definitions.AEParts;
-import appeng.core.definitions.BlockDefinition;
+import appeng.core.definitions.*;
 import appeng.datagen.providers.tags.ConventionTags;
 import appeng.recipes.handlers.InscriberProcessType;
 import appeng.recipes.handlers.InscriberRecipeBuilder;
@@ -690,8 +687,27 @@ public class AAERecipeProvider extends RecipeProvider {
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("pick_craft_card"));
 
+        resetNbtRecipe(c, AAEItems.QUANTUM_HELMET);
+        resetNbtRecipe(c, AAEItems.QUANTUM_CHESTPLATE);
+        resetNbtRecipe(c, AAEItems.QUANTUM_LEGGINGS);
+        resetNbtRecipe(c, AAEItems.QUANTUM_BOOTS);
+
         loadAppFluxRecipes(c);
         loadMegaCellsRecipes(c);
+    }
+
+    private void resetNbtRecipe(@NotNull RecipeOutput c, BlockDefinition<?> block) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, block)
+                .requires(block)
+                .unlockedBy("hasItem", has(block))
+                .save(c, AdvancedAE.makeId(block.id().getPath() + "_block_reset"));
+    }
+
+    private void resetNbtRecipe(@NotNull RecipeOutput c, ItemDefinition<?> item) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item)
+                .requires(item)
+                .unlockedBy("hasItem", has(item))
+                .save(c, AdvancedAE.makeId(item.id().getPath() + "_item_reset"));
     }
 
     private void loadAppFluxRecipes(@NotNull RecipeOutput c) {
