@@ -67,6 +67,10 @@ public class AAELivingEntityEvents {
             if (absorbed > 0) {
                 event.setAmount(Math.max(0, event.getAmount() - absorbed));
             }
+
+            if (event.getAmount() < 1) {
+                event.setCanceled(true);
+            }
         }
     }
 
