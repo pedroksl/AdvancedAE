@@ -2,6 +2,8 @@ package net.pedroksl.advanced_ae.common.helpers;
 
 import java.util.Set;
 
+import appeng.api.AECapabilities;
+import appeng.api.storage.MEStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -16,6 +18,7 @@ import appeng.parts.automation.HandlerStrategy;
 public class SimulatedStorageImportStrategy<T, S> {
 
     private final BlockCapabilityCache<T, Direction> cache;
+    private final BlockCapabilityCache<MEStorage, Direction> meCache;
     private final HandlerStrategy<T, S> conversion;
 
     public SimulatedStorageImportStrategy(
@@ -25,12 +28,22 @@ public class SimulatedStorageImportStrategy<T, S> {
             BlockPos fromPos,
             Direction fromSide) {
         this.cache = BlockCapabilityCache.create(capability, level, fromPos, fromSide);
+        this.meCache = BlockCapabilityCache.create(AECapabilities.ME_STORAGE, level, fromPos, fromSide);
         this.conversion = conversion;
     }
 
     public long simulateTransfer(AEKey what, long toImport, IActionSource src) {
         if (what.getType() != conversion.getKeyType()) {
             return 0;
+        }
+
+        // Try internal capability first
+        var meHandler = meCache.getCapability();
+        if (meHandler != null) {
+            var keys = meHandler.getAvailableStacks();
+            if (keys.get(what) > 0) {
+                return keys.get(what);
+            }
         }
 
         var adjacentHandler = cache.getCapability();
