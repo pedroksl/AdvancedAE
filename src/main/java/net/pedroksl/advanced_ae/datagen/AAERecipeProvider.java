@@ -243,7 +243,7 @@ public class AAERecipeProvider extends RecipeProvider {
         // Fluids
         ReactionChamberRecipeBuilder.react(AAEFluids.QUANTUM_INFUSION.source(), 1000, 20000)
                 .input(AAEItems.QUANTUM_INFUSED_DUST)
-                .fluid(Fluids.WATER, 5000)
+                .fluid(Fluids.WATER, 4000)
                 .save(c, "quantum_infusion");
 
         // Quantum Computer
