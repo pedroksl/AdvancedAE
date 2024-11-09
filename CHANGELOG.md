@@ -1,0 +1,6 @@
+- Removed Hurt Sound when wearing quantum armor fow low damage value
+- Reduced Quantum Infusion water cost to 4B instead of 5B
+- Quantum Armor now makes piglins neutral to the wearer
+- Added recipes to reset NBT data on Quantum Armor (Installed Upgrades will be voided)
+- Fixed Quantum Crafter ignoring internal inventory when trying to limit crafting output
+- Fixed Stock Export Bus being unable to work properly with ME Chests
