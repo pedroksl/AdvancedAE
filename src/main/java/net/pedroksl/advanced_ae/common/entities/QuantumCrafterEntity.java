@@ -531,17 +531,19 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             if (job.isInputConsumed(input)) {
                 toReturn -= (required * completeRecipes);
             }
-            var successfulReturn = StorageHelper.poweredInsert(
-                    energy, storage.getInventory(), extractedItems.get(x).what(), toReturn, this.mySrc);
+            var successfulReturn = storage.getInventory()
+                    .insert(extractedItems.get(x).what(), toReturn, Actionable.MODULATE, this.mySrc);
 
             // Failed to add to ME System, try to return items to output Inventory
             if (successfulReturn < toReturn) {
-                var stack = ((AEItemKey) input.what()).toStack();
-                stack.setCount(Math.max(0, (int) (toReturn - successfulReturn)));
-                for (var y = 0; y < this.outputInv.size(); y++) {
-                    stack = this.outputInv.insertItem(y, stack, Actionable.MODULATE.isSimulate());
-                    if (stack.isEmpty()) {
-                        break;
+                if (input.what() instanceof AEItemKey) {
+                    var stack = ((AEItemKey) input.what()).toStack();
+                    stack.setCount(Math.max(0, (int) (toReturn - successfulReturn)));
+                    for (var y = 0; y < this.outputInv.size(); y++) {
+                        stack = this.outputInv.insertItem(y, stack, Actionable.MODULATE.isSimulate());
+                        if (stack.isEmpty()) {
+                            break;
+                        }
                     }
                 }
             }
