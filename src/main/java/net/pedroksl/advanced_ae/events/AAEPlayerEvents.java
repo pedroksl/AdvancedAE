@@ -161,7 +161,7 @@ public class AAEPlayerEvents {
                         stack.set(AAEComponents.NIGHT_VISION_ACTIVATED, true);
                         serverPlayer.addEffect(
                                 new MobEffectInstance(MobEffects.NIGHT_VISION, 210, 0, false, false, false));
-                        helmet.consumeEnergy(stack, UpgradeType.NIGHT_VISION);
+                        helmet.consumeEnergy(player, stack, UpgradeType.NIGHT_VISION);
                     }
                 }
             }
@@ -183,7 +183,7 @@ public class AAEPlayerEvents {
                                             AAEComponents.UPGRADE_VALUE.get(UpgradeType.FLIGHT_DRIFT), 100)
                                     / 100f;
                             player.setDeltaMovement(motion.x * value, motion.y, motion.z * value);
-                            boots.consumeEnergy(bootStack, UpgradeType.FLIGHT_DRIFT);
+                            boots.consumeEnergy(player, bootStack, UpgradeType.FLIGHT_DRIFT);
                         }
                     }
                 }

@@ -35,7 +35,7 @@ public class AAELivingEntityEvents {
                         || event.getSource().is(DamageTypes.ON_FIRE)) {
                     player.setRemainingFireTicks(0);
                     event.setInvulnerable(true);
-                    item.consumeEnergy(chestStack, UpgradeType.LAVA_IMMUNITY);
+                    item.consumeEnergy(player, chestStack, UpgradeType.LAVA_IMMUNITY);
                 }
             }
             ItemStack bootStack = player.getItemBySlot(EquipmentSlot.FEET);
@@ -45,7 +45,7 @@ public class AAELivingEntityEvents {
                 var chance = randomGenerator.nextDouble(100);
                 if (chance < AAEConfig.instance().getEvasionChance()) {
                     event.setInvulnerable(true);
-                    item.consumeEnergy(bootStack, UpgradeType.EVASION);
+                    item.consumeEnergy(player, bootStack, UpgradeType.EVASION);
                 }
             }
         }
@@ -82,7 +82,7 @@ public class AAELivingEntityEvents {
             if (stack.getItem() instanceof QuantumArmorBase item
                     && item.isUpgradeEnabledAndPowered(stack, UpgradeType.WATER_BREATHING, level)) {
                 event.setCanBreathe(true);
-                item.consumeEnergy(stack, UpgradeType.WATER_BREATHING);
+                item.consumeEnergy(player, stack, UpgradeType.WATER_BREATHING);
             }
         }
     }
@@ -95,7 +95,7 @@ public class AAELivingEntityEvents {
             if (stack.getItem() instanceof QuantumArmorBase item
                     && item.isUpgradeEnabledAndPowered(stack, UpgradeType.JUMP_HEIGHT, level)) {
                 UpgradeType.JUMP_HEIGHT.ability.execute(player.level(), player, stack);
-                item.consumeEnergy(stack, UpgradeType.JUMP_HEIGHT);
+                item.consumeEnergy(player, stack, UpgradeType.JUMP_HEIGHT);
             }
         }
     }
