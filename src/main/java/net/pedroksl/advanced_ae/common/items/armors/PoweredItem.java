@@ -6,10 +6,7 @@ import java.util.function.DoubleSupplier;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -27,6 +24,14 @@ public class PoweredItem extends ArmorItem implements IAEItemPowerStorage {
     public PoweredItem(Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
         super(material, type, properties);
         this.powerCapacity = powerCapacity;
+    }
+
+    public void addToMainCreativeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        output.accept(this);
+
+        var charged = new ItemStack(this, 1);
+        injectAEPower(charged, getAEMaxPower(charged), Actionable.MODULATE);
+        output.accept(charged);
     }
 
     @OnlyIn(Dist.CLIENT)

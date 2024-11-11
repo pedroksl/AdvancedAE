@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.items.armors.PoweredItem;
 
 import appeng.block.AEBaseBlock;
 import appeng.block.AEBaseBlockItem;
@@ -42,6 +43,8 @@ public final class AAECreativeTab {
                 baseBlock.addToMainCreativeTab(params, output);
             } else if (item instanceof AEBaseItem baseItem) {
                 baseItem.addToMainCreativeTab(params, output);
+            } else if (item instanceof PoweredItem poweredItem) {
+                poweredItem.addToMainCreativeTab(params, output);
             } else {
                 output.accept(itemDef);
             }
