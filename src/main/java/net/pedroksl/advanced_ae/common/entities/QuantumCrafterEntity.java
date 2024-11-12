@@ -82,6 +82,8 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     private static final int MAX_CRAFT_AMOUNT = 1024;
     private static final int MAX_OUTPUT_INV_SIZE = 1024;
 
+    public static final String NBT_SEND_LIST = "sendList";
+
     private final IUpgradeInventory upgrades;
     private final IConfigManager configManager;
 
@@ -99,6 +101,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     private boolean working = false;
     private YesNo lastRedstoneState;
 
+    private final List<GenericStack> sendList = new ArrayList<>();
     private final IActionSource mySrc;
     private boolean isActive = false;
 
@@ -243,6 +246,8 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     private boolean hasAutoExportWork() {
+        if (!this.sendList.isEmpty()) return true;
+
         for (var x = 0; x < this.outputInv.size(); x++) {
             if (!this.outputInv.getStackInSlot(x).isEmpty()) {
                 return true;
@@ -534,18 +539,9 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             var successfulReturn = storage.getInventory()
                     .insert(extractedItems.get(x).what(), toReturn, Actionable.MODULATE, this.mySrc);
 
-            // Failed to add to ME System, try to return items to output Inventory
+            // Failed to add to ME System, add to send list to try again later
             if (successfulReturn < toReturn) {
-                if (input.what() instanceof AEItemKey) {
-                    var stack = ((AEItemKey) input.what()).toStack();
-                    stack.setCount(Math.max(0, (int) (toReturn - successfulReturn)));
-                    for (var y = 0; y < this.outputInv.size(); y++) {
-                        stack = this.outputInv.insertItem(y, stack, Actionable.MODULATE.isSimulate());
-                        if (stack.isEmpty()) {
-                            break;
-                        }
-                    }
-                }
+                this.sendList.add(new GenericStack(input.what(), toReturn - successfulReturn));
             }
         }
     }
@@ -559,16 +555,53 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
     }
 
+    private void addToSendList(AEKey what, long amount) {
+        if (amount > 0) {
+            this.sendList.add(new GenericStack(what, amount));
+
+            this.getMainNode().ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
+        }
+    }
+
     private boolean pushOutResult() {
         if (!this.hasAutoExportWork()) {
             return false;
         }
 
-        if (isExportToMe()) {
-            return exportToMe();
-        } else {
-            return exportToAdjacentBlocks();
+        boolean didSomething = false;
+        if (!this.sendList.isEmpty()) {
+            didSomething = exportSendList();
         }
+
+        if (isExportToMe()) {
+            return didSomething || exportToMe();
+        } else {
+            return didSomething || exportToAdjacentBlocks();
+        }
+    }
+
+    private boolean exportSendList() {
+        if (this.getGridNode() == null) return false;
+
+        var grid = this.getGridNode().getGrid();
+        var storage = grid.getStorageService();
+
+        boolean didSomething = false;
+        for (var it = sendList.listIterator(); it.hasNext(); ) {
+            var stack = it.next();
+            var what = stack.what();
+            long amount = stack.amount();
+
+            var inserted = storage.getInventory().insert(what, amount, Actionable.MODULATE, this.mySrc);
+            if (inserted >= amount) {
+                it.remove();
+                didSomething = true;
+            } else if (inserted > 0) {
+                it.set(new GenericStack(what, amount - inserted));
+                didSomething = true;
+            }
+        }
+        return didSomething;
     }
 
     private boolean exportToMe() {
@@ -678,6 +711,12 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
         this.upgrades.writeToNBT(data, "upgrades", registries);
         this.configManager.writeToNBT(data, registries);
+
+        ListTag sendListTag = new ListTag();
+        for (var toSend : this.sendList) {
+            sendListTag.add(GenericStack.writeTag(registries, toSend));
+        }
+        data.put(NBT_SEND_LIST, sendListTag);
     }
 
     @Override
@@ -706,6 +745,14 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
         this.upgrades.readFromNBT(data, "upgrades", registries);
         this.configManager.readFromNBT(data, registries);
+
+        var sendListTag = data.getList(NBT_SEND_LIST, Tag.TAG_COMPOUND);
+        for (int i = 0; i < sendListTag.size(); ++i) {
+            var stack = GenericStack.readTag(registries, sendListTag.getCompound(i));
+            if (stack != null) {
+                this.addToSendList(stack.what(), stack.amount());
+            }
+        }
     }
 
     public ListTag makeJobsTag(HolderLookup.Provider registries) {
