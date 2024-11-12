@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.events;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -67,6 +68,7 @@ public class AAEPlayerEvents {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void BreakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
@@ -75,8 +77,17 @@ public class AAEPlayerEvents {
             if (armor.getItem() instanceof QuantumChestplate) {
                 event.setNewSpeed(event.getOriginalSpeed() * 5);
             }
-        } else if (player.isInWaterOrBubble()) {
-            event.setNewSpeed(event.getOriginalSpeed() * 5);
+        } else if (player.isEyeInFluid(FluidTags.WATER)) {
+            ItemStack armor = player.getItemBySlot(EquipmentSlot.CHEST);
+            if (armor.getItem() instanceof QuantumChestplate) {
+                var att = player.getAttribute(Attributes.SUBMERGED_MINING_SPEED);
+                if (att != null) {
+                    var value = (float) att.getValue();
+                    if (value < 1) {
+                        event.setNewSpeed(event.getOriginalSpeed() / value);
+                    }
+                }
+            }
         }
     }
 

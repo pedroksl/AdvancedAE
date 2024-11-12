@@ -25,7 +25,7 @@ public class QuantumAlloy {
                 SoundEvents.ARMOR_EQUIP_NETHERITE,
                 () -> Ingredient.of(AAEItems.QUANTUM_ALLOY),
                 List.of(new ArmorMaterial.Layer(AdvancedAE.makeId("quantum_alloy"), "", true)),
-                3.0F,
+                10.0F,
                 0.25F);
     }
 }
