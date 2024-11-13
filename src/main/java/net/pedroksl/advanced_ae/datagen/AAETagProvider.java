@@ -102,7 +102,6 @@ public class AAETagProvider {
                             AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
 
             tag(AAEConventionTags.ENCODER_CURIO).add(AAEItems.ADV_PATTERN_ENCODER.asItem());
-            tag(ConventionTags.INSCRIBER_PRESSES).add(AAEItems.QUANTUM_PROCESSOR_PRESS.asItem());
 
             tag(Tags.Items.INGOTS).add(AAEItems.QUANTUM_ALLOY.asItem());
 
