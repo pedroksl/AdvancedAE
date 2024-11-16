@@ -51,7 +51,7 @@ public final class ReactionChamberRecipes {
                 if (input instanceof IngredientStack.Fluid fluidIn) {
                     if (fluid != null && fluid.what() instanceof AEFluidKey key) {
                         FluidStack fluidStack = key.toStack((int) fluid.amount());
-                        if (fluidIn.getIngredient().test(fluidStack)) {
+                        if (fluidIn.getIngredient().test(fluidStack) && input.getAmount() <= fluid.amount()) {
                             found = true;
                         }
                     }
