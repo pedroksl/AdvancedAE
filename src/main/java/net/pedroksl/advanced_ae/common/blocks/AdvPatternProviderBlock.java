@@ -90,7 +90,7 @@ public class AdvPatternProviderBlock extends AEBaseEntityBlock<AdvPatternProvide
             return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return super.useItemOn(heldItem, state, level, pos, player, hand, hit);
     }
 
     public void setSide(Level level, BlockPos pos, Direction facing) {
