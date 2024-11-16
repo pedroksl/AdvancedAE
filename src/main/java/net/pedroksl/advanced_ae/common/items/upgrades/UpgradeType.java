@@ -226,7 +226,7 @@ public enum UpgradeType {
             case FLIGHT_DRIFT -> AAEText.FlightDriftTooltip.text();
             case CHARGING -> AAEText.RechargingTooltip.text();
             case WORKBENCH -> AAEText.PortableWorkbenchTooltip.text();
-            case PICK_CRAFT -> AAEText.PortableWorkbenchTooltip.text();
+            case PICK_CRAFT -> AAEText.PickCraftTooltip.text();
                 //            case HUD -> AAEText.PortableWorkbenchTooltip.text();
         };
     }
