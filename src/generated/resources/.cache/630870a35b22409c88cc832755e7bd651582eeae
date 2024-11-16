@@ -1,10 +1,11 @@
-// 1.21.1	2024-11-16T14:26:47.5067867	Tags (Item)
+// 1.21.1	2024-11-16T15:20:22.0667626	Tags (Item)
 93c314f395bf189b2a44d6db9a54a13fba8818c4 data/advanced_ae/tags/item/adv_pattern_provider.json
 93c314f395bf189b2a44d6db9a54a13fba8818c4 data/ae2/tags/item/pattern_provider.json
 1fd89e4e2f19aa45e536dc325c5c34a0e332ef3e data/curios/tags/item/adv_pattern_encoder.json
 48bf4b15546f45aca3ebda8062e12836eecfa56e data/c/tags/item/armors.json
 a1c09a962a97afdc0d94b35c52f88c3337b10e64 data/c/tags/item/buckets.json
 8bccf5f8409a6731d8c0cf6dc162a2414324b4ca data/c/tags/item/ingots.json
+7e5e537211927dcfbc42d19ce9a043a6e9d1d81a data/c/tags/item/tools/wrench.json
 3df8a19e360d724d833ce526d6f633b85626f8c2 data/minecraft/tags/item/chest_armor.json
 648269cab19570b7da5abbcec81bcc1efb1a7138 data/minecraft/tags/item/foot_armor.json
 3c53ce226c427db6350f01bca3a59e3ebe31ef69 data/minecraft/tags/item/head_armor.json
