@@ -22,6 +22,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -40,6 +41,8 @@ import appeng.core.localization.GuiText;
 import appeng.core.localization.Tooltips;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.ItemMenuHostLocator;
+
+import dev.shadowsoffire.apothic_enchanting.Ench;
 
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -146,6 +149,15 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     protected boolean checkPreconditions(ItemStack item) {
         return !item.isEmpty() && item.getItem() == this;
+    }
+
+    @Override
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        if (enchantment.is(Ench.Enchantments.STABLE_FOOTING)) {
+            return false;
+        }
+
+        return super.supportsEnchantment(stack, enchantment);
     }
 
     public boolean openFromEquipmentSlot(Player player, ItemMenuHostLocator locator) {
