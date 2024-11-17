@@ -224,7 +224,7 @@ public class UpgradeCards {
                                             amountDelta,
                                             Actionable.MODULATE,
                                             IActionSource.ofPlayer(player));
-                            ItemStack stackToInsert = itemKey.toStack((int)extracted);
+                            ItemStack stackToInsert = itemKey.toStack((int) extracted);
                             player.addItem(stackToInsert);
                             storage.getInventory()
                                     .insert(

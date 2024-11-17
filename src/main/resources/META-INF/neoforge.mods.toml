@@ -8,8 +8,8 @@ license="${mod_license}"
     authors="${mod_authors}"
     description='''${mod_description}'''
     issueTrackerURL="https://github.com/pedroksl/AdvancedAE/issues"
-    displayURL="https://github.com/pedroksl/AdvanceddAE"
-    credits="Sea_Kerman for models"
+    displayURL="https://github.com/pedroksl/AdvancedAE"
+    credits="Ridanisaurus Rid for texture style, Jm³ and Sea_Kerman for models"
     logoFile="logo.png"
 
 [[mixins]]
