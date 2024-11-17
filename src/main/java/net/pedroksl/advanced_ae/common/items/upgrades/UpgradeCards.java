@@ -203,6 +203,7 @@ public class UpgradeCards {
                 var filter = stack.getOrDefault(
                         AAEComponents.UPGRADE_FILTER.get(UpgradeType.AUTO_STOCK), new ArrayList<GenericStack>());
                 boolean didSomething = false;
+                var inventory = storage.getInventory().getAvailableStacks();
                 for (var genStack : filter) {
                     if (genStack.what() instanceof AEItemKey itemKey) {
                         var desiredAmount = genStack.amount();
@@ -216,14 +217,14 @@ public class UpgradeCards {
                             }
                         }
                         var amountDelta = desiredAmount - currentAmount;
-                        if (amountDelta > 0) {
+                        if (amountDelta > 0 && inventory.get(itemKey) > 0) {
                             long extracted = storage.getInventory()
                                     .extract(
                                             genStack.what(),
                                             amountDelta,
                                             Actionable.MODULATE,
                                             IActionSource.ofPlayer(player));
-                            ItemStack stackToInsert = new ItemStack(itemKey.getItem(), (int) extracted);
+                            ItemStack stackToInsert = itemKey.toStack((int)extracted);
                             player.addItem(stackToInsert);
                             storage.getInventory()
                                     .insert(
@@ -231,6 +232,7 @@ public class UpgradeCards {
                                             stackToInsert.getCount(),
                                             Actionable.MODULATE,
                                             IActionSource.ofPlayer(player));
+
                             didSomething |= extracted > 0;
                         } else if (amountDelta < 0) {
                             amountDelta = -amountDelta;
@@ -242,9 +244,10 @@ public class UpgradeCards {
                                             IActionSource.ofPlayer(player));
                             var amountToLeave = (int) desiredAmount + (int) (amountDelta - inserted);
                             for (var slot : slots) {
-                                var item = player.getInventory().getItem(slot);
+                                var item = player.getInventory().getItem(slot).copy();
                                 var amountToSet = Math.max(0, Math.min(item.getCount(), amountToLeave));
-                                player.getInventory().setItem(slot, new ItemStack(item.getItem(), amountToSet));
+                                item.setCount(amountToSet);
+                                player.getInventory().setItem(slot, item);
                                 amountToLeave = Math.max(0, amountToLeave - amountToSet);
                             }
                             didSomething |= inserted > 0;
