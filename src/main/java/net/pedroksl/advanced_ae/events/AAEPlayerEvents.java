@@ -24,6 +24,8 @@ import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.packet.KeysPressedPacket;
+import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.apoth.ApoEnchPlugin;
 
 public class AAEPlayerEvents {
     public static final AttributeModifier flight =
@@ -73,11 +75,13 @@ public class AAEPlayerEvents {
     public static void BreakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
         if (!player.onGround()) {
-            ItemStack armor = player.getItemBySlot(EquipmentSlot.CHEST);
-            if (armor.getItem() instanceof QuantumChestplate) {
-                // Attempt at avoiding overflows
-                var newValue = Math.max(event.getOriginalSpeed(), event.getOriginalSpeed() * 5);
-                event.setNewSpeed(newValue);
+            if (!Addons.APOTHIC_ENCHANTING.isLoaded()
+                    || !ApoEnchPlugin.checkForEnchant(player, ApoEnchPlugin.Enchantment.STABLE_FOOTING)) {
+                ItemStack armor = player.getItemBySlot(EquipmentSlot.CHEST);
+                if (armor.getItem() instanceof QuantumChestplate) {
+                    var newValue = Math.max(event.getOriginalSpeed(), event.getOriginalSpeed() * 5);
+                    event.setNewSpeed(newValue);
+                }
             }
         } else if (player.isEyeInFluid(FluidTags.WATER)) {
             ItemStack armor = player.getItemBySlot(EquipmentSlot.CHEST);

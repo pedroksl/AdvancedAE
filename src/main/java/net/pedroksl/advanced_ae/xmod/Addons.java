@@ -13,7 +13,8 @@ public enum Addons {
     MEGACELLS("MEGACells"),
     MEKANISM("Mekanism"),
     IRIS("Iris"),
-    CURIOS("Curios");
+    CURIOS("Curios"),
+    APOTHIC_ENCHANTING("Apothic Enchanting");
 
     private final String modName;
 
