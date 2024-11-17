@@ -34,6 +34,8 @@ import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.apoth.ApoEnchPlugin;
 
 import appeng.api.implementations.menuobjects.IMenuItem;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
@@ -41,8 +43,6 @@ import appeng.core.localization.GuiText;
 import appeng.core.localization.Tooltips;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.ItemMenuHostLocator;
-
-import dev.shadowsoffire.apothic_enchanting.Ench;
 
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -153,7 +153,11 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     @Override
     public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
-        if (enchantment.is(Ench.Enchantments.STABLE_FOOTING)) {
+        if (Addons.APOTHIC_ENCHANTING.isLoaded()
+                && enchantment
+                        .value()
+                        .effects()
+                        .has(ApoEnchPlugin.getEnchantment(ApoEnchPlugin.Enchantment.STABLE_FOOTING))) {
             return false;
         }
 
