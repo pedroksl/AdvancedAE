@@ -1,1 +1,13 @@
-- Fixed Quantum Crafter crashing the game if unable to push fluids back to AE2
+- Added charged versions of the quantum armor items to creative tab
+- Fixed equip sound being played when opening inventory in creative mode
+- Updated quantum armor toughness
+- Added an additional measure to prevent the quantum crafter from voiding unused inputs
+- Removed press tag from the quantum press (to remove it from meteor chests)
+- Safety check on break speed to prevent overflows
+- Fixed memory card not working on advanced pattern providers to copy patterns
+- Fixed Pick Craft Card tooltip
+- Added the wrench tag to the Throughput Monitor Configurator
+- Implemented bucket use interaction with the reaction chamber
+- Fixed reaction chamber ignoring fluid amounts when checking for valid recipes (could lead to less fluid usage then intended)
+- Blocked Stable Footing enchant for Quantum Armor
+- Fixed Stable Footing enchant with Quantum Chestplate equipped making mining faster when flying than on the ground
