@@ -107,7 +107,7 @@ public class PickCraftMenuHost<T extends QuantumArmorBase> extends ItemMenuHost<
             var offZ = dc.getPos().getZ() - this.getPlayer().getZ();
 
             double r = offX * offX + offY * offY + offZ * offZ;
-            if (r < rangeLimit && wap.isActive()) {
+            if (wap.isActive()) {
                 return new AccessPointSignal(r, rangeLimit - r);
             }
         }
