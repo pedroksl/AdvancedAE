@@ -63,19 +63,23 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
     public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
         this.menu.slots.removeIf(slot -> slot instanceof FakeSlot);
         this.rows.forEach(row -> {
-            if (!this.renderables.contains(row.textField)) {
-                this.addRenderableWidget(row.textField);
+            if (row != null) {
+                if (!this.renderables.contains(row.textField)) {
+                    this.addRenderableWidget(row.textField);
+                }
+                if (!this.renderables.contains(row.button)) {
+                    this.addRenderableOnly(row.button);
+                }
+                row.textField.setVisible(false);
             }
-            if (!this.renderables.contains(row.button)) {
-                this.addRenderableOnly(row.button);
-            }
-            row.textField.setVisible(false);
         });
-        if (!this.renderables.contains(this.outputRow.textField)) {
-            this.addRenderableWidget(this.outputRow.textField);
-        }
-        if (!this.renderables.contains(outputRow.button)) {
-            this.addRenderableOnly(outputRow.button);
+        if (this.outputRow != null) {
+            if (!this.renderables.contains(this.outputRow.textField)) {
+                this.addRenderableWidget(this.outputRow.textField);
+            }
+            if (!this.renderables.contains(outputRow.button)) {
+                this.addRenderableOnly(outputRow.button);
+            }
         }
 
         final int scrollLevel = scrollbar.getCurrentScroll();
