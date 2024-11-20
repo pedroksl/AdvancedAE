@@ -71,6 +71,8 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
     }
 
     private boolean typeFilter(AEKey aeKey) {
+        if (inv.keySet().contains(aeKey)) return false;
+
         if (upgradeType == UpgradeType.AUTO_FEED) {
             if (aeKey instanceof AEItemKey key) {
                 return key.toStack().has(DataComponents.FOOD);
