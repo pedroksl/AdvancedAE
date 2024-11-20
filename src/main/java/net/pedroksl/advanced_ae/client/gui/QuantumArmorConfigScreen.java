@@ -168,6 +168,9 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
     public void refreshList(int selectedIndex, ItemStack stack) {
         this.selectedIndex = selectedIndex;
+
+        getPlayer().setItemSlot(((QuantumArmorBase) stack.getItem()).getEquipmentSlot(), stack);
+
         this.refreshList(stack, false);
     }
 
