@@ -1,4 +1,4 @@
-// 1.20.1	2024-08-31T13:41:39.9654301	vanilla/Recipes
+// 1.20.1	2024-11-21T20:51:54.7962426	vanilla/Recipes
 4ea5013db278d6d496744be7ac909e286175ad7a data/advanced_ae/advancements/recipes/misc/quantumdataentangler.json
 3b8dfbce89529cac0e81c8a740b13866f38f554b data/advanced_ae/advancements/recipes/misc/quantummultithreader.json
 74e7dcd420d1fac44cf08a6eb8f6671293641347 data/advanced_ae/recipes/quantumdataentangler.json
@@ -13,13 +13,15 @@ b83ecbc2896068e24f232b61efa7d58644133aa4 data/minecraft/advancements/recipes/mis
 863892656eff6565c7933fe1252c73b1fbc87389 data/minecraft/advancements/recipes/misc/quantumstorage256.json
 6fc782fafcb23e1f46082ea0e5e68847d1932b3c data/minecraft/advancements/recipes/misc/quantumstructure.json
 2d1ff60f1c6067e275186a9c1cef2f7d0d080dbf data/minecraft/advancements/recipes/misc/quantumunit.json
+1b3cba9d322002b6601f956a682e19b82d2f64a9 data/minecraft/advancements/recipes/misc/shattered_singularity.json
 b3a47b138042a4d73076961d71947c4da99c5250 data/minecraft/recipes/advpartenc.json
 7a15131ab843d734cb112c8cb4eb6d96e2ca6c03 data/minecraft/recipes/advpatpro.json
 b0fd20011fe81b6f7deaf29f0917d02bfbf2e5e5 data/minecraft/recipes/advpatpro2.json
 84e736a93de62669b04a493788861d48dc2b18f8 data/minecraft/recipes/advpatpropart.json
-4a654ce7d383dea240ac4c6dc66eac3368126d3d data/minecraft/recipes/quantumaccel.json
-5f90c9f137ffbd9baa5a53a962b62dcd56d05d1a data/minecraft/recipes/quantumcore.json
-4acf4e29344a5a2f2a1391dd686ae4af413d9631 data/minecraft/recipes/quantumstorage128.json
-8bc6babd2f31217b2b7b4f211fb0e6e99e22164b data/minecraft/recipes/quantumstorage256.json
+b31b354e6bb39f26a27705fa113eeae44fef194e data/minecraft/recipes/quantumaccel.json
+adce727b95d58368612b40a457c28c1e9ad53a09 data/minecraft/recipes/quantumcore.json
+875f487b9ab5173fbc7ac0d2a87366d8c6c80dbe data/minecraft/recipes/quantumstorage128.json
+cbe4366974039e252a688d4139d481751ec6ba4b data/minecraft/recipes/quantumstorage256.json
 7baef7a0ea37955706c69a5567543b5ab220a0dc data/minecraft/recipes/quantumstructure.json
 13e83c8d8ae43c20dc3c24bb1179432c96ca23e5 data/minecraft/recipes/quantumunit.json
+97524e6c1de0ff1ed4625422fa1b438dcea290e2 data/minecraft/recipes/shattered_singularity.json

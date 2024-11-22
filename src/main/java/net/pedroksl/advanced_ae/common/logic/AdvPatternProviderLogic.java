@@ -452,7 +452,11 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 			}
 		}
 		patternDetails.pushInputsToExternalInventory(inputHolder, (what, amount) -> {
-			var inserted = adapterMap.get(what).insert(what, amount, Actionable.MODULATE);
+			var target = adapterMap.get(what);
+			var inserted = 0L;
+			if (target != null) {
+				inserted = adapterMap.get(what).insert(what, amount, Actionable.MODULATE);
+			}
 			if (inserted < amount) {
 				this.addToSendList(what, amount - inserted);
 			}
@@ -715,6 +719,10 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 					: playerInv.countItem(AEItems.BLANK_PATTERN.asItem());
 			var blankPatternsUsed = 0;
 			for (int i = 0; i < desiredPatterns.size(); i++) {
+				if (desiredPatterns.getStackInSlot(i).isEmpty()) {
+					continue;
+				}
+
 				// Don't restore junk
 				var pattern = PatternDetailsHelper.decodePattern(desiredPatterns.getStackInSlot(i),
 						host.getBlockEntity().getLevel(), true);

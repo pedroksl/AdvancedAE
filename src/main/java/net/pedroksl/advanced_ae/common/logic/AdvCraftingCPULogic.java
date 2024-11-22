@@ -23,6 +23,7 @@ import appeng.crafting.inv.ListCraftingInventory;
 import appeng.hooks.ticking.TickHandler;
 import appeng.me.service.CraftingService;
 import com.google.common.base.Preconditions;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -302,7 +303,9 @@ public class AdvCraftingCPULogic {
         // TODO: log
 
         // Clear waitingFor list and post all the relevant changes.
-        job.waitingFor.clear();
+        if (!success) {
+            job.waitingFor.clear();
+        }
         // Notify opened menus of cancelled scheduled tasks.
         for (var entry : job.tasks.entrySet()) {
             for (var output : entry.getKey().getOutputs()) {
@@ -494,13 +497,12 @@ public class AdvCraftingCPULogic {
         var connectedPlayer = IPlayerRegistry.getConnected(server, playerId);
         if (connectedPlayer != null) {
             var jobId = job.link.getCraftingID();
-            NetworkHandler.instance().sendTo(
-                    new CraftingJobStatusPacket(
-                            jobId,
-                            job.finalOutput.what(),
-                            job.finalOutput.amount(),
-                            job.remainingAmount,
-                            status),
+            NetworkHandler.instance().sendTo(new CraftingJobStatusPacket(
+                        jobId,
+                        job.finalOutput.what(),
+                        job.finalOutput.amount(),
+                        job.remainingAmount,
+                        status),
                     connectedPlayer);
         }
     }

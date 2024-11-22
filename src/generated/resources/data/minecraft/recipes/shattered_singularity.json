@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "ae2:sky_dust"
+    },
+    "E": {
+      "tag": "forge:dusts/ender_pearl"
+    },
+    "S": {
+      "item": "ae2:singularity"
+    }
+  },
+  "pattern": [
+    "DED",
+    "ESE",
+    "DED"
+  ],
+  "result": {
+    "item": "advanced_ae:shattered_singularity"
+  },
+  "show_notification": true
+}

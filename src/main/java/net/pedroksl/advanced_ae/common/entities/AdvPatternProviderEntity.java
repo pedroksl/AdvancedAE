@@ -51,12 +51,11 @@ public class AdvPatternProviderEntity extends AENetworkBlockEntity implements Ad
 
 	@Override
 	public void onMainNodeStateChanged(IGridNodeListener.State reason) {
+		this.logic.onMainNodeStateChanged();
 		this.updateState();
 	}
 
 	public void updateState() {
-		this.logic.onMainNodeStateChanged();
-
 		if (!this.getMainNode().isReady()) {
 			return;
 		}

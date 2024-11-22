@@ -10,6 +10,7 @@ import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContain
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderGui;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderGui;
+import net.pedroksl.advanced_ae.gui.quantumcomputer.QuantumComputerMenu;
 
 public class AAEClientRegistryHandler {
 	public static final net.pedroksl.advanced_ae.client.AAEClientRegistryHandler INSTANCE = new net.pedroksl.advanced_ae.client.AAEClientRegistryHandler();
@@ -22,6 +23,7 @@ public class AAEClientRegistryHandler {
 		InitScreens.register(AdvPatternProviderContainer.TYPE, AdvPatternProviderGui::new, "/screens/adv_pattern_provider.json");
 		InitScreens.register(AdvPatternEncoderContainer.TYPE, AdvPatternEncoderGui::new, "/screens" +
 				"/adv_pattern_encoder.json");
+		InitScreens.register(QuantumComputerMenu.TYPE, QuantumComputerScreen::new, "/screens/quantum_computer.json");
 	}
 
 	@SubscribeEvent

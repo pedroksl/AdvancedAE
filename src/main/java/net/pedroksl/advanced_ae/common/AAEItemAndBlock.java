@@ -28,6 +28,8 @@ public class AAEItemAndBlock {
 	public static AdvProcessingPatternItem ADV_PROCESSING_PATTERN;
 	public static AdvPatternEncoderItem ADV_PATTERN_ENCODER;
 
+	public static Item SHATTERED_SINGULARITY;
+
 	public static void init(AAERegistryHandler handler) {
 		QUANTUM_UNIT = new AAECraftingUnitBlock(AAECraftingUnitType.QUANTUM_UNIT);
 		QUANTUM_CORE = new AAECraftingUnitBlock(AAECraftingUnitType.QUANTUM_CORE);
@@ -45,6 +47,7 @@ public class AAEItemAndBlock {
 		ADV_PROCESSING_PATTERN = new AdvProcessingPatternItem(new Item.Properties().stacksTo(1));
 		ADV_PATTERN_ENCODER = new AdvPatternEncoderItem();
 
+		SHATTERED_SINGULARITY = new Item(new Item.Properties());
 
 		handler.block("quantum_unit", QUANTUM_UNIT, AdvCraftingBlockEntity.class, AdvCraftingBlockEntity::new);
 		handler.block("quantum_core", QUANTUM_CORE, AdvCraftingBlockEntity.class, AdvCraftingBlockEntity::new);
@@ -61,5 +64,6 @@ public class AAEItemAndBlock {
 
 		handler.item("adv_processing_pattern", ADV_PROCESSING_PATTERN);
 		handler.item("adv_pattern_encoder", ADV_PATTERN_ENCODER);
+		handler.item("shattered_singularity", SHATTERED_SINGULARITY);
 	}
 }

@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.datagen;
 
 import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
+import appeng.datagen.providers.tags.ConventionTags;
 import com.glodblock.github.extendedae.common.EPPItemAndBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -49,6 +50,16 @@ public class AAERecipeProvider extends RecipeProvider {
 				.define('E', AEItems.ENGINEERING_PROCESSOR)
 				.unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
 				.save(consumer, "advpartenc");
+		ShapedRecipeBuilder
+				.shaped(RecipeCategory.MISC, AAEItemAndBlock.SHATTERED_SINGULARITY)
+				.pattern("DED")
+				.pattern("ESE")
+				.pattern("DED")
+				.define('S', AEItems.SINGULARITY)
+				.define('E', ConventionTags.ENDER_PEARL_DUST)
+				.define('D', AEItems.SKY_DUST)
+				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
+				.save(consumer, "shattered_singularity");
 
 		// Quantum Computer
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_STRUCTURE)
@@ -70,7 +81,7 @@ public class AAERecipeProvider extends RecipeProvider {
 				.pattern("ESE")
 				.pattern("SUS")
 				.pattern("ENE")
-				.define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+				.define('E', AAEItemAndBlock.SHATTERED_SINGULARITY)
 				.define('U', AAEItemAndBlock.QUANTUM_UNIT)
 				.define('S', AEItems.SINGULARITY)
 				.define('N', Items.NETHER_STAR)
@@ -80,13 +91,13 @@ public class AAERecipeProvider extends RecipeProvider {
 				.pattern("ECE")
 				.pattern("CUC")
 				.pattern("ECE")
-				.define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+				.define('E', AAEItemAndBlock.SHATTERED_SINGULARITY)
 				.define('C', AEItems.CELL_COMPONENT_256K)
 				.define('U', AAEItemAndBlock.QUANTUM_UNIT)
 				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
 				.save(consumer, "quantumstorage128");
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_STORAGE_256M)
-				.requires(AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+				.requires(AAEItemAndBlock.SHATTERED_SINGULARITY)
 				.requires(AAEItemAndBlock.QUANTUM_STORAGE_128M)
 				.requires(AAEItemAndBlock.QUANTUM_STORAGE_128M)
 				.requires(AAEItemAndBlock.QUANTUM_UNIT)
@@ -97,7 +108,7 @@ public class AAERecipeProvider extends RecipeProvider {
 				.pattern("AUT")
 				.pattern("SES")
 				.define('S', AEItems.SINGULARITY)
-				.define('E', AEItems.QUANTUM_ENTANGLED_SINGULARITY)
+				.define('E', AAEItemAndBlock.SHATTERED_SINGULARITY)
 				.define('U', AAEItemAndBlock.QUANTUM_UNIT)
 				.define('A', AAEItemAndBlock.QUANTUM_ACCELERATOR)
 				.define('T', AAEItemAndBlock.QUANTUM_STORAGE_256M)

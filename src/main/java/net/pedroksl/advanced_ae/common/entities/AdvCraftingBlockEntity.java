@@ -77,8 +77,8 @@ public class AdvCraftingBlockEntity extends AENetworkBlockEntity
         if (this.level == null || this.notLoaded() || this.isRemoved()) {
             return AAEItemAndBlock.QUANTUM_UNIT;
         }
-        return (AAEAbstractCraftingUnitBlock<?>)
-                this.level.getBlockState(this.worldPosition).getBlock();
+        var block = this.level.getBlockState(this.worldPosition).getBlock();
+        return block instanceof AAEAbstractCraftingUnitBlock ? (AAEAbstractCraftingUnitBlock<?>) block : AAEItemAndBlock.QUANTUM_UNIT;
     }
 
     public long getStorageBytes() {
@@ -133,9 +133,10 @@ public class AdvCraftingBlockEntity extends AENetworkBlockEntity
 
         // The block entity might try to update while being destroyed
         if (current.getBlock() instanceof AAEAbstractCraftingUnitBlock) {
-            int lightLevel = formed && power && this.getUnitBlock().type == AAECraftingUnitType.QUANTUM_CORE
+            int lightLevel = this.getUnitBlock().type == AAECraftingUnitType.QUANTUM_CORE
                     ? 10
                     : this.getUnitBlock().type == AAECraftingUnitType.STRUCTURE ? 5 : 0;
+            lightLevel = formed && power ? lightLevel : 0;
 
             final BlockState newState = current.setValue(AAEAbstractCraftingUnitBlock.POWERED, power)
                     .setValue(AAEAbstractCraftingUnitBlock.FORMED, formed)
