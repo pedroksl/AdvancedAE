@@ -26,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
@@ -48,10 +49,8 @@ public class AdvCraftingBlockEntity extends AENetworkBlockEntity
     private boolean isCoreBlock = false;
     private AdvCraftingCPUCluster cluster;
 
-    public AdvCraftingBlockEntity(BlockPos pos, BlockState blockState) {
-        super(GlodUtil.getTileType(AdvCraftingBlockEntity.class, AdvCraftingBlockEntity::new, AAEItemAndBlock.QUANTUM_UNIT),
-                pos
-                , blockState);
+    public AdvCraftingBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
+        super(blockEntityType, pos, blockState);
         this.getMainNode()
                 .setFlags(GridFlags.MULTIBLOCK, GridFlags.REQUIRE_CHANNEL)
                 .addService(IGridMultiblock.class, this::getMultiblockNodes);

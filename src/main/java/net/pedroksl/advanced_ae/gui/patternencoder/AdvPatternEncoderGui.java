@@ -39,7 +39,7 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 	private static final Rect2i HIGHLIGHT_BBOX = new Rect2i(0, 0, 15, 17);
 
 	private final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/adv_pattern_encoder.png");
-	private final ResourceLocation HIGHLIGHT_TEXTURE = AdvancedAE.id("textures/guis/selection_ring.png");
+	private final ResourceLocation HIGHLIGHT_TEXTURE = AdvancedAE.makeId("textures/guis/selection_ring.png");
 
 	private final Scrollbar scrollbar;
 	private HashMap<AEKey, Direction> inputList = new HashMap<>();
@@ -171,13 +171,13 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
 
 	private ResourceLocation getDirButtonTexture(int index) {
 		return switch (index) {
-			case 1 -> AdvancedAE.id("textures/guis/north_button.png");
-			case 2 -> AdvancedAE.id("textures/guis/east_button.png");
-			case 3 -> AdvancedAE.id("textures/guis/south_button.png");
-			case 4 -> AdvancedAE.id("textures/guis/west_button.png");
-			case 5 -> AdvancedAE.id("textures/guis/up_button.png");
-			case 6 -> AdvancedAE.id("textures/guis/down_button.png");
-			default -> AdvancedAE.id("textures/guis/any_button.png");
+			case 1 -> AdvancedAE.makeId("textures/guis/north_button.png");
+			case 2 -> AdvancedAE.makeId("textures/guis/east_button.png");
+			case 3 -> AdvancedAE.makeId("textures/guis/south_button.png");
+			case 4 -> AdvancedAE.makeId("textures/guis/west_button.png");
+			case 5 -> AdvancedAE.makeId("textures/guis/up_button.png");
+			case 6 -> AdvancedAE.makeId("textures/guis/down_button.png");
+			default -> AdvancedAE.makeId("textures/guis/any_button.png");
 		};
 	}
 

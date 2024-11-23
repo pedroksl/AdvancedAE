@@ -8,6 +8,11 @@ import appeng.blockentity.ClientTickingBlockEntity;
 import appeng.blockentity.ServerTickingBlockEntity;
 import appeng.core.AppEng;
 import appeng.items.AEBaseItem;
+import net.pedroksl.advanced_ae.gui.OutputDirectionMenu;
+import net.pedroksl.advanced_ae.gui.QuantumCrafterConfigPatternMenu;
+import net.pedroksl.advanced_ae.gui.QuantumCrafterMenu;
+import net.pedroksl.advanced_ae.gui.SetAmountMenu;
+import net.pedroksl.advanced_ae.gui.quantumcomputer.QuantumComputerMenu;
 import net.pedroksl.advanced_ae.xmod.appflux.AFCommonLoad;
 import com.glodblock.github.glodium.registry.RegistryHandler;
 import com.glodblock.github.glodium.util.GlodUtil;
@@ -64,6 +69,11 @@ public class AAERegistryHandler extends RegistryHandler {
 	private void onRegisterContainer() {
 		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_provider"), AdvPatternProviderContainer.TYPE);
 		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("adv_pattern_encoder"), AdvPatternEncoderContainer.TYPE);
+		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("quantum_computer"), QuantumComputerMenu.TYPE);
+		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("quantum_crafter"), QuantumCrafterMenu.TYPE);
+		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("quantum_crafter_config_pattern"), QuantumCrafterConfigPatternMenu.TYPE);
+		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("aae_set_amount"), SetAmountMenu.TYPE);
+		ForgeRegistries.MENU_TYPES.register(AppEng.makeId("output_direction"), OutputDirectionMenu.TYPE);
 	}
 
 	private <T extends AEBaseBlockEntity> void bindTileEntity(Class<T> clazz, AEBaseEntityBlock<T> block, BlockEntityType.BlockEntitySupplier<T> supplier) {
@@ -80,7 +90,7 @@ public class AAERegistryHandler extends RegistryHandler {
 
 	public void onInit() {
 		for (Pair<String, Block> entry : blocks) {
-			Block block = ForgeRegistries.BLOCKS.getValue(AdvancedAE.id(entry.getKey()));
+			Block block = ForgeRegistries.BLOCKS.getValue(AdvancedAE.makeId(entry.getKey()));
 			if (block instanceof AEBaseEntityBlock<?>) {
 				AEBaseBlockEntity.registerBlockEntityItem(
 						((AEBaseEntityBlock<?>) block).getBlockEntityType(),
@@ -123,6 +133,6 @@ public class AAERegistryHandler extends RegistryHandler {
 					}
 				})
 				.build();
-		Registry.register(registry, AdvancedAE.id("tab_main"), tab);
+		Registry.register(registry, AdvancedAE.makeId("tab_main"), tab);
 	}
 }

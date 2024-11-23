@@ -5,8 +5,10 @@ import net.minecraft.world.item.Item;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitBlock;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
+import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
+import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPatternItem;
@@ -45,7 +47,7 @@ public class AAEItemAndBlock {
 				AdvPatternProviderPart::new);
 
 		ADV_PROCESSING_PATTERN = new AdvProcessingPatternItem(new Item.Properties().stacksTo(1));
-		ADV_PATTERN_ENCODER = new AdvPatternEncoderItem();
+		ADV_PATTERN_ENCODER = new AdvPatternEncoderItem(new Item.Properties());
 
 		SHATTERED_SINGULARITY = new Item(new Item.Properties());
 

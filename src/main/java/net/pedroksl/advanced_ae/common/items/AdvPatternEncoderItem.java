@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class AdvPatternEncoderItem extends AEBaseItem implements IMenuItem {
 
 
-	public AdvPatternEncoderItem() {
+	public AdvPatternEncoderItem(Properties properties) {
 		super(new Item.Properties().stacksTo(1));
 	}
 

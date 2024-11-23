@@ -48,7 +48,7 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
 
     private final AdvCraftingBlockEntity host;
 
-    public QuantumComputerMenu(MenuType<?> menuType, int id, Inventory ip, AdvCraftingBlockEntity te) {
+    public QuantumComputerMenu(int id, Inventory ip, AdvCraftingBlockEntity te) {
         super(TYPE, id, ip, te);
         this.cpuList = EMPTY_CPU_LIST;
         this.selectedCpu = null;

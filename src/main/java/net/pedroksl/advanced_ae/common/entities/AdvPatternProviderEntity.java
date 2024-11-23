@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -39,10 +40,8 @@ public class AdvPatternProviderEntity extends AENetworkBlockEntity implements Ad
 	@Nullable
 	private PushDirection pendingPushDirectionChange;
 
-	public AdvPatternProviderEntity(BlockPos pos, BlockState blockState) {
-		super(GlodUtil.getTileType(AdvPatternProviderEntity.class, AdvPatternProviderEntity::new, AAEItemAndBlock.ADV_PATTERN_PROVIDER),
-				pos,
-				blockState);
+	public AdvPatternProviderEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
+		super(blockEntityType, pos, blockState);
 	}
 
 	protected AdvPatternProviderLogic createLogic() {

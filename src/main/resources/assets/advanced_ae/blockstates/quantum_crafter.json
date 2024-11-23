@@ -1,0 +1,224 @@
+{
+  "variants": {
+    "facing=down,spin=0,working=false": {
+      "model": "advanced_ae:block/quantum_crafter",
+      "x": 90
+    },
+    "facing=down,spin=0,working=true": {
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "x": 90
+    },
+    "facing=down,spin=1,working=false": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter",
+      "x": 90
+    },
+    "facing=down,spin=1,working=true": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "x": 90
+    },
+    "facing=down,spin=2,working=false": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter",
+      "x": 90
+    },
+    "facing=down,spin=2,working=true": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "x": 90
+    },
+    "facing=down,spin=3,working=false": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter",
+      "x": 90
+    },
+    "facing=down,spin=3,working=true": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "x": 90
+    },
+    "facing=east,spin=0,working=false": {
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 90
+    },
+    "facing=east,spin=0,working=true": {
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 90
+    },
+    "facing=east,spin=1,working=false": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 90
+    },
+    "facing=east,spin=1,working=true": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 90
+    },
+    "facing=east,spin=2,working=false": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 90
+    },
+    "facing=east,spin=2,working=true": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 90
+    },
+    "facing=east,spin=3,working=false": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 90
+    },
+    "facing=east,spin=3,working=true": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 90
+    },
+    "facing=north,spin=0,working=false": {
+      "model": "advanced_ae:block/quantum_crafter"
+    },
+    "facing=north,spin=0,working=true": {
+      "model": "advanced_ae:block/quantum_crafter_on"
+    },
+    "facing=north,spin=1,working=false": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter"
+    },
+    "facing=north,spin=1,working=true": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter_on"
+    },
+    "facing=north,spin=2,working=false": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter"
+    },
+    "facing=north,spin=2,working=true": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter_on"
+    },
+    "facing=north,spin=3,working=false": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter"
+    },
+    "facing=north,spin=3,working=true": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter_on"
+    },
+    "facing=south,spin=0,working=false": {
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 180
+    },
+    "facing=south,spin=0,working=true": {
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 180
+    },
+    "facing=south,spin=1,working=false": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 180
+    },
+    "facing=south,spin=1,working=true": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 180
+    },
+    "facing=south,spin=2,working=false": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 180
+    },
+    "facing=south,spin=2,working=true": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 180
+    },
+    "facing=south,spin=3,working=false": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 180
+    },
+    "facing=south,spin=3,working=true": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 180
+    },
+    "facing=up,spin=0,working=false": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter",
+      "x": 270
+    },
+    "facing=up,spin=0,working=true": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "x": 270
+    },
+    "facing=up,spin=1,working=false": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter",
+      "x": 270
+    },
+    "facing=up,spin=1,working=true": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "x": 270
+    },
+    "facing=up,spin=2,working=false": {
+      "model": "advanced_ae:block/quantum_crafter",
+      "x": 270
+    },
+    "facing=up,spin=2,working=true": {
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "x": 270
+    },
+    "facing=up,spin=3,working=false": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter",
+      "x": 270
+    },
+    "facing=up,spin=3,working=true": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "x": 270
+    },
+    "facing=west,spin=0,working=false": {
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 270
+    },
+    "facing=west,spin=0,working=true": {
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 270
+    },
+    "facing=west,spin=1,working=false": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 270
+    },
+    "facing=west,spin=1,working=true": {
+      "ae2:z": 270,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 270
+    },
+    "facing=west,spin=2,working=false": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 270
+    },
+    "facing=west,spin=2,working=true": {
+      "ae2:z": 180,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 270
+    },
+    "facing=west,spin=3,working=false": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter",
+      "y": 270
+    },
+    "facing=west,spin=3,working=true": {
+      "ae2:z": 90,
+      "model": "advanced_ae:block/quantum_crafter_on",
+      "y": 270
+    }
+  }
+}

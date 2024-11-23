@@ -6,6 +6,10 @@ import appeng.init.client.InitScreens;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
+import net.pedroksl.advanced_ae.gui.OutputDirectionMenu;
+import net.pedroksl.advanced_ae.gui.QuantumCrafterConfigPatternMenu;
+import net.pedroksl.advanced_ae.gui.QuantumCrafterMenu;
+import net.pedroksl.advanced_ae.gui.SetAmountMenu;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderContainer;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderGui;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
@@ -24,6 +28,10 @@ public class AAEClientRegistryHandler {
 		InitScreens.register(AdvPatternEncoderContainer.TYPE, AdvPatternEncoderGui::new, "/screens" +
 				"/adv_pattern_encoder.json");
 		InitScreens.register(QuantumComputerMenu.TYPE, QuantumComputerScreen::new, "/screens/quantum_computer.json");
+		InitScreens.register(QuantumCrafterMenu.TYPE, QuantumCrafterScreen::new, "/screens/quantum_crafter.json");
+		InitScreens.register(QuantumCrafterConfigPatternMenu.TYPE, QuantumCrafterConfigPatternScreen::new, "/screens/quantum_crafter_pattern_config.json");
+		InitScreens.register(SetAmountMenu.TYPE, SetAmountScreen::new, "/screens/aae_set_amount.json");
+		InitScreens.register(OutputDirectionMenu.TYPE, OutputDirectionScreen::new, "/screens/output_direction.json");
 	}
 
 	@SubscribeEvent

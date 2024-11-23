@@ -123,7 +123,7 @@ public class AAERecipeProvider extends RecipeProvider {
 				.define('S', AEItems.SINGULARITY)
 				.define('Q', AAEItemAndBlock.QUANTUM_STORAGE_256M)
 				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
-				.save(consumer, AdvancedAE.id("quantumdataentangler"));
+				.save(consumer, AdvancedAE.makeId("quantumdataentangler"));
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItemAndBlock.QUANTUM_MULTI_THREADER)
 				.pattern("SCS")
 				.pattern("AUA")
@@ -133,6 +133,6 @@ public class AAERecipeProvider extends RecipeProvider {
 				.define('S', AEItems.SINGULARITY)
 				.define('A', AAEItemAndBlock.QUANTUM_ACCELERATOR)
 				.unlockedBy("hasItem", has(AEItems.SINGULARITY))
-				.save(consumer, AdvancedAE.id("quantummultithreader"));
+				.save(consumer, AdvancedAE.makeId("quantummultithreader"));
 	}
 }

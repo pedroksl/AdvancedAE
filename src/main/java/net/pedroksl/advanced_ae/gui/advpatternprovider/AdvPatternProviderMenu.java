@@ -19,6 +19,7 @@ import appeng.menu.guisync.GuiSync;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.RestrictedInputSlot;
 import net.minecraft.world.level.ItemLike;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 
@@ -42,7 +43,11 @@ public class AdvPatternProviderMenu extends AEBaseMenu implements IUpgradableMen
 	@GuiSync(7)
 	public GenericStack unlockStack = null;
 
-	protected AdvPatternProviderMenu(MenuType<? extends AdvPatternProviderMenu> menuType,
+	public AdvPatternProviderMenu(int id, Inventory playerInventory, AdvPatternProviderLogicHost host) {
+		this(AAEMenus.ADV_PATTERN_PROVIDER, id, playerInventory, host);
+	}
+
+	public AdvPatternProviderMenu(MenuType<? extends AdvPatternProviderMenu> menuType,
 	                                 int id, Inventory playerInventory,
 	                                 AdvPatternProviderLogicHost host) {
 		super(menuType, id, playerInventory, host);

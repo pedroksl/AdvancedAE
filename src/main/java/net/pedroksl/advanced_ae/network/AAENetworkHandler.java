@@ -4,8 +4,7 @@ import com.glodblock.github.glodium.network.NetworkHandler;
 import com.glodblock.github.glodium.network.packet.CGenericPacket;
 import com.glodblock.github.glodium.network.packet.SGenericPacket;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionPacket;
-import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderPacket;
+import net.pedroksl.advanced_ae.network.packet.*;
 
 public class AAENetworkHandler extends NetworkHandler {
 
@@ -20,6 +19,14 @@ public class AAENetworkHandler extends NetworkHandler {
 		registerPacket(CGenericPacket.class, CGenericPacket::new);
 		registerPacket(AdvPatternEncoderPacket.class, AdvPatternEncoderPacket::new);
 		registerPacket(AdvPatternEncoderChangeDirectionPacket.class, AdvPatternEncoderChangeDirectionPacket::new);
+		registerPacket(PatternConfigServerUpdatePacket.class, PatternConfigServerUpdatePacket::new);
+		registerPacket(EnabledPatternsUpdatePacket.class, EnabledPatternsUpdatePacket::new);
+		registerPacket(SetStockAmountPacket.class, SetStockAmountPacket::new);
+		registerPacket(FluidTankClientAudioPacket.class, FluidTankClientAudioPacket::new);
+		registerPacket(FluidTankStackUpdatePacket.class, FluidTankStackUpdatePacket::new);
+		registerPacket(OutputDirectionClientUpdatePacket.class, OutputDirectionClientUpdatePacket::new);
+		registerPacket(UpdateSideStatusPacket.class, UpdateSideStatusPacket::new);
+		registerPacket(FluidTankItemUsePacket.class, FluidTankItemUsePacket::new);
 	}
 
 }

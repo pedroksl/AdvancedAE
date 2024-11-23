@@ -1,0 +1,99 @@
+package net.pedroksl.advanced_ae.gui;
+
+import appeng.api.stacks.AEKey;
+import appeng.menu.AEBaseMenu;
+import appeng.menu.ISubMenu;
+import appeng.menu.MenuOpener;
+import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.locator.MenuLocator;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.level.Level;
+import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
+import net.pedroksl.advanced_ae.network.AAENetworkHandler;
+import net.pedroksl.advanced_ae.network.packet.PatternConfigServerUpdatePacket;
+
+import java.util.LinkedHashMap;
+
+public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubMenu {
+
+    public static final MenuType<QuantumCrafterConfigPatternMenu> TYPE = MenuTypeBuilder
+            .create((id, ip, host) -> new QuantumCrafterConfigPatternMenu(id, ip, host), QuantumCrafterEntity.class)
+            .build("quantum_crafter_config_pattern");
+    private int index;
+    private final QuantumCrafterEntity host;
+
+    private final String SET_MAX_CRAFTED = "set_max_crafted";
+
+    public LinkedHashMap<AEKey, Long> inputs = new LinkedHashMap<>();
+    public Pair<AEKey, Long> output;
+
+    public QuantumCrafterConfigPatternMenu(int id, Inventory ip, QuantumCrafterEntity host) {
+        this(TYPE, id, ip, host);
+    }
+
+    protected QuantumCrafterConfigPatternMenu(
+            MenuType<? extends QuantumCrafterConfigPatternMenu> type, int id, Inventory ip, QuantumCrafterEntity host) {
+        super(type, id, ip, host);
+        this.host = host;
+
+        registerClientAction(SET_MAX_CRAFTED, Long.class, this::setMaxCrafted);
+    }
+
+    @Override
+    public QuantumCrafterEntity getHost() {
+        return host;
+    }
+
+    public static void open(
+            ServerPlayer player,
+            MenuLocator locator,
+            int index,
+            LinkedHashMap<AEKey, Long> inputs,
+            Pair<AEKey, Long> output) {
+        MenuOpener.open(TYPE, player, locator);
+
+        if (player.containerMenu instanceof QuantumCrafterConfigPatternMenu cca) {
+            cca.setIndex(index);
+            cca.setInputsAndOutput(inputs, output);
+            cca.broadcastChanges();
+        }
+    }
+
+    private void setIndex(int index) {
+        this.index = index;
+    }
+
+    private void setInputsAndOutput(LinkedHashMap<AEKey, Long> inputs, Pair<AEKey, Long> output) {
+        this.inputs = new LinkedHashMap<>(inputs);
+        this.output = new Pair<>(output.getFirst(), output.getSecond());
+
+        if (isServerSide() && this.inputs != null && this.output != null && getPlayer() instanceof ServerPlayer player) {
+            AAENetworkHandler.INSTANCE.sendTo(new PatternConfigServerUpdatePacket(this.inputs, this.output),
+                    player);
+        }
+    }
+
+    public Level getLevel() {
+        return this.getPlayerInventory().player.level();
+    }
+
+    public void setStockAmount(int inputIndex, long amount) {
+        getHost().setStockAmount(this.index, inputIndex, amount);
+        setInputsAndOutput(
+                getHost().getPatternConfigInputs(this.index), getHost().getPatternConfigOutput(this.index));
+    }
+
+    public void setMaxCrafted(long amount) {
+        if (isClientSide()) {
+            sendClientAction(SET_MAX_CRAFTED, amount);
+            return;
+        }
+
+        getHost().setMaxCrafted(this.index, amount);
+        setInputsAndOutput(
+                getHost().getPatternConfigInputs(this.index), getHost().getPatternConfigOutput(this.index));
+    }
+}

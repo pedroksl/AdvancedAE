@@ -48,7 +48,7 @@ public class AdvancedAE {
 		AAEClientRegistryHandler.INSTANCE.init();
 	}
 
-	public static ResourceLocation id(String id) {
+	public static ResourceLocation makeId(String id) {
 		return new ResourceLocation(MOD_ID, id);
 	}
 }

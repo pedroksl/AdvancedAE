@@ -7,6 +7,6 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 
 public class AAETags {
 
-	public static final TagKey<Item> ADV_PATTERN_PROVIDER = TagKey.create(Registries.ITEM, AdvancedAE.id(
+	public static final TagKey<Item> ADV_PATTERN_PROVIDER = TagKey.create(Registries.ITEM, AdvancedAE.makeId(
 			"adv_pattern_provider"));
 }
