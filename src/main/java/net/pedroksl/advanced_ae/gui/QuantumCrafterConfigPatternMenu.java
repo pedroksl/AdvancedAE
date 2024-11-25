@@ -1,27 +1,26 @@
 package net.pedroksl.advanced_ae.gui;
 
-import appeng.api.stacks.AEKey;
-import appeng.menu.AEBaseMenu;
-import appeng.menu.ISubMenu;
-import appeng.menu.MenuOpener;
-import appeng.menu.implementations.MenuTypeBuilder;
-import appeng.menu.locator.MenuLocator;
+import java.util.LinkedHashMap;
+
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.PatternConfigServerUpdatePacket;
 
-import java.util.LinkedHashMap;
+import appeng.api.stacks.AEKey;
+import appeng.menu.AEBaseMenu;
+import appeng.menu.ISubMenu;
+import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuLocator;
 
 public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubMenu {
 
-    public static final MenuType<QuantumCrafterConfigPatternMenu> TYPE = MenuTypeBuilder
-            .create((id, ip, host) -> new QuantumCrafterConfigPatternMenu(id, ip, host), QuantumCrafterEntity.class)
-            .build("quantum_crafter_config_pattern");
     private int index;
     private final QuantumCrafterEntity host;
 
@@ -31,7 +30,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
     public Pair<AEKey, Long> output;
 
     public QuantumCrafterConfigPatternMenu(int id, Inventory ip, QuantumCrafterEntity host) {
-        this(TYPE, id, ip, host);
+        this(AAEMenus.CRAFTER_PATTERN_CONFIG, id, ip, host);
     }
 
     protected QuantumCrafterConfigPatternMenu(
@@ -53,7 +52,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
             int index,
             LinkedHashMap<AEKey, Long> inputs,
             Pair<AEKey, Long> output) {
-        MenuOpener.open(TYPE, player, locator);
+        MenuOpener.open(AAEMenus.CRAFTER_PATTERN_CONFIG, player, locator);
 
         if (player.containerMenu instanceof QuantumCrafterConfigPatternMenu cca) {
             cca.setIndex(index);
@@ -70,9 +69,11 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
         this.inputs = new LinkedHashMap<>(inputs);
         this.output = new Pair<>(output.getFirst(), output.getSecond());
 
-        if (isServerSide() && this.inputs != null && this.output != null && getPlayer() instanceof ServerPlayer player) {
-            AAENetworkHandler.INSTANCE.sendTo(new PatternConfigServerUpdatePacket(this.inputs, this.output),
-                    player);
+        if (isServerSide()
+                && this.inputs != null
+                && this.output != null
+                && getPlayer() instanceof ServerPlayer player) {
+            AAENetworkHandler.INSTANCE.sendTo(new PatternConfigServerUpdatePacket(this.inputs, this.output), player);
         }
     }
 

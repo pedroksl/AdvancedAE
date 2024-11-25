@@ -1,5 +1,12 @@
 package net.pedroksl.advanced_ae.common.cluster;
 
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import net.pedroksl.advanced_ae.common.logic.AdvCraftingCPULogic;
+
 import appeng.api.config.CpuSelectionMode;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.CraftingJobStatus;
@@ -8,11 +15,6 @@ import appeng.api.networking.crafting.ICraftingPlan;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.GenericStack;
 import appeng.crafting.inv.ListCraftingInventory;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.Level;
-import net.pedroksl.advanced_ae.common.logic.AdvCraftingCPULogic;
-import org.jetbrains.annotations.Nullable;
 
 public class AdvCraftingCPU implements ICraftingCPU {
 

@@ -1,5 +1,17 @@
 package net.pedroksl.advanced_ae.gui.quantumcomputer;
 
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+
 import appeng.api.stacks.AmountFormat;
 import appeng.client.Point;
 import appeng.client.gui.ICompositeWidget;
@@ -14,16 +26,6 @@ import appeng.core.definitions.AEParts;
 import appeng.core.localization.ButtonToolTips;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.Tooltips;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class AdvCpuSelectionList implements ICompositeWidget {
     private static final int ROWS = 6;

@@ -1,45 +1,37 @@
 {
-  "$schema": "schema.json",
-  "includes": [
-    "common/common.json",
-    "common/player_inventory.json"
-  ],
-  "text": {
-    "dialog_title": {
-      "text": {
-        "translate": "gui.advanced_ae.adv_pattern_encoder"
-      },
-      "position": {
-        "left": 10,
-        "top": 5
-      }
-    }
-  },
-  "background": {
-    "texture": "guis/adv_pattern_encoder.png",
-    "srcRect": [
-      0,
-      0,
-      176,
-      204
-    ]
-  },
-  "slots": {
-    "ENCODED_PATTERN": {
-      "left": 53,
-      "top": 15,
-      "grid": "HORIZONTAL"
-    },
-    "MACHINE_OUTPUT": {
-      "left": 107,
-      "top": 15,
-      "grid": "HORIZONTAL"
-    }
-  },
-  "widgets": {
-    "scrollbar": {
-      "left": 149,
-      "top": 35
-    }
-  }
+	"$schema": "schema.json",
+	"includes": ["common/common.json", "common/player_inventory.json"],
+	"text": {
+		"dialog_title": {
+			"text": {
+				"translate": "gui.advanced_ae.AdvPatternEncoder"
+			},
+			"position": {
+				"left": 10,
+				"top": 5
+			}
+		}
+	},
+	"background": {
+		"texture": "guis/adv_pattern_encoder.png",
+		"srcRect": [0, 0, 176, 204]
+	},
+	"slots": {
+		"ENCODED_PATTERN": {
+			"left": 53,
+			"top": 15,
+			"grid": "HORIZONTAL"
+		},
+		"MACHINE_OUTPUT": {
+			"left": 107,
+			"top": 15,
+			"grid": "HORIZONTAL"
+		}
+	},
+	"widgets": {
+		"scrollbar": {
+			"left": 149,
+			"top": 35
+		}
+	}
 }

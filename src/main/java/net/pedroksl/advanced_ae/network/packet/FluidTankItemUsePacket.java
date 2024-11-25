@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.network.packet;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.api.IFluidTankHandler;
@@ -9,9 +10,7 @@ public class FluidTankItemUsePacket implements IMessage<FluidTankItemUsePacket> 
     private int index;
     private int button;
 
-    public FluidTankItemUsePacket() {
-
-    }
+    public FluidTankItemUsePacket() {}
 
     public FluidTankItemUsePacket(int index, int button) {
         this.index = index;

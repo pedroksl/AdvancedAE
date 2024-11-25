@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "advanced_ae:quantum_alloy_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "advanced_ae:quantum_alloy"
+  }
+}

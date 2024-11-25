@@ -1,24 +1,25 @@
 package net.pedroksl.advanced_ae.network.packet;
 
-import appeng.api.stacks.AEKey;
-import com.glodblock.github.glodium.network.packet.IMessage;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.client.QuantumCrafterConfigPatternScreen;
+import static appeng.api.stacks.AEKey.readKey;
+import static appeng.api.stacks.AEKey.writeKey;
 
 import java.util.LinkedHashMap;
 
-import static appeng.api.stacks.AEKey.readKey;
-import static appeng.api.stacks.AEKey.writeKey;
+import com.glodblock.github.glodium.network.packet.IMessage;
+import com.mojang.datafixers.util.Pair;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.pedroksl.advanced_ae.client.gui.QuantumCrafterConfigPatternScreen;
+
+import appeng.api.stacks.AEKey;
 
 public class PatternConfigServerUpdatePacket implements IMessage<PatternConfigServerUpdatePacket> {
     private LinkedHashMap<AEKey, Long> inputs;
     private Pair<AEKey, Long> output;
 
-    public PatternConfigServerUpdatePacket() {
-    }
+    public PatternConfigServerUpdatePacket() {}
 
     public PatternConfigServerUpdatePacket(LinkedHashMap<AEKey, Long> inputs, Pair<AEKey, Long> output) {
         this.inputs = inputs;

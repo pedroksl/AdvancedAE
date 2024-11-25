@@ -1,9 +1,10 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
-import appeng.block.crafting.ICraftingUnitType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlockDefinition;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+
+import appeng.block.crafting.ICraftingUnitType;
 
 public enum AAECraftingUnitType implements ICraftingUnitType {
     QUANTUM_UNIT(0, "quantum_unit"),
@@ -48,30 +49,21 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
         return this.affix;
     }
 
-    public Block getBlock() {
+    public AAEBlockDefinition<?> getDefinition() {
         return switch (this) {
-            case QUANTUM_UNIT -> AAEItemAndBlock.QUANTUM_UNIT;
-            case QUANTUM_CORE -> AAEItemAndBlock.QUANTUM_CORE;
-            case STORAGE_128M -> AAEItemAndBlock.QUANTUM_STORAGE_128M;
-            case STORAGE_256M -> AAEItemAndBlock.QUANTUM_STORAGE_256M;
-            case STORAGE_MULTIPLIER -> AAEItemAndBlock.DATA_ENTANGLER;
-            case QUANTUM_ACCELERATOR -> AAEItemAndBlock.QUANTUM_ACCELERATOR;
-            case MULTI_THREADER -> AAEItemAndBlock.QUANTUM_MULTI_THREADER;
-            case STRUCTURE -> AAEItemAndBlock.QUANTUM_STRUCTURE;
+            case QUANTUM_UNIT -> AAEBlocks.QUANTUM_UNIT;
+            case QUANTUM_CORE -> AAEBlocks.QUANTUM_CORE;
+            case STORAGE_128M -> AAEBlocks.QUANTUM_STORAGE_128M;
+            case STORAGE_256M -> AAEBlocks.QUANTUM_STORAGE_256M;
+            case STORAGE_MULTIPLIER -> AAEBlocks.DATA_ENTANGLER;
+            case QUANTUM_ACCELERATOR -> AAEBlocks.QUANTUM_ACCELERATOR;
+            case MULTI_THREADER -> AAEBlocks.QUANTUM_MULTI_THREADER;
+            case STRUCTURE -> AAEBlocks.QUANTUM_STRUCTURE;
         };
     }
 
     @Override
     public Item getItemFromType() {
-        return switch (this) {
-            case QUANTUM_UNIT -> AAEItemAndBlock.QUANTUM_UNIT.asItem();
-            case QUANTUM_CORE -> AAEItemAndBlock.QUANTUM_CORE.asItem();
-            case STORAGE_128M -> AAEItemAndBlock.QUANTUM_STORAGE_128M.asItem();
-            case STORAGE_256M -> AAEItemAndBlock.QUANTUM_STORAGE_256M.asItem();
-            case STORAGE_MULTIPLIER -> AAEItemAndBlock.DATA_ENTANGLER.asItem();
-            case QUANTUM_ACCELERATOR -> AAEItemAndBlock.QUANTUM_ACCELERATOR.asItem();
-            case MULTI_THREADER -> AAEItemAndBlock.QUANTUM_MULTI_THREADER.asItem();
-            case STRUCTURE -> AAEItemAndBlock.QUANTUM_STRUCTURE.asItem();
-        };
+        return getDefinition().asItem();
     }
 }

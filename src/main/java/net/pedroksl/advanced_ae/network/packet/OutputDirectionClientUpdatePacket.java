@@ -1,15 +1,17 @@
 package net.pedroksl.advanced_ae.network.packet;
 
-import appeng.api.orientation.RelativeSide;
-import com.glodblock.github.glodium.network.packet.IMessage;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.client.OutputDirectionScreen;
-
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.glodblock.github.glodium.network.packet.IMessage;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.pedroksl.advanced_ae.client.gui.OutputDirectionScreen;
+
+import appeng.api.orientation.RelativeSide;
 
 public class OutputDirectionClientUpdatePacket implements IMessage<OutputDirectionClientUpdatePacket> {
     private final Set<RelativeSide> sides;

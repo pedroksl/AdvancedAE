@@ -1,15 +1,15 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import appeng.block.AEBaseBlock;
-import appeng.block.AEBaseBlockItem;
-import appeng.core.definitions.ItemDefinition;
-import appeng.items.AEBaseItem;
+import java.util.ArrayList;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
 
-import java.util.ArrayList;
+import appeng.block.AEBaseBlock;
+import appeng.block.AEBaseBlockItem;
+import appeng.items.AEBaseItem;
 
 public final class AAECreativeTab {
     public static final DeferredRegister<CreativeModeTab> DR =
@@ -24,7 +24,7 @@ public final class AAECreativeTab {
     }
 
     private static void populateTab(CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output) {
-        var itemDefs = new ArrayList<ItemDefinition<?>>();
+        var itemDefs = new ArrayList<AAEItemDefinition<?>>();
         itemDefs.addAll(AAEItems.getItems());
         itemDefs.addAll(
                 AAEBlocks.getBlocks().stream().map(AAEBlockDefinition::item).toList());
@@ -40,8 +40,8 @@ public final class AAECreativeTab {
                 baseBlock.addToMainCreativeTab(output);
             } else if (item instanceof AEBaseItem baseItem) {
                 baseItem.addToMainCreativeTab(output);
-//            } else if (item instanceof PoweredItem poweredItem) {
-//                poweredItem.addToMainCreativeTab(params, output);
+                //            } else if (item instanceof PoweredItem poweredItem) {
+                //                poweredItem.addToMainCreativeTab(params, output);
             } else {
                 output.accept(itemDef);
             }

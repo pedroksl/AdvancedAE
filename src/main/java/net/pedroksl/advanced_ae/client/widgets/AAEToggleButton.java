@@ -1,10 +1,11 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.client.gui.widgets.ITooltip;
-import net.minecraft.network.chat.Component;
-
 import java.util.Collections;
 import java.util.List;
+
+import net.minecraft.network.chat.Component;
+
+import appeng.client.gui.widgets.ITooltip;
 
 public class AAEToggleButton extends AAEIconButton implements ITooltip {
 

@@ -1,8 +1,9 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.api.stacks.GenericStack;
-import appeng.client.gui.AEBaseScreen;
-import appeng.core.localization.Tooltips;
+import org.apache.commons.lang3.text.WordUtils;
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -24,9 +25,10 @@ import net.minecraftforge.fml.ModList;
 import net.pedroksl.advanced_ae.common.helpers.ColorContainer;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.FluidTankItemUsePacket;
-import org.apache.commons.lang3.text.WordUtils;
-import org.jetbrains.annotations.NotNull;
-import org.lwjgl.glfw.GLFW;
+
+import appeng.api.stacks.GenericStack;
+import appeng.client.gui.AEBaseScreen;
+import appeng.core.localization.Tooltips;
 
 public class FluidTankSlot extends AbstractWidget {
 
@@ -76,7 +78,9 @@ public class FluidTankSlot extends AbstractWidget {
             var forgeCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
             forgeCap.ifPresent(cap -> {
                 FluidStack fluidStack = cap.getFluidInTank(0);
-                if (fluidStack.getFluid() == this.content.getFluid() || fluidStack.isEmpty() || this.content.isEmpty()) {
+                if (fluidStack.getFluid() == this.content.getFluid()
+                        || fluidStack.isEmpty()
+                        || this.content.isEmpty()) {
                     var actualButton = screen instanceof AEBaseScreen<?> baseScreen
                             ? (baseScreen.isHandlingRightClick() ? 1 : 0)
                             : button;
@@ -160,7 +164,8 @@ public class FluidTankSlot extends AbstractWidget {
             setTooltip(Tooltip.create(Tooltips.of(
                     Component.translatable("gui.tooltips.advanced_ae.TankAmount"),
                     Component.literal("\n"),
-                    Component.translatable("gui.tooltips.advanced_ae.TankEmpty", 0, 16).withStyle(Tooltips.NUMBER_TEXT))));
+                    Component.translatable("gui.tooltips.advanced_ae.TankEmpty", 0, 16)
+                            .withStyle(Tooltips.NUMBER_TEXT))));
             return;
         }
 

@@ -1,7 +1,11 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.core.AppEng;
+import java.util.function.Consumer;
+
 import com.mojang.blaze3d.systems.RenderSystem;
+
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,9 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
+import appeng.core.AppEng;
 
 public class AAESlider extends ForgeSlider {
     private static final ResourceLocation BUTTON = AppEng.makeId("button");
@@ -78,7 +81,8 @@ public class AAESlider extends ForgeSlider {
         guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        guiGraphics.blit(this.getHandleSprite(),
+        guiGraphics.blit(
+                this.getHandleSprite(),
                 this.getX() + (int) (this.value * (double) (this.width - 8)),
                 this.getY() + 4,
                 0,

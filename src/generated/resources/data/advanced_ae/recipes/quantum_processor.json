@@ -1,0 +1,18 @@
+{
+  "type": "ae2:inscriber",
+  "ingredients": {
+    "bottom": {
+      "item": "ae2:printed_silicon"
+    },
+    "middle": {
+      "tag": "forge:dusts/redstone"
+    },
+    "top": {
+      "item": "advanced_ae:printed_quantum_processor"
+    }
+  },
+  "mode": "press",
+  "result": {
+    "item": "advanced_ae:quantum_processor"
+  }
+}

@@ -1,12 +1,13 @@
 package net.pedroksl.advanced_ae.api;
 
-import appeng.api.config.Setting;
-import appeng.api.config.YesNo;
-import com.google.common.base.Preconditions;
-
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.base.Preconditions;
+
+import appeng.api.config.Setting;
+import appeng.api.config.YesNo;
 
 public final class AAESettings {
     private static final Map<String, Setting<?>> SETTINGS = new HashMap<>();

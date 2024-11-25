@@ -1,10 +1,12 @@
 package net.pedroksl.advanced_ae.network.packet;
 
-import appeng.api.orientation.RelativeSide;
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.gui.OutputDirectionMenu;
+
+import appeng.api.orientation.RelativeSide;
 
 public class UpdateSideStatusPacket implements IMessage<UpdateSideStatusPacket> {
 

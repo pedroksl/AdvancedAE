@@ -1,5 +1,16 @@
 package net.pedroksl.advanced_ae.common.cluster;
 
+import java.util.*;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
+
 import appeng.api.config.CpuSelectionMode;
 import appeng.api.config.Settings;
 import appeng.api.networking.IGrid;
@@ -20,15 +31,6 @@ import appeng.me.cluster.IAECluster;
 import appeng.me.cluster.MBCalculator;
 import appeng.me.helpers.MachineSource;
 import appeng.util.ConfigManager;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.Level;
-import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
 
 public class AdvCraftingCPUCluster implements IAECluster {
 

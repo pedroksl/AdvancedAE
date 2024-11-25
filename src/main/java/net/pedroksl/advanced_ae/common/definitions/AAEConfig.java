@@ -1,84 +1,22 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import appeng.core.AELog;
-import appeng.core.config.ConfigFileManager;
-import appeng.core.config.ConfigSection;
-import appeng.core.config.ConfigValidationException;
-import appeng.core.config.IntegerOption;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.pedroksl.advanced_ae.AdvancedAE;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-
+@Mod.EventBusSubscriber(modid = AdvancedAE.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AAEConfig {
 
-    //public static final String CLIENT_CONFIG_PATH = "client.json";
-    public static final String COMMON_CONFIG_PATH = "advanced_ae-common.json";
-
-    //private final ClientConfig client;
-    private final CommonConfig common;
-    public final ConfigFileManager commonConfigManager;
+    private final ClientConfig client = new ClientConfig();
+    private final CommonConfig common = new CommonConfig();
 
     private static AAEConfig INSTANCE;
 
-    AAEConfig(Path configDir) {
-        //ConfigSection clientRoot = ConfigSection.createRoot();
-        //client = new AAEConfig.ClientConfig(clientRoot);
-
-        ConfigSection commonRoot = ConfigSection.createRoot();
-
-        if (configDir != null) {
-            commonConfigManager = createConfigFileManager(commonRoot, configDir, COMMON_CONFIG_PATH);
-        } else {
-            commonConfigManager = null;
-        }
-
-        common = new AAEConfig.CommonConfig(commonRoot);
-    }
-
-    private static ConfigFileManager createConfigFileManager(ConfigSection commonRoot, Path configDir,
-                                                             String filename) {
-        var configFile = configDir.resolve(filename);
-        ConfigFileManager result = new ConfigFileManager(commonRoot, configFile);
-        if (!Files.exists(configFile)) {
-            result.save(); // Save a default file
-        } else {
-            try {
-                result.load();
-            } catch (ConfigValidationException e) {
-                AELog.error("Failed to load AAE Config. Making backup", e);
-
-                // Backup and delete config files to reset them
-                makeBackupAndReset(configDir, filename);
-            }
-
-            // Re-save immediately to write-out new defaults
-            try {
-                result.save();
-            } catch (Exception e) {
-                AELog.warn(e);
-            }
-        }
-        return result;
-    }
-
-    private static void makeBackupAndReset(Path configFolder, String configFile) {
-        var backupFile = configFolder.resolve(configFile + ".bak");
-        var originalFile = configFolder.resolve(configFile);
-        try {
-            Files.move(originalFile, backupFile, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            AELog.warn("Failed to backup config file %s: %s!", originalFile, e);
-        }
-    }
-
-    public void save() {
-    }
-
-    public void reload() {
-        //clientConfigManager.load();
-        commonConfigManager.load();
+    AAEConfig() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, client.spec);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, common.spec);
     }
 
     public int getQuantumComputerMaxSize() {
@@ -165,11 +103,16 @@ public class AAEConfig {
         return common.percentageDamageAbsorption.get();
     }
 
-    public static void load(Path configFolder) {
-        if (INSTANCE != null) {
-            throw new IllegalStateException("Config is already loaded");
+    public void save() {
+        common.spec.save();
+        client.spec.save();
+    }
+
+    public static void register(String mod_id) {
+        if (!mod_id.equals(AdvancedAE.MOD_ID)) {
+            throw new IllegalArgumentException();
         }
-        INSTANCE = new AAEConfig(configFolder);
+        INSTANCE = new AAEConfig();
     }
 
     public static AAEConfig instance() {
@@ -177,149 +120,157 @@ public class AAEConfig {
     }
 
     private static class ClientConfig {
+        private final ForgeConfigSpec spec;
 
-        public ClientConfig(ConfigSection root) {
+        public ClientConfig() {
+            var builder = new ForgeConfigSpec.Builder();
+
+            this.spec = builder.build();
         }
     }
 
-    public static class CommonConfig {
-        public final IntegerOption quantumComputerMaxSize;
-        public final IntegerOption quantumComputerAcceleratorThreads;
-        public final IntegerOption quantumComputerMaxMultiThreaders;
-        public final IntegerOption quantumComputerMaxDataEntanglers;
-        public final IntegerOption quantumComputerMultiThreaderMultiplication;
-        public final IntegerOption quantumComputerDataEntanglerMultiplication;
+    private static class CommonConfig {
+        private final ForgeConfigSpec spec;
 
-        public final IntegerOption maxWalkSpeed;
-        public final IntegerOption maxSprintSpeed;
-        public final IntegerOption maxStepHeight;
-        public final IntegerOption maxJumpHeight;
-        public final IntegerOption hpBufferHearts;
-        public final IntegerOption maxFlightSpeed;
-        public final IntegerOption evasionChance;
-        public final IntegerOption maxMagnetRange;
-        public final IntegerOption strengthBoost;
-        public final IntegerOption attackSpeedBoost;
-        public final IntegerOption luckBoost;
-        public final IntegerOption maxReachBoost;
-        public final IntegerOption swimSpeedBoost;
-        public final IntegerOption regenerationPerTick;
-        public final IntegerOption percentageDamageAbsorption;
+        public final ForgeConfigSpec.IntValue quantumComputerMaxSize;
+        public final ForgeConfigSpec.IntValue quantumComputerAcceleratorThreads;
+        public final ForgeConfigSpec.IntValue quantumComputerMaxMultiThreaders;
+        public final ForgeConfigSpec.IntValue quantumComputerMaxDataEntanglers;
+        public final ForgeConfigSpec.IntValue quantumComputerMultiThreaderMultiplication;
+        public final ForgeConfigSpec.IntValue quantumComputerDataEntanglerMultiplication;
 
-        public CommonConfig(ConfigSection root) {
+        public final ForgeConfigSpec.IntValue maxWalkSpeed;
+        public final ForgeConfigSpec.IntValue maxSprintSpeed;
+        public final ForgeConfigSpec.IntValue maxStepHeight;
+        public final ForgeConfigSpec.IntValue maxJumpHeight;
+        public final ForgeConfigSpec.IntValue hpBufferHearts;
+        public final ForgeConfigSpec.IntValue maxFlightSpeed;
+        public final ForgeConfigSpec.IntValue evasionChance;
+        public final ForgeConfigSpec.IntValue maxMagnetRange;
+        public final ForgeConfigSpec.IntValue strengthBoost;
+        public final ForgeConfigSpec.IntValue attackSpeedBoost;
+        public final ForgeConfigSpec.IntValue luckBoost;
+        public final ForgeConfigSpec.IntValue maxReachBoost;
+        public final ForgeConfigSpec.IntValue swimSpeedBoost;
+        public final ForgeConfigSpec.IntValue regenerationPerTick;
+        public final ForgeConfigSpec.IntValue percentageDamageAbsorption;
 
-            ConfigSection qc = root.subsection("quantum computer");
+        public CommonConfig() {
+            var builder = new ForgeConfigSpec.Builder();
+
+            builder.push("quantum computer");
             quantumComputerMaxSize = define(
-                    qc,
+                    builder,
                     "quantumComputerMaxSize",
                     5,
                     5,
                     12,
                     "Define the maximum dimensions of the Quantum Computer Multiblock.");
             quantumComputerAcceleratorThreads = define(
-                    qc,
+                    builder,
                     "quantumComputerAcceleratorThreads",
                     8,
                     4,
                     16,
                     "Define the maximum amount of multi threaders per Quantum Computer Multiblock.");
             quantumComputerMaxMultiThreaders = define(
-                    qc,
+                    builder,
                     "quantumComputerMaxMultiThreaders",
                     1,
                     1,
                     2,
                     "Define the maximum amount of multi threaders per Quantum Computer Multiblock.");
             quantumComputerMaxDataEntanglers = define(
-                    qc,
+                    builder,
                     "quantumComputermaxDataEntanglers",
                     1,
                     1,
                     2,
                     "Define the maximum amount of Data Entanglers per Quantum Computer Multiblock.");
             quantumComputerMultiThreaderMultiplication = define(
-                    qc,
+                    builder,
                     "quantumComputerMultiThreaderMultiplication",
                     4,
                     2,
                     8,
                     "Define the multiplication factor of the multi threaders.");
             quantumComputerDataEntanglerMultiplication = define(
-                    qc,
+                    builder,
                     "quantumComputerDataEntanglerMultiplication",
                     4,
                     2,
                     8,
                     "Define the multiplication factor of the data entanglers.");
+            builder.pop();
 
-            ConfigSection qa = root.subsection("quantum armor");
+            builder.push("quantum armor");
             maxWalkSpeed = define(
-                    qa,
+                    builder,
                     "quantumArmorMaxWalkSpeed",
                     60,
                     10,
                     100,
                     "Define the maximum walk speed increase. Values are divided by 10 before use.");
             maxSprintSpeed = define(
-                    qa,
+                    builder,
                     "quantumArmorMaxSprintSpeed",
                     80,
                     10,
                     150,
                     "Define the maximum sprint speed increase. Values are divided by 10 before use.");
             maxStepHeight = define(
-                    qa, "quantumArmorMaxStepHeight", 3, 1, 5, "Define the maximum increase in step height.");
+                    builder, "quantumArmorMaxStepHeight", 3, 1, 5, "Define the maximum increase in step height.");
             maxJumpHeight = define(
-                    qa, "quantumArmorMaxJumpHeight", 3, 1, 5, "Define the maximum increase in jump height.");
+                    builder, "quantumArmorMaxJumpHeight", 3, 1, 5, "Define the maximum increase in jump height.");
             swimSpeedBoost = define(
-                    qa,
+                    builder,
                     "quantumArmorSwimSpeedBoost",
                     80,
                     10,
                     150,
                     "Define the maximum swim speed increase. Values are divided by 10 before use.");
             hpBufferHearts = define(
-                    qa, "quantumArmorHpBuffer", 20, 5, 50, "Define the HP increased of the HP Buffer card.");
+                    builder, "quantumArmorHpBuffer", 20, 5, 50, "Define the HP increased of the HP Buffer card.");
             maxFlightSpeed = define(
-                    qa,
+                    builder,
                     "quantumArmorMaxFlightSpeed",
                     10,
                     1,
                     15,
                     "Define the maximum speed boost of the Flight Card.");
             evasionChance = define(
-                    qa,
+                    builder,
                     "quantumArmorEvasionChance",
                     30,
                     0,
                     100,
                     "Define the evasion % chance of the evasion card.");
             maxMagnetRange =
-                    define(qa, "quantumArmorMagnetRange", 12, 5, 15, "Define the max range of the magnet card.");
+                    define(builder, "quantumArmorMagnetRange", 12, 5, 15, "Define the max range of the magnet card.");
             strengthBoost = define(
-                    qa,
+                    builder,
                     "quantumArmorStrengthBoost",
                     10,
                     5,
                     50,
                     "Define the Attack Damage boost of the Strength Card.");
             attackSpeedBoost = define(
-                    qa,
+                    builder,
                     "quantumArmorAttackSpeedBoost",
                     5,
                     1,
                     10,
                     "Define the Attack Speed Damage boost of the Attack Speed Card.");
-            luckBoost = define(qa, "quantumArmorLuckBoost", 2, 1, 5, "Define the luck boost of the Luck Card.");
+            luckBoost = define(builder, "quantumArmorLuckBoost", 2, 1, 5, "Define the luck boost of the Luck Card.");
             maxReachBoost = define(
-                    qa,
+                    builder,
                     "quantumArmorMaxReachBoost",
                     5,
                     1,
                     8,
                     "Define the max additional reach of the " + "Reach Card.");
             regenerationPerTick = define(
-                    qa,
+                    builder,
                     "quantumArmorRenegerationPerTick",
                     10,
                     1,
@@ -327,22 +278,36 @@ public class AAEConfig {
                     "Define the amount of hearts regenerated per tick with the Regeneration Card. Value will be "
                             + "divided by 10 before use.");
             percentageDamageAbsorption = define(
-                    qa,
+                    builder,
                     "quantumArmorPercentageDamageAbsorption",
                     30,
                     5,
                     100,
                     "Define the maximum percentage of incoming damage absorbed by the Quantum Armor. This value is still limited by the energy buffer in the equipment.");
+            builder.pop();
+
+            this.spec = builder.build();
         }
 
-        private static IntegerOption define(
-                ConfigSection builder, String name, int defaultValue, String comment) {
-            return builder.addInt(name, defaultValue, comment);
+        private static ForgeConfigSpec.IntValue define(
+                ForgeConfigSpec.Builder builder, String name, int defaultValue, String comment) {
+            builder.comment(comment);
+            return define(builder, name, defaultValue);
         }
 
-        private static IntegerOption define(
-                ConfigSection builder, String name, int defaultValue, int min, int max, String comment) {
-            return builder.addInt(name, defaultValue, min, max, comment);
+        private static ForgeConfigSpec.IntValue define(
+                ForgeConfigSpec.Builder builder, String name, int defaultValue, int min, int max, String comment) {
+            builder.comment(comment);
+            return define(builder, name, defaultValue, min, max);
+        }
+
+        private static ForgeConfigSpec.IntValue define(
+                ForgeConfigSpec.Builder builder, String name, int defaultValue, int min, int max) {
+            return builder.defineInRange(name, defaultValue, min, max);
+        }
+
+        private static ForgeConfigSpec.IntValue define(ForgeConfigSpec.Builder builder, String name, int defaultValue) {
+            return define(builder, name, defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
         }
     }
 }

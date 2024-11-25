@@ -1,5 +1,24 @@
 package net.pedroksl.advanced_ae.mixins.cpu;
 
+import java.util.function.Consumer;
+
+import com.google.common.collect.ImmutableList;
+
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
+import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
+import net.pedroksl.advanced_ae.common.logic.AdvCraftingCPULogic;
+
 import appeng.api.config.CpuSelectionMode;
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.stacks.AEKey;
@@ -10,22 +29,6 @@ import appeng.menu.me.common.IncrementalUpdateHelper;
 import appeng.menu.me.crafting.CraftingCPUMenu;
 import appeng.menu.me.crafting.CraftingStatus;
 import appeng.menu.me.crafting.CraftingStatusEntry;
-import com.google.common.collect.ImmutableList;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
-import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
-import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
-import net.pedroksl.advanced_ae.common.logic.AdvCraftingCPULogic;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.function.Consumer;
 
 @Mixin(value = CraftingCPUMenu.class, remap = false)
 public class MixinCraftingCPUMenu extends AEBaseMenu {
@@ -121,7 +124,8 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
             this.cantStoreItems = this.advancedAE_1_20_1$advCpu.craftingLogic.isCantStoreItems();
 
             if (this.incrementalUpdateHelper.hasChanges()) {
-                CraftingStatus status = advancedAE_1_20_1$create(this.incrementalUpdateHelper, this.advancedAE_1_20_1$advCpu.craftingLogic);
+                CraftingStatus status = advancedAE_1_20_1$create(
+                        this.incrementalUpdateHelper, this.advancedAE_1_20_1$advCpu.craftingLogic);
                 this.incrementalUpdateHelper.commitChanges();
 
                 sendPacketToClient(new CraftingStatusPacket(status));

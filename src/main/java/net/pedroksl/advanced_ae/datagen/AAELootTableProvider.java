@@ -1,47 +1,55 @@
 package net.pedroksl.advanced_ae.datagen;
 
-import com.glodblock.github.extendedae.api.ISpecialDrop;
+import java.util.Collections;
+import java.util.Set;
+import java.util.function.BiConsumer;
+
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.pedroksl.advanced_ae.common.AAERegistryHandler;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.*;
-import java.util.function.BiConsumer;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 
 public class AAELootTableProvider extends LootTableProvider {
 
-    public AAELootTableProvider(PackOutput pOutput) {
-        super(pOutput, Collections.emptySet(),
-                Collections.singletonList(
-                        new LootTableProvider.SubProviderEntry(
-                                AAESubProvider::new, LootContextParamSets.BLOCK)));
+    public AAELootTableProvider(PackOutput p) {
+        super(
+                p,
+                Collections.emptySet(),
+                Collections.singletonList(new SubProviderEntry(AAESubProvider::new, LootContextParamSets.BLOCK)));
     }
 
     public static class AAESubProvider extends BlockLootSubProvider {
 
         protected AAESubProvider() {
-            super(Set.of(), FeatureFlagSet.of(), new HashMap<>());
+            super(Set.of(), FeatureFlags.DEFAULT_FLAGS);
         }
 
         @Override
-        protected void generate() {
-            for (var block : AAERegistryHandler.INSTANCE.getBlocks()) {
-                if (!(block instanceof ISpecialDrop)) {
-                    add(block, createSingleItemTable(block));
-                }
-            }
+        public void generate(@NotNull BiConsumer<ResourceLocation, LootTable.Builder> writer) {
+            generate();
+            map.forEach(writer);
         }
 
-        public void generate(@NotNull BiConsumer<ResourceLocation, LootTable.Builder> bi) {
-            this.generate();
-            for (var e : this.map.entrySet()) {
-                bi.accept(e.getKey(), e.getValue());
+        @Override
+        public void generate() {
+            for (var block : AAEBlocks.getBlocks()) {
+                add(
+                        block.block(),
+                        LootTable.lootTable()
+                                .withPool(LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1))
+                                        .add(LootItem.lootTableItem(block))
+                                        .when(ExplosionCondition.survivesExplosion())));
             }
         }
     }

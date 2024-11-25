@@ -1,19 +1,5 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.api.stacks.AEFluidKey;
-import appeng.api.stacks.AEKey;
-import appeng.client.gui.MathExpressionParser;
-import appeng.client.gui.NumberEntryType;
-import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.ConfirmableTextField;
-import appeng.core.localization.GuiText;
-import com.google.common.primitives.Longs;
-import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
-
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -22,6 +8,22 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParsePosition;
 import java.util.*;
 import java.util.function.Consumer;
+import javax.annotation.Nullable;
+
+import com.google.common.primitives.Longs;
+import com.mojang.blaze3d.platform.InputConstants;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+
+import appeng.api.stacks.AEFluidKey;
+import appeng.api.stacks.AEKey;
+import appeng.client.gui.MathExpressionParser;
+import appeng.client.gui.NumberEntryType;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.widgets.ConfirmableTextField;
+import appeng.core.localization.GuiText;
 
 public class NumberTextField extends ConfirmableTextField {
 
@@ -170,11 +172,14 @@ public class NumberTextField extends ConfirmableTextField {
         if (tooltip.isEmpty()) {
             if (!isOutput) {
 
-
-                tooltip.add(Component.translatable("gui.tooltips.advanced_ae.NumberTextFieldInputHint", InputConstants.getKey("key.keyboard" + ".enter").getDisplayName()));
+                tooltip.add(Component.translatable(
+                        "gui.tooltips.advanced_ae.NumberTextFieldInputHint",
+                        InputConstants.getKey("key.keyboard" + ".enter").getDisplayName()));
             } else {
 
-                tooltip.add(Component.translatable("gui.tooltips.advanced_ae.NumberTextFieldOutputHint", InputConstants.getKey("key.keyboard" + ".enter").getDisplayName()));
+                tooltip.add(Component.translatable(
+                        "gui.tooltips.advanced_ae.NumberTextFieldOutputHint",
+                        InputConstants.getKey("key.keyboard" + ".enter").getDisplayName()));
             }
         }
         setTextColor(valid ? TEXT_COLOR : ERROR_COLOR);

@@ -1,0 +1,17 @@
+{
+  "type": "mekanism:crushing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mekanism"
+    }
+  ],
+  "input": {
+    "ingredient": {
+      "item": "advanced_ae:shattered_singularity"
+    }
+  },
+  "output": {
+    "item": "advanced_ae:quantum_infused_dust"
+  }
+}

@@ -1,5 +1,16 @@
 package net.pedroksl.advanced_ae.gui;
 
+import java.util.Objects;
+import java.util.function.Consumer;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.pedroksl.advanced_ae.api.ISetAmountMenuHost;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
 import appeng.api.storage.ISubMenuHost;
@@ -8,26 +19,11 @@ import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.SlotSemantics;
 import appeng.menu.guisync.GuiSync;
-import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.locator.MenuLocator;
 import appeng.menu.slot.InaccessibleSlot;
 import appeng.util.inv.AppEngInternalInventory;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
-import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.api.ISetAmountMenuHost;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
-import java.util.function.Consumer;
 
 public class SetAmountMenu extends AEBaseMenu implements ISubMenu {
-
-    public static final MenuType<SetAmountMenu> TYPE = MenuTypeBuilder
-            .create((id, ip, host) -> new SetAmountMenu(id, ip, host), ISubMenuHost.class)
-            .build("set_amount");
 
     private final ISubMenuHost host;
 
@@ -49,7 +45,7 @@ public class SetAmountMenu extends AEBaseMenu implements ISubMenu {
 
     public SetAmountMenu(
             int id, Inventory playerInventory, ISubMenuHost host, @Nullable ISetAmountMenuHost menuToReturnTo) {
-        super(TYPE, id, playerInventory, host);
+        super(AAEMenus.SET_AMOUNT, id, playerInventory, host);
         this.host = host;
         this.menuToReturnTo = menuToReturnTo;
 
@@ -76,7 +72,7 @@ public class SetAmountMenu extends AEBaseMenu implements ISubMenu {
             Consumer<GenericStack> consumer,
             ISetAmountMenuHost menuToReturnTo,
             long maxAmount) {
-        MenuOpener.open(TYPE, player, locator);
+        MenuOpener.open(AAEMenus.SET_AMOUNT, player, locator);
 
         if (player.containerMenu instanceof SetAmountMenu cca) {
             cca.setStack(stack, maxAmount);

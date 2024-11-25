@@ -1,15 +1,18 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.api.stacks.AEKey;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
+
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
+
+import appeng.api.stacks.AEKey;
 
 public class DirectionInputButton extends Button {
 

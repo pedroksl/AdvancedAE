@@ -1,19 +1,20 @@
 package net.pedroksl.advanced_ae.common.patterns;
 
-import appeng.api.stacks.AEKey;
-import appeng.api.stacks.GenericStack;
+import java.util.HashMap;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 
-import java.util.HashMap;
+import appeng.api.stacks.AEKey;
+import appeng.api.stacks.GenericStack;
 
 public final class AdvPatternDetailsEncoder {
 
-	public static ItemStack encodeProcessingPattern(GenericStack[] sparseInputs, GenericStack[] sparseOutputs,
-	                                                HashMap<AEKey, Direction> dirMap) {
-		ItemStack pattern = new ItemStack(AAEItemAndBlock.ADV_PROCESSING_PATTERN);
-		AdvPatternEncoding.encodeProcessingPattern(pattern.getOrCreateTag(), sparseInputs, sparseOutputs, dirMap);
-		return pattern;
-	}
+    public static ItemStack encodeProcessingPattern(
+            GenericStack[] sparseInputs, GenericStack[] sparseOutputs, HashMap<AEKey, Direction> dirMap) {
+        ItemStack pattern = AAEItems.ADV_PROCESSING_PATTERN.stack();
+        AdvPatternEncoding.encodeProcessingPattern(pattern.getOrCreateTag(), sparseInputs, sparseOutputs, dirMap);
+        return pattern;
+    }
 }

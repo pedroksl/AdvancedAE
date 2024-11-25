@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.network.packet;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fluids.FluidStack;
@@ -9,9 +10,7 @@ public class FluidTankStackUpdatePacket implements IMessage<FluidTankStackUpdate
     private FluidStack input;
     private FluidStack output;
 
-    public FluidTankStackUpdatePacket() {
-
-    }
+    public FluidTankStackUpdatePacket() {}
 
     public FluidTankStackUpdatePacket(FluidStack input, FluidStack output) {
         this.input = input;
@@ -32,9 +31,9 @@ public class FluidTankStackUpdatePacket implements IMessage<FluidTankStackUpdate
 
     @Override
     public void onMessage(Player player) {
-//        if (Minecraft.getInstance().screen instanceof ReactionChamberScree screen) {
-//            screen.updateFluidTankContents(input, output);
-//        }
+        //        if (Minecraft.getInstance().screen instanceof ReactionChamberScree screen) {
+        //            screen.updateFluidTankContents(input, output);
+        //        }
     }
 
     @Override

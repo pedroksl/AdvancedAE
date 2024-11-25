@@ -1,5 +1,14 @@
 package net.pedroksl.advanced_ae.common.logic;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+
 import appeng.api.config.Actionable;
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.crafting.PatternDetailsHelper;
@@ -11,13 +20,6 @@ import appeng.api.stacks.GenericStack;
 import appeng.crafting.CraftingLink;
 import appeng.crafting.inv.ListCraftingInventory;
 import appeng.me.service.CraftingService;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ExecutingCraftingJob {
     private static final String NBT_LINK = "link";
@@ -70,10 +72,7 @@ public class ExecutingCraftingJob {
         this.playerId = playerId;
     }
 
-    ExecutingCraftingJob(
-            CompoundTag data,
-            CraftingDifferenceListener postCraftingDifference,
-            AdvCraftingCPULogic cpu) {
+    ExecutingCraftingJob(CompoundTag data, CraftingDifferenceListener postCraftingDifference, AdvCraftingCPULogic cpu) {
         this.link = new CraftingLink(data.getCompound(NBT_LINK), cpu.cpu);
         IGrid grid = cpu.cpu.getGrid();
         if (grid != null) {

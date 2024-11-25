@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "advanced_ae:block/crafting/quantum_structure_formed"
-  }
-}

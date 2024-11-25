@@ -1,53 +1,72 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import appeng.api.stacks.AEKey;
-import appeng.api.stacks.GenericStack;
-import appeng.core.definitions.BlockDefinition;
-import appeng.core.definitions.ItemDefinition;
+import java.util.Objects;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
-import org.jetbrains.annotations.NotNull;
 
-public class AAEBlockDefinition<T extends Block> extends BlockDefinition<T> implements ItemLike {
+import appeng.api.stacks.AEKey;
+import appeng.api.stacks.GenericStack;
+import appeng.core.definitions.BlockDefinition;
 
-	private RegistryObject<T> block;
-	private AAEItemDefinition<BlockItem> item;
+public class AAEBlockDefinition<T extends Block> implements ItemLike {
 
-	public AAEBlockDefinition(String englishName, RegistryObject<T> block, AAEItemDefinition<BlockItem> item) {
-		super(englishName, block.getId(), block.get(), item.get());
-	}
+    private final String englishName;
+    private final RegistryObject<T> block;
+    private final AAEItemDefinition<BlockItem> item;
 
-	@Override
-	public ResourceLocation id() {
-		return block.getId();
-	}
+    public AAEBlockDefinition(String englishName, RegistryObject<T> block, AAEItemDefinition<BlockItem> item) {
+        this.englishName = englishName;
+        this.item = Objects.requireNonNull(item, "item");
+        this.block = Objects.requireNonNull(block, "block");
+    }
 
-	public ItemStack stack() {
-		return item.stack();
-	}
+    public String getEnglishName() {
+        return englishName;
+    }
 
-	public GenericStack genericStack(long stackSize) {
-		return item.genericStack(stackSize);
-	}
+    public ResourceLocation id() {
+        return block.getId();
+    }
 
-	public boolean is(ItemStack comparableStack) {
-		return item.is(comparableStack);
-	}
+    public final T block() {
+        return this.block.get();
+    }
 
-	public boolean is(AEKey key) {
-		return item.is(key);
-	}
+    public ItemStack stack() {
+        return item.stack();
+    }
 
-	public ItemDefinition<BlockItem> item() {
-		return item;
-	}
+    public ItemStack stack(int stackSize) {
+        return item.stack(stackSize);
+    }
 
-	@Override
-	public @NotNull BlockItem asItem() {
-		return item.asItem();
-	}
+    public GenericStack genericStack(long stackSize) {
+        return item.genericStack(stackSize);
+    }
+
+    public boolean is(ItemStack comparableStack) {
+        return item.is(comparableStack);
+    }
+
+    public boolean is(AEKey key) {
+        return item.is(key);
+    }
+
+    public AAEItemDefinition<BlockItem> item() {
+        return item;
+    }
+
+    @Override
+    public BlockItem asItem() {
+        return item.asItem();
+    }
+
+    public BlockDefinition<T> getBlockDefinition() {
+        return new BlockDefinition<>(this.englishName, id(), block(), asItem());
+    }
 }

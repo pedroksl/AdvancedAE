@@ -1,7 +1,16 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import appeng.block.AEBaseBlockItem;
-import appeng.decorative.AEDecorativeBlock;
+import static appeng.block.AEBaseBlock.metalProps;
+import static appeng.block.AEBaseBlock.stoneProps;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -11,21 +20,11 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitBlock;
-import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
-import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
-import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
+import net.pedroksl.advanced_ae.common.blocks.*;
 import net.pedroksl.advanced_ae.common.items.AAECraftingBlockItem;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Supplier;
-
-import static appeng.block.AEBaseBlock.metalProps;
-import static appeng.block.AEBaseBlock.stoneProps;
+import appeng.block.AEBaseBlockItem;
+import appeng.decorative.AEDecorativeBlock;
 
 public final class AAEBlocks {
     public static final DeferredRegister<Block> DR = DeferredRegister.create(ForgeRegistries.BLOCKS, AdvancedAE.MOD_ID);
@@ -97,14 +96,14 @@ public final class AAEBlocks {
             "adv_pattern_provider",
             AdvPatternProviderBlock::new,
             AEBaseBlockItem::new);
-//    public static final BlockDefinition<SmallAdvPatternProviderBlock> SMALL_ADV_PATTERN_PROVIDER = block(
-//            "Advanced Pattern Provider",
-//            "small_adv_pattern_provider",
-//            SmallAdvPatternProviderBlock::new,
-//            AEBaseBlockItem::new);
+    public static final AAEBlockDefinition<SmallAdvPatternProviderBlock> SMALL_ADV_PATTERN_PROVIDER = block(
+            "Advanced Pattern Provider",
+            "small_adv_pattern_provider",
+            SmallAdvPatternProviderBlock::new,
+            AEBaseBlockItem::new);
 
-//    public static final BlockDefinition<ReactionChamberBlock> REACTION_CHAMBER =
-//            block("Reaction Chamber", "reaction_chamber", ReactionChamberBlock::new, AEBaseBlockItem::new);
+    public static final AAEBlockDefinition<ReactionChamberBlock> REACTION_CHAMBER =
+            block("Reaction Chamber", "reaction_chamber", ReactionChamberBlock::new, AEBaseBlockItem::new);
     public static final AAEBlockDefinition<QuantumCrafterBlock> QUANTUM_CRAFTER =
             block("Quantum Crafter", "quantum_crafter", QuantumCrafterBlock::new, AEBaseBlockItem::new);
 

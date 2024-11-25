@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "advanced_ae:block/quantum_alloy_slab"
+    },
+    "type=double": {
+      "model": "advanced_ae:block/quantum_alloy_block"
+    },
+    "type=top": {
+      "model": "advanced_ae:block/quantum_alloy_slab_top"
+    }
+  }
+}

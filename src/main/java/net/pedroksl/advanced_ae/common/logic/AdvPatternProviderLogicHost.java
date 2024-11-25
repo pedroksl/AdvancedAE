@@ -2,92 +2,93 @@ package net.pedroksl.advanced_ae.common.logic;
 
 import java.util.EnumSet;
 
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.IUpgradeableObject;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import appeng.helpers.patternprovider.PatternContainer;
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
 import appeng.api.implementations.blockentities.PatternContainerGroup;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGrid;
 import appeng.api.stacks.AEItemKey;
+import appeng.api.upgrades.IUpgradeInventory;
+import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import appeng.helpers.IPriorityHost;
+import appeng.helpers.patternprovider.PatternContainer;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.implementations.PatternProviderMenu;
 import appeng.menu.locator.MenuLocator;
 
-public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPriorityHost, PatternContainer, IUpgradeableObject {
-	AdvPatternProviderLogic getLogic();
+public interface AdvPatternProviderLogicHost
+        extends IConfigurableObject, IPriorityHost, PatternContainer, IUpgradeableObject {
+    AdvPatternProviderLogic getLogic();
 
-	/**
-	 * @return The block entity that is in-world and hosts the interface.
-	 */
-	BlockEntity getBlockEntity();
+    /**
+     * @return The block entity that is in-world and hosts the interface.
+     */
+    BlockEntity getBlockEntity();
 
-	EnumSet<Direction> getTargets();
-	
-	void saveChanges();
+    EnumSet<Direction> getTargets();
 
-	@Override
-	default IConfigManager getConfigManager() {
-		return getLogic().getConfigManager();
-	}
+    void saveChanges();
 
-	@Override
-	default int getPriority() {
-		return getLogic().getPriority();
-	}
+    @Override
+    default IConfigManager getConfigManager() {
+        return getLogic().getConfigManager();
+    }
 
-	@Override
-	default void setPriority(int newValue) {
-		getLogic().setPriority(newValue);
-	}
+    @Override
+    default int getPriority() {
+        return getLogic().getPriority();
+    }
 
-	default void openMenu(Player player, MenuLocator locator) {
-		MenuOpener.open(PatternProviderMenu.TYPE, player, locator);
-	}
+    @Override
+    default void setPriority(int newValue) {
+        getLogic().setPriority(newValue);
+    }
 
-	@Override
-	default void returnToMainMenu(Player player, ISubMenu subMenu) {
-		MenuOpener.returnTo(PatternProviderMenu.TYPE, player, subMenu.getLocator());
-	}
+    default void openMenu(Player player, MenuLocator locator) {
+        MenuOpener.open(PatternProviderMenu.TYPE, player, locator);
+    }
 
-	@Override
-	default @Nullable IGrid getGrid() {
-		return getLogic().getGrid();
-	}
+    @Override
+    default void returnToMainMenu(Player player, ISubMenu subMenu) {
+        MenuOpener.returnTo(PatternProviderMenu.TYPE, player, subMenu.getLocator());
+    }
 
-	AEItemKey getTerminalIcon();
+    @Override
+    default @Nullable IGrid getGrid() {
+        return getLogic().getGrid();
+    }
 
-	@Override
-	default boolean isVisibleInTerminal() {
-		return getLogic().getConfigManager().getSetting(Settings.PATTERN_ACCESS_TERMINAL) == YesNo.YES;
-	}
+    AEItemKey getTerminalIcon();
 
-	@Override
-	default InternalInventory getTerminalPatternInventory() {
-		return getLogic().getPatternInv();
-	}
+    @Override
+    default boolean isVisibleInTerminal() {
+        return getLogic().getConfigManager().getSetting(Settings.PATTERN_ACCESS_TERMINAL) == YesNo.YES;
+    }
 
-	@Override
-	default long getTerminalSortOrder() {
-		return getLogic().getSortValue();
-	}
+    @Override
+    default InternalInventory getTerminalPatternInventory() {
+        return getLogic().getPatternInv();
+    }
 
-	default PatternContainerGroup getTerminalGroup() {
-		return getLogic().getTerminalGroup();
-	}
+    @Override
+    default long getTerminalSortOrder() {
+        return getLogic().getSortValue();
+    }
 
-	default IUpgradeInventory getUpgrades() {
-		return ((IUpgradeableObject) this.getLogic()).getUpgrades();
-	}
+    default PatternContainerGroup getTerminalGroup() {
+        return getLogic().getTerminalGroup();
+    }
+
+    default IUpgradeInventory getUpgrades() {
+        return ((IUpgradeableObject) this.getLogic()).getUpgrades();
+    }
 }

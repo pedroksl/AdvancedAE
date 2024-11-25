@@ -1,33 +1,31 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import appeng.core.definitions.ItemDefinition;
+import java.util.Objects;
+
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-
-import java.util.Objects;
+import net.minecraftforge.registries.RegistryObject;
 
 public class FluidDefinition<F extends Fluid, B extends LiquidBlock> {
     private final String englishName;
-    private final DeferredHolder<FluidType, FluidType> fluidType;
-    private final DeferredHolder<Fluid, F> flowing;
-    private final DeferredHolder<Fluid, F> source;
-    private final DeferredHolder<Block, B> block;
-    private final ItemDefinition<BucketItem> bucketItem;
+    private final RegistryObject<FluidType> fluidType;
+    private final RegistryObject<F> flowing;
+    private final RegistryObject<F> source;
+    private final RegistryObject<B> block;
+    private final AAEItemDefinition<BucketItem> bucketItem;
 
     public FluidDefinition(
             String englishName,
-            DeferredHolder<FluidType, FluidType> fluidType,
-            DeferredHolder<Fluid, F> flowing,
-            DeferredHolder<Fluid, F> source,
-            DeferredHolder<Block, B> block,
-            ItemDefinition<BucketItem> bucketItem) {
+            RegistryObject<FluidType> fluidType,
+            RegistryObject<F> flowing,
+            RegistryObject<F> source,
+            RegistryObject<B> block,
+            AAEItemDefinition<BucketItem> bucketItem) {
         this.englishName = englishName;
         this.fluidType = Objects.requireNonNull(fluidType);
         this.flowing = Objects.requireNonNull(flowing);
@@ -44,39 +42,43 @@ public class FluidDefinition<F extends Fluid, B extends LiquidBlock> {
         return this.source.getId();
     }
 
-    public final DeferredHolder<FluidType, FluidType> fluidTypeId() {
-        return this.fluidType;
+    public final Holder<FluidType> fluidTypeId() {
+        return this.fluidType.getHolder().orElseThrow();
     }
 
     public final FluidType fluidType() {
         return this.fluidType.get();
     }
 
-    public final DeferredHolder<Fluid, F> flowingId() {
-        return this.flowing;
+    public final Holder<F> flowingId() {
+        return this.flowing.getHolder().orElseThrow();
     }
 
     public final F flowing() {
         return this.flowing.get();
     }
 
-    public final DeferredHolder<Fluid, F> sourceId() {
-        return this.source;
+    public final Holder<F> sourceId() {
+        return this.source.getHolder().orElseThrow();
     }
 
     public final F source() {
         return this.source.get();
     }
 
-    public final DeferredHolder<Block, B> blockId() {
-        return this.block;
+    public final ResourceLocation blockResouce() {
+        return this.block.getId();
+    }
+
+    public final Holder<B> blockId() {
+        return this.block.getHolder().orElseThrow();
     }
 
     public final B block() {
         return this.block.get();
     }
 
-    public final ItemDefinition<BucketItem> bucketItemId() {
+    public final AAEItemDefinition<BucketItem> bucketItemId() {
         return this.bucketItem;
     }
 

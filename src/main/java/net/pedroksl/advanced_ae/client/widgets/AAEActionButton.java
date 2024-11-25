@@ -1,12 +1,14 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.client.gui.Icon;
-import appeng.client.gui.widgets.IconButton;
-import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.network.chat.Component;
+
+import appeng.client.gui.Icon;
+import appeng.client.gui.widgets.IconButton;
 
 public class AAEActionButton extends IconButton {
     private static final Pattern PATTERN_NEW_LINE = Pattern.compile("\\n", Pattern.LITERAL);
@@ -24,12 +26,14 @@ public class AAEActionButton extends IconButton {
         switch (action) {
             case F_FLUSH -> {
                 icon = Icon.CLEAR;
-                displayName = Component.translatable("gui.tooltips.advanced_ae.ClearButton");;
+                displayName = Component.translatable("gui.tooltips.advanced_ae.ClearButton");
+                ;
                 displayValue = Component.translatable("gui.tooltips.advanced_ae.ClearFluidButtonHint");
             }
             case CLEAR -> {
                 icon = Icon.CLEAR;
-                displayName = Component.translatable("gui.tooltips.advanced_ae.ClearButton");;
+                displayName = Component.translatable("gui.tooltips.advanced_ae.ClearButton");
+                ;
                 displayValue = Component.translatable("gui.tooltips.advanced_ae.ClearSidesButtonHint");
             }
             default -> throw new IllegalArgumentException("Unknown ActionItem: " + action);

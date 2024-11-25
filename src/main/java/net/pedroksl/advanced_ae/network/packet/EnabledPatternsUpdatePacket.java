@@ -1,20 +1,19 @@
 package net.pedroksl.advanced_ae.network.packet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.client.QuantumCrafterScreen;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.pedroksl.advanced_ae.client.gui.QuantumCrafterScreen;
 
 public class EnabledPatternsUpdatePacket implements IMessage<EnabledPatternsUpdatePacket> {
     private List<Boolean> enabledPatterns;
 
-    public EnabledPatternsUpdatePacket() {
-
-    }
+    public EnabledPatternsUpdatePacket() {}
 
     public EnabledPatternsUpdatePacket(List<Boolean> enabledPatterns) {
         this.enabledPatterns = enabledPatterns;

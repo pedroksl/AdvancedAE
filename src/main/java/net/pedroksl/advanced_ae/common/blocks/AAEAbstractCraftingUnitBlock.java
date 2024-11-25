@@ -1,10 +1,9 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
-import appeng.block.AEBaseEntityBlock;
-import appeng.block.crafting.ICraftingUnitType;
-import appeng.blockentity.AEBaseBlockEntity;
-import appeng.menu.MenuOpener;
-import appeng.menu.locator.MenuLocators;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -19,11 +18,14 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
-import net.pedroksl.advanced_ae.gui.quantumcomputer.QuantumComputerMenu;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import appeng.block.AEBaseEntityBlock;
+import appeng.block.crafting.ICraftingUnitType;
+import appeng.blockentity.AEBaseBlockEntity;
+import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuLocators;
 
 public abstract class AAEAbstractCraftingUnitBlock<T extends AEBaseBlockEntity> extends AEBaseEntityBlock<T> {
     public static final BooleanProperty FORMED = BooleanProperty.create("formed");
@@ -92,11 +94,11 @@ public abstract class AAEAbstractCraftingUnitBlock<T extends AEBaseBlockEntity> 
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-                                 InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(
+            BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (level.getBlockEntity(pos) instanceof AdvCraftingBlockEntity be && be.isFormed() && be.isActive()) {
             if (!level.isClientSide()) {
-                MenuOpener.open(QuantumComputerMenu.TYPE, player, MenuLocators.forBlockEntity(be));
+                MenuOpener.open(AAEMenus.QUANTUM_COMPUTER, player, MenuLocators.forBlockEntity(be));
             }
 
             return InteractionResult.sidedSuccess(level.isClientSide());

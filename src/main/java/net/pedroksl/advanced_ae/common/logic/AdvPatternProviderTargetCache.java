@@ -5,7 +5,6 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import appeng.helpers.patternprovider.PatternProviderTarget;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -19,68 +18,67 @@ import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AEKeyType;
 import appeng.api.storage.MEStorage;
 import appeng.capabilities.Capabilities;
+import appeng.helpers.patternprovider.PatternProviderTarget;
 import appeng.me.storage.CompositeStorage;
 import appeng.parts.automation.StackWorldBehaviors;
 import appeng.util.BlockApiCache;
 
 class AdvPatternProviderTargetCache {
-	private final BlockApiCache<MEStorage> cache;
-	private final Direction direction;
-	private final IActionSource src;
-	private final HashMap<Direction, Map<AEKeyType, ExternalStorageStrategy>> strategiesMap = new HashMap<>();
+    private final BlockApiCache<MEStorage> cache;
+    private final Direction direction;
+    private final IActionSource src;
+    private final HashMap<Direction, Map<AEKeyType, ExternalStorageStrategy>> strategiesMap = new HashMap<>();
 
-	AdvPatternProviderTargetCache(ServerLevel l, BlockPos pos, Direction direction, IActionSource src) {
-		this.cache = BlockApiCache.create(Capabilities.STORAGE, l, pos);
-		this.direction = direction;
-		this.src = src;
-		for (Direction dir : Direction.values()) {
-			this.strategiesMap.put(dir, StackWorldBehaviors.createExternalStorageStrategies(l, pos, dir));
-		}
-	}
+    AdvPatternProviderTargetCache(ServerLevel l, BlockPos pos, Direction direction, IActionSource src) {
+        this.cache = BlockApiCache.create(Capabilities.STORAGE, l, pos);
+        this.direction = direction;
+        this.src = src;
+        for (Direction dir : Direction.values()) {
+            this.strategiesMap.put(dir, StackWorldBehaviors.createExternalStorageStrategies(l, pos, dir));
+        }
+    }
 
-	@Nullable
-	PatternProviderTarget find(Direction fromSide) {
-		// our capability first: allows any storage channel
-		Direction side = fromSide == null ? direction : fromSide;
-		var meStorage = cache.find(side);
-		if (meStorage != null) {
-			return wrapMeStorage(meStorage);
-		}
+    @Nullable
+    PatternProviderTarget find(Direction fromSide) {
+        // our capability first: allows any storage channel
+        Direction side = fromSide == null ? direction : fromSide;
+        var meStorage = cache.find(side);
+        if (meStorage != null) {
+            return wrapMeStorage(meStorage);
+        }
 
-		// otherwise fall back to the platform capability
-		var externalStorages = new IdentityHashMap<AEKeyType, MEStorage>(2);
-		for (var entry : strategiesMap.get(side).entrySet()) {
-			var wrapper = entry.getValue().createWrapper(false, () -> {
-			});
-			if (wrapper != null) {
-				externalStorages.put(entry.getKey(), wrapper);
-			}
-		}
+        // otherwise fall back to the platform capability
+        var externalStorages = new IdentityHashMap<AEKeyType, MEStorage>(2);
+        for (var entry : strategiesMap.get(side).entrySet()) {
+            var wrapper = entry.getValue().createWrapper(false, () -> {});
+            if (wrapper != null) {
+                externalStorages.put(entry.getKey(), wrapper);
+            }
+        }
 
-		if (!externalStorages.isEmpty()) {
-			return wrapMeStorage(new CompositeStorage(externalStorages));
-		}
+        if (!externalStorages.isEmpty()) {
+            return wrapMeStorage(new CompositeStorage(externalStorages));
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	private PatternProviderTarget wrapMeStorage(MEStorage storage) {
-		return new PatternProviderTarget() {
-			@Override
-			public long insert(AEKey what, long amount, Actionable type) {
-				return storage.insert(what, amount, type, src);
-			}
+    private PatternProviderTarget wrapMeStorage(MEStorage storage) {
+        return new PatternProviderTarget() {
+            @Override
+            public long insert(AEKey what, long amount, Actionable type) {
+                return storage.insert(what, amount, type, src);
+            }
 
-			@Override
-			public boolean containsPatternInput(Set<AEKey> patternInputs) {
-				for (var stack : storage.getAvailableStacks()) {
-					if (patternInputs.contains(stack.getKey().dropSecondary())) {
-						return true;
-					}
-				}
-				return false;
-			}
-		};
-	}
+            @Override
+            public boolean containsPatternInput(Set<AEKey> patternInputs) {
+                for (var stack : storage.getAvailableStacks()) {
+                    if (patternInputs.contains(stack.getKey().dropSecondary())) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+    }
 }
-

@@ -1,12 +1,13 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import appeng.api.features.HotkeyAction;
-import org.lwjgl.glfw.GLFW;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.lwjgl.glfw.GLFW;
+
+import appeng.api.features.HotkeyAction;
 
 public final class AAEHotkeys {
     public static final Map<String, List<HotkeyAction>> REGISTRY = new HashMap<>();
@@ -48,69 +49,73 @@ public final class AAEHotkeys {
     }
 
     public static void init() {
-//        registerArmorAction(
-//                AAEItems.QUANTUM_HELMET,
-//                (player, locator) -> AAEItems.QUANTUM_HELMET.get().openFromEquipmentSlot(player, locator),
-//                Keys.ARMOR_CONFIG.id);
-//        registerArmorAction(
-//                AAEItems.QUANTUM_CHESTPLATE,
-//                (player, locator) -> AAEItems.QUANTUM_CHESTPLATE.get().openFromEquipmentSlot(player, locator),
-//                Keys.ARMOR_CONFIG.id);
-//        registerArmorAction(
-//                AAEItems.QUANTUM_LEGGINGS,
-//                (player, locator) -> AAEItems.QUANTUM_LEGGINGS.get().openFromEquipmentSlot(player, locator),
-//                Keys.ARMOR_CONFIG.id);
-//        registerArmorAction(
-//                AAEItems.QUANTUM_BOOTS,
-//                (player, locator) -> AAEItems.QUANTUM_BOOTS.get().openFromEquipmentSlot(player, locator),
-//                Keys.ARMOR_CONFIG.id);
-//        register(
-//                AAEItems.ADV_PATTERN_ENCODER,
-//                (player, locator) -> AAEItems.ADV_PATTERN_ENCODER.get().openFromInventory(player, locator),
-//                Keys.PATTERN_ENCODER_HOTKEY.id);
-//
-//        registerToggleUpgradeAction(
-//                AAEItems.QUANTUM_HELMET,
-//                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.MAGNET, player),
-//                Keys.QUANTUM_MAGNET_UPGRADE.id);
-//        registerToggleUpgradeAction(
-//                AAEItems.QUANTUM_HELMET,
-//                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.AUTO_STOCK, player),
-//                Keys.QUANTUM_AUTO_STOCK_UPGRADE.id);
-//        registerToggleUpgradeAction(
-//                AAEItems.QUANTUM_HELMET,
-//                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.NIGHT_VISION, player),
-//                Keys.QUANTUM_NIGHT_VISION_UPGRADE.id);
-//
-//        registerArmorAction(
-//                AAEItems.QUANTUM_HELMET,
-//                (player, locator) -> AAEItems.QUANTUM_HELMET.get().openPortableWorkbench(player, locator),
-//                Keys.PORTABLE_WORKBENCH.id);
-//        registerArmorAction(
-//                AAEItems.QUANTUM_CHESTPLATE,
-//                (player, locator) -> AAEItems.QUANTUM_CHESTPLATE.get().attemptCraftingTarget(player, locator),
-//                Keys.PICK_CRAFT.id);
+        //        registerArmorAction(
+        //                AAEItems.QUANTUM_HELMET,
+        //                (player, locator) -> AAEItems.QUANTUM_HELMET.get().openFromEquipmentSlot(player, locator),
+        //                Keys.ARMOR_CONFIG.id);
+        //        registerArmorAction(
+        //                AAEItems.QUANTUM_CHESTPLATE,
+        //                (player, locator) -> AAEItems.QUANTUM_CHESTPLATE.get().openFromEquipmentSlot(player, locator),
+        //                Keys.ARMOR_CONFIG.id);
+        //        registerArmorAction(
+        //                AAEItems.QUANTUM_LEGGINGS,
+        //                (player, locator) -> AAEItems.QUANTUM_LEGGINGS.get().openFromEquipmentSlot(player, locator),
+        //                Keys.ARMOR_CONFIG.id);
+        //        registerArmorAction(
+        //                AAEItems.QUANTUM_BOOTS,
+        //                (player, locator) -> AAEItems.QUANTUM_BOOTS.get().openFromEquipmentSlot(player, locator),
+        //                Keys.ARMOR_CONFIG.id);
+        //        register(
+        //                AAEItems.ADV_PATTERN_ENCODER,
+        //                (player, locator) -> AAEItems.ADV_PATTERN_ENCODER.get().openFromInventory(player, locator),
+        //                Keys.PATTERN_ENCODER_HOTKEY.id);
+        //
+        //        registerToggleUpgradeAction(
+        //                AAEItems.QUANTUM_HELMET,
+        //                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.MAGNET,
+        // player),
+        //                Keys.QUANTUM_MAGNET_UPGRADE.id);
+        //        registerToggleUpgradeAction(
+        //                AAEItems.QUANTUM_HELMET,
+        //                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.AUTO_STOCK,
+        // player),
+        //                Keys.QUANTUM_AUTO_STOCK_UPGRADE.id);
+        //        registerToggleUpgradeAction(
+        //                AAEItems.QUANTUM_HELMET,
+        //                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack,
+        // UpgradeType.NIGHT_VISION, player),
+        //                Keys.QUANTUM_NIGHT_VISION_UPGRADE.id);
+        //
+        //        registerArmorAction(
+        //                AAEItems.QUANTUM_HELMET,
+        //                (player, locator) -> AAEItems.QUANTUM_HELMET.get().openPortableWorkbench(player, locator),
+        //                Keys.PORTABLE_WORKBENCH.id);
+        //        registerArmorAction(
+        //                AAEItems.QUANTUM_CHESTPLATE,
+        //                (player, locator) -> AAEItems.QUANTUM_CHESTPLATE.get().attemptCraftingTarget(player, locator),
+        //                Keys.PICK_CRAFT.id);
     }
 
-//    public static void register(ItemLike item, InventoryHotkeyAction.Opener opener, String id) {
-//        register(new InventoryHotkeyAction(item, opener), id);
-//        register(new CuriosHotkeyAction(item, opener), id);
-//    }
-//
-//    public static void registerArmorAction(ItemLike item, ArmorHotkeyAction.Opener opener, String id) {
-//        register(new ArmorHotkeyAction(item, opener), id);
-//    }
-//
-//    public static void registerToggleUpgradeAction(ItemLike item, ToggleUpgradeCardAction.Opener opener, String id) {
-//        register(new ToggleUpgradeCardAction(item, opener), id);
-//    }
+    //    public static void register(ItemLike item, InventoryHotkeyAction.Opener opener, String id) {
+    //        register(new InventoryHotkeyAction(item, opener), id);
+    //        register(new CuriosHotkeyAction(item, opener), id);
+    //    }
+    //
+    //    public static void registerArmorAction(ItemLike item, ArmorHotkeyAction.Opener opener, String id) {
+    //        register(new ArmorHotkeyAction(item, opener), id);
+    //    }
+    //
+    //    public static void registerToggleUpgradeAction(ItemLike item, ToggleUpgradeCardAction.Opener opener, String
+    // id) {
+    //        register(new ToggleUpgradeCardAction(item, opener), id);
+    //    }
 
     public static synchronized void register(HotkeyAction hotkeyAction, String id) {
         if (REGISTRY.containsKey(id)) {
             REGISTRY.get(id).add(0, hotkeyAction);
         } else {
             REGISTRY.put(id, new ArrayList<>(List.of(hotkeyAction)));
-            //AdvancedAE.registerHotkey(id);
+            // AdvancedAE.registerHotkey(id);
         }
     }
 

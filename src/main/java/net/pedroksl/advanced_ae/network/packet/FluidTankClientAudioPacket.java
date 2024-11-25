@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.network.packet;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -9,9 +10,7 @@ import net.pedroksl.advanced_ae.api.IFluidTankScreen;
 public class FluidTankClientAudioPacket implements IMessage<FluidTankClientAudioPacket> {
     private boolean isInsert;
 
-    public FluidTankClientAudioPacket() {
-
-    }
+    public FluidTankClientAudioPacket() {}
 
     public FluidTankClientAudioPacket(boolean isInsert) {
         this.isInsert = isInsert;

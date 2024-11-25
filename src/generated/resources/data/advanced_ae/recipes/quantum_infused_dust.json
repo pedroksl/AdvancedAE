@@ -1,0 +1,12 @@
+{
+  "type": "ae2:inscriber",
+  "ingredients": {
+    "middle": {
+      "item": "advanced_ae:shattered_singularity"
+    }
+  },
+  "mode": "press",
+  "result": {
+    "item": "advanced_ae:quantum_infused_dust"
+  }
+}

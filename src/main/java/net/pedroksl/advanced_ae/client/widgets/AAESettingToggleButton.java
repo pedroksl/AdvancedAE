@@ -1,11 +1,10 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.api.config.Setting;
-import appeng.api.config.YesNo;
-import appeng.client.gui.AEBaseScreen;
-import appeng.core.localization.ButtonToolTips;
-import appeng.core.localization.LocalizationEnum;
-import appeng.util.EnumCycler;
+import java.util.*;
+import java.util.function.Predicate;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -13,10 +12,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.pedroksl.advanced_ae.api.AAESettings;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.function.Predicate;
+import appeng.api.config.Setting;
+import appeng.api.config.YesNo;
+import appeng.client.gui.AEBaseScreen;
+import appeng.core.localization.ButtonToolTips;
+import appeng.core.localization.LocalizationEnum;
+import appeng.util.EnumCycler;
 
 public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
     private static Map<EnumPair<?>, ButtonAppearance> appearances;
@@ -30,16 +32,12 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
         void handle(T button, boolean backwards);
     }
 
-    public AAESettingToggleButton(
-            Setting<T> setting, T val, IHandler<AAESettingToggleButton<T>> onPress) {
+    public AAESettingToggleButton(Setting<T> setting, T val, IHandler<AAESettingToggleButton<T>> onPress) {
         this(setting, val, t -> true, onPress);
     }
 
     public AAESettingToggleButton(
-            Setting<T> setting,
-            T val,
-            Predicate<T> isValidValue,
-            IHandler<AAESettingToggleButton<T>> onPress) {
+            Setting<T> setting, T val, Predicate<T> isValidValue, IHandler<AAESettingToggleButton<T>> onPress) {
         super(AAESettingToggleButton::onPress);
         this.onPress = onPress;
 
@@ -85,9 +83,7 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
         lines.add(title);
         Collections.addAll(lines, tooltipLines);
 
-        appearances.put(
-                new EnumPair<>(setting, val),
-                new ButtonAppearance(icon, null, lines));
+        appearances.put(new EnumPair<>(setting, val), new ButtonAppearance(icon, null, lines));
     }
 
     private static <T extends Enum<T>> void registerApp(
@@ -96,9 +92,7 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
         lines.add(title);
         Collections.addAll(lines, tooltipLines);
 
-        appearances.put(
-                new EnumPair<>(setting, val),
-                new ButtonAppearance(null, item.asItem(), lines));
+        appearances.put(new EnumPair<>(setting, val), new ButtonAppearance(null, item.asItem(), lines));
     }
 
     private static <T extends Enum<T>> void registerApp(
@@ -157,8 +151,7 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
             return Collections.emptyList();
         }
 
-        var buttonAppearance =
-                appearances.get(new EnumPair<>(this.buttonSetting, this.currentValue));
+        var buttonAppearance = appearances.get(new EnumPair<>(this.buttonSetting, this.currentValue));
         if (buttonAppearance == null) {
             return Collections.singletonList(ButtonToolTips.NoSuchMessage.text());
         }

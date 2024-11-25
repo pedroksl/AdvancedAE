@@ -1,16 +1,17 @@
 package net.pedroksl.advanced_ae.common.cluster;
 
-import appeng.api.networking.IGrid;
-import appeng.api.networking.events.GridCraftingCpuChange;
-import appeng.me.cluster.IAEMultiBlock;
-import appeng.me.cluster.MBCalculator;
+import java.util.Iterator;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 
-import java.util.Iterator;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.events.GridCraftingCpuChange;
+import appeng.me.cluster.IAEMultiBlock;
+import appeng.me.cluster.MBCalculator;
 
 public class AdvCraftingCPUCalculator extends MBCalculator<AdvCraftingBlockEntity, AdvCraftingCPUCluster> {
 

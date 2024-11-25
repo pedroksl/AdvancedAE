@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.network.packet;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterConfigPatternMenu;
@@ -9,9 +10,7 @@ public class SetStockAmountPacket implements IMessage<SetStockAmountPacket> {
     private int index;
     private long amount;
 
-    public SetStockAmountPacket() {
-
-    }
+    public SetStockAmountPacket() {}
 
     public SetStockAmountPacket(int index, long amount) {
         this.index = index;

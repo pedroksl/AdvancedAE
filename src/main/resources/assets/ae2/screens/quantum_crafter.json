@@ -1,10 +1,6 @@
 {
 	"$schema": "schema.json",
-	"includes": [
-		"common/common.json",
-		"common/player_inventory.json",
-		"common/toolbox.json"
-	],
+	"includes": ["common/common.json", "common/player_inventory.json"],
 	"text": {
 		"dialog_title": {
 			"text": {

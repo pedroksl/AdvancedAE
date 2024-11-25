@@ -1,33 +1,29 @@
 package net.pedroksl.advanced_ae.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.pedroksl.advanced_ae.api.AAESettings;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
+import net.pedroksl.advanced_ae.network.AAENetworkHandler;
+import net.pedroksl.advanced_ae.network.packet.EnabledPatternsUpdatePacket;
+
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
 import appeng.api.util.IConfigManager;
 import appeng.core.definitions.AEItems;
 import appeng.menu.SlotSemantics;
 import appeng.menu.guisync.GuiSync;
-import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.implementations.UpgradeableMenu;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.RestrictedInputSlot;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.api.AAESettings;
-import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
-import net.pedroksl.advanced_ae.network.AAENetworkHandler;
-import net.pedroksl.advanced_ae.network.packet.EnabledPatternsUpdatePacket;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
-
-    public static final MenuType<QuantumCrafterMenu> TYPE = MenuTypeBuilder
-            .create(QuantumCrafterMenu::new, QuantumCrafterEntity.class)
-            .build("quantum_crafter");
 
     @GuiSync(2)
     public YesNo meExport = YesNo.YES;
@@ -41,7 +37,7 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
     private final Slot[] patternSlots = new Slot[9];
 
     public QuantumCrafterMenu(int id, Inventory ip, QuantumCrafterEntity host) {
-        super(TYPE, id, ip, host);
+        super(AAEMenus.QUANTUM_CRAFTER, id, ip, host);
 
         var patterns = host.getPatternInventory();
         for (var x = 0; x < patterns.size(); x++) {

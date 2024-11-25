@@ -1,28 +1,24 @@
 package net.pedroksl.advanced_ae.gui;
 
-import appeng.api.orientation.RelativeSide;
-import appeng.api.storage.ISubMenuHost;
-import appeng.menu.AEBaseMenu;
-import appeng.menu.ISubMenu;
-import appeng.menu.MenuOpener;
-import appeng.menu.implementations.MenuTypeBuilder;
-import appeng.menu.locator.MenuLocator;
+import java.util.EnumSet;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.OutputDirectionClientUpdatePacket;
 import net.pedroksl.advanced_ae.network.packet.UpdateSideStatusPacket;
 
-import java.util.EnumSet;
+import appeng.api.orientation.RelativeSide;
+import appeng.menu.AEBaseMenu;
+import appeng.menu.ISubMenu;
+import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuLocator;
 
 public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
-
-    public static final MenuType<OutputDirectionMenu> TYPE = MenuTypeBuilder
-            .create((id, ip, host) -> new OutputDirectionMenu(id, ip, host), IDirectionalOutputHost.class)
-            .build("aae_output_direction");
 
     public EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
 
@@ -31,7 +27,7 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
     private static final String CLEAR = "clearSides";
 
     public OutputDirectionMenu(int id, Inventory ip, IDirectionalOutputHost host) {
-        this(TYPE, id, ip, host);
+        this(AAEMenus.OUTPUT_DIRECTION, id, ip, host);
     }
 
     protected OutputDirectionMenu(
@@ -48,7 +44,7 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
     }
 
     public static void open(ServerPlayer player, MenuLocator locator, EnumSet<RelativeSide> allowedOutputs) {
-        MenuOpener.open(TYPE, player, locator);
+        MenuOpener.open(AAEMenus.OUTPUT_DIRECTION, player, locator);
 
         if (player.containerMenu instanceof OutputDirectionMenu cca) {
             cca.setAllowedOutputs(allowedOutputs);

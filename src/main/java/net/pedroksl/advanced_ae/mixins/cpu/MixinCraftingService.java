@@ -1,5 +1,27 @@
 package net.pedroksl.advanced_ae.mixins.cpu;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.google.common.collect.ImmutableSet;
+
+import org.apache.commons.lang3.mutable.MutableObject;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import net.minecraft.nbt.CompoundTag;
+import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
+import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCluster;
+import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
+
 import appeng.api.config.Actionable;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
@@ -11,25 +33,6 @@ import appeng.crafting.CraftingLink;
 import appeng.crafting.execution.CraftingSubmitResult;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.me.service.CraftingService;
-import com.google.common.collect.ImmutableSet;
-import net.minecraft.nbt.CompoundTag;
-import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
-import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCluster;
-import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
-import org.apache.commons.lang3.mutable.MutableObject;
-import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 
 @Mixin(value = CraftingService.class, remap = false)
 public class MixinCraftingService {
@@ -70,10 +73,7 @@ public class MixinCraftingService {
     @Shadow
     private void updateCPUClusters() {}
 
-    @ModifyConstant(
-            method = "onServerEndTick",
-            constant = @Constant(longValue = 0, ordinal = 0)
-    )
+    @ModifyConstant(method = "onServerEndTick", constant = @Constant(longValue = 0, ordinal = 0))
     private long injectLatestChanged(long value) {
         return advancedAE$latestChange;
     }
@@ -90,9 +90,7 @@ public class MixinCraftingService {
         for (var cluster : this.advancedAE$advCraftingCPUClusters) {
             for (var cpu : cluster.getActiveCPUs()) {
                 cpu.craftingLogic.tickCraftingLogic(energyGrid, (CraftingService) (Object) this);
-                advancedAE$latestChange = Math.max(
-                        advancedAE$latestChange,
-                        cpu.craftingLogic.getLastModifiedOnTick());
+                advancedAE$latestChange = Math.max(advancedAE$latestChange, cpu.craftingLogic.getLastModifiedOnTick());
             }
         }
     }
@@ -246,7 +244,11 @@ public class MixinCraftingService {
         cir.setReturnValue(cpus.build());
     }
 
-    @Inject(method = "getRequestedAmount", at = @At("RETURN"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(
+            method = "getRequestedAmount",
+            at = @At("RETURN"),
+            cancellable = true,
+            locals = LocalCapture.CAPTURE_FAILHARD)
     private void onGetRequestedAmount(AEKey what, CallbackInfoReturnable<Long> cir, long requested) {
         for (var cluster : this.advancedAE$advCraftingCPUClusters) {
             for (var cpu : cluster.getActiveCPUs()) {

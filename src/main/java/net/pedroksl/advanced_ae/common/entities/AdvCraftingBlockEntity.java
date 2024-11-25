@@ -1,5 +1,32 @@
 package net.pedroksl.advanced_ae.common.entities;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import com.google.common.collect.Iterators;
+
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
+import net.pedroksl.advanced_ae.common.blocks.AAEAbstractCraftingUnitBlock;
+import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitBlock;
+import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
+import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCalculator;
+import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCluster;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridMultiblock;
@@ -14,32 +41,6 @@ import appeng.me.cluster.IAEMultiBlock;
 import appeng.util.NullConfigManager;
 import appeng.util.Platform;
 import appeng.util.iterators.ChainedIterator;
-import com.glodblock.github.glodium.util.GlodUtil;
-import com.google.common.collect.Iterators;
-import net.minecraft.Util;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
-import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
-import net.pedroksl.advanced_ae.common.blocks.AAEAbstractCraftingUnitBlock;
-import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitBlock;
-import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
-import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCalculator;
-import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCluster;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.Set;
 
 public class AdvCraftingBlockEntity extends AENetworkBlockEntity
         implements IAEMultiBlock<AdvCraftingCPUCluster>, IPowerChannelState, IConfigurableObject {
@@ -74,10 +75,12 @@ public class AdvCraftingBlockEntity extends AENetworkBlockEntity
 
     public AAEAbstractCraftingUnitBlock<?> getUnitBlock() {
         if (this.level == null || this.notLoaded() || this.isRemoved()) {
-            return AAEItemAndBlock.QUANTUM_UNIT;
+            return AAEBlocks.QUANTUM_UNIT.block();
         }
         var block = this.level.getBlockState(this.worldPosition).getBlock();
-        return block instanceof AAEAbstractCraftingUnitBlock ? (AAEAbstractCraftingUnitBlock<?>) block : AAEItemAndBlock.QUANTUM_UNIT;
+        return block instanceof AAEAbstractCraftingUnitBlock
+                ? (AAEAbstractCraftingUnitBlock<?>) block
+                : AAEBlocks.QUANTUM_UNIT.block();
     }
 
     public long getStorageBytes() {

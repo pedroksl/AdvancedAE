@@ -1,8 +1,9 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import appeng.core.localization.LocalizationEnum;
 import net.minecraft.ChatFormatting;
 import net.pedroksl.advanced_ae.AdvancedAE;
+
+import appeng.core.localization.LocalizationEnum;
 
 public enum AAEText implements LocalizationEnum {
     ModName("Advanced AE", Type.GUI),

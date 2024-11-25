@@ -1,15 +1,17 @@
 package net.pedroksl.advanced_ae.api;
 
-import appeng.api.config.Actionable;
-import appeng.api.stacks.AEFluidKey;
-import appeng.api.stacks.GenericStack;
-import appeng.helpers.externalstorage.GenericStackInv;
+import org.lwjgl.glfw.GLFW;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.pedroksl.advanced_ae.network.packet.FluidTankClientAudioPacket;
-import org.lwjgl.glfw.GLFW;
+
+import appeng.api.config.Actionable;
+import appeng.api.stacks.AEFluidKey;
+import appeng.api.stacks.GenericStack;
+import appeng.helpers.externalstorage.GenericStackInv;
 
 public interface IFluidTankHandler {
 

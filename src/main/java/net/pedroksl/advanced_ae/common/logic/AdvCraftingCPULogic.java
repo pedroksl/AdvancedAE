@@ -1,5 +1,19 @@
 package net.pedroksl.advanced_ae.common.logic;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Consumer;
+
+import com.google.common.base.Preconditions;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
+
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.features.IPlayerRegistry;
@@ -22,18 +36,6 @@ import appeng.crafting.execution.CraftingSubmitResult;
 import appeng.crafting.inv.ListCraftingInventory;
 import appeng.hooks.ticking.TickHandler;
 import appeng.me.service.CraftingService;
-import com.google.common.base.Preconditions;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
-import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Consumer;
 
 public class AdvCraftingCPULogic {
 
@@ -175,8 +177,7 @@ public class AdvCraftingCPULogic {
             var expectedOutputs = new KeyCounter();
             // Contains the inputs for the pattern.
             @Nullable
-            var craftingContainer = CraftingCpuHelper.extractPatternInputs(
-                    details, inventory, level, expectedOutputs);
+            var craftingContainer = CraftingCpuHelper.extractPatternInputs(details, inventory, level, expectedOutputs);
 
             // Try to push to each provider.
             for (var provider : craftingService.getProviders(details)) {
@@ -211,8 +212,8 @@ public class AdvCraftingCPULogic {
 
                     // Prepare next inputs.
                     expectedOutputs.reset();
-                    craftingContainer = CraftingCpuHelper.extractPatternInputs(
-                            details, inventory, level, expectedOutputs);
+                    craftingContainer =
+                            CraftingCpuHelper.extractPatternInputs(details, inventory, level, expectedOutputs);
                 }
             }
 
@@ -497,13 +498,15 @@ public class AdvCraftingCPULogic {
         var connectedPlayer = IPlayerRegistry.getConnected(server, playerId);
         if (connectedPlayer != null) {
             var jobId = job.link.getCraftingID();
-            NetworkHandler.instance().sendTo(new CraftingJobStatusPacket(
-                        jobId,
-                        job.finalOutput.what(),
-                        job.finalOutput.amount(),
-                        job.remainingAmount,
-                        status),
-                    connectedPlayer);
+            NetworkHandler.instance()
+                    .sendTo(
+                            new CraftingJobStatusPacket(
+                                    jobId,
+                                    job.finalOutput.what(),
+                                    job.finalOutput.amount(),
+                                    job.remainingAmount,
+                                    status),
+                            connectedPlayer);
         }
     }
 

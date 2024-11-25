@@ -1,11 +1,12 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.*;
 import java.util.function.Consumer;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 
 public class AAEToolbarActionButton extends AAEIconButton {
     private static Map<AAEActionItems, ButtonAppearance> appearances;
@@ -29,8 +30,7 @@ public class AAEToolbarActionButton extends AAEIconButton {
         }
     }
 
-    private static void registerApp(
-            AAEIcon icon, AAEActionItems action, Component title, Component hint) {
+    private static void registerApp(AAEIcon icon, AAEActionItems action, Component title, Component hint) {
         var lines = new ArrayList<Component>();
         lines.add(title);
         Collections.addAll(lines, hint);

@@ -1,27 +1,24 @@
 package net.pedroksl.advanced_ae.gui.quantumcomputer;
 
+import java.util.*;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
+
 import appeng.api.config.CpuSelectionMode;
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.stacks.GenericStack;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.guisync.PacketWritable;
-import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.crafting.CraftingCPUMenu;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
-import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
-import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
 
 public class QuantumComputerMenu extends CraftingCPUMenu {
-
-    public static final MenuType<QuantumComputerMenu> TYPE = MenuTypeBuilder
-            .create(QuantumComputerMenu::new, AdvCraftingBlockEntity.class)
-            .build("quantum_computer");
 
     private static final String ACTION_SELECT_CPU = "selectCpu";
 
@@ -49,7 +46,7 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
     private final AdvCraftingBlockEntity host;
 
     public QuantumComputerMenu(int id, Inventory ip, AdvCraftingBlockEntity te) {
-        super(TYPE, id, ip, te);
+        super(AAEMenus.QUANTUM_COMPUTER, id, ip, te);
         this.cpuList = EMPTY_CPU_LIST;
         this.selectedCpu = null;
         this.selectedCpuSerial = -1;

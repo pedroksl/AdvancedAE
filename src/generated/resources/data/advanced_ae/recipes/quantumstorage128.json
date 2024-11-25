@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_storage_component"
+    },
+    "E": {
+      "item": "advanced_ae:shattered_singularity"
+    },
+    "U": {
+      "item": "advanced_ae:quantum_unit"
+    }
+  },
+  "pattern": [
+    "ECE",
+    "CUC",
+    "ECE"
+  ],
+  "result": {
+    "item": "advanced_ae:quantum_storage_128"
+  },
+  "show_notification": true
+}

@@ -12,6 +12,9 @@ pluginManagement {
         }
         maven { url = 'https://maven.parchmentmc.org' }
     }
+    plugins {
+        id("com.diffplug.spotless") version "6.25.0"
+    }
 }
 
 plugins {

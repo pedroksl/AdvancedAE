@@ -1,0 +1,15 @@
+{
+	"variants": {
+		"": {
+			"model": "advanced_ae:block/quantum_alloy_block"
+		}
+	},
+	"athena:loader": "athena:ctm",
+	"ctm_textures": {
+		"center": "advanced_ae:block/quantum_alloy_block_center",
+		"empty": "advanced_ae:block/quantum_alloy_block_empty",
+		"horizontal": "advanced_ae:block/quantum_alloy_block_h",
+		"vertical": "advanced_ae:block/quantum_alloy_block_v",
+		"particle": "advanced_ae:block/quantum_alloy_block"
+	}
+}

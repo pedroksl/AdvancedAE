@@ -1,5 +1,32 @@
 package net.pedroksl.advanced_ae.common.entities;
 
+import java.util.*;
+
+import com.mojang.datafixers.util.Pair;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.*;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.TransientCraftingContainer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.pedroksl.advanced_ae.api.AAESettings;
+import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
+import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+
 import appeng.api.config.*;
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.crafting.PatternDetailsHelper;
@@ -37,7 +64,6 @@ import appeng.me.helpers.MachineSource;
 import appeng.menu.AutoCraftingMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
-import appeng.menu.locator.MenuLocator;
 import appeng.menu.locator.MenuLocators;
 import appeng.util.ConfigManager;
 import appeng.util.SettingsFrom;
@@ -46,32 +72,6 @@ import appeng.util.inv.CombinedInternalInventory;
 import appeng.util.inv.FilteredInternalInventory;
 import appeng.util.inv.PlayerInternalInventory;
 import appeng.util.inv.filter.AEItemFilters;
-import com.glodblock.github.glodium.util.GlodUtil;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.*;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.TransientCraftingContainer;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.pedroksl.advanced_ae.api.AAESettings;
-import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
-import net.pedroksl.advanced_ae.common.AAEItemAndBlock;
-import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
-import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
-import net.pedroksl.advanced_ae.gui.QuantumCrafterMenu;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
 
 public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         implements IGridTickable, IUpgradeableObject, IConfigurableObject, IDirectionalOutputHost {
@@ -809,7 +809,9 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
 
         if (mode == SettingsFrom.MEMORY_CARD) {
             var outputs = getAllowedOutputs();
-            var sides = new IntArrayTag(outputs.stream().map(o -> o.getUnrotatedSide().get3DDataValue()).toList());
+            var sides = new IntArrayTag(outputs.stream()
+                    .map(o -> o.getUnrotatedSide().get3DDataValue())
+                    .toList());
             output.put(NBT_ALLOWED_SIDES, sides);
 
             this.patternInv.writeToNBT(output, NBT_MEMORY_CARD_PATTERNS);
@@ -850,7 +852,8 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
 
             // Restore from blank patterns in the player inv
             var playerInv = player.getInventory();
-            var blankPatternsAvailable = player.getAbilities().instabuild ? Integer.MAX_VALUE
+            var blankPatternsAvailable = player.getAbilities().instabuild
+                    ? Integer.MAX_VALUE
                     : playerInv.countItem(AEItems.BLANK_PATTERN.asItem());
             var blankPatternsUsed = 0;
             for (int i = 0; i < desiredPatterns.size(); i++) {
@@ -859,8 +862,8 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
                 }
 
                 // Don't restore junk
-                var pattern = PatternDetailsHelper.decodePattern(desiredPatterns.getStackInSlot(i),
-                        this.getBlockEntity().getLevel(), true);
+                var pattern = PatternDetailsHelper.decodePattern(
+                        desiredPatterns.getStackInSlot(i), this.getBlockEntity().getLevel(), true);
                 if (pattern == null) {
                     continue; // Skip junk / broken recipes
                 }
@@ -868,7 +871,9 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
                 // Keep track of how many blank patterns we need
                 ++blankPatternsUsed;
                 if (blankPatternsAvailable >= blankPatternsUsed) {
-                    if (!this.patternInv.addItems(pattern.getDefinition().toStack()).isEmpty()) {
+                    if (!this.patternInv
+                            .addItems(pattern.getDefinition().toStack())
+                            .isEmpty()) {
                         AELog.warn("Failed to add pattern to pattern provider");
                         blankPatternsUsed--;
                     }
@@ -998,13 +1003,9 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         saveChanges();
     }
 
-    public void openMenu(Player player, MenuLocator locator) {
-        MenuOpener.open(QuantumCrafterMenu.TYPE, player, locator);
-    }
-
     @Override
     public void returnToMainMenu(Player player, ISubMenu iSubMenu) {
-        MenuOpener.returnTo(QuantumCrafterMenu.TYPE, player, MenuLocators.forBlockEntity(this));
+        MenuOpener.returnTo(AAEMenus.QUANTUM_CRAFTER, player, MenuLocators.forBlockEntity(this));
     }
 
     @Override
@@ -1079,7 +1080,8 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         private final List<ItemStack> remainingItems;
         private final List<Long> keepMinInput;
         public long limitMaxOutput;
-        private final CraftingContainer testFrame = new TransientCraftingContainer(new AutoCraftingMenu(), GRID_SIZE, GRID_SIZE);
+        private final CraftingContainer testFrame =
+                new TransientCraftingContainer(new AutoCraftingMenu(), GRID_SIZE, GRID_SIZE);
 
         public CraftingJob(AECraftingPattern pattern) {
             this.pattern = pattern;

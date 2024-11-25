@@ -1,8 +1,9 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.api.orientation.RelativeSide;
-import appeng.core.AppEng;
 import com.mojang.blaze3d.systems.RenderSystem;
+
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
@@ -10,7 +11,9 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+
+import appeng.api.orientation.RelativeSide;
+import appeng.core.AppEng;
 
 public class OutputDirectionButton extends Button {
 

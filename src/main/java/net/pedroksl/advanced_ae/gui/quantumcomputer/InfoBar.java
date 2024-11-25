@@ -1,16 +1,17 @@
 package net.pedroksl.advanced_ae.gui.quantumcomputer;
 
-import appeng.api.client.AEKeyRendering;
-import appeng.api.stacks.AEItemKey;
-import appeng.api.stacks.AEKey;
-import appeng.client.gui.Icon;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.ItemLike;
 
-import java.util.ArrayList;
-import java.util.List;
+import appeng.api.client.AEKeyRendering;
+import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.AEKey;
+import appeng.client.gui.Icon;
 
 public class InfoBar {
     private final List<Widget> widgets = new ArrayList<>();

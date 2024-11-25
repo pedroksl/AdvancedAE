@@ -1,8 +1,9 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import appeng.block.AEBaseEntityBlock;
-import appeng.blockentity.AEBaseBlockEntity;
-import appeng.core.definitions.BlockDefinition;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -13,9 +14,8 @@ import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
+import appeng.block.AEBaseEntityBlock;
+import appeng.blockentity.AEBaseBlockEntity;
 
 @SuppressWarnings("unused")
 public final class AAEBlockEntities {
@@ -40,14 +40,16 @@ public final class AAEBlockEntities {
             AdvPatternProviderEntity.class,
             AdvPatternProviderEntity::new,
             AAEBlocks.ADV_PATTERN_PROVIDER);
-//    public static final Supplier<BlockEntityType<SmallAdvPatternProviderEntity>> SMALL_ADV_PATTERN_PROVIDER = create(
-//            "small_adv_pattern_provider",
-//            SmallAdvPatternProviderEntity.class,
-//            SmallAdvPatternProviderEntity::new,
-//            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER);
+    //    public static final Supplier<BlockEntityType<SmallAdvPatternProviderEntity>> SMALL_ADV_PATTERN_PROVIDER =
+    // create(
+    //            "small_adv_pattern_provider",
+    //            SmallAdvPatternProviderEntity.class,
+    //            SmallAdvPatternProviderEntity::new,
+    //            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER);
 
-//    public static final Supplier<BlockEntityType<ReactionChamberEntity>> REACTION_CHAMBER = create(
-//            "reaction_chamber", ReactionChamberEntity.class, ReactionChamberEntity::new, AAEBlocks.REACTION_CHAMBER);
+    //    public static final Supplier<BlockEntityType<ReactionChamberEntity>> REACTION_CHAMBER = create(
+    //            "reaction_chamber", ReactionChamberEntity.class, ReactionChamberEntity::new,
+    // AAEBlocks.REACTION_CHAMBER);
 
     public static final Supplier<BlockEntityType<QuantumCrafterEntity>> QUANTUM_CRAFTER =
             create("quantum_craft", QuantumCrafterEntity.class, QuantumCrafterEntity::new, AAEBlocks.QUANTUM_CRAFTER);
@@ -58,13 +60,13 @@ public final class AAEBlockEntities {
             String id,
             Class<T> entityClass,
             BlockEntityFactory<T> factory,
-            BlockDefinition<? extends AEBaseEntityBlock<?>>... blockDefs) {
+            AAEBlockDefinition<? extends AEBaseEntityBlock<?>>... blockDefs) {
         if (blockDefs.length == 0) {
             throw new IllegalArgumentException();
         }
 
         return DR.register(id, () -> {
-            var blocks = Arrays.stream(blockDefs).map(BlockDefinition::block).toArray(AEBaseEntityBlock[]::new);
+            var blocks = Arrays.stream(blockDefs).map(AAEBlockDefinition::block).toArray(AEBaseEntityBlock[]::new);
 
             var typeHolder = new AtomicReference<BlockEntityType<T>>();
             var type = BlockEntityType.Builder.of((pos, state) -> factory.create(typeHolder.get(), pos, state), blocks)

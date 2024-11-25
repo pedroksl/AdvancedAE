@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"working=false": {
+			"model": "advanced_ae:block/reaction_chamber"
+		},
+		"working=true": {
+			"model": "advanced_ae:block/reaction_chamber_on"
+		}
+	}
+}

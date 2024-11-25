@@ -18,8 +18,9 @@
 
 package net.pedroksl.advanced_ae.common.blocks;
 
-import appeng.block.crafting.ICraftingUnitType;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
+
+import appeng.block.crafting.ICraftingUnitType;
 
 public class AAECraftingUnitBlock extends AAEAbstractCraftingUnitBlock<AdvCraftingBlockEntity> {
 
@@ -28,9 +29,16 @@ public class AAECraftingUnitBlock extends AAEAbstractCraftingUnitBlock<AdvCrafti
     }
 
     private static Properties getProps(ICraftingUnitType type) {
+        return getProps(type, false);
+    }
+
+    public static Properties getProps(ICraftingUnitType type, boolean formed) {
         var props = metalProps();
         if (type == AAECraftingUnitType.QUANTUM_CORE || type == AAECraftingUnitType.STRUCTURE) {
-            props.noOcclusion().lightLevel(state -> state.getValue(AAEAbstractCraftingUnitBlock.LIGHT_LEVEL));
+            props.lightLevel(state -> state.getValue(AAEAbstractCraftingUnitBlock.LIGHT_LEVEL));
+        }
+        if (type == AAECraftingUnitType.QUANTUM_CORE && !formed) {
+            props.noOcclusion();
         }
         return props;
     }

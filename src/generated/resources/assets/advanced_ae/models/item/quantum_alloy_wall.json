@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "advanced_ae:block/quantum_alloy_block"
+  }
+}

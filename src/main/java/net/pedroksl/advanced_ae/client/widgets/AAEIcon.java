@@ -1,8 +1,9 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.client.gui.style.Blitter;
 import net.minecraft.resources.ResourceLocation;
 import net.pedroksl.advanced_ae.AdvancedAE;
+
+import appeng.client.gui.style.Blitter;
 
 public enum AAEIcon {
     ME_EXPORT_ON(0, 0),
