@@ -1,0 +1,36 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "appflux"
+        }
+      ],
+      "recipe": {
+        "type": "advanced_ae:reaction",
+        "energy": 1300000,
+        "fluid": {
+          "fluidStack": {
+            "Amount": 1000,
+            "FluidName": "minecraft:water"
+          }
+        },
+        "input_items": [
+          {
+            "amount": 64,
+            "ingredient": {
+              "item": "appflux:redstone_crystal"
+            }
+          }
+        ],
+        "output": {
+          "#": 64,
+          "#c": "ae2:i",
+          "id": "appflux:charged_redstone"
+        }
+      }
+    }
+  ]
+}

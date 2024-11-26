@@ -26,16 +26,14 @@ public class ReactionChamberRecipeSerializer implements RecipeSerializer<Reactio
     private ReactionChamberRecipeSerializer() {}
 
     public static final Codec<GenericStack> GENERIC_STACK_CODEC = RecordCodecBuilder.create(
-            builder -> builder.group(CompoundTag.CODEC.fieldOf("tag").forGetter(GenericStack::writeTag))
+            builder -> builder.group(CompoundTag.CODEC.fieldOf("output").forGetter(GenericStack::writeTag))
                     .apply(builder, GenericStack::readTag));
 
     @Override
     public ReactionChamberRecipe fromJson(ResourceLocation id, JsonObject json) {
 
-        GenericStack output = GENERIC_STACK_CODEC
-                .parse(JsonOps.INSTANCE, json.get("output"))
-                .result()
-                .get();
+        GenericStack output =
+                GENERIC_STACK_CODEC.parse(JsonOps.INSTANCE, json).result().get();
 
         JsonArray array = GsonHelper.getAsJsonArray(json, "input_items");
         List<IngredientStack.Item> inputs = new ArrayList<>();

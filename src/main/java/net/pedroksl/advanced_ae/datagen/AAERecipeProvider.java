@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.datagen;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+import com.glodblock.github.appflux.common.AFItemAndBlock;
 import com.glodblock.github.extendedae.common.EPPItemAndBlock;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,11 +14,14 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlockDefinition;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipeBuilder;
 import net.pedroksl.advanced_ae.xmod.Addons;
@@ -29,6 +33,8 @@ import appeng.recipes.handlers.InscriberRecipeBuilder;
 
 import mekanism.api.datagen.recipe.builder.ItemStackToItemStackRecipeBuilder;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
+
+import gripe._90.megacells.definition.MEGAItems;
 
 public class AAERecipeProvider extends RecipeProvider {
     public AAERecipeProvider(PackOutput p, CompletableFuture<HolderLookup.Provider> provider) {
@@ -46,16 +52,16 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('E', Items.ENDER_PEARL)
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER));
-        Addons.EXTENDEDAE.conditionalRecipe(c, recipe, AdvancedAE.makeId("eaeadvpatpro"));
-        //        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
-        //                .pattern("PR")
-        //                .pattern("EL")
-        //                .define('P', AEBlocks.PATTERN_PROVIDER)
-        //                .define('R', Items.REDSTONE)
-        //                .define('E', Items.ENDER_PEARL)
-        //                .define('L', AEItems.LOGIC_PROCESSOR)
-        //                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
-        //                .save(c, AdvancedAE.makeId("smalladvpatpro"));
+        Addons.EXPATTERNPROVIDER.conditionalRecipe(c, recipe, AdvancedAE.makeId("eaeadvpatpro"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
+                .pattern("PR")
+                .pattern("EL")
+                .define('P', AEBlocks.PATTERN_PROVIDER)
+                .define('R', Items.REDSTONE)
+                .define('E', Items.ENDER_PEARL)
+                .define('L', AEItems.LOGIC_PROCESSOR)
+                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
+                .save(c, AdvancedAE.makeId("smalladvpatpro"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.ADV_PATTERN_PROVIDER)
                 .requires(AAEItems.ADV_PATTERN_PROVIDER)
                 .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
@@ -64,14 +70,14 @@ public class AAERecipeProvider extends RecipeProvider {
                 .requires(AAEBlocks.ADV_PATTERN_PROVIDER)
                 .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
                 .save(c, AdvancedAE.makeId("advpatpropart"));
-        //        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
-        //                .requires(AAEItems.SMALL_ADV_PATTERN_PROVIDER)
-        //                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
-        //                .save(c, AdvancedAE.makeId("smalladvpatpro2"));
-        //        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.SMALL_ADV_PATTERN_PROVIDER)
-        //                .requires(AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
-        //                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
-        //                .save(c, AdvancedAE.makeId("smalladvpatpropart"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
+                .requires(AAEItems.SMALL_ADV_PATTERN_PROVIDER)
+                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
+                .save(c, AdvancedAE.makeId("smalladvpatpro2"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.SMALL_ADV_PATTERN_PROVIDER)
+                .requires(AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
+                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
+                .save(c, AdvancedAE.makeId("smalladvpatpropart"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.REACTION_CHAMBER)
                 .pattern("EME")
                 .pattern("FVF")
@@ -112,15 +118,15 @@ public class AAERecipeProvider extends RecipeProvider {
         slabRecipe(c, AAEBlocks.QUANTUM_ALLOY_BLOCK, AAEBlocks.QUANTUM_ALLOY_SLAB);
 
         // Items
-        //        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.STOCK_EXPORT_BUS)
-        //                .pattern("   ")
-        //                .pattern("CEL")
-        //                .pattern("   ")
-        //                .define('E', AEParts.EXPORT_BUS)
-        //                .define('C', AEItems.CALCULATION_PROCESSOR)
-        //                .define('L', AEItems.LOGIC_PROCESSOR)
-        //                .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
-        //                .save(c, AdvancedAE.makeId("stock_export_bus"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.STOCK_EXPORT_BUS)
+                .pattern("   ")
+                .pattern("CEL")
+                .pattern("   ")
+                .define('E', AEParts.EXPORT_BUS)
+                .define('C', AEItems.CALCULATION_PROCESSOR)
+                .define('L', AEItems.LOGIC_PROCESSOR)
+                .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
+                .save(c, AdvancedAE.makeId("stock_export_bus"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_ENCODER)
                 .pattern("QRQ")
                 .pattern("RER")
@@ -130,34 +136,34 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('E', AEItems.ENGINEERING_PROCESSOR)
                 .unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
                 .save(c, AdvancedAE.makeId("advpartenc"));
-        //        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER_UPGRADE)
-        //                .pattern("IR")
-        //                .pattern("EL")
-        //                .define('I', Tags.Items.INGOTS)
-        //                .define('R', Items.REDSTONE)
-        //                .define('E', Items.ENDER_PEARL)
-        //                .define('L', AEItems.LOGIC_PROCESSOR)
-        //                .unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
-        //                .save(c, AdvancedAE.makeId("smallappupgrade"));
-        //        CrystalAssemblerRecipeBuilder.assemble(AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
-        //                .input(Tags.Items.INGOTS)
-        //                .input(AEItems.CAPACITY_CARD, 3)
-        //                .input(Items.CRAFTING_TABLE, 3)
-        //                .input(EPPItemAndBlock.CONCURRENT_PROCESSOR)
-        //                .input(ConventionTags.GLASS_CABLE, 6)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("eaelargeappupgrade"));
-        //        recipe = ShapedRecipeBuilder.shaped(RecipeCategory.MISC,
-        // AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
-        //                .pattern("STS")
-        //                .pattern("GIG")
-        //                .pattern("CCC")
-        //                .define('I', Tags.Items.INGOTS)
-        //                .define('C', AEItems.CAPACITY_CARD)
-        //                .define('T', Items.CRAFTING_TABLE)
-        //                .define('G', ConventionTags.GLASS_CABLE)
-        //                .define('S', AAEItems.SHATTERED_SINGULARITY)
-        //                .unlockedBy("hasItem", has(AAEItems.SHATTERED_SINGULARITY));
-        //        Addons.EXTENDEDAE.notConditionalRecipe(c, recipe, AdvancedAE.makeId("largeappupgrade");
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER_UPGRADE)
+                .pattern("IR")
+                .pattern("EL")
+                .define('I', Tags.Items.INGOTS)
+                .define('R', Items.REDSTONE)
+                .define('E', Items.ENDER_PEARL)
+                .define('L', AEItems.LOGIC_PROCESSOR)
+                .unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
+                .save(c, AdvancedAE.makeId("smallappupgrade"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
+                .pattern("IC")
+                .pattern("CE")
+                .define('I', Tags.Items.INGOTS)
+                .define('C', AEItems.CAPACITY_CARD)
+                .define('E', AEItems.ENGINEERING_PROCESSOR)
+                .unlockedBy("hasItem", has(AAEBlocks.ADV_PATTERN_PROVIDER))
+                .save(c, AdvancedAE.makeId("eaelargeappupgrade"));
+        recipe = ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
+                .pattern("STS")
+                .pattern("GIG")
+                .pattern("CCC")
+                .define('I', Tags.Items.INGOTS)
+                .define('C', AEItems.CAPACITY_CARD)
+                .define('T', Items.CRAFTING_TABLE)
+                .define('G', ConventionTags.GLASS_CABLE)
+                .define('S', AAEItems.SHATTERED_SINGULARITY)
+                .unlockedBy("hasItem", has(AAEItems.SHATTERED_SINGULARITY));
+        Addons.EXPATTERNPROVIDER.notConditionalRecipe(c, recipe, AdvancedAE.makeId("largeappupgrade"));
         ReactionChamberRecipeBuilder.react(AAEItems.SHATTERED_SINGULARITY, 2, 200000)
                 .input(AEItems.SINGULARITY)
                 .input(ConventionTags.ENDER_PEARL_DUST, 2)
@@ -172,23 +178,23 @@ public class AAERecipeProvider extends RecipeProvider {
                         AAEItems.QUANTUM_INFUSED_DUST.stack())
                 .addCondition(new ModLoadedCondition(Addons.MEKANISM.getModId()))
                 .build(c, AdvancedAE.makeId("quantum_infused_dust_crushed"));
-        //        ReactionChamberRecipeBuilder.react(AAEItems.QUANTUM_ALLOY, 1, 200000)
-        //                .input(Items.COPPER_INGOT, 4)
-        //                .input(AAEItems.SHATTERED_SINGULARITY, 4)
-        //                .input(AEItems.SINGULARITY, 4)
-        //                .fluid(AAEFluids.QUANTUM_INFUSION.source(), 1000)
-        //                .save(c, "quantum_alloy");
-        //        ReactionChamberRecipeBuilder.react(AAEItems.QUANTUM_ALLOY_PLATE, 1, 1000000)
-        //                .input(AAEItems.QUANTUM_ALLOY, 8)
-        //                .input(Items.NETHERITE_INGOT, 2)
-        //                .input(Items.NETHER_STAR, 1)
-        //                .fluid(AAEFluids.QUANTUM_INFUSION.source(), 1000)
-        //                .save(c, "quantum_alloy_plate");
-        //        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.THROUGHPUT_MONITOR)
-        //                .requires(AEItems.CALCULATION_PROCESSOR)
-        //                .requires(AEParts.STORAGE_MONITOR)
-        //                .unlockedBy("hasItem", has(AEParts.STORAGE_MONITOR))
-        //                .save(c, AdvancedAE.makeId("throughput_monitor"));
+        ReactionChamberRecipeBuilder.react(AAEItems.QUANTUM_ALLOY, 1, 200000)
+                .input(Items.COPPER_INGOT, 4)
+                .input(AAEItems.SHATTERED_SINGULARITY, 4)
+                .input(AEItems.SINGULARITY, 4)
+                .fluid(AAEFluids.QUANTUM_INFUSION.source(), 1000)
+                .save(c, "quantum_alloy");
+        ReactionChamberRecipeBuilder.react(AAEItems.QUANTUM_ALLOY_PLATE, 1, 1000000)
+                .input(AAEItems.QUANTUM_ALLOY, 8)
+                .input(Items.NETHERITE_INGOT, 2)
+                .input(Items.NETHER_STAR, 1)
+                .fluid(AAEFluids.QUANTUM_INFUSION.source(), 1000)
+                .save(c, "quantum_alloy_plate");
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.THROUGHPUT_MONITOR)
+                .requires(AEItems.CALCULATION_PROCESSOR)
+                .requires(AEParts.STORAGE_MONITOR)
+                .unlockedBy("hasItem", has(AEParts.STORAGE_MONITOR))
+                .save(c, AdvancedAE.makeId("throughput_monitor"));
         InscriberRecipeBuilder.inscribe(AAEItems.SHATTERED_SINGULARITY, AAEItems.QUANTUM_PROCESSOR_PRESS, 1)
                 .setTop(Ingredient.of(AEItems.ENGINEERING_PROCESSOR_PRESS))
                 .setBottom(Ingredient.of(AEItems.LOGIC_PROCESSOR_PRESS))
@@ -236,10 +242,10 @@ public class AAERecipeProvider extends RecipeProvider {
                 .save(c, AdvancedAE.makeId("throughput_monitor_configurator"));
 
         // Fluids
-        //        ReactionChamberRecipeBuilder.react(AAEFluids.QUANTUM_INFUSION.source(), 1000, 20000)
-        //                .input(AAEItems.QUANTUM_INFUSED_DUST)
-        //                .fluid(Fluids.WATER, 4000)
-        //                .save(c, "quantum_infusion");
+        ReactionChamberRecipeBuilder.react(AAEFluids.QUANTUM_INFUSION.source(), 1000, 20000)
+                .input(AAEItems.QUANTUM_INFUSED_DUST)
+                .fluid(Fluids.WATER, 4000)
+                .save(c, "quantum_infusion");
 
         // Quantum Computer
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STRUCTURE)
@@ -250,36 +256,21 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('S', AEBlocks.SKY_STONE_BLOCK)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
                 .save(c, AdvancedAE.makeId("quantumstructure"));
-        //        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_UNIT)
-        //                .requires(AEBlocks.CRAFTING_UNIT)
-        //                .requires(AEItems.SINGULARITY)
-        //                .requires(EPPItemAndBlock.CONCURRENT_PROCESSOR)
-        //                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("eaequantumunit"));
-        //        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_UNIT)
-        //                .requires(AEBlocks.CRAFTING_UNIT)
-        //                .requires(AEItems.SINGULARITY)
-        //                .requires(AAEItems.SHATTERED_SINGULARITY, 2)
-        //                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-        //                .save(Addons.EXTENDEDAE.notConditionalRecipe(c), AdvancedAE.makeId("quantumunit"));
-        //        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_ACCELERATOR)
-        //                .pattern("ECE")
-        //                .pattern("CUC")
-        //                .pattern("ECE")
-        //                .define('E', AAEItems.SHATTERED_SINGULARITY)
-        //                .define('C', EPPItemAndBlock.CONCURRENT_PROCESSOR)
-        //                .define('U', AAEBlocks.QUANTUM_UNIT)
-        //                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("eaequantumaccel"));
-        //        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_ACCELERATOR)
-        //                .pattern("ESE")
-        //                .pattern("SUS")
-        //                .pattern("ESE")
-        //                .define('E', AAEItems.SHATTERED_SINGULARITY)
-        //                .define('S', AEItems.SINGULARITY)
-        //                .define('U', AAEBlocks.QUANTUM_UNIT)
-        //                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-        //                .save(Addons.EXTENDEDAE.notConditionalRecipe(c), AdvancedAE.makeId("quantumaccel"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_UNIT)
+                .requires(AEBlocks.CRAFTING_UNIT)
+                .requires(AEItems.SINGULARITY)
+                .requires(AAEItems.QUANTUM_PROCESSOR, 2)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(c, AdvancedAE.makeId("quantumunit"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_ACCELERATOR)
+                .pattern("EQE")
+                .pattern("QUQ")
+                .pattern("EQE")
+                .define('E', AAEItems.SHATTERED_SINGULARITY)
+                .define('Q', AAEItems.QUANTUM_PROCESSOR)
+                .define('U', AAEBlocks.QUANTUM_UNIT)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(c, AdvancedAE.makeId("quantumaccel"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STORAGE_128M)
                 .pattern("ECE")
                 .pattern("CUC")
@@ -307,91 +298,67 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('T', AAEBlocks.QUANTUM_STORAGE_256M)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
                 .save(c, AdvancedAE.makeId("quantumcore"));
-        //        CrystalAssemblerRecipeBuilder.assemble(AAEBlocks.DATA_ENTANGLER)
-        //                .input(AAEBlocks.QUANTUM_UNIT)
-        //                .input(AAEBlocks.QUANTUM_CORE)
-        //                .input(AAEItems.SHATTERED_SINGULARITY, 8)
-        //                .input(AAEBlocks.QUANTUM_STORAGE_256M, 3)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("eaequantumdataentangler"));
-        //        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.DATA_ENTANGLER)
-        //                .pattern("QQQ")
-        //                .pattern("SUS")
-        //                .pattern("SCS")
-        //                .define('U', AAEBlocks.QUANTUM_UNIT)
-        //                .define('C', AAEBlocks.QUANTUM_CORE)
-        //                .define('S', AAEItems.SHATTERED_SINGULARITY)
-        //                .define('Q', AAEBlocks.QUANTUM_STORAGE_256M)
-        //                .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_UNIT))
-        //                .save(Addons.EXTENDEDAE.notConditionalRecipe(c), AdvancedAE.makeId("quantumdataentangler"));
-        //        CrystalAssemblerRecipeBuilder.assemble(AAEBlocks.QUANTUM_MULTI_THREADER)
-        //                .input(AAEBlocks.QUANTUM_UNIT)
-        //                .input(AAEBlocks.QUANTUM_CORE)
-        //                .input(AAEItems.SHATTERED_SINGULARITY, 8)
-        //                .input(AAEBlocks.QUANTUM_ACCELERATOR, 4)
-        //                .input(EPPItemAndBlock.CONCURRENT_PROCESSOR, 8)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("eaequantummultithreader"));
-        //        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_MULTI_THREADER)
-        //                .pattern("SSS")
-        //                .pattern("AUA")
-        //                .pattern("ACA")
-        //                .define('U', AAEBlocks.QUANTUM_UNIT)
-        //                .define('C', AAEBlocks.QUANTUM_CORE)
-        //                .define('S', AAEItems.SHATTERED_SINGULARITY)
-        //                .define('A', AAEBlocks.QUANTUM_ACCELERATOR)
-        //                .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_UNIT))
-        //                .save(Addons.EXTENDEDAE.notConditionalRecipe(c), AdvancedAE.makeId("quantummultithreader"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.DATA_ENTANGLER)
+                .pattern("QQQ")
+                .pattern("SUS")
+                .pattern("SCS")
+                .define('U', AAEBlocks.QUANTUM_UNIT)
+                .define('C', AAEBlocks.QUANTUM_CORE)
+                .define('S', AAEItems.SHATTERED_SINGULARITY)
+                .define('Q', AAEBlocks.QUANTUM_STORAGE_256M)
+                .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_UNIT))
+                .save(c, AdvancedAE.makeId("quantumdataentangler"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_MULTI_THREADER)
+                .pattern("QQQ")
+                .pattern("AUA")
+                .pattern("ACA")
+                .define('U', AAEBlocks.QUANTUM_UNIT)
+                .define('C', AAEBlocks.QUANTUM_CORE)
+                .define('Q', AAEItems.QUANTUM_PROCESSOR)
+                .define('A', AAEBlocks.QUANTUM_ACCELERATOR)
+                .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_UNIT))
+                .save(c, AdvancedAE.makeId("quantummultithreader"));
 
         // Reaction Chamber
-        //        ReactionChamberRecipeBuilder.react(AEItems.SINGULARITY, 1000000)
-        //                .input(AEItems.MATTER_BALL, 64)
-        //                .fluid(Fluids.LAVA, 100)
-        //                .save(c, "singularity");
-        //        ReactionChamberRecipeBuilder.react(AEItems.CERTUS_QUARTZ_CRYSTAL, 64, 50000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
-        //                .input(AEItems.CERTUS_QUARTZ_DUST, 16)
-        //                .fluid(Fluids.WATER, 500)
-        //                .save(c, "quartzcrystal");
-        //        ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64, 200000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
-        //                .input(Items.REDSTONE, 16)
-        //                .input(Items.QUARTZ, 16)
-        //                .fluid(Fluids.WATER, 500)
-        //                .save(c, "fluixcrystals");
-        //        ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64, 100000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 32)
-        //                .input(AEItems.FLUIX_DUST, 32)
-        //                .fluid(Fluids.WATER, 500)
-        //                .save(c, "fluixcrystalfromdust");
-        //        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_CRYSTAL, 64, 100000)
-        //                .input(EPPItemAndBlock.ENTRO_DUST, 32)
-        //                .input(AEItems.FLUIX_CRYSTAL, 32)
-        //                .fluid(Fluids.WATER, 500)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), "entrocrystal");
-        //        ReactionChamberRecipeBuilder.react(AEBlocks.DAMAGED_BUDDING_QUARTZ, 8, 100000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
-        //                .input(AEBlocks.QUARTZ_BLOCK, 8)
-        //                .fluid(Fluids.WATER, 1000)
-        //                .save(c, "damagedbudding");
-        //        ReactionChamberRecipeBuilder.react(AEBlocks.CHIPPED_BUDDING_QUARTZ, 8, 200000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
-        //                .input(AEBlocks.DAMAGED_BUDDING_QUARTZ, 8)
-        //                .fluid(Fluids.WATER, 1000)
-        //                .save(c, "chippedbudding");
-        //        ReactionChamberRecipeBuilder.react(AEBlocks.FLAWED_BUDDING_QUARTZ, 8, 300000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
-        //                .input(AEBlocks.CHIPPED_BUDDING_QUARTZ, 8)
-        //                .fluid(Fluids.WATER, 1000)
-        //                .save(c, "flawedbudding");
-        //        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_INGOT, 64, 500000)
-        //                .input(EPPItemAndBlock.ENTRO_DUST, 32)
-        //                .input(Items.GOLD_INGOT, 32)
-        //                .input(Items.LAPIS_LAZULI, 32)
-        //                .fluid(Fluids.WATER, 500)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), "entroingot");
-        //        ReactionChamberRecipeBuilder.react(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 64, 1300000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL, 64)
-        //                .fluid(Fluids.WATER, 1000)
-        //                .save(c, "certuscharger");
+        ReactionChamberRecipeBuilder.react(AEItems.SINGULARITY, 1000000)
+                .input(AEItems.MATTER_BALL, 64)
+                .fluid(Fluids.LAVA, 100)
+                .save(c, "singularity");
+        ReactionChamberRecipeBuilder.react(AEItems.CERTUS_QUARTZ_CRYSTAL, 64, 50000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
+                .input(AEItems.CERTUS_QUARTZ_DUST, 16)
+                .fluid(Fluids.WATER, 500)
+                .save(c, "quartzcrystal");
+        ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64, 200000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
+                .input(Items.REDSTONE, 16)
+                .input(Items.QUARTZ, 16)
+                .fluid(Fluids.WATER, 500)
+                .save(c, "fluixcrystals");
+        ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64, 100000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 32)
+                .input(AEItems.FLUIX_DUST, 32)
+                .fluid(Fluids.WATER, 500)
+                .save(c, "fluixcrystalfromdust");
+        ReactionChamberRecipeBuilder.react(AEBlocks.DAMAGED_BUDDING_QUARTZ, 8, 100000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
+                .input(AEBlocks.QUARTZ_BLOCK, 8)
+                .fluid(Fluids.WATER, 1000)
+                .save(c, "damagedbudding");
+        ReactionChamberRecipeBuilder.react(AEBlocks.CHIPPED_BUDDING_QUARTZ, 8, 200000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
+                .input(AEBlocks.DAMAGED_BUDDING_QUARTZ, 8)
+                .fluid(Fluids.WATER, 1000)
+                .save(c, "chippedbudding");
+        ReactionChamberRecipeBuilder.react(AEBlocks.FLAWED_BUDDING_QUARTZ, 8, 300000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
+                .input(AEBlocks.CHIPPED_BUDDING_QUARTZ, 8)
+                .fluid(Fluids.WATER, 1000)
+                .save(c, "flawedbudding");
+        ReactionChamberRecipeBuilder.react(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 64, 1300000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL, 64)
+                .fluid(Fluids.WATER, 1000)
+                .save(c, "certuscharger");
 
         // Quantum Armor
         //        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.QUANTUM_HELMET)
@@ -706,42 +673,28 @@ public class AAERecipeProvider extends RecipeProvider {
     }
 
     private void loadAppFluxRecipes(@NotNull Consumer<FinishedRecipe> c) {
-        //        ReactionChamberRecipeBuilder.react(AFSingletons.REDSTONE_CRYSTAL, 64, 20000)
-        //                .input(Blocks.REDSTONE_BLOCK, 16)
-        //                .input(AEItems.FLUIX_CRYSTAL, 16)
-        //                .input(Items.GLOWSTONE_DUST, 16)
-        //                .fluid(Fluids.WATER, 500)
-        //                .save(Addons.APPFLUX.conditionalRecipe(c), "redstonecrystal");
-        //        ReactionChamberRecipeBuilder.react(AFSingletons.CHARGED_REDSTONE, 64, 1300000)
-        //                .input(EPPItemAndBlock.REDSTONE_CRYSTAL, 64)
-        //                .fluid(Fluids.WATER, 1000)
-        //                .save(Addons.APPFLUX.conditionalRecipe(c), "chargedredstone");
+        var redstoneRecipe = ReactionChamberRecipeBuilder.react(AFItemAndBlock.REDSTONE_CRYSTAL, 64, 20000)
+                .input(Blocks.REDSTONE_BLOCK, 16)
+                .input(AEItems.FLUIX_CRYSTAL, 16)
+                .input(Items.GLOWSTONE_DUST, 16)
+                .fluid(Fluids.WATER, 500);
+        var redstoneId = "redstonecrystal";
+        Addons.APPFLUX.conditionalRecipe(c, r -> redstoneRecipe.save(r, redstoneId), AdvancedAE.makeId(redstoneId));
+        var chargedRecipe = ReactionChamberRecipeBuilder.react(AFItemAndBlock.CHARGED_REDSTONE, 64, 1300000)
+                .input(AFItemAndBlock.REDSTONE_CRYSTAL, 64)
+                .fluid(Fluids.WATER, 1000);
+        var chargedId = "chargedredstone";
+        Addons.APPFLUX.conditionalRecipe(c, r -> chargedRecipe.save(r, chargedId), AdvancedAE.makeId(chargedId));
     }
 
     private void loadMegaCellsRecipes(@NotNull Consumer<FinishedRecipe> c) {
-        //        ReactionChamberRecipeBuilder.react(MEGAItems.SKY_STEEL_INGOT, 64, 200000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
-        //                .input(Items.IRON_INGOT, 16)
-        //                .input(AEBlocks.SKY_STONE_BLOCK, 16)
-        //                .fluid(Fluids.LAVA, 500)
-        //                .save(Addons.MEGACELLS.conditionalRecipe(c), "skysteel");
-        //        ReactionChamberRecipeBuilder.react(MEGAItems.SKY_BRONZE_INGOT, 64, 200000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
-        //                .input(Items.COPPER_INGOT, 16)
-        //                .input(AEBlocks.SKY_STONE_BLOCK, 16)
-        //                .fluid(Fluids.LAVA, 500)
-        //                .save(Addons.MEGACELLS.conditionalRecipe(c), "skybronze");
-
-        //        ReactionChamberRecipeBuilder.react(MEGAItems.SKY_OSMIUM_INGOT, 64, 200000)
-        //                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
-        //                .input(AAEConventionTags.OSMIUM_INGOT, 16)
-        //                .input(AEBlocks.SKY_STONE_BLOCK, 16)
-        //                .fluid(Fluids.LAVA, 500)
-        //                .save(
-        //                        c.withConditions(new AndCondition(List.of(
-        //                                new ModLoadedCondition(Addons.MEGACELLS.getModId()),
-        //                                new ModLoadedCondition(Addons.MEKANISM.getModId())))),
-        //                        "skyosmium");
+        var skySteelR = ReactionChamberRecipeBuilder.react(MEGAItems.SKY_STEEL_INGOT, 64, 200000)
+                .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
+                .input(Items.IRON_INGOT, 16)
+                .input(AEBlocks.SKY_STONE_BLOCK, 16)
+                .fluid(Fluids.LAVA, 500);
+        var ssId = "skysteel";
+        Addons.MEGACELLS.conditionalRecipe(c, r -> skySteelR.save(r, ssId), AdvancedAE.makeId(ssId));
     }
 
     private void slabRecipe(

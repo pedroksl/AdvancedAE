@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "advanced_ae:small_adv_pattern_provider"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "advanced_ae:blocks/small_adv_pattern_provider"
+}

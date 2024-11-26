@@ -22,6 +22,7 @@ import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.ModList;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.helpers.ColorContainer;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.FluidTankItemUsePacket;
@@ -162,10 +163,9 @@ public class FluidTankSlot extends AbstractWidget {
     private void updateTooltip(FluidStack stack) {
         if (stack.isEmpty()) {
             setTooltip(Tooltip.create(Tooltips.of(
-                    Component.translatable("gui.tooltips.advanced_ae.TankAmount"),
+                    AAEText.TankAmount.text(),
                     Component.literal("\n"),
-                    Component.translatable("gui.tooltips.advanced_ae.TankEmpty", 0, 16)
-                            .withStyle(Tooltips.NUMBER_TEXT))));
+                    AAEText.TankAmount.text(0, 16).withStyle(Tooltips.NUMBER_TEXT))));
             return;
         }
 

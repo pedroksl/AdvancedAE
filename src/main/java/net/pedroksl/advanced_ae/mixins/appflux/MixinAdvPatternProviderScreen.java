@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.glodblock.github.appflux.util.helpers.IUpgradableMenu;
 
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,27 +19,29 @@ import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 import appeng.api.upgrades.Upgrades;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.widgets.ToolboxPanel;
 import appeng.client.gui.widgets.UpgradesPanel;
 import appeng.core.localization.GuiText;
 import appeng.menu.SlotSemantics;
 
 @Mixin(AdvPatternProviderScreen.class)
-public abstract class MixinAdvPatternProviderScreen extends AEBaseScreen<AdvPatternProviderMenu> {
+public abstract class MixinAdvPatternProviderScreen<C extends AdvPatternProviderMenu> extends AEBaseScreen<C> {
 
-    @Inject(
-            method = "<init>(Lnet/pedroksl/advanced_ae/gui/advpatternprovider/AdvPatternProviderMenu;"
-                    + "Lnet/minecraft/world/entity/player/Inventory;net/minecraft/network/chat/Component;Lappeng/client/gui"
-                    + "/style/ScreenStyle;)V",
-            at = @At("TAIL"),
-            remap = false)
+    @Inject(method = "<init>", at = @At("TAIL"), remap = false)
     private void initUpgrade(
-            @NotNull AdvPatternProviderMenu menu,
+            AdvPatternProviderMenu menu,
             Inventory playerInventory,
             Component title,
             ScreenStyle style,
             CallbackInfo ci) {
         this.widgets.add(
                 "upgrades", new UpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), this::af_$getCompatibleUpgrades));
+        if (((IUpgradableMenu) menu).getToolbox().isPresent()) {
+            this.widgets.add(
+                    "toolbox",
+                    new ToolboxPanel(
+                            style, ((IUpgradableMenu) menu).getToolbox().getName()));
+        }
     }
 
     @Unique
@@ -52,8 +53,7 @@ public abstract class MixinAdvPatternProviderScreen extends AEBaseScreen<AdvPatt
         return list;
     }
 
-    public MixinAdvPatternProviderScreen(
-            AdvPatternProviderMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
+    public MixinAdvPatternProviderScreen(C menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
     }
 }

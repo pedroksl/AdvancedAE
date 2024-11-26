@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "E": {
+      "item": "ae2:fluix_dust"
+    },
+    "F": {
+      "item": "ae2:fluix_dust"
+    },
+    "G": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "M": {
+      "item": "ae2:condenser"
+    },
+    "V": {
+      "item": "ae2:vibration_chamber"
+    }
+  },
+  "pattern": [
+    "EME",
+    "FVF",
+    "GBG"
+  ],
+  "result": {
+    "item": "advanced_ae:reaction_chamber"
+  },
+  "show_notification": true
+}

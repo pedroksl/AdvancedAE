@@ -1,0 +1,23 @@
+{
+  "type": "advanced_ae:reaction",
+  "energy": 20000,
+  "fluid": {
+    "fluidStack": {
+      "Amount": 4000,
+      "FluidName": "minecraft:water"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "advanced_ae:quantum_infused_dust"
+      }
+    }
+  ],
+  "output": {
+    "#": 1000,
+    "#c": "ae2:f",
+    "id": "advanced_ae:quantum_infusion_source"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "advanced_ae:reaction",
+  "energy": 100000,
+  "fluid": {
+    "fluidStack": {
+      "Amount": 1000,
+      "FluidName": "minecraft:water"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 8,
+      "ingredient": {
+        "item": "ae2:charged_certus_quartz_crystal"
+      }
+    },
+    {
+      "amount": 8,
+      "ingredient": {
+        "item": "ae2:quartz_block"
+      }
+    }
+  ],
+  "output": {
+    "#": 8,
+    "#c": "ae2:i",
+    "id": "ae2:damaged_budding_quartz"
+  }
+}

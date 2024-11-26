@@ -14,6 +14,7 @@ import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
 import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
 import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 
 import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.upgrades.Upgrades;
@@ -39,12 +40,6 @@ public class AdvancedAE {
         MinecraftForge.EVENT_BUS.register(this);
 
         eventBus.addListener(AdvancedAE::initUpgrades);
-
-        eventBus.addListener((RegisterEvent event) -> {
-            InitRecipeTypes.init(ForgeRegistries.RECIPE_TYPES);
-            InitRecipeSerializers.init(ForgeRegistries.RECIPE_SERIALIZERS);
-        });
-
         eventBus.addListener((RegisterEvent event) -> {
             if (event.getRegistryKey() == Registries.RECIPE_TYPE) {
                 InitRecipeTypes.init(ForgeRegistries.RECIPE_TYPES);
@@ -77,16 +72,16 @@ public class AdvancedAE {
 
     private static void initUpgrades(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            // Upgrades.add(AEItems.SPEED_CARD, AAEBlocks.REACTION_CHAMBER, 4);
+            Upgrades.add(AEItems.SPEED_CARD, AAEBlocks.REACTION_CHAMBER, 4);
             Upgrades.add(AEItems.SPEED_CARD, AAEBlocks.QUANTUM_CRAFTER, 4);
             Upgrades.add(AEItems.REDSTONE_CARD, AAEBlocks.QUANTUM_CRAFTER, 1);
-            // Upgrades.add(AEItems.SPEED_CARD, AAEItems.STOCK_EXPORT_BUS, 4);
-            // Upgrades.add(AEItems.CAPACITY_CARD, AAEItems.STOCK_EXPORT_BUS, 5);
-            // Upgrades.add(AEItems.REDSTONE_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
-            // Upgrades.add(AEItems.CRAFTING_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
+            Upgrades.add(AEItems.SPEED_CARD, AAEItems.STOCK_EXPORT_BUS, 4);
+            Upgrades.add(AEItems.CAPACITY_CARD, AAEItems.STOCK_EXPORT_BUS, 5);
+            Upgrades.add(AEItems.REDSTONE_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
+            Upgrades.add(AEItems.CRAFTING_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
 
             if (Addons.APPFLUX.isLoaded()) {
-                // AppliedFluxPlugin.init();
+                AppliedFluxPlugin.init();
             }
         });
     }

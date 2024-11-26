@@ -2,11 +2,6 @@ package net.pedroksl.advanced_ae.common.logic;
 
 import java.util.*;
 
-import com.glodblock.github.appflux.common.AFItemAndBlock;
-import com.glodblock.github.appflux.common.me.energy.EnergyHandler;
-import com.glodblock.github.appflux.common.me.service.IEnergyDistributor;
-import com.glodblock.github.appflux.util.AFUtil;
-
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.ModList;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetails;
 
 import appeng.api.config.Actionable;
@@ -52,9 +46,6 @@ import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
 import appeng.api.stacks.KeyCounter;
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.IUpgradeableObject;
-import appeng.api.upgrades.UpgradeInventories;
 import appeng.api.util.IConfigManager;
 import appeng.core.AELog;
 import appeng.core.definitions.AEItems;
@@ -72,10 +63,8 @@ import appeng.util.inv.PlayerInternalInventory;
 /**
  * Shared code between the pattern provider block and part.
  */
-public class AdvPatternProviderLogic
-        implements InternalInventoryHost, ICraftingProvider, IUpgradeableObject, IEnergyDistributor {
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(appeng.helpers.patternprovider.PatternProviderLogic.class);
+public class AdvPatternProviderLogic implements InternalInventoryHost, ICraftingProvider {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdvPatternProviderLogic.class);
 
     public static final String NBT_MEMORY_CARD_PATTERNS = "patterns";
     public static final String NBT_UNLOCK_EVENT = "unlockEvent";
@@ -90,7 +79,6 @@ public class AdvPatternProviderLogic
     private final IManagedGridNode mainNode;
     private final IActionSource actionSource;
     private final ConfigManager configManager = new ConfigManager(this::configChanged);
-    private final IUpgradeInventory upgrades;
 
     private int priority;
 
@@ -142,10 +130,6 @@ public class AdvPatternProviderLogic
             this.mainNode.ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
             this.host.saveChanges();
         });
-        int upgradeCount = ModList.get().isLoaded("appflux") ? 2 : 1;
-        this.upgrades =
-                UpgradeInventories.forMachine(host.getTerminalIcon().getItem(), upgradeCount, this::onUpgradesChanged);
-        this.mainNode.addService(IEnergyDistributor.class, this);
     }
 
     public int getPriority() {
@@ -157,11 +141,6 @@ public class AdvPatternProviderLogic
         this.host.saveChanges();
 
         ICraftingProvider.requestUpdate(mainNode);
-    }
-
-    @Override
-    public IUpgradeInventory getUpgrades() {
-        return this.upgrades;
     }
 
     private void onUpgradesChanged() {
@@ -209,7 +188,6 @@ public class AdvPatternProviderLogic
         }
 
         tag.put(NBT_RETURN_INV, this.returnInv.writeToTag());
-        this.upgrades.writeToNBT(tag, "upgrades");
     }
 
     public void readFromNBT(CompoundTag tag) {
@@ -264,7 +242,6 @@ public class AdvPatternProviderLogic
         }
 
         this.returnInv.readFromTag(tag.getList("returnInv", Tag.TAG_COMPOUND));
-        this.upgrades.readFromNBT(tag, "upgrades");
     }
 
     public IConfigManager getConfigManager() {
@@ -286,24 +263,6 @@ public class AdvPatternProviderLogic
     public boolean isClientSide() {
         Level level = this.host.getBlockEntity().getLevel();
         return level == null || level.isClientSide();
-    }
-
-    @Override
-    public void distribute() {
-        if (this.upgrades.isInstalled(AFItemAndBlock.INDUCTION_CARD)) {
-            var storage = this.getStorage();
-            var grid = this.mainNode.getGrid();
-            var self = this.host.getBlockEntity();
-            if (storage != null && self.getLevel() != null) {
-                for (var d : AFUtil.getSides(this.host)) {
-                    var te = self.getLevel().getBlockEntity(self.getBlockPos().offset(d.getNormal()));
-                    var thatGrid = AFUtil.getGrid(te, d.getOpposite());
-                    if (te != null && thatGrid != grid && !AFUtil.isBlackListTE(te, d.getOpposite())) {
-                        EnergyHandler.send(te, d.getOpposite(), storage, this.actionSource);
-                    }
-                }
-            }
-        }
     }
 
     private IStorageService getStorage() {
@@ -697,17 +656,12 @@ public class AdvPatternProviderLogic
                 drops,
                 this.host.getBlockEntity().getLevel(),
                 this.host.getBlockEntity().getBlockPos());
-
-        for (var upgrade : this.upgrades) {
-            drops.add(upgrade);
-        }
     }
 
     public void clearContent() {
         this.patternInventory.clear();
         this.sendList.clear();
         this.returnInv.clear();
-        this.upgrades.clear();
     }
 
     public PatternProviderReturnInventory getReturnInv() {

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "advanced_ae:quantum_accelerator"
+    },
+    "C": {
+      "item": "advanced_ae:quantum_core"
+    },
+    "Q": {
+      "item": "advanced_ae:quantum_processor"
+    },
+    "U": {
+      "item": "advanced_ae:quantum_unit"
+    }
+  },
+  "pattern": [
+    "QQQ",
+    "AUA",
+    "ACA"
+  ],
+  "result": {
+    "item": "advanced_ae:quantum_multi_threader"
+  },
+  "show_notification": true
+}

@@ -89,12 +89,12 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         simpleBlockItem(craftingBlock, blockModel);
 
         interfaceOrProviderPart(AAEItems.ADV_PATTERN_PROVIDER.getItemDefinition());
-        //		interfaceOrProviderPart(AAEItems.SMALL_ADV_PATTERN_PROVIDER);
-        //		interfaceOrProviderPart(AAEItems.STOCK_EXPORT_BUS, true);
+        interfaceOrProviderPart(AAEItems.SMALL_ADV_PATTERN_PROVIDER.getItemDefinition());
+        interfaceOrProviderPart(AAEItems.STOCK_EXPORT_BUS.getItemDefinition(), true);
 
         // PATTERN PROVIDER
         patternProvider(AAEBlocks.ADV_PATTERN_PROVIDER.getBlockDefinition());
-        //		patternProvider(AAEBlocks.SMALL_ADV_PATTERN_PROVIDER);
+        patternProvider(AAEBlocks.SMALL_ADV_PATTERN_PROVIDER.getBlockDefinition());
 
         // Fluids
         fluidBlocks();
@@ -141,7 +141,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         var sides = AdvancedAE.makeId("part/" + partName + "_sides");
 
         var base = isExport ? AppEng.makeId("part/export_bus_base") : AppEng.makeId("part/pattern_provider_base");
-        var itemBase = isExport ? AppEng.makeId("item/export_bus") : AppEng.makeId("item/cable_pattern_provider");
+        var itemBase = isExport ? AppEng.makeId("item/part_base") : AppEng.makeId("item/cable_pattern_provider");
 
         models().singleTexture("part/" + id, base, "sidesStatus", AppEng.makeId("part/monitor_sides_status"))
                 .texture("sides", sides)

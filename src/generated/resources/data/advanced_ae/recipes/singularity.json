@@ -1,0 +1,23 @@
+{
+  "type": "advanced_ae:reaction",
+  "energy": 1000000,
+  "fluid": {
+    "fluidStack": {
+      "Amount": 100,
+      "FluidName": "minecraft:lava"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 64,
+      "ingredient": {
+        "item": "ae2:matter_ball"
+      }
+    }
+  ],
+  "output": {
+    "#": 1,
+    "#c": "ae2:i",
+    "id": "ae2:singularity"
+  }
+}

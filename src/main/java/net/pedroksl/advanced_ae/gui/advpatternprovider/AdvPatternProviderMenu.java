@@ -1,7 +1,5 @@
 package net.pedroksl.advanced_ae.gui.advpatternprovider;
 
-import com.glodblock.github.appflux.util.helpers.IUpgradableMenu;
-
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.ItemLike;
@@ -24,10 +22,7 @@ import appeng.menu.guisync.GuiSync;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.RestrictedInputSlot;
 
-/**
- * @see appeng.client.gui.implementations.PatternProviderScreen
- */
-public class AdvPatternProviderMenu extends AEBaseMenu implements IUpgradableMenu {
+public class AdvPatternProviderMenu extends AEBaseMenu {
 
     protected final AdvPatternProviderLogic logic;
 

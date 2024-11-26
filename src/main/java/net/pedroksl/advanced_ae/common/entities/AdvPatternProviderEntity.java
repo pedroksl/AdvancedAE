@@ -36,17 +36,23 @@ import appeng.util.Platform;
 import appeng.util.SettingsFrom;
 
 public class AdvPatternProviderEntity extends AENetworkBlockEntity implements AdvPatternProviderLogicHost {
-    protected final AdvPatternProviderLogic logic = createLogic();
+    protected final AdvPatternProviderLogic logic;
 
     @Nullable
     private PushDirection pendingPushDirectionChange;
 
     public AdvPatternProviderEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
-        super(blockEntityType, pos, blockState);
+        this(blockEntityType, pos, blockState, 36);
     }
 
-    protected AdvPatternProviderLogic createLogic() {
-        return new AdvPatternProviderLogic(this.getMainNode(), this);
+    public AdvPatternProviderEntity(
+            BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState, int slots) {
+        super(blockEntityType, pos, blockState);
+        this.logic = createLogic(slots);
+    }
+
+    protected AdvPatternProviderLogic createLogic(int slots) {
+        return new AdvPatternProviderLogic(this.getMainNode(), this, slots);
     }
 
     @Override

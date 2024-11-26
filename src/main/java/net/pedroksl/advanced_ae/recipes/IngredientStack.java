@@ -61,8 +61,6 @@ public abstract class IngredientStack<T, P> {
         }
     }
 
-    // public abstract void consume(P stack);
-
     public boolean isEmpty() {
         return this.amount <= 0;
     }
@@ -80,23 +78,6 @@ public abstract class IngredientStack<T, P> {
     public abstract void toNetwork(FriendlyByteBuf buffer);
 
     public abstract JsonElement toJson();
-
-    //	public static IngredientStack.Value valueFromJson(JsonObject pJson) {
-    //		if (!pJson.has("type")) {
-    //			throw new JsonParseException("Fluid Ingredient without type property.");
-    //		}
-    //
-    //		var type = pJson.get("type").toString();
-    //		switch (type) {
-    //			case "fluid_stack" -> {
-    //				return Fluid.fromJson(pJson);
-    //			}
-    //			case "fluid_tag" -> {
-    //				return FluidTagValue.fromJson(pJson);
-    //			}
-    //			default -> throw new JsonParseException("Fluid Ingredient with an undefined type");
-    //		}
-    //	}
 
     public static final class Item extends IngredientStack<Ingredient, ItemStack> {
 

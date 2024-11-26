@@ -1,0 +1,58 @@
+{
+	"$schema": "schema.json",
+	"includes": ["common/common.json", "common/player_inventory.json"],
+	"text": {
+		"dialog_title": {
+			"text": {
+				"translate": "gui.advanced_ae.ReactionChamber"
+			},
+			"position": {
+				"left": 10,
+				"top": 5
+			}
+		}
+	},
+	"background": {
+		"texture": "guis/reaction_chamber.png",
+		"srcRect": [0, 0, 176, 180]
+	},
+	"slots": {
+		"MACHINE_INPUT": {
+			"left": 42,
+			"top": 24,
+			"grid": "BREAK_AFTER_3COLS"
+		},
+		"MACHINE_OUTPUT": {
+			"left": 118,
+			"top": 43
+		}
+	},
+	"images": {
+		"progressBar": {
+			"texture": "guis/reaction_chamber.png",
+			"srcRect": [176, 0, 6, 18]
+		},
+		"powerAlert": {
+			"texture": "guis/reaction_chamber.png",
+			"srcRect": [182, 0, 18, 18]
+		}
+	},
+	"widgets": {
+		"clearFluid": {
+			"left": 28,
+			"top": 73
+		},
+		"clearFluidOut": {
+			"left": 140,
+			"top": 73
+		},
+		"progressBar": {
+			"left": 140,
+			"top": 42
+		},
+		"powerAlert": {
+			"left": 117,
+			"top": 68
+		}
+	}
+}

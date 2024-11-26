@@ -22,11 +22,16 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.*;
 import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
+import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
+import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 
+import appeng.api.util.AEColor;
 import appeng.client.gui.me.common.PinnedKeys;
+import appeng.client.render.StaticItemColor;
 import appeng.client.render.crafting.CraftingCubeModel;
 import appeng.hooks.BuiltInModelHooks;
 import appeng.init.client.InitScreens;
@@ -76,19 +81,17 @@ public class AAEClient extends AdvancedAE {
         InitScreens.register(AAEMenus.QUANTUM_COMPUTER, QuantumComputerScreen::new, "/screens/crafting_status.json");
         InitScreens.register(
                 AAEMenus.ADV_PATTERN_PROVIDER, AdvPatternProviderScreen::new, "/screens/adv_pattern_provider.json");
-        //        InitScreens.register(
-        //                AAEMenus.SMALL_ADV_PATTERN_PROVIDER,
-        //                SmallAdvPatternProviderScreen::new,
-        //                "/screens/small_adv_pattern_provider.json");
+        InitScreens.register(
+                AAEMenus.SMALL_ADV_PATTERN_PROVIDER,
+                SmallAdvPatternProviderScreen::new,
+                "/screens/small_adv_pattern_provider.json");
         //        InitScreens.register(
         //                AAEMenus.ADV_PATTERN_ENCODER, AdvPatternEncoderScreen::new,
         // "/screens/adv_pattern_encoder.json");
-        //        InitScreens.register(
-        //                AAEMenus.REACTION_CHAMBER, ReactionChamberScreen::new, "/screens/reaction_chamber.json");
+        InitScreens.register(AAEMenus.REACTION_CHAMBER, ReactionChamberScreen::new, "/screens/reaction_chamber.json");
         InitScreens.register(AAEMenus.QUANTUM_CRAFTER, QuantumCrafterScreen::new, "/screens/quantum_crafter.json");
 
-        //        InitScreens.register(
-        //                AAEMenus.STOCK_EXPORT_BUS, StockExportBusScreen::new, "/screens/stock_export_bus.json");
+        InitScreens.register(AAEMenus.STOCK_EXPORT_BUS, StockExportBusScreen::new, "/screens/stock_export_bus.json");
 
         InitScreens.register(AAEMenus.OUTPUT_DIRECTION, OutputDirectionScreen::new, "/screens/output_direction.json");
         InitScreens.register(
@@ -152,7 +155,7 @@ public class AAEClient extends AdvancedAE {
 
     @SuppressWarnings("deprecation")
     private static void initItemColours(RegisterColorHandlersEvent.Item event) {
-        // event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
+        event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
 
         for (var bucket : AAEFluids.getFluids()) {
             event.getItemColors()
@@ -169,7 +172,7 @@ public class AAEClient extends AdvancedAE {
     }
 
     private static void initRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        // event.registerBlockEntityRenderer(AAEBlockEntities.REACTION_CHAMBER.get(), ReactionChamberTESR::new);
+        event.registerBlockEntityRenderer(AAEBlockEntities.REACTION_CHAMBER.get(), ReactionChamberTESR::new);
     }
 
     private static ItemColor makeOpaque(ItemColor itemColor) {

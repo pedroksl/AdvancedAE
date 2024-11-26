@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.blocks.ReactionChamberBlock;
@@ -341,11 +340,13 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
                 final double powerThreshold = powerConsumption - 0.01;
 
                 // Try to recharge from fe cells
-                if (Addons.APPFLUX.isLoaded()) {
-                    AppliedFluxPlugin.rechargeEnergyStorage(
-                            grid, Integer.MAX_VALUE, IActionSource.ofMachine(this), (IEnergyStorage)
-                                    this.getCapability(Capabilities.FORGE_ENERGY, Direction.UP));
-                }
+                var capOp = this.getCapability(Capabilities.FORGE_ENERGY, Direction.UP);
+                capOp.ifPresent(cap -> {
+                    if (Addons.APPFLUX.isLoaded()) {
+                        AppliedFluxPlugin.rechargeEnergyStorage(
+                                grid, Integer.MAX_VALUE, IActionSource.ofMachine(this), cap);
+                    }
+                });
 
                 double powerReq = this.extractAEPower(powerConsumption, Actionable.SIMULATE, PowerMultiplier.CONFIG);
 
@@ -702,6 +703,13 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
             if (!(what instanceof AEFluidKey)) return false;
 
             return super.isAllowed(what);
+        }
+
+        @Override
+        public long insert(int slot, AEKey what, long amount, Actionable mode) {
+            if (slot == 0) return 0L;
+
+            return super.insert(slot, what, amount, mode);
         }
 
         @Override

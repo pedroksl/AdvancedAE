@@ -10,9 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
-import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
-import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
+import net.pedroksl.advanced_ae.common.entities.*;
 
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
@@ -40,16 +38,14 @@ public final class AAEBlockEntities {
             AdvPatternProviderEntity.class,
             AdvPatternProviderEntity::new,
             AAEBlocks.ADV_PATTERN_PROVIDER);
-    //    public static final Supplier<BlockEntityType<SmallAdvPatternProviderEntity>> SMALL_ADV_PATTERN_PROVIDER =
-    // create(
-    //            "small_adv_pattern_provider",
-    //            SmallAdvPatternProviderEntity.class,
-    //            SmallAdvPatternProviderEntity::new,
-    //            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER);
+    public static final Supplier<BlockEntityType<SmallAdvPatternProviderEntity>> SMALL_ADV_PATTERN_PROVIDER = create(
+            "small_adv_pattern_provider",
+            SmallAdvPatternProviderEntity.class,
+            SmallAdvPatternProviderEntity::new,
+            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER);
 
-    //    public static final Supplier<BlockEntityType<ReactionChamberEntity>> REACTION_CHAMBER = create(
-    //            "reaction_chamber", ReactionChamberEntity.class, ReactionChamberEntity::new,
-    // AAEBlocks.REACTION_CHAMBER);
+    public static final Supplier<BlockEntityType<ReactionChamberEntity>> REACTION_CHAMBER = create(
+            "reaction_chamber", ReactionChamberEntity.class, ReactionChamberEntity::new, AAEBlocks.REACTION_CHAMBER);
 
     public static final Supplier<BlockEntityType<QuantumCrafterEntity>> QUANTUM_CRAFTER =
             create("quantum_craft", QuantumCrafterEntity.class, QuantumCrafterEntity::new, AAEBlocks.QUANTUM_CRAFTER);

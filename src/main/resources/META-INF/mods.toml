@@ -69,15 +69,3 @@ logoFile="logo.png"
     versionRange="[1.0,)"
     ordering="AFTER"
     side="BOTH"
-[[dependencies.${mod_id}]]
-    modId="expatternprovider"
-    mandatory=true
-    versionRange="[1.20,)"
-    ordering="AFTER"
-    side="BOTH"
-[[dependencies.${mod_id}]]
-    modId="appflux"
-    mandatory=true
-    versionRange="[1.20,)"
-    ordering="AFTER"
-    side="BOTH"

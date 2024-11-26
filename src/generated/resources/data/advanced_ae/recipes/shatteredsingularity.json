@@ -1,0 +1,35 @@
+{
+  "type": "advanced_ae:reaction",
+  "energy": 200000,
+  "fluid": {
+    "fluidStack": {
+      "Amount": 100,
+      "FluidName": "minecraft:lava"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "ae2:singularity"
+      }
+    },
+    {
+      "amount": 2,
+      "ingredient": {
+        "tag": "forge:dusts/ender_pearl"
+      }
+    },
+    {
+      "amount": 2,
+      "ingredient": {
+        "item": "ae2:sky_dust"
+      }
+    }
+  ],
+  "output": {
+    "#": 2,
+    "#c": "ae2:i",
+    "id": "advanced_ae:shattered_singularity"
+  }
+}

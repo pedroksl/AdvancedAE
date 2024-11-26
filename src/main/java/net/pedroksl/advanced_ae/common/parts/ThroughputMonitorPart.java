@@ -1,7 +1,5 @@
 package net.pedroksl.advanced_ae.common.parts;
 
-import javax.annotation.Nullable;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -10,14 +8,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.renderer.AAEBlockEntityRenderHelper;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
-import net.pedroksl.advanced_ae.mixins.MixinAbstractMonitorPartAccessor;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IGridNodeListener;
@@ -27,7 +23,6 @@ import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.orientation.BlockOrientation;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.IPartModel;
-import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AmountFormat;
 import appeng.api.util.AEColor;
 import appeng.client.render.BlockEntityRenderHelper;
@@ -138,17 +133,16 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     }
 
     @Override
-    public boolean onUseItemOn(ItemStack heldItem, Player player, InteractionHand hand, Vec3 pos) {
-        if (heldItem == ItemStack.EMPTY) {
-            return super.onUseWithoutItem(player, pos);
-        } else if (heldItem.is(AAEItems.MONITOR_CONFIGURATOR.asItem())) {
-            if (!isClientSide()) {
+    public boolean onPartActivate(Player player, InteractionHand hand, Vec3 pos) {
+        if (!isClientSide()) {
+            var heldItem = player.getItemInHand(hand);
+            if (heldItem.is(AAEItems.MONITOR_CONFIGURATOR.asItem())) {
                 cycleWorkRoutine();
+                return true;
             }
-            return true;
-        } else {
-            return super.onUseItemOn(heldItem, player, hand, pos);
         }
+
+        return super.onPartActivate(player, hand, pos);
     }
 
     private void cycleWorkRoutine() {
@@ -157,13 +151,9 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         getMainNode().ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
     }
 
-    private @Nullable AEKey getConfiguredItem() {
-        return ((MixinAbstractMonitorPartAccessor) this).getConfiguredItem();
-    }
-
     @Override
     protected void configureWatchers() {
-        if (getConfiguredItem() != null) {
+        if (getDisplayed() != null) {
             updateState(TickHandler.instance().getCurrentTick());
             getMainNode().ifPresent((grid, node) -> grid.getTickManager().wakeDevice(node));
         } else {
@@ -182,7 +172,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
             int combinedLightIn,
             int combinedOverlayIn) {
         if (this.isActive()) {
-            if (getConfiguredItem() != null) {
+            if (getDisplayed() != null) {
                 poseStack.pushPose();
                 BlockOrientation orientation = BlockOrientation.get(this.getSide(), this.getSpin());
                 poseStack.translate(0.5, 0.5, 0.5);
@@ -192,8 +182,8 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
                         poseStack,
                         buffers,
                         this.getDisplayed(),
-                        ((MixinAbstractMonitorPartAccessor) this).getAmount(),
-                        ((MixinAbstractMonitorPartAccessor) this).getCanCraft(),
+                        getAmount(),
+                        canCraft(),
                         0.3F,
                         -0.15F,
                         this.getColor().contrastTextColor,
@@ -236,12 +226,12 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
 
     @Override
     public TickingRequest getTickingRequest(IGridNode iGridNode) {
-        return new TickingRequest(20, 400, !isActive() || getConfiguredItem() == null);
+        return new TickingRequest(20, 400, !isActive() || getDisplayed() == null, true);
     }
 
     @Override
     public TickRateModulation tickingRequest(IGridNode iGridNode, int i) {
-        if (!this.getMainNode().isActive() || getConfiguredItem() == null) {
+        if (!this.getMainNode().isActive() || getDisplayed() == null) {
             resetState();
             return TickRateModulation.SLEEP;
         }
@@ -266,8 +256,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
                         case SECOND -> amountPerSecond;
                         case MINUTE -> amountPerSecond * 60f;
                     });
-            this.lastHumanReadableValue =
-                    getConfiguredItem().formatAmount(Math.abs(lastReportedValue), AmountFormat.SLOT);
+            this.lastHumanReadableValue = getDisplayed().formatAmount(Math.abs(lastReportedValue), AmountFormat.SLOT);
         } else {
             this.lastHumanReadableValue = "-";
         }

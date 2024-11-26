@@ -14,8 +14,6 @@ import appeng.api.implementations.blockentities.PatternContainerGroup;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGrid;
 import appeng.api.stacks.AEItemKey;
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import appeng.helpers.IPriorityHost;
@@ -25,8 +23,7 @@ import appeng.menu.MenuOpener;
 import appeng.menu.implementations.PatternProviderMenu;
 import appeng.menu.locator.MenuLocator;
 
-public interface AdvPatternProviderLogicHost
-        extends IConfigurableObject, IPriorityHost, PatternContainer, IUpgradeableObject {
+public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPriorityHost, PatternContainer {
     AdvPatternProviderLogic getLogic();
 
     /**
@@ -86,9 +83,5 @@ public interface AdvPatternProviderLogicHost
 
     default PatternContainerGroup getTerminalGroup() {
         return getLogic().getTerminalGroup();
-    }
-
-    default IUpgradeInventory getUpgrades() {
-        return ((IUpgradeableObject) this.getLogic()).getUpgrades();
     }
 }

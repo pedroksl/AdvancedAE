@@ -13,7 +13,7 @@ import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 
 public enum Addons {
-    EXTENDEDAE("Extended AE"),
+    EXPATTERNPROVIDER("Extended AE"),
     APPFLUX("Applied Flux"),
     MEGACELLS("MEGACells"),
     MEKANISM("Mekanism"),
@@ -39,6 +39,14 @@ public enum Addons {
         return ModList.get() != null
                 ? ModList.get().isLoaded(getModId())
                 : LoadingModList.get().getMods().stream().map(ModInfo::getModId).anyMatch(getModId()::equals);
+    }
+
+    public void conditionalRecipe(
+            Consumer<FinishedRecipe> output, Consumer<Consumer<FinishedRecipe>> recipe, ResourceLocation id) {
+        ConditionalRecipe.builder()
+                .addCondition(new ModLoadedCondition(getModId()))
+                .addRecipe(recipe)
+                .build(output, id);
     }
 
     public void conditionalRecipe(Consumer<FinishedRecipe> output, RecipeBuilder recipe, ResourceLocation id) {

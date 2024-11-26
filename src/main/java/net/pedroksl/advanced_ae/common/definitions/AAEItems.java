@@ -10,6 +10,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
+import net.pedroksl.advanced_ae.common.items.AdvPatternProviderCapacityUpgradeItem;
+import net.pedroksl.advanced_ae.common.items.AdvPatternProviderUpgradeItem;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
@@ -61,20 +63,13 @@ public class AAEItems {
 
     public static final AAEItemDefinition<AdvProcessingPatternItem> ADV_PROCESSING_PATTERN =
             item("Advanced Processing Pattern", "adv_processing_pattern", AdvProcessingPatternItem::new);
-    //    public static final ItemDefinition<Item> ADV_PROCESSING_PATTERN = item(
-    //            "Advanced Processing Pattern",
-    //            "adv_processing_pattern",
-    //            p -> PatternDetailsHelper.encodedPatternItemBuilder(AdvProcessingPattern::new)
-    //                    .invalidPatternTooltip(AdvProcessingPattern::getInvalidPatternTooltip)
-    //                    .build());
 
-    //    public static final ItemDefinition<Item> ADV_PATTERN_PROVIDER_UPGRADE = item(
-    //            "Advanced Pattern Provider Upgrade", "adv_pattern_provider_upgrade",
-    // AdvPatternProviderUpgradeItem::new);
-    //    public static final ItemDefinition<Item> ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE = item(
-    //            "Advanced Pattern Provider Capacity Upgrade",
-    //            "adv_pattern_provider_capacity_upgrade",
-    //            AdvPatternProviderCapacityUpgradeItem::new);
+    public static final AAEItemDefinition<Item> ADV_PATTERN_PROVIDER_UPGRADE = item(
+            "Advanced Pattern Provider Upgrade", "adv_pattern_provider_upgrade", AdvPatternProviderUpgradeItem::new);
+    public static final AAEItemDefinition<Item> ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE = item(
+            "Advanced Pattern Provider Capacity Upgrade",
+            "adv_pattern_provider_capacity_upgrade",
+            AdvPatternProviderCapacityUpgradeItem::new);
     public static final AAEItemDefinition<MaterialItem> QUANTUM_INFUSED_DUST =
             item("Quantum Infused Dust", "quantum_infused_dust", MaterialItem::new);
     public static final AAEItemDefinition<MaterialItem> QUANTUM_ALLOY =

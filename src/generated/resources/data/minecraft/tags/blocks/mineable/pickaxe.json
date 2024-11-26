@@ -13,6 +13,8 @@
     "advanced_ae:quantum_multi_threader",
     "advanced_ae:quantum_structure",
     "advanced_ae:adv_pattern_provider",
+    "advanced_ae:small_adv_pattern_provider",
+    "advanced_ae:reaction_chamber",
     "advanced_ae:quantum_crafter"
   ]
 }

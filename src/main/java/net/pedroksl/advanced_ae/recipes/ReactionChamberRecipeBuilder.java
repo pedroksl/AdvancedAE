@@ -119,7 +119,7 @@ public class ReactionChamberRecipeBuilder {
                     .result()
                     .get()
                     .getAsJsonObject();
-            json.add("output", result);
+            json.add("output", result.get("output"));
 
             JsonArray ingredients = new JsonArray(inputs.size());
             for (var input : inputs) {

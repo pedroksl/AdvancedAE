@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "ae2:capacity_card"
+    },
+    "E": {
+      "item": "ae2:engineering_processor"
+    },
+    "I": {
+      "tag": "forge:ingots"
+    }
+  },
+  "pattern": [
+    "IC",
+    "CE"
+  ],
+  "result": {
+    "item": "advanced_ae:adv_pattern_provider_capacity_upgrade"
+  },
+  "show_notification": true
+}

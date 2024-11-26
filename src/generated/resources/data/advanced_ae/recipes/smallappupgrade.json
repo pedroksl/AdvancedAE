@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "I": {
+      "tag": "forge:ingots"
+    },
+    "L": {
+      "item": "ae2:logic_processor"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "IR",
+    "EL"
+  ],
+  "result": {
+    "item": "advanced_ae:adv_pattern_provider_upgrade"
+  },
+  "show_notification": true
+}

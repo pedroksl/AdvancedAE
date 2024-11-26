@@ -7,10 +7,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 import net.pedroksl.advanced_ae.api.IFluidTankHandler;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
+import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.FluidTankClientAudioPacket;
 import net.pedroksl.advanced_ae.network.packet.FluidTankStackUpdatePacket;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
@@ -91,7 +92,9 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
                 outputFluid = ((AEFluidKey) genOutput.what()).toStack(((int) genOutput.amount()));
             }
 
-            sendPacketToClient(new FluidTankStackUpdatePacket(inputFluid, outputFluid));
+            if (getPlayer() instanceof ServerPlayer player) {
+                AAENetworkHandler.INSTANCE.sendTo(new FluidTankStackUpdatePacket(inputFluid, outputFluid), player);
+            }
         }
         super.standardDetectAndSendChanges();
     }
@@ -182,6 +185,8 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
 
     @Override
     public void playAudioCues(FluidTankClientAudioPacket p) {
-        sendPacketToClient(p);
+        if (getPlayer() instanceof ServerPlayer player) {
+            AAENetworkHandler.INSTANCE.sendTo(p, player);
+        }
     }
 }

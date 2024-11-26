@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.mixins;
+package net.pedroksl.advanced_ae.mixins.eae;
 
 import java.util.HashMap;
 

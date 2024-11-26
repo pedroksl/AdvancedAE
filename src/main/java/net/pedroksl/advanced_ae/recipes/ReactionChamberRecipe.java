@@ -103,7 +103,7 @@ public class ReactionChamberRecipe implements Recipe<Container> {
 
         for (var input : this.inputs) {
             if (!input.isEmpty()) {
-                validInputs.add(input);
+                validInputs.add(input.sample());
             }
         }
 
@@ -127,7 +127,7 @@ public class ReactionChamberRecipe implements Recipe<Container> {
 
     @Override
     public ResourceLocation getId() {
-        return null;
+        return this.id;
     }
 
     public boolean containsIngredient(ItemStack stack) {

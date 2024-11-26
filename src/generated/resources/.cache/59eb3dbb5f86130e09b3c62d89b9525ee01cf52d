@@ -1,4 +1,4 @@
-// 1.20.1	2024-11-23T16:26:47.9171004	Loot Tables
+// 1.20.1	2024-11-25T01:10:50.5487147	Loot Tables
 eb08db58603576adf13687fb3b87b770f2a6a2bd data/advanced_ae/loot_tables/blocks/adv_pattern_provider.json
 78d8b62cd13fb15acb03b70aff8c8221784b2b77 data/advanced_ae/loot_tables/blocks/data_entangler.json
 ad7766897c0069671bcc724a972acd813dabf220 data/advanced_ae/loot_tables/blocks/quantum_accelerator.json
@@ -13,3 +13,5 @@ e879374d5e66ec5d05c88413d20e81d8b1786b96 data/advanced_ae/loot_tables/blocks/qua
 a2853cd093c7e98e857c8fb68ca339ba84f0b674 data/advanced_ae/loot_tables/blocks/quantum_storage_256.json
 4ab9c8a01d1ae5efc255c1f668bb6bf768343097 data/advanced_ae/loot_tables/blocks/quantum_structure.json
 618eceaac9fc6bf75e4260cd4d2974ad3248dda2 data/advanced_ae/loot_tables/blocks/quantum_unit.json
+9b4f3ab142ad99e64477f7312d2960efc2822cbf data/advanced_ae/loot_tables/blocks/reaction_chamber.json
+380d18661552324cacfef4e3c70172dd855b68ba data/advanced_ae/loot_tables/blocks/small_adv_pattern_provider.json

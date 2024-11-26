@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "advanced_ae:shattered_singularity"
+    },
+    "Q": {
+      "item": "advanced_ae:quantum_processor"
+    },
+    "U": {
+      "item": "advanced_ae:quantum_unit"
+    }
+  },
+  "pattern": [
+    "EQE",
+    "QUQ",
+    "EQE"
+  ],
+  "result": {
+    "item": "advanced_ae:quantum_accelerator"
+  },
+  "show_notification": true
+}

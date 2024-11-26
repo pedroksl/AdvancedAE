@@ -5,7 +5,7 @@
       "conditions": [
         {
           "type": "forge:mod_loaded",
-          "modid": "extendedae"
+          "modid": "expatternprovider"
         }
       ],
       "recipe": {

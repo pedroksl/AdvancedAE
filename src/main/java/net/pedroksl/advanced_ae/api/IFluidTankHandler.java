@@ -52,7 +52,7 @@ public interface IFluidTankHandler {
                             tank.setStack(index, null);
                         }
 
-                        setCarriedItem(stack);
+                        setCarriedItem(cap.getContainer());
 
                         if (inserted > 0) {
                             playAudioCues(new FluidTankClientAudioPacket(false));
@@ -79,7 +79,7 @@ public interface IFluidTankHandler {
                                         IFluidHandler.FluidAction.EXECUTE);
                             }
 
-                            setCarriedItem(stack);
+                            setCarriedItem(cap.getContainer());
 
                             playAudioCues(new FluidTankClientAudioPacket(true));
                         }

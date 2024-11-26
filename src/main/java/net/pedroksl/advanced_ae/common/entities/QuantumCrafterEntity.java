@@ -72,6 +72,7 @@ import appeng.util.inv.CombinedInternalInventory;
 import appeng.util.inv.FilteredInternalInventory;
 import appeng.util.inv.PlayerInternalInventory;
 import appeng.util.inv.filter.AEItemFilters;
+import appeng.util.inv.filter.IAEItemFilter;
 
 public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         implements IGridTickable, IUpgradeableObject, IConfigurableObject, IDirectionalOutputHost {
@@ -91,7 +92,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
     private final InternalInventory inv = new CombinedInternalInventory(this.patternInv, this.outputInv);
 
     private final FilteredInternalInventory inputExposed =
-            new FilteredInternalInventory(this.patternInv, AEItemFilters.INSERT_ONLY);
+            new FilteredInternalInventory(this.patternInv, new PatternOnlyFilter());
     private final FilteredInternalInventory outputExposed =
             new FilteredInternalInventory(this.outputInv, AEItemFilters.EXTRACT_ONLY);
     private final InternalInventory invExposed = new CombinedInternalInventory(this.inputExposed, this.outputExposed);
@@ -1291,6 +1292,18 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
                 }
             }
             return Collections.unmodifiableList(finalList);
+        }
+    }
+
+    private static class PatternOnlyFilter implements IAEItemFilter {
+        @Override
+        public boolean allowExtract(InternalInventory inv, int slot, int amount) {
+            return false;
+        }
+
+        @Override
+        public boolean allowInsert(InternalInventory inv, int slot, ItemStack stack) {
+            return AEItems.CRAFTING_PATTERN.isSameAs(stack);
         }
     }
 }
