@@ -1,8 +1,8 @@
-// 1.20.1	2024-11-25T23:07:00.5906866	Recipes
+// 1.20.1	2024-11-26T00:06:42.9506738	Recipes
 a0980cb5245494a2ce3017b3bac08d619d2841a6 data/advanced_ae/advancements/recipes/misc/advpartenc.json
 6f12940967f70208e960ad055b040190b78211c4 data/advanced_ae/advancements/recipes/misc/advpatpro2.json
 6662e2730916aa3400dfdb66488adb4684194ee8 data/advanced_ae/advancements/recipes/misc/advpatpropart.json
-6b00cf71bec5a45ed9f5a829789fc8236185d916 data/advanced_ae/advancements/recipes/misc/eaelargeappupgrade.json
+676e8c97819522197f24a1dcbdccfc02038d61d8 data/advanced_ae/advancements/recipes/misc/largeappupgrade.json
 c041cf23317b97e4abe14bc59e57b3af2950603c data/advanced_ae/advancements/recipes/misc/quantumaccel.json
 cfd58ebd1cdff612080cf84e6ac37e0aa375f45b data/advanced_ae/advancements/recipes/misc/quantumcore.json
 8b99da473906cbfb9c46d1da34206979b54d5045 data/advanced_ae/advancements/recipes/misc/quantumcrafter.json
@@ -37,11 +37,10 @@ d52b25ca1c166b8077c915f6d53fc5da4f7c056a data/advanced_ae/recipes/certuscharger.
 8e5cd0d231d51107739efaa5e35c9602e9e0f335 data/advanced_ae/recipes/chippedbudding.json
 da634a3450318382ef289b95e1772b530bc8ded2 data/advanced_ae/recipes/damagedbudding.json
 6789359638334687db223f18f44669312bec1e37 data/advanced_ae/recipes/eaeadvpatpro.json
-22a71ea7bc9ff18496dacbcd6f1d67637c239e39 data/advanced_ae/recipes/eaelargeappupgrade.json
 266d91840125c92806e0ee4b3a3542de1658140d data/advanced_ae/recipes/flawedbudding.json
 e6a9256b58a9aca22fb9548e95f1b95b0faf7d48 data/advanced_ae/recipes/fluixcrystalfromdust.json
 76deb0a32c259de959955031b0e9ab31d86703d0 data/advanced_ae/recipes/fluixcrystals.json
-0ec7a1fe118ffeb26db44ce5e07a6ff5a02dbf7e data/advanced_ae/recipes/largeappupgrade.json
+22a71ea7bc9ff18496dacbcd6f1d67637c239e39 data/advanced_ae/recipes/largeappupgrade.json
 9e10dcdb4153bcfbbbd71fae0598d0f6710d9246 data/advanced_ae/recipes/quantumaccel.json
 adce727b95d58368612b40a457c28c1e9ad53a09 data/advanced_ae/recipes/quantumcore.json
 831140d59946b74433851a663a5f2a7ed6f90e64 data/advanced_ae/recipes/quantumcrafter.json

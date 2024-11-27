@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.client.widgets;
+package net.pedroksl.advanced_ae.client.gui.widgets;
 
 import net.minecraft.resources.ResourceLocation;
 import net.pedroksl.advanced_ae.AdvancedAE;

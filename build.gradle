@@ -99,17 +99,16 @@ repositories {
 dependencies {
     minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
     implementation fg.deobf("curse.maven:glodium-957920:5226922")
-    compileOnly fg.deobf("curse.maven:applied-flux-965012:5772439")
+    implementation fg.deobf("curse.maven:applied-flux-965012:5772439")
     implementation fg.deobf("appeng:appliedenergistics2-forge:15.2.13")
-    compileOnly fg.deobf("curse.maven:ex-pattern-provider-892005:5867594")
+    implementation fg.deobf("curse.maven:ex-pattern-provider-892005:5867594")
     compileOnly fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:5162352")
     implementation fg.deobf("curse.maven:jei-238222:5846810")
     implementation fg.deobf("curse.maven:jade-324717:4768593")
     implementation fg.deobf("curse.maven:emi-580555:5872526")
-    compileOnly fg.deobf("curse.maven:mega-cells-622112:5881252")
-    compileOnly fg.deobf("curse.maven:mekanism-268560:5395221")
+    implementation fg.deobf("curse.maven:mega-cells-622112:5881252")
+    implementation fg.deobf("curse.maven:mekanism-268560:5395221")
     // rei
-    compileOnly "me.shedaniel.cloth:basic-math:0.6.1"
     compileOnly fg.deobf("dev.architectury:architectury-forge:7.0.66")
     compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:12.0.622")
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.136")

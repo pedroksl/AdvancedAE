@@ -1,4 +1,4 @@
-// 1.20.1	2024-11-25T03:00:53.1064344	Block States / Models
+// 1.20.1	2024-11-26T00:06:42.9526743	Block States / Models
 95a299ecaf1f57e89c3507297d4be2fc99a2749c assets/advanced_ae/blockstates/adv_pattern_provider.json
 fef5598f6fe49cc3150d9233ce01bc5a7136fcf9 assets/advanced_ae/blockstates/data_entangler.json
 9f77870684c7b9108903c29765927a81ea7d4cfd assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -38,7 +38,9 @@ a556588e8a4bd7659cdeffa5867b8ecd20c7d10d assets/advanced_ae/models/block/quantum
 e35a61f186f90f6dd0480f8de0e005464ac09ccf assets/advanced_ae/models/block/small_adv_pattern_provider_oriented.json
 789cc464b44be80dae6ead72f9827f28bf17475a assets/advanced_ae/models/item/adv_pattern_encoder.json
 8b8ffd440f461ad525d124e29dc895395a417a36 assets/advanced_ae/models/item/adv_pattern_provider.json
+1bf88df7ca145b984fafdb0103ad7e218fe6f22e assets/advanced_ae/models/item/adv_pattern_provider_capacity_upgrade.json
 34abc1a51bf90e52caa97e53c3444b6022d3056b assets/advanced_ae/models/item/adv_pattern_provider_part.json
+91f714f256fdb30c23509eaae489b53f89053948 assets/advanced_ae/models/item/adv_pattern_provider_upgrade.json
 7936ce48168dbe3f45327839a0911209e99726c6 assets/advanced_ae/models/item/adv_processing_pattern.json
 5867ab7bef31c60b5d84a3a47d6554d7a5f013d4 assets/advanced_ae/models/item/data_entangler.json
 07074f00d204f9573456876375a5afde685b0e40 assets/advanced_ae/models/item/printed_quantum_processor.json
@@ -62,7 +64,7 @@ f71739f0baf970c037c00c4b1569c12f46057812 assets/advanced_ae/models/item/quantum_
 859961e68f959c07c5609cf8d832cdc747aab060 assets/advanced_ae/models/item/shattered_singularity.json
 2497dc9b5a83466842a8c2531e283348f17b7f14 assets/advanced_ae/models/item/small_adv_pattern_provider.json
 a141ebe7f51be28f6d14e2f6a8c8717495e9386f assets/advanced_ae/models/item/small_adv_pattern_provider_part.json
-d203cdd86fbf2aba5512c279ce433a4310a56de6 assets/advanced_ae/models/item/stock_export_bus_part.json
+8774bb4de8f1aae2f2f948386337ef720eac8bd1 assets/advanced_ae/models/item/stock_export_bus_part.json
 bb7474d30fbe3abc133ca72263ceb2b52b582167 assets/advanced_ae/models/item/throughput_monitor_configurator.json
 bc562a06060cc38c38d195c0f1bbc6dbc29aed97 assets/advanced_ae/models/part/adv_pattern_provider_part.json
 b2db4877af0be594a4a1851ef4d5e28b28a9e46d assets/advanced_ae/models/part/small_adv_pattern_provider_part.json

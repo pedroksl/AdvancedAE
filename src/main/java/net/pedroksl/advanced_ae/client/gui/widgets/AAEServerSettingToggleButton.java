@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.client.widgets;
+package net.pedroksl.advanced_ae.client.gui.widgets;
 
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.AAEConfigButtonPacket;

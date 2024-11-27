@@ -36,8 +36,8 @@ public class AAEModelProvider extends AE2BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         basicItem(AAEItems.ADV_PROCESSING_PATTERN);
-        //		basicItem(AAEItems.ADV_PATTERN_PROVIDER_UPGRADE);
-        //		basicItem(AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE);
+        basicItem(AAEItems.ADV_PATTERN_PROVIDER_UPGRADE);
+        basicItem(AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE);
         basicItem(AAEItems.ADV_PATTERN_ENCODER);
         basicItem(AAEItems.SHATTERED_SINGULARITY);
         basicItem(AAEItems.QUANTUM_INFUSED_DUST);
@@ -141,7 +141,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         var sides = AdvancedAE.makeId("part/" + partName + "_sides");
 
         var base = isExport ? AppEng.makeId("part/export_bus_base") : AppEng.makeId("part/pattern_provider_base");
-        var itemBase = isExport ? AppEng.makeId("item/part_base") : AppEng.makeId("item/cable_pattern_provider");
+        var itemBase = isExport ? AppEng.makeId("item/export_bus") : AppEng.makeId("item/cable_pattern_provider");
 
         models().singleTexture("part/" + id, base, "sidesStatus", AppEng.makeId("part/monitor_sides_status"))
                 .texture("sides", sides)

@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.client.widgets;
+package net.pedroksl.advanced_ae.client.gui.widgets;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;

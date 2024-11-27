@@ -17,7 +17,7 @@ import appeng.crafting.pattern.ProcessingPatternItem;
 
 public class AdvProcessingPatternItem extends ProcessingPatternItem {
     public AdvProcessingPatternItem(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(1));
     }
 
     @Nullable

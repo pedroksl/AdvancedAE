@@ -8,9 +8,9 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.api.AAESettings;
-import net.pedroksl.advanced_ae.client.widgets.AAEActionItems;
-import net.pedroksl.advanced_ae.client.widgets.AAEServerSettingToggleButton;
-import net.pedroksl.advanced_ae.client.widgets.AAEToolbarActionButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEServerSettingToggleButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEToolbarActionButton;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterMenu;
 
 import appeng.api.config.RedstoneMode;

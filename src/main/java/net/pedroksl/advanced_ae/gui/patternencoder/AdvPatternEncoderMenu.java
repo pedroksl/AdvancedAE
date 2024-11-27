@@ -1,14 +1,14 @@
 package net.pedroksl.advanced_ae.gui.patternencoder;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
-import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderInventory;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetailsEncoder;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPatternItem;
@@ -23,21 +23,17 @@ import appeng.api.stacks.GenericStack;
 import appeng.crafting.pattern.AEProcessingPattern;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantics;
-import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.OutputSlot;
 import appeng.menu.slot.RestrictedInputSlot;
 
-public class AdvPatternEncoderContainer extends AEBaseMenu {
-    public static final MenuType<AdvPatternEncoderContainer> TYPE = MenuTypeBuilder.create(
-                    AdvPatternEncoderContainer::new, AdvPatternEncoderInventory.class)
-            .build("adv_pattern_encoder");
+public class AdvPatternEncoderMenu extends AEBaseMenu {
 
     private final RestrictedInputSlot inputSlot;
     private final OutputSlot outputSlot;
-    private final AdvPatternEncoderInventory host;
+    private final AdvPatternEncoderHost host;
 
-    public AdvPatternEncoderContainer(int id, Inventory playerInventory, AdvPatternEncoderInventory host) {
-        super(TYPE, id, playerInventory, host);
+    public AdvPatternEncoderMenu(int id, Inventory playerInventory, AdvPatternEncoderHost host) {
+        super(AAEMenus.ADV_PATTERN_ENCODER, id, playerInventory, host);
         this.createPlayerInventorySlots(playerInventory);
         this.host = host;
 
@@ -83,7 +79,7 @@ public class AdvPatternEncoderContainer extends AEBaseMenu {
 
         var sparseInputs = pattern.getSparseInputs();
 
-        HashMap<AEKey, Direction> inputList = new HashMap<>();
+        LinkedHashMap<AEKey, Direction> inputList = new LinkedHashMap<>();
         for (GenericStack input : sparseInputs) {
             if (input == null) {
                 continue;

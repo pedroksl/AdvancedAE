@@ -8,9 +8,9 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.client.widgets.AAEActionButton;
-import net.pedroksl.advanced_ae.client.widgets.AAEActionItems;
-import net.pedroksl.advanced_ae.client.widgets.OutputDirectionButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
+import net.pedroksl.advanced_ae.client.gui.widgets.OutputDirectionButton;
 import net.pedroksl.advanced_ae.gui.OutputDirectionMenu;
 
 import appeng.api.orientation.RelativeSide;

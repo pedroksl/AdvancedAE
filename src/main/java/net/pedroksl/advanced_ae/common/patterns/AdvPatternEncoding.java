@@ -19,6 +19,7 @@
 package net.pedroksl.advanced_ae.common.patterns;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import com.google.common.base.Preconditions;
@@ -69,13 +70,13 @@ class AdvPatternEncoding {
         return result;
     }
 
-    public static HashMap<AEKey, Direction> getInputDirections(CompoundTag nbt) {
+    public static LinkedHashMap<AEKey, Direction> getInputDirections(CompoundTag nbt) {
         Objects.requireNonNull(nbt, "Pattern must have a tag.");
 
         ListTag tag = nbt.getList(NBT_INPUT_DIRECTIONS, Tag.TAG_COMPOUND);
         Preconditions.checkArgument(tag.size() <= 9, "Cannot use more than 9 ingredients");
 
-        HashMap<AEKey, Direction> dirMap = new HashMap<>();
+        LinkedHashMap<AEKey, Direction> dirMap = new LinkedHashMap<>();
         for (int x = 0; x < tag.size(); x++) {
             CompoundTag compTag = tag.getCompound(x);
             AEKey key = AEKey.fromTagGeneric(compTag.getCompound("aekey"));

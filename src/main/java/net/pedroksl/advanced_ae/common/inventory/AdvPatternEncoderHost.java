@@ -5,19 +5,19 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
+import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderMenu;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.inventories.InternalInventory;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
-public class AdvPatternEncoderInventory extends ItemMenuHost implements InternalInventoryHost {
+public class AdvPatternEncoderHost extends ItemMenuHost implements InternalInventoryHost {
 
     private final AppEngInternalInventory inOutInventory = new AppEngInternalInventory(this, 2);
-    private AdvPatternEncoderContainer.inventoryChangedHandler invChangeHandler;
+    private AdvPatternEncoderMenu.inventoryChangedHandler invChangeHandler;
 
-    public AdvPatternEncoderInventory(Player player, @Nullable Integer slot, ItemStack itemStack) {
+    public AdvPatternEncoderHost(Player player, @Nullable Integer slot, ItemStack itemStack) {
         super(player, slot, itemStack);
 
         CompoundTag itemTag = this.getItemStack().getTag();
@@ -46,7 +46,7 @@ public class AdvPatternEncoderInventory extends ItemMenuHost implements Internal
         return this.inOutInventory;
     }
 
-    public void setInventoryChangedHandler(AdvPatternEncoderContainer.inventoryChangedHandler handler) {
+    public void setInventoryChangedHandler(AdvPatternEncoderMenu.inventoryChangedHandler handler) {
         invChangeHandler = handler;
     }
 }

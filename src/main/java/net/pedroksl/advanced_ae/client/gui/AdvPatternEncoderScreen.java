@@ -1,4 +1,4 @@
-package net.pedroksl.advanced_ae.gui.patternencoder;
+package net.pedroksl.advanced_ae.client.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderMenu;
+import net.pedroksl.advanced_ae.gui.patternencoder.DirectionInputButton;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionPacket;
 
@@ -24,7 +26,7 @@ import appeng.client.guidebook.render.SimpleRenderContext;
 import appeng.core.AppEng;
 import appeng.menu.slot.FakeSlot;
 
-public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContainer> {
+public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu> {
 
     private static final int ROW_HEIGHT = 18;
     private static final int SLOT_SIZE = ROW_HEIGHT;
@@ -47,8 +49,8 @@ public class AdvPatternEncoderGui extends AEBaseScreen<AdvPatternEncoderContaine
     private final HashMap<AEKey, DirectionInputButton[]> directionButtons = new HashMap<>();
     private final ArrayList<InputRow> rows = new ArrayList<>();
 
-    public AdvPatternEncoderGui(
-            AdvPatternEncoderContainer menu, Inventory playerInventory, Component title, ScreenStyle style) {
+    public AdvPatternEncoderScreen(
+            AdvPatternEncoderMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
         this.scrollbar = widgets.addScrollBar("scrollbar", Scrollbar.SMALL);
     }

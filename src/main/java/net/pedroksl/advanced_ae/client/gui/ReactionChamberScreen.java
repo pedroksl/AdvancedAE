@@ -9,10 +9,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fluids.FluidStack;
 import net.pedroksl.advanced_ae.api.IFluidTankScreen;
-import net.pedroksl.advanced_ae.client.widgets.AAEActionButton;
-import net.pedroksl.advanced_ae.client.widgets.AAEActionItems;
-import net.pedroksl.advanced_ae.client.widgets.AAEToolbarActionButton;
-import net.pedroksl.advanced_ae.client.widgets.FluidTankSlot;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEToolbarActionButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.FluidTankSlot;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.ReactionChamberMenu;
 

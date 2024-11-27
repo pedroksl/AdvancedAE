@@ -1,6 +1,6 @@
 package net.pedroksl.advanced_ae.common.patterns;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 import net.minecraft.core.Direction;
@@ -13,7 +13,7 @@ import appeng.crafting.pattern.AEProcessingPattern;
 
 public class AdvProcessingPattern extends AEProcessingPattern implements AdvPatternDetails {
 
-    private final HashMap<AEKey, Direction> dirMap;
+    private final LinkedHashMap<AEKey, Direction> dirMap;
 
     public AdvProcessingPattern(AEItemKey definition) {
         super(definition);
@@ -23,7 +23,7 @@ public class AdvProcessingPattern extends AEProcessingPattern implements AdvPatt
         this.dirMap = AdvPatternEncoding.getInputDirections(tag);
     }
 
-    public HashMap<AEKey, Direction> getDirectionMap() {
+    public LinkedHashMap<AEKey, Direction> getDirectionMap() {
         return dirMap;
     }
 

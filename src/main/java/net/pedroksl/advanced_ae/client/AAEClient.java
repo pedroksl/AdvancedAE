@@ -85,9 +85,8 @@ public class AAEClient extends AdvancedAE {
                 AAEMenus.SMALL_ADV_PATTERN_PROVIDER,
                 SmallAdvPatternProviderScreen::new,
                 "/screens/small_adv_pattern_provider.json");
-        //        InitScreens.register(
-        //                AAEMenus.ADV_PATTERN_ENCODER, AdvPatternEncoderScreen::new,
-        // "/screens/adv_pattern_encoder.json");
+        InitScreens.register(
+                AAEMenus.ADV_PATTERN_ENCODER, AdvPatternEncoderScreen::new, "/screens/adv_pattern_encoder.json");
         InitScreens.register(AAEMenus.REACTION_CHAMBER, ReactionChamberScreen::new, "/screens/reaction_chamber.json");
         InitScreens.register(AAEMenus.QUANTUM_CRAFTER, QuantumCrafterScreen::new, "/screens/quantum_crafter.json");
 

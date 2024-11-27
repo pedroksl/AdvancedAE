@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:eaelargeappupgrade"
+        "recipe": "advanced_ae:largeappupgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "advanced_ae:eaelargeappupgrade"
+      "advanced_ae:largeappupgrade"
     ]
   },
   "sends_telemetry_event": false

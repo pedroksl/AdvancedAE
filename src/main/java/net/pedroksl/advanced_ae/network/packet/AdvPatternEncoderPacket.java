@@ -2,7 +2,7 @@ package net.pedroksl.advanced_ae.network.packet;
 
 import static appeng.api.stacks.AEKey.writeKey;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
 
@@ -10,19 +10,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderGui;
+import net.pedroksl.advanced_ae.client.gui.AdvPatternEncoderScreen;
 
 import appeng.api.stacks.AEKey;
 
 public class AdvPatternEncoderPacket implements IMessage<AdvPatternEncoderPacket> {
 
-    private HashMap<AEKey, Direction> dirMap;
+    private LinkedHashMap<AEKey, Direction> dirMap;
 
     public AdvPatternEncoderPacket() {
-        this.dirMap = new HashMap<>();
+        this.dirMap = new LinkedHashMap<>();
     }
 
-    public AdvPatternEncoderPacket(HashMap<AEKey, Direction> dirMap) {
+    public AdvPatternEncoderPacket(LinkedHashMap<AEKey, Direction> dirMap) {
         this.dirMap = dirMap;
     }
 
@@ -43,7 +43,7 @@ public class AdvPatternEncoderPacket implements IMessage<AdvPatternEncoderPacket
 
     @Override
     public void fromBytes(FriendlyByteBuf buf) {
-        dirMap = new HashMap<>();
+        dirMap = new LinkedHashMap<>();
 
         int size = buf.readInt();
         for (var x = 0; x < size; x++) {
@@ -55,7 +55,7 @@ public class AdvPatternEncoderPacket implements IMessage<AdvPatternEncoderPacket
 
     @Override
     public void onMessage(Player player) {
-        if (Minecraft.getInstance().screen instanceof AdvPatternEncoderGui encoderGui) {
+        if (Minecraft.getInstance().screen instanceof AdvPatternEncoderScreen encoderGui) {
             encoderGui.update(this.dirMap);
         }
     }

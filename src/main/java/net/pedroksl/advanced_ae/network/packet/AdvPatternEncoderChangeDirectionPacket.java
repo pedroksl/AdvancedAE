@@ -9,7 +9,7 @@ import com.glodblock.github.glodium.network.packet.IMessage;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderContainer;
+import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderMenu;
 
 import appeng.api.stacks.AEKey;
 
@@ -44,7 +44,7 @@ public class AdvPatternEncoderChangeDirectionPacket implements IMessage<AdvPatte
 
     @Override
     public void onMessage(Player player) {
-        if (player.containerMenu instanceof AdvPatternEncoderContainer encoderContainer) {
+        if (player.containerMenu instanceof AdvPatternEncoderMenu encoderContainer) {
             encoderContainer.update(this.key, this.dir);
         }
     }

@@ -152,18 +152,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('C', AEItems.CAPACITY_CARD)
                 .define('E', AEItems.ENGINEERING_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEBlocks.ADV_PATTERN_PROVIDER))
-                .save(c, AdvancedAE.makeId("eaelargeappupgrade"));
-        recipe = ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
-                .pattern("STS")
-                .pattern("GIG")
-                .pattern("CCC")
-                .define('I', Tags.Items.INGOTS)
-                .define('C', AEItems.CAPACITY_CARD)
-                .define('T', Items.CRAFTING_TABLE)
-                .define('G', ConventionTags.GLASS_CABLE)
-                .define('S', AAEItems.SHATTERED_SINGULARITY)
-                .unlockedBy("hasItem", has(AAEItems.SHATTERED_SINGULARITY));
-        Addons.EXPATTERNPROVIDER.notConditionalRecipe(c, recipe, AdvancedAE.makeId("largeappupgrade"));
+                .save(c, AdvancedAE.makeId("largeappupgrade"));
         ReactionChamberRecipeBuilder.react(AAEItems.SHATTERED_SINGULARITY, 2, 200000)
                 .input(AEItems.SINGULARITY)
                 .input(ConventionTags.ENDER_PEARL_DUST, 2)
