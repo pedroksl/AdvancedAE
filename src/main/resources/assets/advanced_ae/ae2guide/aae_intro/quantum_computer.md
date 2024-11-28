@@ -81,7 +81,7 @@ connect everything together.
 ## The multiblock
 
 To create a multiblock quantum computer, some rules must be followed:
-- The maximum size is 5x5x5;
+- The maximum size is 7x7x7 (external dimensions);
 - No empty spaces can be present inside the multiblock. They can be filled with <ItemLink id="advanced_ae:quantum_unit" />
 for no additional benefits;
 - Exactly one <ItemLink id="advanced_ae:quantum_core" />;
