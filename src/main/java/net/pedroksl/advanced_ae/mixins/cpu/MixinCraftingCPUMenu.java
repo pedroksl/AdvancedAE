@@ -24,6 +24,7 @@ import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.core.network.clientbound.CraftingStatusPacket;
+import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.me.common.IncrementalUpdateHelper;
 import appeng.menu.me.crafting.CraftingCPUMenu;
@@ -36,6 +37,9 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
     @Final
     @Shadow
     private IncrementalUpdateHelper incrementalUpdateHelper;
+
+    @Shadow
+    private CraftingCPUCluster cpu;
 
     @Unique
     private AdvCraftingCPU advancedAE$advCpu = null;
@@ -73,15 +77,17 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
 
     @Inject(method = "setCPU(Lappeng/api/networking/crafting/ICraftingCPU;)V", at = @At("HEAD"), cancellable = true)
     private void onSetCPU(ICraftingCPU c, CallbackInfo ci) {
-        if (c == this.advancedAE$advCpu) {
-            ci.cancel();
-        }
-
         if (this.advancedAE$advCpu != null) {
             this.advancedAE$advCpu.craftingLogic.removeListener(cpuChangeListener);
         }
 
         if (c instanceof AdvCraftingCPU advCPU) {
+            // Clear old cpu listener if it's still valid
+            if (this.cpu != null) {
+                this.cpu.craftingLogic.removeListener(cpuChangeListener);
+            }
+
+            // Clear helper inside the if statement because it will be cleared normally otherwise
             incrementalUpdateHelper.reset();
 
             this.advancedAE$advCpu = advCPU;
@@ -117,9 +123,7 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
         }
     }
 
-    @Inject(
-            method = "broadcastChanges",
-            at = @At(value = "INVOKE", target = "appeng/menu/AEBaseMenu.broadcastChanges ()V"))
+    @Inject(method = "broadcastChanges", at = @At(value = "HEAD"))
     public void broadcastChanges(CallbackInfo ci) {
         if (isServerSide() && this.advancedAE$advCpu != null) {
             this.schedulingMode = this.advancedAE$advCpu.getSelectionMode();

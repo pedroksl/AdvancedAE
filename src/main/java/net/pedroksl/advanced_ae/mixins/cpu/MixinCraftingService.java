@@ -76,9 +76,11 @@ public class MixinCraftingService {
     private void tickAdvClusters(CallbackInfo ci) {
         var previouslyCrafting = this.currentlyCrafting;
         for (var cluster : this.advancedAE$advCraftingCPUClusters) {
-            for (var cpu : cluster.getActiveCPUs()) {
-                cpu.craftingLogic.tickCraftingLogic(energyGrid, (CraftingService) (Object) this);
-                cpu.craftingLogic.getAllWaitingFor(this.currentlyCrafting);
+            if (cluster != null) {
+                for (var cpu : cluster.getActiveCPUs()) {
+                    cpu.craftingLogic.tickCraftingLogic(energyGrid, (CraftingService) (Object) this);
+                    cpu.craftingLogic.getAllWaitingFor(this.currentlyCrafting);
+                }
             }
         }
 
@@ -137,8 +139,10 @@ public class MixinCraftingService {
             CallbackInfoReturnable<Long> cir,
             @Local(ordinal = 1) long inserted) {
         for (var cluster : this.advancedAE$advCraftingCPUClusters) {
-            for (var cpu : cluster.getActiveCPUs()) {
-                inserted += cpu.craftingLogic.insert(what, amount - inserted, type);
+            if (cluster != null) {
+                for (var cpu : cluster.getActiveCPUs()) {
+                    inserted += cpu.craftingLogic.insert(what, amount - inserted, type);
+                }
             }
         }
 

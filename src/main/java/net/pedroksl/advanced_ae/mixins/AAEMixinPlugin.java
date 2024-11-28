@@ -19,8 +19,8 @@ public class AAEMixinPlugin implements IMixinConfigPlugin {
     private static final Object2ObjectMap<String, String> MOD_MIXINS = new Object2ObjectOpenHashMap<>(
             new String[] {
                 "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderMenu",
-                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderGui",
-                "net.pedroksl.advanced_ae.mixins.appflux.MixinSmallAdvPatternProviderGui",
+                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderScreen",
+                "net.pedroksl.advanced_ae.mixins.appflux.MixinSmallAdvPatternProviderScreen",
                 "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderLogic",
                 "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderLogicHost"
             },

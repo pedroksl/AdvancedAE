@@ -20,8 +20,8 @@
 		"cpu.MixinCraftingService"
 	],
 	"client": [
-		"appflux.MixinAdvPatternProviderGui",
-		"appflux.MixinSmallAdvPatternProviderGui",
+		"appflux.MixinAdvPatternProviderScreen",
+		"appflux.MixinSmallAdvPatternProviderScreen",
 		"client.BuiltInModelHooksAccessor",
 		"client.ModelBakeryMixin"
 	]
