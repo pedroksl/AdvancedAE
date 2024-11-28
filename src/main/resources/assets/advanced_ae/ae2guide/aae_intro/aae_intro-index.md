@@ -9,7 +9,7 @@ navigation:
 Advanced AE focuses on improving user experience when handling your ME System and expanding the possibilities of
 end-game systems. This mod allows you to upgrade pattern providers with the capability to push items to specific sides
 of the target machines and create multiblock computers that can run an unlimited amount of crafts, sharing
-co-processors, while it has crafting storage left.
+co-processors, while it has crafting storage left, plus a ton of other quality of life additions!
 
 ![PEGui1](../pic/aae_intro.png)
 
