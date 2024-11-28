@@ -63,5 +63,14 @@ public class AAEToolbarActionButton extends AAEIconButton {
         return AAEIcon.TOOLBAR_BUTTON_BACKGROUND;
     }
 
+    @Override
+    public List<Component> getTooltipMessage() {
+        var app = getAppearance();
+        if (app != null && app.tooltipLines() != null) {
+            return app.tooltipLines();
+        }
+        return List.of();
+    }
+
     private record ButtonAppearance(@Nullable AAEIcon icon, @Nullable Item item, List<Component> tooltipLines) {}
 }
