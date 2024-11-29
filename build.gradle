@@ -129,6 +129,7 @@ dependencies {
     implementation "curse.maven:mega-cells-622112:5662141"
     implementation "curse.maven:mekanism-268560:5680395"
     implementation "curse.maven:adorned-1036809:5740650"
+    compileOnly "curse.maven:jei-238222:5846880"
 
     compileOnly "curse.maven:apothic-enchanting-1063926:5787344"
     compileOnly "curse.maven:irisshaders-455508:5765375"
@@ -142,6 +143,9 @@ dependencies {
             runtimeOnly "dev.architectury:architectury-neoforge:13.0.6"
             runtimeOnly "curse.maven:cloth-config-348521:5424576"
             break
+        case "jei":
+            runtimeOnly "curse.maven:jei-238222:5846880"
+            runtimeOnly "dev.architectury:architectury-neoforge:13.0.6"
     }
 }
 
