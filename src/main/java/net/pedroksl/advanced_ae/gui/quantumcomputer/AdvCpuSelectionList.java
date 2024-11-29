@@ -32,7 +32,6 @@ public class AdvCpuSelectionList implements ICompositeWidget {
 
     private final Blitter background;
     private final Blitter buttonBg;
-    private final Blitter buttonBgSelected;
     private final QuantumComputerMenu menu;
     private final Color textColor;
     private final int selectedColor;
@@ -46,7 +45,6 @@ public class AdvCpuSelectionList implements ICompositeWidget {
         this.scrollbar = scrollbar;
         this.background = style.getImage("cpuList");
         this.buttonBg = style.getImage("cpuListButton");
-        this.buttonBgSelected = style.getImage("cpuListButtonSelected");
         this.textColor = style.getColor(PaletteColor.DEFAULT_TEXT_COLOR);
         this.selectedColor = style.getColor(PaletteColor.SELECTION_COLOR).toARGB();
         this.scrollbar.setCaptureMouseWheel(false);
@@ -174,7 +172,7 @@ public class AdvCpuSelectionList implements ICompositeWidget {
         background.dest(x, y, this.bounds.getWidth(), this.bounds.getHeight()).blit(guiGraphics);
 
         // Move to first button
-        x += 8;
+        x += 9;
         y += 19;
 
         var pose = guiGraphics.pose();
@@ -192,16 +190,16 @@ public class AdvCpuSelectionList implements ICompositeWidget {
                                 0,
                                 menu.cpuList.cpus().size()));
         for (var cpu : cpus) {
+            int color = -1;
             if (cpu.serial() == menu.getSelectedCpuSerial()) {
-                buttonBgSelected.dest(x, y).blit(guiGraphics);
-            } else {
-                buttonBg.dest(x, y).blit(guiGraphics);
+                color = selectedColor;
             }
+            buttonBg.dest(x, y).colorRgb(color).blit(guiGraphics);
 
             var name = getCpuName(cpu);
             pose.pushPose();
-            pose.translate(x + 3, y + 2, 0);
-            pose.scale(0.666f, 0.666f, 1);
+            pose.translate(x + 3, y + 3, 0);
+            pose.scale(0.8f, 0.8f, 1);
             guiGraphics.drawString(font, name, 0, 0, textColor.toARGB(), false);
             pose.popPose();
 
@@ -210,38 +208,40 @@ public class AdvCpuSelectionList implements ICompositeWidget {
             var currentJob = cpu.currentJob();
             if (currentJob != null) {
                 // Show what was initially requested
-                infoBar.add(Icon.CRAFT_HAMMER, 1f, x + 2, y + 9);
+                infoBar.add(Icon.CRAFT_HAMMER, 0.6f);
+                infoBar.addSpace(2);
                 var craftAmt = currentJob.what().formatAmount(currentJob.amount(), AmountFormat.SLOT);
-                infoBar.add(craftAmt, textColor.toARGB(), 0.666f, x + 14, y + 13);
-                infoBar.add(currentJob.what(), 0.666f, x + 55, y + 9);
+                infoBar.add(craftAmt, textColor.toARGB(), 0.6f);
+                infoBar.addSpace(1);
+                infoBar.add(currentJob.what(), 0.6f);
 
                 // Draw a bar at the bottom of the button to indicate job progress
                 var progress = (int) (cpu.progress() * (buttonBg.getSrcWidth() - 1) / Math.max(1, cpu.totalItems()));
-                guiGraphics.pose().pushPose();
-                guiGraphics.pose().translate(1, -1, 0);
                 guiGraphics.fill(
-                        x,
+                        x + 1,
                         y + buttonBg.getSrcHeight() - 2,
                         x + progress,
                         y + buttonBg.getSrcHeight() - 1,
-                        menu.getSelectedCpuSerial() == cpu.serial() ? 0xFF7da9d2 : (selectedColor));
-                guiGraphics.pose().popPose();
+                        menu.getSelectedCpuSerial() == cpu.serial() ? 0xFFFFFFFF : (0xFF000000 + selectedColor));
 
             } else {
-                infoBar.add(Icon.LEVEL_ITEM, 1f, x + 32, y + 9);
+                infoBar.add(Icon.LEVEL_ITEM, 0.6f);
+                infoBar.addSpace(1);
 
                 String storageAmount = formatStorage(cpu);
-                infoBar.add(storageAmount, textColor.toARGB(), 0.666f, x + 44, y + 13);
+                infoBar.add(storageAmount, textColor.toARGB(), 0.6f);
+                infoBar.addSpace(1);
 
                 if (cpu.coProcessors() > 0) {
-                    infoBar.add(Icon.BLOCKING_MODE_NO, 1f, x + 2, y + 9);
+                    infoBar.add(Icon.BLOCKING_MODE_NO, 0.6f);
                     String coProcessorCount = String.valueOf(cpu.coProcessors());
-                    infoBar.add(coProcessorCount, textColor.toARGB(), 0.666f, x + 14, y + 13);
+                    infoBar.add(coProcessorCount, textColor.toARGB(), 0.6f);
+                    infoBar.addSpace(1);
                 }
 
                 switch (cpu.mode()) {
-                    case PLAYER_ONLY -> infoBar.add(AEParts.TERMINAL, 1f, x + 55, y + 9);
-                    case MACHINE_ONLY -> infoBar.add(AEParts.EXPORT_BUS, 1f, x + 55, y + 9);
+                    case PLAYER_ONLY -> infoBar.add(AEParts.TERMINAL, 0.6f);
+                    case MACHINE_ONLY -> infoBar.add(AEParts.EXPORT_BUS, 0.6f);
                 }
             }
 

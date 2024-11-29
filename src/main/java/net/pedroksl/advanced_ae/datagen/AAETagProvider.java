@@ -85,13 +85,17 @@ public class AAETagProvider {
         @Override
         protected void addTags(@NotNull HolderLookup.Provider provider) {
             tag(AAETags.ADV_PATTERN_PROVIDER)
-                    .add(AAEBlocks.ADV_PATTERN_PROVIDER.asItem(), AAEItems.ADV_PATTERN_PROVIDER.asItem());
-            //                            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER.asItem(),
-            //                            AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
+                    .add(
+                            AAEBlocks.ADV_PATTERN_PROVIDER.asItem(),
+                            AAEItems.ADV_PATTERN_PROVIDER.asItem(),
+                            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER.asItem(),
+                            AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
             tag(ConventionTags.PATTERN_PROVIDER)
-                    .add(AAEBlocks.ADV_PATTERN_PROVIDER.asItem(), AAEItems.ADV_PATTERN_PROVIDER.asItem());
-            //                            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER.asItem(),
-            //                            AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
+                    .add(
+                            AAEBlocks.ADV_PATTERN_PROVIDER.asItem(),
+                            AAEItems.ADV_PATTERN_PROVIDER.asItem(),
+                            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER.asItem(),
+                            AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
 
             tag(AAEConventionTags.ENCODER_CURIO).add(AAEItems.ADV_PATTERN_ENCODER.asItem());
 

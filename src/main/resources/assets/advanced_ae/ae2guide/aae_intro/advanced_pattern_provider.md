@@ -23,7 +23,7 @@ item_ids:
 </Row>
 
 ME Advanced Pattern Provider is a new type of <ItemLink id="ae2:pattern_provider" /> that upgrades
-a standard version or an <ItemLink id="extendedae:ex_pattern_provider" /> with the capability to configure the face to
+a standard version or an <ItemLink id="expatternprovider:ex_pattern_provider" /> with the capability to configure the face to
 which any individual item in a pattern will be pushed to. This powerful addition allows for automation of machines that
 require specific sides for specific inputs to be done with a single block and no pipes!
 

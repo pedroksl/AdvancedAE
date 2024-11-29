@@ -6,13 +6,11 @@ import java.util.regex.Pattern;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.Component;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 
-import appeng.client.gui.Icon;
-import appeng.client.gui.widgets.IconButton;
-
-public class AAEActionButton extends IconButton {
+public class AAEActionButton extends AAEIconButton {
     private static final Pattern PATTERN_NEW_LINE = Pattern.compile("\\n", Pattern.LITERAL);
-    private final Icon icon;
+    private final AAEIcon icon;
 
     public AAEActionButton(AAEActionItems action, Runnable onPress) {
         this(action, a -> onPress.run());
@@ -21,20 +19,18 @@ public class AAEActionButton extends IconButton {
     public AAEActionButton(AAEActionItems action, Consumer<AAEActionItems> onPress) {
         super(btn -> onPress.accept(action));
 
-        Component displayName;
-        Component displayValue;
+        AAEText displayName;
+        AAEText displayValue;
         switch (action) {
             case F_FLUSH -> {
-                icon = Icon.CLEAR;
-                displayName = Component.translatable("gui.tooltips.advanced_ae.ClearButton");
-                ;
-                displayValue = Component.translatable("gui.tooltips.advanced_ae.ClearFluidButtonHint");
+                icon = AAEIcon.CLEAR_SMALL;
+                displayName = AAEText.ClearButton;
+                displayValue = AAEText.ClearFluidButtonHint;
             }
             case CLEAR -> {
-                icon = Icon.CLEAR;
-                displayName = Component.translatable("gui.tooltips.advanced_ae.ClearButton");
-                ;
-                displayValue = Component.translatable("gui.tooltips.advanced_ae.ClearSidesButtonHint");
+                icon = AAEIcon.CLEAR_SMALL;
+                displayName = AAEText.ClearButton;
+                displayValue = AAEText.ClearSidesButtonHint;
             }
             default -> throw new IllegalArgumentException("Unknown ActionItem: " + action);
         }
@@ -43,16 +39,16 @@ public class AAEActionButton extends IconButton {
     }
 
     @Override
-    protected Icon getIcon() {
+    protected AAEIcon getIcon() {
         return icon;
     }
 
-    private Component buildMessage(Component displayName, @Nullable Component displayValue) {
-        String name = displayName.getString();
+    private Component buildMessage(AAEText displayName, @Nullable AAEText displayValue) {
+        String name = displayName.text().getString();
         if (displayValue == null) {
             return Component.literal(name);
         }
-        String value = displayValue.getString();
+        String value = displayValue.text().getString();
 
         value = PATTERN_NEW_LINE.matcher(value).replaceAll("\n");
         final StringBuilder sb = new StringBuilder(value);

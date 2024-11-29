@@ -16,6 +16,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEKey;
@@ -171,14 +172,10 @@ public class NumberTextField extends ConfirmableTextField {
         var tooltip = valid ? infoMessages : validationErrors;
         if (tooltip.isEmpty()) {
             if (!isOutput) {
-
-                tooltip.add(Component.translatable(
-                        "gui.tooltips.advanced_ae.NumberTextFieldInputHint",
+                tooltip.add(AAEText.NumberTextFieldInputHint.text(
                         InputConstants.getKey("key.keyboard" + ".enter").getDisplayName()));
             } else {
-
-                tooltip.add(Component.translatable(
-                        "gui.tooltips.advanced_ae.NumberTextFieldOutputHint",
+                tooltip.add(AAEText.NumberTextFieldOutputHint.text(
                         InputConstants.getKey("key.keyboard" + ".enter").getDisplayName()));
             }
         }

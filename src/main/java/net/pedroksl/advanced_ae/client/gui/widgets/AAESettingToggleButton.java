@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.pedroksl.advanced_ae.api.AAESettings;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 
 import appeng.api.config.Setting;
 import appeng.api.config.YesNo;
@@ -51,12 +52,9 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
         this.currentValue = val;
 
         if (appearances == null) {
-            var exp = Component.translatable("gui.tooltips.advanced_ae.MeExport");
-            var expOn = Component.translatable("gui.tooltips.advanced_ae.MeExportOn");
-            var expOff = Component.translatable("gui.tooltips.advanced_ae.MeExportOff");
             appearances = new HashMap<>();
-            registerApp(AAEIcon.ME_EXPORT_ON, AAESettings.ME_EXPORT, YesNo.YES, exp, expOn);
-            registerApp(AAEIcon.ME_EXPORT_OFF, AAESettings.ME_EXPORT, YesNo.NO, exp, expOff);
+            registerApp(AAEIcon.ME_EXPORT_ON, AAESettings.ME_EXPORT, YesNo.YES, AAEText.MeExport, AAEText.MeExportOn);
+            registerApp(AAEIcon.ME_EXPORT_OFF, AAESettings.ME_EXPORT, YesNo.NO, AAEText.MeExport, AAEText.MeExportOff);
         }
     }
 
@@ -78,25 +76,25 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
     }
 
     private static <T extends Enum<T>> void registerApp(
-            AAEIcon icon, Setting<T> setting, T val, Component title, Component... tooltipLines) {
+            AAEIcon icon, Setting<T> setting, T val, LocalizationEnum title, Component... tooltipLines) {
         var lines = new ArrayList<Component>();
-        lines.add(title);
+        lines.add(title.text());
         Collections.addAll(lines, tooltipLines);
 
         appearances.put(new EnumPair<>(setting, val), new ButtonAppearance(icon, null, lines));
     }
 
     private static <T extends Enum<T>> void registerApp(
-            ItemLike item, Setting<T> setting, T val, Component title, Component... tooltipLines) {
+            ItemLike item, Setting<T> setting, T val, LocalizationEnum title, Component... tooltipLines) {
         var lines = new ArrayList<Component>();
-        lines.add(title);
+        lines.add(title.text());
         Collections.addAll(lines, tooltipLines);
 
         appearances.put(new EnumPair<>(setting, val), new ButtonAppearance(null, item.asItem(), lines));
     }
 
     private static <T extends Enum<T>> void registerApp(
-            AAEIcon icon, Setting<T> setting, T val, Component title, LocalizationEnum hint) {
+            AAEIcon icon, Setting<T> setting, T val, LocalizationEnum title, LocalizationEnum hint) {
         registerApp(icon, setting, val, title, hint.text());
     }
 

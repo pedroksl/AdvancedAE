@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.pedroksl.advanced_ae.AdvancedAE;
@@ -75,7 +76,7 @@ public class AAEItems {
     public static final AAEItemDefinition<MaterialItem> QUANTUM_ALLOY =
             item("Quantum Alloy", "quantum_alloy", MaterialItem::new);
     public static final AAEItemDefinition<MaterialItem> QUANTUM_ALLOY_PLATE =
-            item("Quantum Alloy Plate", "quantum_alloy_plate", MaterialItem::new);
+            item("Quantum Alloy Plate", "quantum_alloy_plate", p -> new MaterialItem(p.rarity(Rarity.EPIC)));
     public static final AAEItemDefinition<MaterialItem> SHATTERED_SINGULARITY =
             item("Shattered Singularity", "shattered_singularity", MaterialItem::new);
     public static final AAEItemDefinition<MaterialItem> QUANTUM_PROCESSOR_PRESS =

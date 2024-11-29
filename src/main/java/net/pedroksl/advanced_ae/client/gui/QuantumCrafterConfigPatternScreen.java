@@ -226,7 +226,6 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
         public ValidButton(OnPress onPress) {
             super(onPress);
             this.setDisableBackground(true);
-            this.setHoverOffsetChange(false);
         }
 
         public void setValid(boolean val) {

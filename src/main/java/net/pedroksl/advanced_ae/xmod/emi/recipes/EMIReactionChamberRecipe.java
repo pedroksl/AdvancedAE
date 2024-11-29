@@ -17,7 +17,7 @@ import dev.emi.emi.api.widget.WidgetHolder;
 
 public class EMIReactionChamberRecipe extends BasicEmiRecipe {
 
-    public static final EmiRecipeCategory CATEGORY = new AAERecipeCategory(
+    public static final EmiRecipeCategory CATEGORY = new AAEEmiRecipeCategory(
             "reaction",
             EmiStack.of(AAEBlocks.REACTION_CHAMBER),
             Component.translatable(AAEText.EmiReactionChamber.getTranslationKey()));

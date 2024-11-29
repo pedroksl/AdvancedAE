@@ -142,6 +142,7 @@ public class ReactionChamberTESR implements BlockEntityRenderer<ReactionChamberE
         buffer.overlayCoords(overlay);
         buffer.uv2(light);
         setNormal(buffer, poseStack, front);
+        buffer.endVertex();
     }
 
     // Fluid Coordinates

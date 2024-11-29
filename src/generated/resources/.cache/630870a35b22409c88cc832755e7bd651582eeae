@@ -1,6 +1,6 @@
-// 1.20.1	2024-11-23T16:26:47.9161002	Tags (Item)
-30f2977d904dc61b206bbb341c93957f651f6a2d data/advanced_ae/tags/items/adv_pattern_provider.json
-30f2977d904dc61b206bbb341c93957f651f6a2d data/ae2/tags/items/pattern_provider.json
+// 1.20.1	2024-11-28T03:02:33.3577309	Tags (Item)
+93c314f395bf189b2a44d6db9a54a13fba8818c4 data/advanced_ae/tags/items/adv_pattern_provider.json
+93c314f395bf189b2a44d6db9a54a13fba8818c4 data/ae2/tags/items/pattern_provider.json
 1fd89e4e2f19aa45e536dc325c5c34a0e332ef3e data/curios/tags/items/adv_pattern_encoder.json
 8bccf5f8409a6731d8c0cf6dc162a2414324b4ca data/forge/tags/items/ingots.json
 7e5e537211927dcfbc42d19ce9a043a6e9d1d81a data/forge/tags/items/tools/wrench.json

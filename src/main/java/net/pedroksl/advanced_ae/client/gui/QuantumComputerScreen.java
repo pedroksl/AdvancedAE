@@ -9,7 +9,6 @@ import appeng.api.config.CpuSelectionMode;
 import appeng.api.config.Settings;
 import appeng.client.gui.me.crafting.CraftingCPUScreen;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.Scrollbar;
 import appeng.client.gui.widgets.ServerSettingToggleButton;
 import appeng.client.gui.widgets.SettingToggleButton;
 
@@ -24,7 +23,7 @@ public class QuantumComputerScreen extends CraftingCPUScreen<QuantumComputerMenu
         this.selectionMode = new ServerSettingToggleButton<>(Settings.CPU_SELECTION_MODE, CpuSelectionMode.ANY);
         addToLeftToolbar(this.selectionMode);
 
-        var scrollbar = widgets.addScrollBar("selectCpuScrollbar", Scrollbar.DEFAULT);
+        var scrollbar = widgets.addScrollBar("selectCpuScrollbar");
         widgets.add("selectCpuList", new AdvCpuSelectionList(menu, scrollbar, style));
     }
 

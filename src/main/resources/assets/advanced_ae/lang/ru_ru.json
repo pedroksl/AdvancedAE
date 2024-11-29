@@ -1,11 +1,10 @@
 {
-	"itemGroup.app": "Advanced AE",
 	"block.advanced_ae.adv_pattern_provider": "ME Продвинутый поставщик шаблонов",
 	"item.advanced_ae.adv_pattern_provider_part": "ME Продвинутый поставщик шаблонов",
 	"item.advanced_ae.adv_processing_pattern": "Продвинутая схема обработки",
 	"item.advanced_ae.adv_pattern_encoder": "Продвинутый кодировщик шаблонов",
-	"gui.advanced_ae.adv_pattern_provider": "ME Продвинутый поставщик шаблонов",
-	"gui.advanced_ae.adv_pattern_encoder": "Продвинутый кодировщик шаблонов",
+	"gui.advanced_ae.AdvPatternProvider": "ME Продвинутый поставщик шаблонов",
+	"gui.advanced_ae.AdvPatternEncoder": "Продвинутый кодировщик шаблонов",
 	"block.advanced_ae.data_entangler": "Квантовый исказитель данных",
 	"block.advanced_ae.quantum_accelerator": "Квантовый компьютерный ускоритель",
 	"block.advanced_ae.quantum_core": "Квантовое компьютерное ядро",

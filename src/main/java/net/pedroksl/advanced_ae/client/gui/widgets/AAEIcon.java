@@ -16,7 +16,10 @@ public enum AAEIcon {
     WHITELIST(112, 0),
     BLACKLIST(128, 0),
 
-    TOOLBAR_BUTTON_BACKGROUND(176, 128, 18, 20);
+    CLEAR_SMALL(0, 16),
+
+    TOOLBAR_BUTTON_BACKGROUND(176, 128, 18, 18),
+    TOOLBAR_BUTTON_ENABLED(194, 128, 18, 18);
 
     public final int x;
     public final int y;

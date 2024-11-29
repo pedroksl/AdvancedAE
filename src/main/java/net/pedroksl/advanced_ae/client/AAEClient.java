@@ -78,7 +78,7 @@ public class AAEClient extends AdvancedAE {
     }
 
     private static void initScreens() {
-        InitScreens.register(AAEMenus.QUANTUM_COMPUTER, QuantumComputerScreen::new, "/screens/crafting_status.json");
+        InitScreens.register(AAEMenus.QUANTUM_COMPUTER, QuantumComputerScreen::new, "/screens/quantum_computer.json");
         InitScreens.register(
                 AAEMenus.ADV_PATTERN_PROVIDER, AdvPatternProviderScreen::new, "/screens/adv_pattern_provider.json");
         InitScreens.register(

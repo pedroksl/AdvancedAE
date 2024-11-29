@@ -162,7 +162,7 @@ public class AAEConfig {
             quantumComputerMaxSize = define(
                     builder,
                     "quantumComputerMaxSize",
-                    5,
+                    7,
                     5,
                     12,
                     "Define the maximum dimensions of the Quantum Computer Multiblock.");

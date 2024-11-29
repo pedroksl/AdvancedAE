@@ -3,7 +3,7 @@
 	"includes": ["common/common.json", "common/player_inventory.json"],
 	"background": {
 		"texture": "guis/pattern_provider.png",
-		"srcRect": [0, 0, 176, 215]
+		"srcRect": [0, 0, 176, 213]
 	},
 	"slots": {
 		"ENCODED_PATTERN": {
@@ -48,10 +48,8 @@
 	},
 	"widgets": {
 		"openPriority": {
-			"left": 152,
-			"top": -5,
-			"width": 20,
-			"height": 20
+			"left": 154,
+			"top": 0
 		},
 		"lockReason": {
 			"left": 5,

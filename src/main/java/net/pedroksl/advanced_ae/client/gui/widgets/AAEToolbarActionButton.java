@@ -7,6 +7,9 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
+
+import appeng.core.localization.LocalizationEnum;
 
 public class AAEToolbarActionButton extends AAEIconButton {
     private static Map<AAEActionItems, ButtonAppearance> appearances;
@@ -25,15 +28,16 @@ public class AAEToolbarActionButton extends AAEIconButton {
             registerApp(
                     AAEIcon.DIRECTION_OUTPUT,
                     AAEActionItems.DIRECTIONAL_OUTPUT,
-                    Component.translatable("gui.tooltips.advanced_ae.DirectionalOutput"),
-                    Component.translatable("gui.tooltips.advanced_ae.DirectionOutputHint"));
+                    AAEText.DirectionalOutput,
+                    AAEText.DirectionOutputHint);
         }
     }
 
-    private static void registerApp(AAEIcon icon, AAEActionItems action, Component title, Component hint) {
+    private static void registerApp(
+            AAEIcon icon, AAEActionItems action, LocalizationEnum title, LocalizationEnum hint) {
         var lines = new ArrayList<Component>();
-        lines.add(title);
-        Collections.addAll(lines, hint);
+        lines.add(title.text());
+        Collections.addAll(lines, hint.text());
 
         appearances.put(action, new ButtonAppearance(icon, null, lines));
     }
@@ -57,6 +61,15 @@ public class AAEToolbarActionButton extends AAEIconButton {
             return app.icon;
         }
         return AAEIcon.TOOLBAR_BUTTON_BACKGROUND;
+    }
+
+    @Override
+    public List<Component> getTooltipMessage() {
+        var app = getAppearance();
+        if (app != null && app.tooltipLines() != null) {
+            return app.tooltipLines();
+        }
+        return List.of();
     }
 
     private record ButtonAppearance(@Nullable AAEIcon icon, @Nullable Item item, List<Component> tooltipLines) {}

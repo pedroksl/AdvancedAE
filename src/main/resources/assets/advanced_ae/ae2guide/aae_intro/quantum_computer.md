@@ -81,7 +81,7 @@ connect everything together.
 ## The multiblock
 
 To create a multiblock quantum computer, some rules must be followed:
-- The maximum size is 5x5x5;
+- The maximum size is 7x7x7 (external dimensions);
 - No empty spaces can be present inside the multiblock. They can be filled with <ItemLink id="advanced_ae:quantum_unit" />
   for no additional benefits;
 - Exactly one <ItemLink id="advanced_ae:quantum_core" />;
@@ -89,3 +89,15 @@ To create a multiblock quantum computer, some rules must be followed:
 - At most one <ItemLink id="advanced_ae:quantum_multi_threader" />;
 - All blocks on the outside layer must be <ItemLink id="advanced_ae:quantum_structure" />;
 - No block on the inside can be <ItemLink id="advanced_ae:quantum_structure" />.
+
+## Server Configs
+
+Several values can be tweak by server configs. Such as:
+- Maximum multiblock size;
+- Co-processors in each Quantum Accelerator;
+- Maximum amount of Quantum Multi-Threaders;
+- Multi-Threader thread multiplication value;
+- Maximum amount of Data Entanglers;
+- Data Entangler storage multiplication value;
+
+The limits for your instance can be checked using the item's tooltips.

@@ -1,0 +1,13 @@
+{
+    DataVersion: 3465,
+    size: [3, 1, 1],
+    data: [
+        {pos: [0, 0, 0], state: "ae2:cable_bus{light_level:9,waterlogged:false}", nbt: {ForgeCaps: {}, cable: {gn: {p: 0}, id: "ae2:purple_smart_cable", visual: {channelsEast: 3, channelsWest: 3, connections: ["east"], missingChannel: 0b, powered: 1b}}, hasRedstone: 2, id: "ae2:cable_bus", north: {configuredItem: {"#c": "ae2:f", id: "minecraft:water"}, gn: {p: 0}, id: "advanced_ae:throughput_monitor", isLocked: 0b, spin: 0b, visual: {amount: 32189375L, canCraft: 0b, lastValue: 19200L, missingChannel: 0b, powered: 1b, routine: "TICK", throughput: "19.2"}}, visual: {}}},
+        {pos: [1, 0, 0], state: "ae2:cable_bus{light_level:9,waterlogged:false}", nbt: {ForgeCaps: {}, cable: {gn: {p: 0}, id: "ae2:purple_smart_cable", visual: {channelsWest: 3, connections: ["west"], missingChannel: 0b, powered: 1b}}, hasRedstone: 2, id: "ae2:cable_bus", north: {configuredItem: {"#c": "ae2:i", id: "minecraft:oak_log"}, gn: {p: 0}, id: "advanced_ae:throughput_monitor", isLocked: 0b, spin: 0b, visual: {amount: 602L, canCraft: 0b, lastValue: 212L, missingChannel: 0b, powered: 1b, routine: "MINUTE", throughput: "212"}}, visual: {}}}
+    ],
+    entities: [],
+    palette: [
+        "ae2:cable_bus{light_level:0,waterlogged:false}",
+        "ae2:cable_bus{light_level:9,waterlogged:false}"
+    ]
+}

@@ -21,7 +21,7 @@ import appeng.client.gui.style.ScreenStyle;
 public class OutputDirectionScreen extends AEBaseScreen<OutputDirectionMenu> {
 
     private static final int BUTTON_WIDTH = 18;
-    private static final int BUTTON_HEIGHT = 20;
+    private static final int BUTTON_HEIGHT = 18;
 
     private static final int BUTTON_TOP_OFFSET = 6;
     private static final int BUTTON_LEFT_OFFSET = 7;

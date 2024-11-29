@@ -46,11 +46,6 @@ public class SimulatedStorageImportStrategy<T, S> {
             if (keys.get(what) > 0) {
                 return keys.get(what);
             }
-
-            var amount = meHandler.insert(what, toImport, Actionable.SIMULATE, src);
-            if (amount > 0) {
-                return amount;
-            }
         }
 
         var adjacentHandler = cache.find(fromSide);

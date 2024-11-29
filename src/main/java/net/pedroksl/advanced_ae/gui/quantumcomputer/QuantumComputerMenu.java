@@ -20,6 +20,13 @@ import appeng.menu.me.crafting.CraftingCPUMenu;
 
 public class QuantumComputerMenu extends CraftingCPUMenu {
 
+    private static final CraftingCpuList EMPTY_CPU_LIST = new CraftingCpuList(Collections.emptyList());
+
+    private static final Comparator<CraftingCpuListEntry> CPU_COMPARATOR = Comparator.comparing(
+                    (CraftingCpuListEntry e) -> e.name() == null)
+            .thenComparing(e -> e.name() != null ? e.name().getString() : "")
+            .thenComparingInt(CraftingCpuListEntry::serial);
+
     private static final String ACTION_SELECT_CPU = "selectCpu";
 
     private WeakHashMap<ICraftingCPU, Integer> cpuSerialMap = new WeakHashMap<>();
@@ -47,24 +54,14 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
 
     public QuantumComputerMenu(int id, Inventory ip, AdvCraftingBlockEntity te) {
         super(AAEMenus.QUANTUM_COMPUTER, id, ip, te);
-        this.cpuList = EMPTY_CPU_LIST;
-        this.selectedCpu = null;
-        this.selectedCpuSerial = -1;
         this.host = te;
 
-        if (te.getCluster() != null) {
+        if (te != null && te.getCluster() != null) {
             selectionMode = te.getCluster().getSelectionMode();
         }
 
-        this.registerClientAction("selectCpu", Integer.class, this::selectCpu);
+        this.registerClientAction(ACTION_SELECT_CPU, Integer.class, this::selectCpu);
     }
-
-    private static final CraftingCpuList EMPTY_CPU_LIST = new CraftingCpuList(Collections.emptyList());
-
-    private static final Comparator<CraftingCpuListEntry> CPU_COMPARATOR = Comparator.comparing(
-                    (CraftingCpuListEntry e) -> e.name() == null)
-            .thenComparing(e -> e.name() != null ? e.name().getString() : "")
-            .thenComparingInt(CraftingCpuListEntry::serial);
 
     @Override
     protected void setCPU(ICraftingCPU c) {

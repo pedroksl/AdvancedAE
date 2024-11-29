@@ -7,10 +7,8 @@
 	},
 	"widgets": {
 		"back": {
-			"left": 55,
-			"top": -5,
-			"width": 20,
-			"height": 20
+			"left": 57,
+			"top": 0
 		},
 		"clearAll": {
 			"left": 67,

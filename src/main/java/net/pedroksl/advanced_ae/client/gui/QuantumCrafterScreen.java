@@ -11,6 +11,7 @@ import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEServerSettingToggleButton;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEToolbarActionButton;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterMenu;
 
 import appeng.api.config.RedstoneMode;
@@ -57,14 +58,13 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
                 menu.configPattern(idx);
             });
             cfgButton.setDisableBackground(true);
-            cfgButton.setMessage(Component.translatable("gui.tooltips.advanced_ae.ConfigurePatternButton"));
+            cfgButton.setMessage(AAEText.ConfigurePatternButton.text());
             widgets.add("cfgButton" + (1 + i), cfgButton);
             configButtons.add(cfgButton);
 
             var enableButton = widgets.addCheckbox("enableButton" + (1 + i), Component.empty(), new onEnableToggle(i));
             enableButton.setRadio(true);
-            enableButton.setTooltip(
-                    Tooltip.create(Component.translatable("gui.tooltips.advanced_ae.EnablePatternButton")));
+            enableButton.setTooltip(Tooltip.create(AAEText.EnablePatternButton.text()));
             enableButtons.add(enableButton);
         }
     }

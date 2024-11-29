@@ -163,7 +163,7 @@ public class FluidTankSlot extends AbstractWidget {
     private void updateTooltip(FluidStack stack) {
         if (stack.isEmpty()) {
             setTooltip(Tooltip.create(Tooltips.of(
-                    AAEText.TankAmount.text(),
+                    AAEText.TankEmpty.text(),
                     Component.literal("\n"),
                     AAEText.TankAmount.text(0, 16).withStyle(Tooltips.NUMBER_TEXT))));
             return;

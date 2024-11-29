@@ -88,9 +88,12 @@ public class MixinCraftingService {
 
         advancedAE$latestChange = 0;
         for (var cluster : this.advancedAE$advCraftingCPUClusters) {
-            for (var cpu : cluster.getActiveCPUs()) {
-                cpu.craftingLogic.tickCraftingLogic(energyGrid, (CraftingService) (Object) this);
-                advancedAE$latestChange = Math.max(advancedAE$latestChange, cpu.craftingLogic.getLastModifiedOnTick());
+            if (cluster != null) {
+                for (var cpu : cluster.getActiveCPUs()) {
+                    cpu.craftingLogic.tickCraftingLogic(energyGrid, (CraftingService) (Object) this);
+                    advancedAE$latestChange =
+                            Math.max(advancedAE$latestChange, cpu.craftingLogic.getLastModifiedOnTick());
+                }
             }
         }
     }
@@ -140,8 +143,10 @@ public class MixinCraftingService {
         }
 
         for (var cluster : this.advancedAE$advCraftingCPUClusters) {
-            for (var cpu : cluster.getActiveCPUs()) {
-                inserted += cpu.craftingLogic.insert(what, amount - inserted, type);
+            if (cluster != null) {
+                for (var cpu : cluster.getActiveCPUs()) {
+                    inserted += cpu.craftingLogic.insert(what, amount - inserted, type);
+                }
             }
         }
         return inserted;
