@@ -108,6 +108,11 @@ dependencies {
     compileOnly fg.deobf("curse.maven:emi-580555:5872526")
     implementation fg.deobf("curse.maven:mega-cells-622112:5881252")
     implementation fg.deobf("curse.maven:mekanism-268560:5395221")
+    implementation fg.deobf("curse.maven:geckolib-388172:5675221")
+
+    compileOnly fg.deobf("curse.maven:apotheosis-313970:5753183")
+    implementation fg.deobf("curse.maven:oculus-581495:5299671")
+
     // rei
     compileOnly fg.deobf("dev.architectury:architectury-forge:7.0.66")
     compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:12.0.622")

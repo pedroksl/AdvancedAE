@@ -1,23 +1,20 @@
 package net.pedroksl.advanced_ae.gui;
 
-import java.util.LinkedHashMap;
-
+import appeng.api.stacks.AEKey;
+import appeng.menu.AEBaseMenu;
+import appeng.menu.ISubMenu;
+import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuHostLocator;
 import com.mojang.datafixers.util.Pair;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
-import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.PatternConfigServerUpdatePacket;
 
-import appeng.api.stacks.AEKey;
-import appeng.menu.AEBaseMenu;
-import appeng.menu.ISubMenu;
-import appeng.menu.MenuOpener;
-import appeng.menu.locator.MenuLocator;
+import java.util.LinkedHashMap;
 
 public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubMenu {
 
@@ -48,7 +45,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
 
     public static void open(
             ServerPlayer player,
-            MenuLocator locator,
+            MenuHostLocator locator,
             int index,
             LinkedHashMap<AEKey, Long> inputs,
             Pair<AEKey, Long> output) {
@@ -69,11 +66,8 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
         this.inputs = new LinkedHashMap<>(inputs);
         this.output = new Pair<>(output.getFirst(), output.getSecond());
 
-        if (isServerSide()
-                && this.inputs != null
-                && this.output != null
-                && getPlayer() instanceof ServerPlayer player) {
-            AAENetworkHandler.INSTANCE.sendTo(new PatternConfigServerUpdatePacket(this.inputs, this.output), player);
+        if (isServerSide() && this.inputs != null && this.output != null) {
+            sendPacketToClient(new PatternConfigServerUpdatePacket(this.inputs, this.output));
         }
     }
 

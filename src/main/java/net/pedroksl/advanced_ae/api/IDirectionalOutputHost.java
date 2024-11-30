@@ -17,7 +17,7 @@ public interface IDirectionalOutputHost extends ISubMenuHost {
 
     BlockOrientation getOrientation();
 
-    BlockPos getBlockPos();
+    BlockPos getBlockPosition();
 
     Level getLevel();
 
@@ -27,7 +27,7 @@ public interface IDirectionalOutputHost extends ISubMenuHost {
 
     default ItemStack getAdjacentBlock(RelativeSide side) {
         var dir = getOrientation().getSide(side);
-        BlockPos blockPos = getBlockPos().relative(dir);
+        BlockPos blockPos = getBlockPosition().relative(dir);
 
         Level level = getLevel();
         if (level == null) {

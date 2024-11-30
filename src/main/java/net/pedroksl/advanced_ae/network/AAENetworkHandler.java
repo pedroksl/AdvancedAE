@@ -6,6 +6,7 @@ import com.glodblock.github.glodium.network.packet.SGenericPacket;
 
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.network.packet.*;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.*;
 
 public class AAENetworkHandler extends NetworkHandler {
 
@@ -30,5 +31,12 @@ public class AAENetworkHandler extends NetworkHandler {
         registerPacket(FluidTankItemUsePacket.class, FluidTankItemUsePacket::new);
         registerPacket(AAEHotkeyPacket.class, AAEHotkeyPacket::new);
         registerPacket(AAEConfigButtonPacket.class, AAEConfigButtonPacket::new);
+        registerPacket(MenuSelectionPacket.class, MenuSelectionPacket::new);
+        registerPacket(KeysPressedPacket.class, KeysPressedPacket::new);
+        registerPacket(QuantumArmorMagnetPacket.class, QuantumArmorMagnetPacket::new);
+        registerPacket(QuantumArmorUpgradeFilterPacket.class, QuantumArmorUpgradeFilterPacket::new);
+        registerPacket(QuantumArmorUpgradeStatePacket.class, QuantumArmorUpgradeStatePacket::new);
+        registerPacket(QuantumArmorUpgradeValuePacket.class, QuantumArmorUpgradeValuePacket::new);
+        registerPacket(QuantumArmorUpgradeTogglePacket.class, QuantumArmorUpgradeTogglePacket::new);
     }
 }

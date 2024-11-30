@@ -204,6 +204,11 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
     }
 
     @Override
+    public BlockPos getBlockPosition() {
+        return this.getBlockPos();
+    }
+
+    @Override
     public EnumSet<RelativeSide> getAllowedOutputs() {
         return this.allowedOutputs;
     }

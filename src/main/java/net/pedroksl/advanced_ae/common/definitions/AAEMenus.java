@@ -7,7 +7,9 @@ import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
+import net.pedroksl.advanced_ae.common.helpers.PortableCellWorkbenchMenuHost;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
+import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
 import net.pedroksl.advanced_ae.gui.*;
@@ -48,16 +50,16 @@ public class AAEMenus {
     public static final MenuType<SetAmountMenu> SET_AMOUNT =
             create("set_amount", SetAmountMenu::new, ISubMenuHost.class);
 
-    //    public static final MenuType<QuantumArmorConfigMenu> QUANTUM_ARMOR_CONFIG =
-    //            create("quantum_armor_config", QuantumArmorConfigMenu::new, QuantumArmorMenuHost.class);
-    //    public static final MenuType<QuantumArmorNumInputConfigMenu> QUANTUM_ARMOR_NUM_INPUT =
-    //            create("quantum_armor_num_input", QuantumArmorNumInputConfigMenu::new, ISubMenuHost.class);
-    //    public static final MenuType<QuantumArmorFilterConfigMenu> QUANTUM_ARMOR_FILTER_CONFIG =
-    //            create("quantum_armor_filter_config", QuantumArmorFilterConfigMenu::new, ISubMenuHost.class);
-    //    public static final MenuType<QuantumArmorMagnetMenu> QUANTUM_ARMOR_MAGNET =
-    //            create("quantum_armor_magnet", QuantumArmorMagnetMenu::new, ISubMenuHost.class);
-    //    public static final MenuType<PortableWorkbenchMenu> PORTABLE_WORKBENCH =
-    //            create("portable_workbench", PortableWorkbenchMenu::new, PortableCellWorkbenchMenuHost.class);
+    public static final MenuType<QuantumArmorConfigMenu> QUANTUM_ARMOR_CONFIG =
+            create("quantum_armor_config", QuantumArmorConfigMenu::new, QuantumArmorMenuHost.class);
+    public static final MenuType<QuantumArmorNumInputConfigMenu> QUANTUM_ARMOR_NUM_INPUT =
+            create("quantum_armor_num_input", QuantumArmorNumInputConfigMenu::new, ISubMenuHost.class);
+    public static final MenuType<QuantumArmorFilterConfigMenu> QUANTUM_ARMOR_FILTER_CONFIG =
+            create("quantum_armor_filter_config", QuantumArmorFilterConfigMenu::new, ISubMenuHost.class);
+    public static final MenuType<QuantumArmorMagnetMenu> QUANTUM_ARMOR_MAGNET =
+            create("quantum_armor_magnet", QuantumArmorMagnetMenu::new, ISubMenuHost.class);
+    public static final MenuType<PortableWorkbenchMenu> PORTABLE_WORKBENCH =
+            create("portable_workbench", PortableWorkbenchMenu::new, PortableCellWorkbenchMenuHost.class);
 
     private static <M extends AEBaseMenu, H> MenuType<M> create(
             String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {
