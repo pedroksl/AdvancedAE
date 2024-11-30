@@ -152,10 +152,12 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
 
         final BlockState current = this.level.getBlockState(this.worldPosition);
-        final BlockState newState = current.setValue(QuantumCrafterBlock.WORKING, working);
+        if (current.getBlock() instanceof QuantumCrafterBlock) {
+            final BlockState newState = current.setValue(QuantumCrafterBlock.WORKING, working);
 
-        if (current != newState) {
-            this.level.setBlock(this.worldPosition, newState, Block.UPDATE_CLIENTS);
+            if (current != newState) {
+                this.level.setBlock(this.worldPosition, newState, Block.UPDATE_CLIENTS);
+            }
         }
     }
 
