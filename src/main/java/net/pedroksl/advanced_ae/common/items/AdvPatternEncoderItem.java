@@ -36,6 +36,23 @@ public class AdvPatternEncoderItem extends AEBaseItem implements IMenuItem {
                 InteractionResult.sidedSuccess(level.isClientSide()), p.getItemInHand(hand));
     }
 
+    protected boolean checkPreconditions(ItemStack item) {
+        return !item.isEmpty() && item.getItem() == this;
+    }
+
+    public boolean openFromInventory(Player player, int inventorySlot) {
+        return openFromInventory(player, inventorySlot, false);
+    }
+
+    protected boolean openFromInventory(Player player, int inventorySlot, boolean returningFromSubmenu) {
+        var is = player.getInventory().getItem(inventorySlot);
+
+        if (!player.level().isClientSide() && checkPreconditions(is)) {
+            return MenuOpener.open(AAEMenus.ADV_PATTERN_ENCODER, player, MenuLocators.forInventorySlot(inventorySlot), returningFromSubmenu);
+        }
+        return false;
+    }
+
     @Override
     public @Nullable ItemMenuHost getMenuHost(
             Player player, int inventorySlot, ItemStack stack, @Nullable BlockPos pos) {

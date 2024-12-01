@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.common.inventory;
 
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -44,6 +45,10 @@ public class AdvPatternEncoderHost extends ItemMenuHost implements InternalInven
 
     public AppEngInternalInventory getInventory() {
         return this.inOutInventory;
+    }
+
+    public String getCloseHotkey() {
+        return AAEHotkeys.Keys.PATTERN_ENCODER.getId();
     }
 
     public void setInventoryChangedHandler(AdvPatternEncoderMenu.inventoryChangedHandler handler) {

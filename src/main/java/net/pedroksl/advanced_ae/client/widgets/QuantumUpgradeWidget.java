@@ -56,7 +56,7 @@ public class QuantumUpgradeWidget {
         enableButton.setChangeListener(this::toggleEnable);
         host.addChildWidget("upgrade_enable" + index, enableButton, children);
 
-        uninstallButton = new UninstallButton(x + 110, y, this::uninstallRequested);
+        uninstallButton = new UninstallButton(x + 110, y - 1, this::uninstallRequested);
         host.addChildWidget("upgrade_uninstall" + index, uninstallButton, children);
     }
 
@@ -99,10 +99,10 @@ public class QuantumUpgradeWidget {
     public void setY(int y, int topPos) {
         this.y = y;
         this.children.values().forEach(w -> {
-            if (w instanceof ConfigButton) {
-                w.setY(topPos + y - 1);
-            } else {
+            if (w instanceof AECheckbox) {
                 w.setY(topPos + y);
+            } else {
+                w.setY(topPos + y - 1);
             }
         });
     }

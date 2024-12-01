@@ -49,6 +49,10 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
         }
     }
 
+    public AdvPatternEncoderHost getHost() {
+        return this.host;
+    }
+
     public void onChangeInventory(InternalInventory inv, int slot) {
         if (inv == host.getInventory()) {
             if (slot == 0) {

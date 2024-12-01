@@ -5,6 +5,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEBlockDefinition;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 
 import appeng.block.crafting.ICraftingUnitType;
+import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 
 public enum AAECraftingUnitType implements ICraftingUnitType {
     QUANTUM_UNIT(0, "quantum_unit"),
@@ -30,19 +31,19 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
     }
 
     public int getStorageMultiplier() {
-        return this == STORAGE_MULTIPLIER ? 4 : 0;
+        return this == STORAGE_MULTIPLIER ? AAEConfig.instance().getQuantumComputerDataEntanglerMultiplication() : 0;
     }
 
     @Override
     public int getAcceleratorThreads() {
         return switch (this) {
-            case QUANTUM_ACCELERATOR, QUANTUM_CORE -> 8;
+            case QUANTUM_ACCELERATOR, QUANTUM_CORE -> AAEConfig.instance().getQuantumComputerAcceleratorThreads();
             default -> 0;
         };
     }
 
     public int getAccelerationMultiplier() {
-        return this == MULTI_THREADER ? 4 : 0;
+        return this == MULTI_THREADER ? AAEConfig.instance().getQuantumComputerMultiThreaderMultiplication() : 0;
     }
 
     public String getAffix() {

@@ -21,7 +21,7 @@ public final class AAEHotkeys {
 
     public enum Keys {
         ARMOR_CONFIG("quantum_armor_config", "Open Quantum Armor Configuration", GLFW.GLFW_KEY_N),
-        PATTERN_ENCODER_HOTKEY("pattern_encoder_action", "Open Advanced Pattern Encoder"),
+        PATTERN_ENCODER("pattern_encoder_action", "Open Advanced Pattern Encoder"),
         QUANTUM_MAGNET_UPGRADE("quantum_magnet_upgrade", "Toggle Quantum Armor Magnet", GLFW.GLFW_KEY_G),
         QUANTUM_AUTO_STOCK_UPGRADE("quantum_auto_stock_upgrade", "Toggle Quantum Armor Auto Stock", GLFW.GLFW_KEY_J),
         QUANTUM_NIGHT_VISION_UPGRADE("quantum_night_vision_upgrade", "Toggle Quantum Armor Night Vision"),
@@ -72,10 +72,10 @@ public final class AAEHotkeys {
                 AAEItems.QUANTUM_BOOTS,
                 (player, slot, stack) -> AAEItems.QUANTUM_BOOTS.get().openFromEquipmentSlot(player, slot, stack),
                 Keys.ARMOR_CONFIG.id);
-        //        register(
-        //                AAEItems.ADV_PATTERN_ENCODER,
-        //                (player, locator) -> AAEItems.ADV_PATTERN_ENCODER.get().openFromInventory(player, locator),
-        //                Keys.PATTERN_ENCODER_HOTKEY.id);
+        register(
+                AAEItems.ADV_PATTERN_ENCODER,
+                (player, locator) -> AAEItems.ADV_PATTERN_ENCODER.get().openFromInventory(player, locator),
+                Keys.PATTERN_ENCODER.id);
 
         registerToggleUpgradeAction(
                 AAEItems.QUANTUM_HELMET,
@@ -101,7 +101,7 @@ public final class AAEHotkeys {
     }
 
     public static void register(ItemLike item, InventoryHotkeyAction.Opener opener, String id) {
-        register(new InventoryHotkeyAction(item.asItem(), opener), id);
+        register(new InventoryHotkeyAction((stack) -> stack.is(item.asItem()), opener), id);
         // register(new CuriosHotkeyAction(item, opener), id);
     }
 

@@ -6,15 +6,12 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.pedroksl.advanced_ae.common.definitions.AAENbt;
@@ -145,7 +142,7 @@ public class AAEPlayerEvents {
                     var upgrade = UpgradeType.FLIGHT;
                     if (player.getAbilities().flying && chest.isUpgradeEnabledAndPowered(chestStack, upgrade)) {
                         var value =
-                                upgrade.getSettings().multiplier * chest.getUpgradeValue(chestStack, upgrade, 0) / 50;
+                                upgrade.getSettings().multiplier * chest.getUpgradeValue(chestStack, upgrade, 0) / 35f;
                         var direction = upKey ? 1 : -1;
                         player.moveRelative(value, new Vec3(0, direction, 0));
                     }

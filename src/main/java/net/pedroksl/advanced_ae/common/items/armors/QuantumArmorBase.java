@@ -167,7 +167,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
                 if (armor.isUpgradeEnabledAndPowered(stack, UpgradeType.ATTACK_SPEED)) {
                     int value = armor.getUpgradeValue(stack, UpgradeType.ATTACK_SPEED, 0);
                     var att = new AttributeModifier(
-                            BASE_ATTACK_SPEED_UUID,"aae_attack_speed", value, AttributeModifier.Operation.ADDITION);
+                            BASE_ATTACK_SPEED_UUID, "aae_attack_speed", value, AttributeModifier.Operation.ADDITION);
                     builder.put(Attributes.ATTACK_SPEED, att);
                 }
             }
@@ -175,7 +175,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
                 if (armor.isUpgradeEnabledAndPowered(stack, UpgradeType.REACH)) {
                     int value = armor.getUpgradeValue(stack, UpgradeType.REACH, 0);
                     var att = new AttributeModifier(
-                            REACH_MOD,"aae_reach_boost", value, AttributeModifier.Operation.ADDITION);
+                            REACH_MOD, "aae_reach_boost", value, AttributeModifier.Operation.ADDITION);
                     builder.put(ForgeMod.BLOCK_REACH.get(), att);
                     builder.put(ForgeMod.ENTITY_REACH.get(), att);
                 }
@@ -183,7 +183,8 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
             case FEET -> {
                 if (armor.isUpgradeEnabledAndPowered(stack, UpgradeType.STEP_ASSIST)) {
                     int value = armor.getUpgradeValue(stack, UpgradeType.STEP_ASSIST, 0);
-                    var att = new AttributeModifier(STEP_ASSIST_MOD,"aae_step_assist", value, AttributeModifier.Operation.ADDITION);
+                    var att = new AttributeModifier(
+                            STEP_ASSIST_MOD, "aae_step_assist", value, AttributeModifier.Operation.ADDITION);
                     builder.put(ForgeMod.STEP_HEIGHT_ADDITION.get(), att);
                 }
             }

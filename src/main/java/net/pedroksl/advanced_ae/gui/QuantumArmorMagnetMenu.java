@@ -97,8 +97,8 @@ public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
 
         Player player = getPlayerInventory().player;
         if (player instanceof ServerPlayer serverPlayer) {
-            QuantumArmorMagnetMenu.open(serverPlayer, getLocator(), this.slotIndex, filterList, this.currentValue,
-                    this.blacklist);
+            QuantumArmorMagnetMenu.open(
+                    serverPlayer, getLocator(), this.slotIndex, filterList, this.currentValue, this.blacklist);
         }
     }
 }

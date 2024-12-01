@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.pedroksl.advanced_ae.AdvancedAE;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.Minecraft;
@@ -17,9 +18,8 @@ import net.minecraftforge.client.gui.widget.ForgeSlider;
 import appeng.core.AppEng;
 
 public class AAESlider extends ForgeSlider {
-    private static final ResourceLocation BUTTON = AppEng.makeId("button");
-    private static final ResourceLocation BUTTON_DISABLED = AppEng.makeId("button_disabled");
-    private static final ResourceLocation BUTTON_HIGHLIGHTED = AppEng.makeId("button_highlighted");
+    private static final ResourceLocation BUTTON = AdvancedAE.makeId("textures/guis/button.png");
+    private static final ResourceLocation BUTTON_DISABLED = AdvancedAE.makeId("textures/guis/button_disabled.png");
 
     private final Consumer<Double> setter;
 
@@ -60,11 +60,11 @@ public class AAESlider extends ForgeSlider {
         var middleY = this.getY() + this.getHeight() / 2;
         var minY = this.getY() + this.getHeight() / 4;
         var maxY = this.getY() + 3 * this.getHeight() / 4;
-        var backColor = 11382980 | Mth.ceil(this.alpha * 255.0F) << 24;
+        var backColor = 0XFF8B8B8B;
         var lineColor = 4276052 | Mth.ceil(this.alpha * 255.0F) << 24;
 
-        guiGraphics.fill(minX - 6, minY - 2, maxX + 6, maxY + 2, 0xFFFFFFFF);
-        guiGraphics.fill(minX - 5, minY - 1, maxX + 5, maxY + 1, backColor);
+        guiGraphics.fill(minX - 6, minY - 2, maxX + 6, maxY + 1, 0xFF383838);
+        guiGraphics.fill(minX - 5, minY - 1, maxX + 5, maxY, backColor);
 
         guiGraphics.hLine(minX, maxX, middleY, lineColor);
         guiGraphics.vLine(minX, minY, maxY, lineColor);
@@ -88,7 +88,9 @@ public class AAESlider extends ForgeSlider {
                 0,
                 0,
                 8,
-                this.getHeight() - 8);
+                12,
+                8,
+                12);
     }
 
     private String getValueText(double value) {
@@ -104,9 +106,6 @@ public class AAESlider extends ForgeSlider {
     }
 
     protected @NotNull ResourceLocation getHandleSprite() {
-        if (this.active) {
-            return this.isHovered() ? BUTTON_HIGHLIGHTED : BUTTON;
-        }
-        return BUTTON_DISABLED;
+        return this.active ? BUTTON : BUTTON_DISABLED;
     }
 }

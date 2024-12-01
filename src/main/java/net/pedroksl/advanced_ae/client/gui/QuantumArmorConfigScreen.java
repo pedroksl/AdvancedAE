@@ -38,7 +38,7 @@ import appeng.core.AppEng;
 public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMenu> {
 
     private static final int LIST_ANCHOR_X = 30;
-    private static final int LIST_ANCHOR_Y = 32;
+    private static final int LIST_ANCHOR_Y = 31;
     private static final int LIST_LINE_HEIGHT = 16;
     private static final int VISIBLE_ROWS = 4;
 
@@ -196,8 +196,8 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
                 if (item.hasUpgrade(armorStack, upgrade)) {
 
                     boolean enabled = item.isUpgradeEnabled(armorStack, upgrade);
-                    int value = item.getUpgradeValue(stack, upgrade, 1);
-                    var filter = item.getFilter(stack, upgrade);
+                    int value = item.getUpgradeValue(armorStack, upgrade, 1);
+                    var filter = item.getFilter(armorStack, upgrade);
                     UpgradeState state = new UpgradeState(upgrade, upgrade.getSettings(), enabled, value, filter);
 
                     boolean found = false;
@@ -250,7 +250,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     }
 
     private void resetScrollbar() {
-        scrollbar.setHeight(VISIBLE_ROWS * LIST_LINE_HEIGHT - 4);
+        scrollbar.setHeight(VISIBLE_ROWS * LIST_LINE_HEIGHT - 2);
         scrollbar.setRange(0, this.upgradeList.size() - VISIBLE_ROWS, 1);
     }
 

@@ -34,22 +34,20 @@
 	},
 	"widgets": {
 		"back": {
-			"left": 152,
-			"top": -5,
-			"width": 20,
-			"height": 20
+			"left": 154,
+			"top": 0
 		},
 		"blacklist": {
-			"left": 8,
-			"top": 40,
+			"left": 7,
+			"top": 45,
 			"width": 16,
 			"height": 16
 		},
 		"slider": {
-			"left": 100,
+			"left": 95,
 			"top": 44,
 			"width": 70,
-			"height": 20
+			"height": 22
 		}
 	}
 }

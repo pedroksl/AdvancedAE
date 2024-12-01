@@ -18,10 +18,8 @@
 	},
 	"widgets": {
 		"back": {
-			"left": 75,
-			"top": -5,
-			"width": 20,
-			"height": 20
+			"left": 77,
+			"top": 0
 		},
 		"slider": {
 			"left": 15,

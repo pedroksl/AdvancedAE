@@ -196,6 +196,6 @@ public class PortableCellWorkbenchMenuHost extends ItemMenuHost
     }
 
     public String getCloseHotkey() {
-        return AAEHotkeys.Keys.PATTERN_ENCODER_HOTKEY.getId();
+        return AAEHotkeys.Keys.PATTERN_ENCODER.getId();
     }
 }
