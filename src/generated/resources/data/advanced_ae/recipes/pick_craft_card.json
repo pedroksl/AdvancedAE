@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "advanced_ae:quantum_alloy"
+    },
+    "B": {
+      "item": "minecraft:crafting_table"
+    },
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "P": {
+      "item": "advanced_ae:quantum_processor"
+    },
+    "W": {
+      "item": "ae2:wireless_access_point"
+    }
+  },
+  "pattern": [
+    " W ",
+    "PCP",
+    "ABA"
+  ],
+  "result": {
+    "item": "advanced_ae:pick_craft_card"
+  },
+  "show_notification": true
+}

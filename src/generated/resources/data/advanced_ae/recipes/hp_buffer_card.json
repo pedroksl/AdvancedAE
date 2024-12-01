@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "E": {
+      "item": "ae2:portable_item_cell_64k"
+    },
+    "I": {
+      "item": "ae2:import_bus"
+    },
+    "O": {
+      "item": "ae2:export_bus"
+    },
+    "T": {
+      "item": "minecraft:totem_of_undying"
+    }
+  },
+  "pattern": [
+    " T ",
+    "ICO",
+    " E "
+  ],
+  "result": {
+    "item": "advanced_ae:hp_buffer_card"
+  },
+  "show_notification": true
+}

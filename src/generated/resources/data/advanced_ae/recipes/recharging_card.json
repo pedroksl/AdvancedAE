@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "D": {
+      "item": "ae2:dense_energy_cell"
+    },
+    "E": {
+      "item": "ae2:energy_card"
+    },
+    "Q": {
+      "item": "advanced_ae:quantum_processor"
+    },
+    "S": {
+      "item": "ae2:charged_staff"
+    },
+    "W": {
+      "item": "ae2:wireless_access_point"
+    }
+  },
+  "pattern": [
+    "SWS",
+    "QCQ",
+    "EDE"
+  ],
+  "result": {
+    "item": "advanced_ae:recharging_card"
+  },
+  "show_notification": true
+}

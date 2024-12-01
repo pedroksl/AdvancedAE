@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_block"
+    },
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "F": {
+      "item": "minecraft:rabbit_foot"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "pattern": [
+    "AFA",
+    "NCN",
+    "AFA"
+  ],
+  "result": {
+    "item": "advanced_ae:luck_card"
+  },
+  "show_notification": true
+}

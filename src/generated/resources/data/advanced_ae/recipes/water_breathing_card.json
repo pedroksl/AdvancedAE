@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "E": {
+      "item": "ae2:entropy_manipulator"
+    },
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "P": {
+      "item": "minecraft:pufferfish"
+    }
+  },
+  "pattern": [
+    " E ",
+    "PCP",
+    " H "
+  ],
+  "result": {
+    "item": "advanced_ae:water_breathing_card"
+  },
+  "show_notification": true
+}

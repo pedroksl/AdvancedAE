@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "advanced_ae:quantum_alloy_plate"
+    },
+    "N": {
+      "item": "minecraft:netherite_helmet"
+    },
+    "P": {
+      "item": "advanced_ae:quantum_processor"
+    },
+    "Q": {
+      "item": "advanced_ae:quantum_storage_component"
+    },
+    "W": {
+      "item": "ae2:wireless_access_point"
+    }
+  },
+  "pattern": [
+    "PWP",
+    "PNP",
+    "AQA"
+  ],
+  "result": {
+    "item": "advanced_ae:quantum_helmet"
+  },
+  "show_notification": true
+}

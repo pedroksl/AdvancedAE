@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:cake"
+    },
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "M": {
+      "item": "minecraft:mushroom_stew"
+    },
+    "O": {
+      "item": "minecraft:cookie"
+    },
+    "R": {
+      "item": "minecraft:cooked_rabbit"
+    }
+  },
+  "pattern": [
+    " A ",
+    "RCM",
+    " O "
+  ],
+  "result": {
+    "item": "advanced_ae:regeneration_card"
+  },
+  "show_notification": true
+}

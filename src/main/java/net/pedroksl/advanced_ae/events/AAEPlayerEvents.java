@@ -9,6 +9,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,9 +31,12 @@ public class AAEPlayerEvents {
 
     public static void init() {
         MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::breakSpeed);
-        MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::playerRender);
         MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::playerTickStart);
         MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::playerTickEnd);
+    }
+
+    public static void initClient() {
+        MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::playerRender);
     }
 
     @SuppressWarnings("deprecation")
@@ -60,6 +65,7 @@ public class AAEPlayerEvents {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void playerRender(RenderPlayerEvent.Pre event) {
         Player player = event.getEntity();
         if (!(player instanceof ServerPlayer)) {

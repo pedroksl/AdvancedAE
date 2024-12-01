@@ -28,6 +28,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.events.AAEPlayerEvents;
 
 import appeng.api.util.AEColor;
 import appeng.client.gui.me.common.PinnedKeys;
@@ -47,6 +48,8 @@ public class AAEClient extends AdvancedAE {
         super();
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        AAEPlayerEvents.initClient();
 
         eventBus.addListener(AAEClient::initItemBlockRenderTypes);
         eventBus.addListener(AAEClient::initItemColours);
