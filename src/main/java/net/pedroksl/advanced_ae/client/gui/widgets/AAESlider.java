@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.pedroksl.advanced_ae.AdvancedAE;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.Minecraft;
@@ -14,8 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
-
-import appeng.core.AppEng;
+import net.pedroksl.advanced_ae.AdvancedAE;
 
 public class AAESlider extends ForgeSlider {
     private static final ResourceLocation BUTTON = AdvancedAE.makeId("textures/guis/button.png");

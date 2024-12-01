@@ -1,11 +1,11 @@
 package net.pedroksl.advanced_ae.common.inventory;
 
-import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderMenu;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;

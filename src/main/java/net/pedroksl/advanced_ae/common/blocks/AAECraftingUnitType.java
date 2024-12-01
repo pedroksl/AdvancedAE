@@ -3,9 +3,9 @@ package net.pedroksl.advanced_ae.common.blocks;
 import net.minecraft.world.item.Item;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlockDefinition;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
+import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 
 import appeng.block.crafting.ICraftingUnitType;
-import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 
 public enum AAECraftingUnitType implements ICraftingUnitType {
     QUANTUM_UNIT(0, "quantum_unit"),
