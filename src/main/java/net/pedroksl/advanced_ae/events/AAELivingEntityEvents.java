@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.events;
 
-import appeng.api.config.Actionable;
+import java.util.Random;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -8,22 +9,26 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
-import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
-import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
-import java.util.Random;
+import appeng.api.config.Actionable;
 
 public class AAELivingEntityEvents {
 
-    @SubscribeEvent
-    public static void invulnerability(EntityInvulnerabilityCheckEvent event) {
+    public static void init() {
+        MinecraftForge.EVENT_BUS.addListener(AAELivingEntityEvents::checkInvulnerability);
+        MinecraftForge.EVENT_BUS.addListener(AAELivingEntityEvents::incomingDamage);
+        MinecraftForge.EVENT_BUS.addListener(AAELivingEntityEvents::breath);
+        MinecraftForge.EVENT_BUS.addListener(AAELivingEntityEvents::jumpEvent);
+        MinecraftForge.EVENT_BUS.addListener(AAELivingEntityEvents::livingFallDamage);
+    }
+
+    public static void checkInvulnerability(LivingAttackEvent event) {
         Entity target = event.getEntity();
         if (target instanceof Player player) {
             ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
@@ -33,7 +38,7 @@ public class AAELivingEntityEvents {
                         || event.getSource().is(DamageTypes.IN_FIRE)
                         || event.getSource().is(DamageTypes.ON_FIRE)) {
                     player.setRemainingFireTicks(0);
-                    event.setInvulnerable(true);
+                    event.setCanceled(true);
                     item.consumeEnergy(player, chestStack, UpgradeType.LAVA_IMMUNITY);
                 }
             }
@@ -43,15 +48,14 @@ public class AAELivingEntityEvents {
                 Random randomGenerator = new Random();
                 var chance = randomGenerator.nextDouble(100);
                 if (chance < AAEConfig.instance().getEvasionChance()) {
-                    event.setInvulnerable(true);
+                    event.setCanceled(true);
                     item.consumeEnergy(player, bootStack, UpgradeType.EVASION);
                 }
             }
         }
     }
 
-    @SubscribeEvent
-    public static void incomingDamage(LivingIncomingDamageEvent event) {
+    public static void incomingDamage(LivingDamageEvent event) {
         Entity target = event.getEntity();
         if (target.isAlive() && event.getAmount() > 0 && target instanceof Player player) {
             var maxAbsorption = event.getAmount() * AAEConfig.instance().getPercentageDamageAbsorption() / 100f;
@@ -73,7 +77,6 @@ public class AAELivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
     public static void breath(LivingBreatheEvent event) {
         if (event.getEntity() instanceof Player player) {
             ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
@@ -86,7 +89,6 @@ public class AAELivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
     public static void jumpEvent(LivingEvent.LivingJumpEvent event) {
         if (event.getEntity() instanceof Player player) {
             ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
@@ -99,8 +101,7 @@ public class AAELivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void LivingFallDamage(LivingFallEvent event) {
+    public static void livingFallDamage(LivingFallEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
             if (stack.getItem() instanceof QuantumArmorBase item) {

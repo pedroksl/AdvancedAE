@@ -1,28 +1,26 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import appeng.api.features.IGridLinkableHandler;
-import appeng.api.implementations.blockentities.IWirelessAccessPoint;
-import appeng.api.networking.IGrid;
-import appeng.core.localization.PlayerMessages;
-import appeng.items.tools.powered.WirelessTerminalItem;
-import appeng.util.Platform;
 import com.mojang.datafixers.util.Pair;
+
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.minecraft.Util;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.function.Consumer;
+import appeng.api.features.IGridLinkableHandler;
+import appeng.api.implementations.blockentities.IWirelessAccessPoint;
+import appeng.api.networking.IGrid;
+import appeng.core.localization.PlayerMessages;
+import appeng.util.Platform;
 
 public interface IGridLinkedItem {
 
@@ -38,7 +36,8 @@ public interface IGridLinkedItem {
     default GlobalPos getLinkedPosition(ItemStack item) {
         CompoundTag tag = item.getTag();
         if (tag != null && tag.contains(TAG_ACCESS_POINT_POS, Tag.TAG_COMPOUND)) {
-            return GlobalPos.CODEC.decode(NbtOps.INSTANCE, tag.get(TAG_ACCESS_POINT_POS))
+            return GlobalPos.CODEC
+                    .decode(NbtOps.INSTANCE, tag.get(TAG_ACCESS_POINT_POS))
                     .resultOrPartial(Util.prefix("Linked position", LOG::error))
                     .map(Pair::getFirst)
                     .orElse(null);
@@ -93,14 +92,14 @@ public interface IGridLinkedItem {
     class LinkableHandler implements IGridLinkableHandler {
         @Override
         public boolean canLink(ItemStack stack) {
-            return stack.getItem() instanceof WirelessTerminalItem;
+            return stack.getItem() instanceof IGridLinkedItem;
         }
 
         @Override
         public void link(ItemStack itemStack, GlobalPos pos) {
-            GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos)
-                    .result()
-                    .ifPresent(tag -> itemStack.getOrCreateTag().put(TAG_ACCESS_POINT_POS, tag));
+            GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, pos).result().ifPresent(tag -> itemStack
+                    .getOrCreateTag()
+                    .put(TAG_ACCESS_POINT_POS, tag));
         }
 
         @Override

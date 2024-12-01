@@ -1,0 +1,46 @@
+{
+	"$schema": "schema.json",
+	"includes": ["common/common.json", "common/player_inventory.json"],
+	"text": {
+		"dialog_title": {
+			"text": {
+				"translate": "gui.advanced_ae.QuantumArmorConfig"
+			},
+			"position": {
+				"left": 10,
+				"top": 8
+			}
+		}
+	},
+	"background": {
+		"texture": "guis/quantum_armor_config.png",
+		"srcRect": [0, 0, 176, 195]
+	},
+	"slots": {
+		"AAE_ARMOR": {
+			"left": 8,
+			"top": 27,
+			"grid": "VERTICAL"
+		},
+		"MACHINE_INPUT": {
+			"left": 152,
+			"top": 6
+		}
+	},
+	"images": {
+		"progressBar": {
+			"texture": "guis/quantum_armor_config.png",
+			"srcRect": [176, 0, 18, 18]
+		}
+	},
+	"widgets": {
+		"scrollbar": {
+			"left": 159,
+			"top": 33
+		},
+		"progressBar": {
+			"left": 151,
+			"top": 5
+		}
+	}
+}

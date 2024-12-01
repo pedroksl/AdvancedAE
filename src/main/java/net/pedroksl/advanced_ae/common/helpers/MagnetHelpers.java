@@ -1,14 +1,15 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
-import appeng.api.stacks.AEItemKey;
-import appeng.api.stacks.GenericStack;
+import java.util.List;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
+import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.GenericStack;
 
 public class MagnetHelpers {
 

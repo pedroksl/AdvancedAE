@@ -1,13 +1,15 @@
 package net.pedroksl.advanced_ae.network.packet.quantumarmor;
 
-import appeng.api.stacks.GenericStack;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.gui.QuantumArmorConfigMenu;
 
-import java.util.ArrayList;
-import java.util.List;
+import appeng.api.stacks.GenericStack;
 
 public class QuantumArmorMagnetPacket implements IMessage<QuantumArmorMagnetPacket> {
 
@@ -15,9 +17,7 @@ public class QuantumArmorMagnetPacket implements IMessage<QuantumArmorMagnetPack
     private List<GenericStack> filter;
     private boolean blacklist;
 
-    public QuantumArmorMagnetPacket() {
-
-    }
+    public QuantumArmorMagnetPacket() {}
 
     public QuantumArmorMagnetPacket(int currentValue, List<GenericStack> filter, boolean blacklist) {
         this.currentValue = currentValue;
@@ -30,9 +30,9 @@ public class QuantumArmorMagnetPacket implements IMessage<QuantumArmorMagnetPack
         buf.writeInt(currentValue);
 
         buf.writeInt(filter.size());
-	    for (GenericStack genericStack : filter) {
-		    GenericStack.writeBuffer(genericStack, buf);
-	    }
+        for (GenericStack genericStack : filter) {
+            GenericStack.writeBuffer(genericStack, buf);
+        }
 
         buf.writeBoolean(blacklist);
     }

@@ -1,11 +1,10 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
-import appeng.api.config.Actionable;
-import appeng.api.config.PowerMultiplier;
-import appeng.api.networking.IGrid;
-import appeng.api.networking.energy.IEnergyService;
-import appeng.api.networking.security.IActionSource;
-import appeng.api.stacks.AEItemKey;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.mutable.MutableObject;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -23,10 +22,14 @@ import net.pedroksl.advanced_ae.common.helpers.MagnetHelpers;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
-import org.apache.commons.lang3.mutable.MutableObject;
+import net.pedroksl.advanced_ae.xmod.curios.CuriosPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.energy.IEnergyService;
+import appeng.api.networking.security.IActionSource;
+import appeng.api.stacks.AEItemKey;
 
 public class UpgradeCards {
     public static boolean walkSpeed(Level level, Player player, ItemStack stack) {
@@ -82,8 +85,11 @@ public class UpgradeCards {
                 value /= 25f;
             }
 
-            if (canFly && player.getAbilities().flying && chest != null && chest.getItem() instanceof QuantumChestplate armor) {
-                var flight = armor.getUpgradeValue(chest, UpgradeType.FLIGHT,0) / 25f;
+            if (canFly
+                    && player.getAbilities().flying
+                    && chest != null
+                    && chest.getItem() instanceof QuantumChestplate armor) {
+                var flight = armor.getUpgradeValue(chest, UpgradeType.FLIGHT, 0) / 25f;
                 value = !slowDown ? value + flight : flight;
                 slowDown = false;
             }
@@ -93,8 +99,8 @@ public class UpgradeCards {
                 player.setDeltaMovement(motion.multiply(value, 1, value));
                 return true;
             } else if (!slowDown && value > 0) {
-                if (!player.onGround()) value /= 4;
-                if (player.zza < 0F) value /= 2;
+                if (!player.onGround()) value /= 4f;
+                if (player.zza < 0F) value /= 2f;
                 player.moveRelative(
                         value, new Vec3(Math.signum(player.xxa), Math.signum(player.yya), Math.signum(player.zza)));
                 return true;
@@ -107,11 +113,33 @@ public class UpgradeCards {
         if (chest.getItem() instanceof QuantumArmorBase armor) {
             var value = armor.getUpgradeValue(chest, UpgradeType.FLIGHT, 0) / 25f;
             if (value > 0) {
-                if (!player.onGround()) value /= 4;
-                if (player.zza < 0F) value /= 2;
+                if (!player.onGround()) value /= 4f;
+                if (player.zza < 0F) value /= 2f;
                 player.moveRelative(
                         value, new Vec3(Math.signum(player.xxa), Math.signum(player.yya), Math.signum(player.zza)));
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean creativeFlight(Level level, Player player, ItemStack stack) {
+        if (stack.getItem() instanceof QuantumChestplate chest) {
+            var upgrade = UpgradeType.FLIGHT;
+            if (chest.isUpgradeEnabledAndPowered(stack, upgrade)) {
+                if (!player.getAbilities().mayfly) {
+                    player.getAbilities().mayfly = true;
+                    player.getPersistentData().putBoolean("aaeFlightCard", true);
+                    player.onUpdateAbilities();
+                    return true;
+                }
+            } else {
+                if (player.getAbilities().mayfly && player.getPersistentData().getBoolean("aaeFlightCard")) {
+                    player.getAbilities().mayfly = false;
+                    player.getAbilities().flying = false;
+                    player.getPersistentData().remove("aaeFlightCard");
+                    player.onUpdateAbilities();
+                }
             }
         }
         return false;
@@ -121,7 +149,7 @@ public class UpgradeCards {
         if (!player.isInWaterOrBubble() && !player.isFallFlying()) {
             var upgrade = UpgradeType.JUMP_HEIGHT;
             if (stack.getItem() instanceof QuantumBoots boots && boots.isUpgradeEnabledAndPowered(stack, upgrade)) {
-                var value = boots.getUpgradeValue(stack, UpgradeType.JUMP_HEIGHT, -1) / 8;
+                var value = boots.getUpgradeValue(stack, UpgradeType.JUMP_HEIGHT, -1) / 8f;
                 if (value > 0) {
                     if (player.isSprinting()) value *= 2;
                     player.moveRelative(value, new Vec3(0, 1, 0));
@@ -140,33 +168,31 @@ public class UpgradeCards {
             var grid = helmet.getLinkedGrid(stack, level, player);
             if (grid != null) {
                 var storage = grid.getStorageService();
-                var filter = helmet.getFilter(stack, UpgradeType.AUTO_FEED):
+                var filter = helmet.getFilter(stack, UpgradeType.AUTO_FEED);
                 for (var genStack : filter) {
                     if (storage.getInventory()
                                     .extract(genStack.what(), 1, Actionable.SIMULATE, IActionSource.ofPlayer(player))
                             > 0) {
                         if (genStack.what() instanceof AEItemKey itemKey) {
                             ItemStack foodStack = itemKey.toStack();
-                            if (foodStack.has(DataComponents.FOOD)) {
-                                var foodProperties = foodStack.get(DataComponents.FOOD);
-                                if (foodProperties != null) {
+                            var foodProperties = foodStack.getFoodProperties(player);
+                            if (foodProperties != null) {
+                                storage.getInventory()
+                                        .extract(
+                                                genStack.what(),
+                                                1,
+                                                Actionable.MODULATE,
+                                                IActionSource.ofPlayer(player));
+                                foodStack.finishUsingItem(level, player);
+                                if (!foodStack.isEmpty()) {
                                     storage.getInventory()
-                                            .extract(
-                                                    genStack.what(),
-                                                    1,
+                                            .insert(
+                                                    AEItemKey.of(foodStack),
+                                                    foodStack.getCount(),
                                                     Actionable.MODULATE,
                                                     IActionSource.ofPlayer(player));
-                                    foodStack.finishUsingItem(level, player);
-                                    if (!foodStack.isEmpty()) {
-                                        storage.getInventory()
-                                                .insert(
-                                                        AEItemKey.of(foodStack),
-                                                        foodStack.getCount(),
-                                                        Actionable.MODULATE,
-                                                        IActionSource.ofPlayer(player));
-                                    }
-                                    return true;
                                 }
+                                return true;
                             }
                         }
                     }
@@ -338,15 +364,14 @@ public class UpgradeCards {
 
                     if (Addons.CURIOS.isLoaded()) {
                         var optionalInv = CuriosPlugin.getCuriosInventory(player);
-                        if (optionalInv.isPresent()) {
-                            var curiosInventory = optionalInv.get();
-                            var handler = curiosInventory.getEquippedCurios();
+                        optionalInv.ifPresent(inv -> {
+                            var handler = inv.getEquippedCurios();
                             for (var i = 0; i < handler.getSlots(); i++) {
                                 var item = handler.getStackInSlot(i);
                                 if (item.isEmpty()) continue;
                                 rechargeItem(player, item, grid, rate, energy);
                             }
-                        }
+                        });
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
-import appeng.core.definitions.ItemDefinition;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -9,7 +10,6 @@ import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.definitions.AAEItemDefinition;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
-import org.jetbrains.annotations.Nullable;
 
 public enum UpgradeType {
     EMPTY("Empty", null, SettingType.NONE, 0, ApplicationType.PASSIVE, AAEItems.QUANTUM_UPGRADE_BASE),
@@ -38,7 +38,13 @@ public enum UpgradeType {
             AAEItems.JUMP_HEIGHT_CARD),
     LAVA_IMMUNITY(
             "Lava Immunity", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.LAVA_IMMUNITY_CARD),
-    FLIGHT("Flight", null, SettingType.NUM_INPUT, 10, ApplicationType.PASSIVE_USE, AAEItems.FLIGHT_CARD),
+    FLIGHT(
+            "Flight",
+            UpgradeCards::creativeFlight,
+            SettingType.NUM_INPUT,
+            10,
+            ApplicationType.PASSIVE,
+            AAEItems.FLIGHT_CARD),
     WATER_BREATHING(
             "Water Breathing", null, SettingType.NONE, 10, ApplicationType.PASSIVE_USE, AAEItems.WATER_BREATHING_CARD),
     AUTO_FEED(

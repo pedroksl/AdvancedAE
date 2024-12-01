@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae;
 
-import appeng.api.features.GridLinkables;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -12,6 +11,8 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
 import net.pedroksl.advanced_ae.common.items.armors.IGridLinkedItem;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetailsDecoder;
+import net.pedroksl.advanced_ae.events.AAELivingEntityEvents;
+import net.pedroksl.advanced_ae.events.AAEPlayerEvents;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
 import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
@@ -19,14 +20,21 @@ import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 
 import appeng.api.crafting.PatternDetailsHelper;
+import appeng.api.features.GridLinkables;
 import appeng.api.upgrades.Upgrades;
-import appeng.core.AELog;
 import appeng.core.definitions.AEItems;
 
 public class AdvancedAE {
     public static final String MOD_ID = "advanced_ae";
 
+    static AdvancedAE INSTANCE;
+
     public AdvancedAE() {
+        if (INSTANCE != null) {
+            throw new IllegalStateException();
+        }
+        INSTANCE = this;
+
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         AAEConfig.register(MOD_ID);
@@ -50,22 +58,23 @@ public class AdvancedAE {
             }
         });
 
-        eventBus.addListener(this::commonSetup);
         AAEHotkeys.init();
+        AAENbt.init();
+    }
+
+    public static AdvancedAE instance() {
+        return INSTANCE;
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         AAENetworkHandler.INSTANCE.init();
         PatternDetailsHelper.registerDecoder(AdvPatternDetailsDecoder.INSTANCE);
-
-        event.enqueueWork(this::postRegistrationInitialization).whenComplete((res, err) -> {
-            if (err != null) {
-                AELog.warn(err);
-            }
-        });
+        initGridLinkables();
+        AAEPlayerEvents.init();
+        AAELivingEntityEvents.init();
     }
 
-    public void postRegistrationInitialization() {
+    public static void initGridLinkables() {
         GridLinkables.register(AAEItems.QUANTUM_HELMET, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_CHESTPLATE, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_LEGGINGS, IGridLinkedItem.LINKABLE_HANDLER);
@@ -87,8 +96,6 @@ public class AdvancedAE {
             }
         });
     }
-
-
 
     public void registerHotkey(String id) {}
 

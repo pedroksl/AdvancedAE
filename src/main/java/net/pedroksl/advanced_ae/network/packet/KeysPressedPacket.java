@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.network.packet;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 
@@ -9,9 +10,7 @@ public class KeysPressedPacket implements IMessage<KeysPressedPacket> {
     private String data;
     private boolean noKey;
 
-    public KeysPressedPacket() {
-
-    }
+    public KeysPressedPacket() {}
 
     public KeysPressedPacket(String data, boolean noKey) {
         this.data = data;

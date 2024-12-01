@@ -62,8 +62,13 @@ public class ReactionChamberCategory implements IRecipeCategory<ReactionChamberR
     }
 
     @Override
-    public IDrawable getBackground() {
-        return background;
+    public int getWidth() {
+        return background.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return background.getHeight();
     }
 
     @Override
@@ -114,6 +119,8 @@ public class ReactionChamberCategory implements IRecipeCategory<ReactionChamberR
             GuiGraphics guiGraphics,
             double mouseX,
             double mouseY) {
+        this.background.draw(guiGraphics);
+
         this.progress.draw(guiGraphics, 135, 27);
 
         var font = Minecraft.getInstance().font;

@@ -2,7 +2,6 @@ package net.pedroksl.advanced_ae.common.items.armors;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -26,7 +25,7 @@ public class QuantumLeggings extends QuantumArmorBase {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.LEGS.getIndex()
+        if (slotId == EquipmentSlot.LEGS.getIndex()
                 && !getPassiveUpgrades(stack).isEmpty()
                 && entity instanceof Player player) {
             tickUpgrades(level, player, stack);

@@ -1,20 +1,22 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import appeng.api.stacks.GenericStack;
-import appeng.client.gui.AEBaseScreen;
-import appeng.client.gui.implementations.AESubScreen;
-import appeng.client.gui.style.ScreenStyle;
-import appeng.core.localization.ButtonToolTips;
-import appeng.core.localization.Tooltips;
+import java.util.ArrayList;
+
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.gui.QuantumArmorFilterConfigMenu;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import appeng.api.stacks.GenericStack;
+import appeng.client.gui.AEBaseScreen;
+import appeng.client.gui.implementations.AESubScreen;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.core.localization.ButtonToolTips;
+import appeng.core.localization.Tooltips;
 
 public class QuantumArmorFilterScreen<M extends QuantumArmorFilterConfigMenu> extends AEBaseScreen<M> {
 

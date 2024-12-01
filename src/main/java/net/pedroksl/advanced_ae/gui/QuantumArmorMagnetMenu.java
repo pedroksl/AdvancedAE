@@ -1,10 +1,7 @@
 package net.pedroksl.advanced_ae.gui;
 
-import appeng.api.stacks.GenericStack;
-import appeng.api.storage.ISubMenuHost;
-import appeng.menu.MenuOpener;
-import appeng.menu.guisync.GuiSync;
-import appeng.menu.locator.MenuLocators;
+import java.util.List;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +9,11 @@ import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
-import java.util.List;
+import appeng.api.stacks.GenericStack;
+import appeng.api.storage.ISubMenuHost;
+import appeng.menu.MenuOpener;
+import appeng.menu.guisync.GuiSync;
+import appeng.menu.locator.MenuLocator;
 
 public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
 
@@ -34,12 +35,12 @@ public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
 
     public static void open(
             ServerPlayer player,
+            MenuLocator locator,
             int slotIndex,
             List<GenericStack> filterList,
             int currentValue,
             boolean blacklist) {
-        MenuOpener.open(AAEMenus.QUANTUM_ARMOR_MAGNET, player,
-                MenuLocators.forInventorySlot(Inventory.INVENTORY_SIZE + slotIndex));
+        MenuOpener.open(AAEMenus.QUANTUM_ARMOR_MAGNET, player, locator);
 
         if (player.containerMenu instanceof QuantumArmorMagnetMenu cca) {
             cca.setUpgradeType(UpgradeType.MAGNET);
@@ -96,8 +97,8 @@ public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
 
         Player player = getPlayerInventory().player;
         if (player instanceof ServerPlayer serverPlayer) {
-            QuantumArmorMagnetMenu.open(
-                    serverPlayer, this.slotIndex, filterList, this.currentValue, this.blacklist);
+            QuantumArmorMagnetMenu.open(serverPlayer, getLocator(), this.slotIndex, filterList, this.currentValue,
+                    this.blacklist);
         }
     }
 }

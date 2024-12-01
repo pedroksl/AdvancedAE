@@ -1,23 +1,23 @@
 package net.pedroksl.advanced_ae.network.packet.quantumarmor;
 
-import appeng.api.stacks.GenericStack;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.gui.QuantumArmorConfigMenu;
 
-import java.util.ArrayList;
-import java.util.List;
+import appeng.api.stacks.GenericStack;
 
 public class QuantumArmorUpgradeFilterPacket implements IMessage<QuantumArmorUpgradeFilterPacket> {
 
     private UpgradeType upgradeType;
     private List<GenericStack> filter;
 
-    public QuantumArmorUpgradeFilterPacket() {
-
-    }
+    public QuantumArmorUpgradeFilterPacket() {}
 
     public QuantumArmorUpgradeFilterPacket(UpgradeType upgradeType, List<GenericStack> filter) {
         this.upgradeType = upgradeType;

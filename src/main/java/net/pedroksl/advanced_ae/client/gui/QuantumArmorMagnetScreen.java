@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import appeng.client.gui.style.ScreenStyle;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
@@ -8,6 +7,8 @@ import net.pedroksl.advanced_ae.client.gui.widgets.AAESlider;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEToggleButton;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.gui.QuantumArmorMagnetMenu;
+
+import appeng.client.gui.style.ScreenStyle;
 
 public class QuantumArmorMagnetScreen extends QuantumArmorFilterScreen<QuantumArmorMagnetMenu> {
 

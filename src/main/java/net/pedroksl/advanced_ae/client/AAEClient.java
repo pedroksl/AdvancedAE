@@ -99,25 +99,20 @@ public class AAEClient extends AdvancedAE {
                 "/screens/quantum_crafter_pattern_config.json");
         InitScreens.register(AAEMenus.SET_AMOUNT, SetAmountScreen::new, "/screens/aae_set_amount.json");
 
-        //        InitScreens.register(
-        //                AAEMenus.QUANTUM_ARMOR_CONFIG,
-        //                QuantumArmorConfigScreen::new,
-        //                "/screens/quantum_armor_config.json");
-        //        InitScreens.register(
-        //                AAEMenus.QUANTUM_ARMOR_NUM_INPUT,
-        //                QuantumArmorNumInputConfigScreen::new,
-        //                "/screens/quantum_armor_num_input_config.json");
-        //        InitScreens.register(
-        //                AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG,
-        //                QuantumArmorFilterConfigScreen::new,
-        //                "/screens/quantum_armor_filter_config.json");
-        //        InitScreens.register(
-        //                AAEMenus.QUANTUM_ARMOR_MAGNET,
-        //                QuantumArmorMagnetScreen::new,
-        //                "/screens/quantum_armor_magnet.json");
-        //        InitScreens.register(
-        //                AAEMenus.PORTABLE_WORKBENCH, PortableWorkbenchScreen::new,
-        // "/screens/portable_workbench.json");
+        InitScreens.register(
+                AAEMenus.QUANTUM_ARMOR_CONFIG, QuantumArmorConfigScreen::new, "/screens/quantum_armor_config.json");
+        InitScreens.register(
+                AAEMenus.QUANTUM_ARMOR_NUM_INPUT,
+                QuantumArmorNumInputConfigScreen::new,
+                "/screens/quantum_armor_num_input_config.json");
+        InitScreens.register(
+                AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG,
+                QuantumArmorFilterConfigScreen::new,
+                "/screens/quantum_armor_filter_config.json");
+        InitScreens.register(
+                AAEMenus.QUANTUM_ARMOR_MAGNET, QuantumArmorMagnetScreen::new, "/screens/quantum_armor_magnet.json");
+        InitScreens.register(
+                AAEMenus.PORTABLE_WORKBENCH, PortableWorkbenchScreen::new, "/screens/portable_workbench.json");
     }
 
     @SuppressWarnings("deprecation")

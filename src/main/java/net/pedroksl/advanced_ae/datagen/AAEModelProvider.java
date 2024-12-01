@@ -49,10 +49,10 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.QUANTUM_STORAGE_COMPONENT);
         basicItem(AAEItems.MONITOR_CONFIGURATOR);
 
-        //		basicItem(AAEItems.QUANTUM_HELMET);
-        //		basicItem(AAEItems.QUANTUM_CHESTPLATE);
-        //		basicItem(AAEItems.QUANTUM_LEGGINGS);
-        //		basicItem(AAEItems.QUANTUM_BOOTS);
+        basicItem(AAEItems.QUANTUM_HELMET);
+        basicItem(AAEItems.QUANTUM_CHESTPLATE);
+        basicItem(AAEItems.QUANTUM_LEGGINGS);
+        basicItem(AAEItems.QUANTUM_BOOTS);
 
         stairsBlock(
                 AAEBlocks.QUANTUM_ALLOY_STAIRS.getBlockDefinition(),
@@ -61,9 +61,9 @@ public class AAEModelProvider extends AE2BlockStateProvider {
                 AAEBlocks.QUANTUM_ALLOY_SLAB.getBlockDefinition(), AAEBlocks.QUANTUM_ALLOY_BLOCK.getBlockDefinition());
         wall(AAEBlocks.QUANTUM_ALLOY_WALL.getBlockDefinition(), "block/quantum_alloy_block");
 
-        //		for (var card : AAEItems.getQuantumCards()) {
-        //			basicItem(card, "upgrades");
-        //		}
+        for (var card : AAEItems.getQuantumCards()) {
+            basicItem(card, "upgrades");
+        }
 
         quantumCrafterModel();
 

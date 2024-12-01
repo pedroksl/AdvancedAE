@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.network.packet.quantumarmor;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -12,9 +13,7 @@ public class QuantumArmorUpgradeStatePacket implements IMessage<QuantumArmorUpgr
     private int selectedIndex;
     private ItemStack stack;
 
-    public QuantumArmorUpgradeStatePacket() {
-
-    }
+    public QuantumArmorUpgradeStatePacket() {}
 
     public QuantumArmorUpgradeStatePacket(int selectedIndex, ItemStack stack) {
         this.selectedIndex = selectedIndex;

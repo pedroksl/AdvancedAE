@@ -1,11 +1,12 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
-import appeng.api.features.HotkeyAction;
+import java.util.function.Predicate;
+
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
-import java.util.function.Predicate;
+import appeng.api.features.HotkeyAction;
 
 public record ToggleUpgradeCardAction(Predicate<ItemStack> locatable, Opener opener) implements HotkeyAction {
     public ToggleUpgradeCardAction(ItemLike item, Opener opener) {

@@ -1,12 +1,13 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import appeng.client.gui.AEBaseScreen;
-import appeng.client.gui.implementations.AESubScreen;
-import appeng.client.gui.style.ScreenStyle;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAESlider;
 import net.pedroksl.advanced_ae.gui.QuantumArmorNumInputConfigMenu;
+
+import appeng.client.gui.AEBaseScreen;
+import appeng.client.gui.implementations.AESubScreen;
+import appeng.client.gui.style.ScreenStyle;
 
 public class QuantumArmorNumInputConfigScreen extends AEBaseScreen<QuantumArmorNumInputConfigMenu> {
 

@@ -1,13 +1,13 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import appeng.client.gui.AEBaseScreen;
-import appeng.client.gui.style.Color;
-import appeng.client.gui.style.PaletteColor;
-import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.ProgressBar;
-import appeng.client.gui.widgets.Scrollbar;
-import appeng.core.AppEng;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
@@ -26,11 +26,14 @@ import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorMagnetPacket;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeFilterPacket;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeValuePacket;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import appeng.client.gui.AEBaseScreen;
+import appeng.client.gui.style.Color;
+import appeng.client.gui.style.PaletteColor;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.widgets.ProgressBar;
+import appeng.client.gui.widgets.Scrollbar;
+import appeng.core.AppEng;
 
 public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMenu> {
 
@@ -259,7 +262,8 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
     public void openConfigDialog(UpgradeState state) {
         if (state.type().getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
-            AAENetworkHandler.INSTANCE.sendToServer(new QuantumArmorUpgradeValuePacket(state.type(), state.currentValue()));
+            AAENetworkHandler.INSTANCE.sendToServer(
+                    new QuantumArmorUpgradeValuePacket(state.type(), state.currentValue()));
         } else if (state.type().getSettingType() == UpgradeType.SettingType.FILTER) {
             AAENetworkHandler.INSTANCE.sendToServer(new QuantumArmorUpgradeFilterPacket(state.type(), state.filter()));
         } else if (state.type().getSettingType() == UpgradeType.SettingType.NUM_AND_FILTER) {
@@ -267,7 +271,8 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
                 var stack = this.menu.getSlot(selectedIndex).getItem();
                 if (stack.getItem() instanceof QuantumArmorBase item) {
                     var blacklist = item.isUpgradeEnabled(stack, UpgradeType.MAGNET);
-                    AAENetworkHandler.INSTANCE.sendToServer(new QuantumArmorMagnetPacket(state.currentValue(), state.filter(), blacklist));
+                    AAENetworkHandler.INSTANCE.sendToServer(
+                            new QuantumArmorMagnetPacket(state.currentValue(), state.filter(), blacklist));
                 }
             }
         }

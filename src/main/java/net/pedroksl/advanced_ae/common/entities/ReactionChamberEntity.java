@@ -140,10 +140,12 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
         }
 
         final BlockState current = this.level.getBlockState(this.worldPosition);
-        final BlockState newState = current.setValue(ReactionChamberBlock.WORKING, working);
+        if (current.getBlock() instanceof ReactionChamberBlock) {
+            final BlockState newState = current.setValue(ReactionChamberBlock.WORKING, working);
 
-        if (current != newState) {
-            this.level.setBlock(this.worldPosition, newState, Block.UPDATE_CLIENTS);
+            if (current != newState) {
+                this.level.setBlock(this.worldPosition, newState, Block.UPDATE_CLIENTS);
+            }
         }
     }
 

@@ -1,5 +1,12 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
+import net.pedroksl.advanced_ae.common.definitions.AAENbt;
+
 import appeng.api.config.CopyMode;
 import appeng.api.config.Settings;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
@@ -17,12 +24,6 @@ import appeng.util.ConfigInventory;
 import appeng.util.ConfigManager;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.definitions.AAENbt;
-import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
 
 public class PortableCellWorkbenchMenuHost extends ItemMenuHost
         implements IConfigurableObject, IUpgradeableObject, InternalInventoryHost, IConfigInvHost {

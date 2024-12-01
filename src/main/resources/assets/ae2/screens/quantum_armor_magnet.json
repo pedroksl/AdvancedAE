@@ -1,0 +1,55 @@
+{
+	"$schema": "schema.json",
+	"includes": ["common/common.json", "common/player_inventory.json"],
+	"text": {
+		"dialog_title": {
+			"text": {
+				"translate": "gui.advanced_ae.QuantumArmorSetting"
+			},
+			"position": {
+				"left": 10,
+				"top": 8
+			}
+		},
+		"range_slider": {
+			"text": {
+				"translate": "gui.advanced_ae.MagnetRangeSlider"
+			},
+			"position": {
+				"left": 100,
+				"top": 30
+			}
+		}
+	},
+	"background": {
+		"texture": "guis/quantum_armor_magnet.png",
+		"srcRect": [0, 0, 176, 184]
+	},
+	"slots": {
+		"CONFIG": {
+			"left": 8,
+			"top": 65,
+			"grid": "HORIZONTAL"
+		}
+	},
+	"widgets": {
+		"back": {
+			"left": 152,
+			"top": -5,
+			"width": 20,
+			"height": 20
+		},
+		"blacklist": {
+			"left": 8,
+			"top": 40,
+			"width": 16,
+			"height": 16
+		},
+		"slider": {
+			"left": 100,
+			"top": 44,
+			"width": 70,
+			"height": 20
+		}
+	}
+}

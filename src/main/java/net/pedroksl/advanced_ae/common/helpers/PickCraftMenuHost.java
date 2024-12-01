@@ -1,6 +1,12 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
-import appeng.api.config.Actionable;
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.pedroksl.advanced_ae.common.items.armors.IGridLinkedItem;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.networking.IGrid;
@@ -8,20 +14,10 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.ISubMenuHost;
 import appeng.blockentity.networking.WirelessAccessPointBlockEntity;
-import appeng.core.localization.GuiText;
-import appeng.core.localization.PlayerMessages;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.items.armors.IGridLinkedItem;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
-import org.apache.commons.lang3.mutable.MutableObject;
-import org.jetbrains.annotations.Nullable;
 
-public class PickCraftMenuHost<T extends QuantumArmorBase> extends ItemMenuHost
-        implements ISubMenuHost, IActionHost {
+public class PickCraftMenuHost<T extends QuantumArmorBase> extends ItemMenuHost implements ISubMenuHost, IActionHost {
 
     @Nullable
     private IWirelessAccessPoint currentAccessPoint;

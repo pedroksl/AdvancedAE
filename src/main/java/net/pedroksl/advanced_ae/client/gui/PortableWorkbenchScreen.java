@@ -1,12 +1,13 @@
 package net.pedroksl.advanced_ae.client.gui;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.pedroksl.advanced_ae.gui.PortableWorkbenchMenu;
+
 import appeng.api.config.ActionItems;
 import appeng.api.config.CopyMode;
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.Settings;
-import appeng.api.stacks.AEItemKey;
-import appeng.api.stacks.AEKey;
-import appeng.api.stacks.GenericStack;
 import appeng.client.gui.Icon;
 import appeng.client.gui.implementations.UpgradeableScreen;
 import appeng.client.gui.style.ScreenStyle;
@@ -15,14 +16,6 @@ import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.client.gui.widgets.ToggleButton;
 import appeng.core.definitions.AEItems;
 import appeng.core.localization.GuiText;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.gui.PortableWorkbenchMenu;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PortableWorkbenchScreen extends UpgradeableScreen<PortableWorkbenchMenu> {
 

@@ -1,9 +1,9 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
 public final class AAENbt {
     public static final String STACK_TAG = "generic_nbt";

@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.network.packet;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 
@@ -9,9 +10,7 @@ public class MenuSelectionPacket implements IMessage<MenuSelectionPacket> {
     private String data;
     private int menuType;
 
-    public MenuSelectionPacket() {
-
-    }
+    public MenuSelectionPacket() {}
 
     public MenuSelectionPacket(String data, int menuType) {
         this.data = data;

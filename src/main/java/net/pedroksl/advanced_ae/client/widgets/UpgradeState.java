@@ -1,13 +1,15 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.api.stacks.GenericStack;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeSettings;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import appeng.api.stacks.GenericStack;
 
 public record UpgradeState(
         UpgradeType type,

@@ -1,9 +1,11 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import appeng.api.config.Actionable;
-import appeng.api.config.PowerMultiplier;
-import appeng.api.stacks.GenericStack;
-import appeng.core.localization.Tooltips;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -14,11 +16,11 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.pedroksl.advanced_ae.common.definitions.AAENbt;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
+import appeng.api.stacks.GenericStack;
+import appeng.core.localization.Tooltips;
 
 public interface IUpgradeableItem extends IGridLinkedItem {
     List<UpgradeType> getPossibleUpgrades();
@@ -48,7 +50,7 @@ public interface IUpgradeableItem extends IGridLinkedItem {
 
     default boolean isUpgradePowered(@NotNull ItemStack stack, UpgradeType upgrade, Level level) {
         var energyOp = stack.getCapability(ForgeCapabilities.ENERGY);
-	    return energyOp.isPresent() && energyOp.resolve().get().getEnergyStored() >= upgrade.getCost();
+        return energyOp.isPresent() && energyOp.resolve().get().getEnergyStored() >= upgrade.getCost();
     }
 
     default boolean isUpgradeEnabledAndPowered(ItemStack stack, UpgradeType upgrade) {
@@ -76,10 +78,11 @@ public interface IUpgradeableItem extends IGridLinkedItem {
         var tag = new CompoundTag();
         tag.putBoolean(AAENbt.UPGRADE_TOGGLE, true);
         tag.putInt(AAENbt.UPGRADE_VALUE, type.getSettings().defaultValue);
-        tag.put(AAENbt.UPGRADE_FILTER, new CompoundTag());
+        tag.put(AAENbt.UPGRADE_FILTER, new ListTag());
         if (type.getExtraSettings() != UpgradeType.ExtraSettings.NONE) {
             tag.putBoolean(AAENbt.UPGRADE_EXTRA, true);
         }
+        stack.addTagElement(AAENbt.UPGRADE_TAG.get(type), tag);
         return true;
     }
 
@@ -106,7 +109,7 @@ public interface IUpgradeableItem extends IGridLinkedItem {
                 if (player != null) {
                     var id = Component.translatable(type.item().asItem().getDescriptionId());
                     var msg = id.withStyle(Tooltips.NORMAL_TOOLTIP_TEXT);
-                    if (!tag.getBoolean(AAENbt.UPGRADE_TOGGLE)) {
+                    if (tag.getBoolean(AAENbt.UPGRADE_TOGGLE)) {
                         msg.append(Component.literal(" ON").withStyle(Tooltips.GREEN));
                     } else {
                         msg.append(Component.literal(" OFF").withStyle(Tooltips.RED));
@@ -153,9 +156,9 @@ public interface IUpgradeableItem extends IGridLinkedItem {
             if (tag != null) {
                 if (tag.contains(AAENbt.UPGRADE_FILTER)) {
                     var listTag = tag.getList(AAENbt.UPGRADE_FILTER, CompoundTag.TAG_COMPOUND);
-	                for (net.minecraft.nbt.Tag value : listTag) {
-		                list.add(GenericStack.readTag(((CompoundTag) value)));
-	                }
+                    for (net.minecraft.nbt.Tag value : listTag) {
+                        list.add(GenericStack.readTag(((CompoundTag) value)));
+                    }
                 }
             }
         }
@@ -211,8 +214,11 @@ public interface IUpgradeableItem extends IGridLinkedItem {
                     && isUpgradeEnabled(stack, upgrade)) {
                 consumeEnergy(player, stack, upgrade);
             }
-            if (upgrade == UpgradeType.FLIGHT && player.getAbilities().flying) {
-                consumeEnergy(player, stack, upgrade);
+            if (upgrade == UpgradeType.FLIGHT && upgrade.ability != null) {
+                upgrade.ability.execute(level, player, stack);
+                if (player.getAbilities().flying) {
+                    consumeEnergy(player, stack, upgrade);
+                }
             }
         }
     }

@@ -1,10 +1,12 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import appeng.api.config.AccessRestriction;
-import appeng.api.config.Actionable;
-import appeng.api.implementations.items.IAEItemPowerStorage;
-import appeng.capabilities.Capabilities;
-import appeng.core.localization.Tooltips;
+import java.util.List;
+import java.util.function.DoubleSupplier;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -13,15 +15,17 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 import net.pedroksl.advanced_ae.common.helpers.PoweredItemCapabilities;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.function.DoubleSupplier;
+import appeng.api.config.AccessRestriction;
+import appeng.api.config.Actionable;
+import appeng.api.implementations.items.IAEItemPowerStorage;
+import appeng.core.localization.Tooltips;
 
-public class PoweredItem extends ArmorItem implements IAEItemPowerStorage {
+public class PoweredItem extends ArmorItem implements IAEItemPowerStorage, ICapabilityProvider {
 
     private static final double MIN_POWER = 0.0001;
     private static final String CURRENT_POWER_NBT_KEY = "internalCurrentPower";
@@ -161,5 +165,10 @@ public class PoweredItem extends ArmorItem implements IAEItemPowerStorage {
     @Override
     public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new PoweredItemCapabilities(stack, this);
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        return null;
     }
 }

@@ -1,21 +1,16 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import appeng.api.implementations.menuobjects.ItemMenuHost;
-import appeng.api.parts.SelectedPart;
-import appeng.api.stacks.AEItemKey;
-import appeng.api.stacks.AEKey;
-import appeng.api.storage.ISubMenuHost;
-import appeng.blockentity.networking.CableBusBlockEntity;
-import appeng.core.localization.Tooltips;
-import appeng.menu.ISubMenu;
-import appeng.menu.locator.MenuLocators;
-import appeng.menu.me.crafting.CraftAmountMenu;
+import java.util.List;
+
+import org.apache.commons.lang3.mutable.MutableObject;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -33,12 +28,19 @@ import net.pedroksl.advanced_ae.common.helpers.PickCraftMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.MenuSelectionPacket;
-import org.apache.commons.lang3.mutable.MutableObject;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoItem;
 
-import java.util.List;
+import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.api.parts.SelectedPart;
+import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.AEKey;
+import appeng.api.storage.ISubMenuHost;
+import appeng.blockentity.networking.CableBusBlockEntity;
+import appeng.core.localization.Tooltips;
+import appeng.menu.ISubMenu;
+import appeng.menu.locator.MenuLocators;
+import appeng.menu.me.crafting.CraftAmountMenu;
+
+import software.bernie.geckolib.animatable.GeoItem;
 
 public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISubMenuHost {
 
@@ -66,7 +68,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.CHEST.getIndex()) {
+        if (slotId == EquipmentSlot.CHEST.getIndex()) {
             if (entity instanceof Player player) {
                 if (!getPassiveUpgrades(stack).isEmpty()) {
                     tickUpgrades(level, player, stack);
@@ -88,8 +90,8 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
     }
 
     @Override
-    public boolean openFromEquipmentSlot(Player player, int inventorySlot, ItemStack stack,
-                                         boolean returningFromSubmenu) {
+    public boolean openFromEquipmentSlot(
+            Player player, int inventorySlot, ItemStack stack, boolean returningFromSubmenu) {
         if (player instanceof ServerPlayer serverPlayer && checkPreconditions(stack)) {
             player.getPersistentData().putInt(MENU_TYPE, MenuId.STANDARD.id);
             AAENetworkHandler.INSTANCE.sendTo(new MenuSelectionPacket(MENU_TYPE, MenuId.STANDARD.id), serverPlayer);
@@ -107,13 +109,9 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
                     if (key != null) {
                         if (keyIsCraftable(player, stack, key)) {
                             player.getPersistentData().putInt(MENU_TYPE, MenuId.CRAFTING.id);
-                            AAENetworkHandler.INSTANCE.sendTo(new MenuSelectionPacket(MENU_TYPE, MenuId.CRAFTING.id),
-                                    serverPlayer);
+                            AAENetworkHandler.INSTANCE.sendTo(
+                                    new MenuSelectionPacket(MENU_TYPE, MenuId.CRAFTING.id), serverPlayer);
                             CraftAmountMenu.open(serverPlayer, MenuLocators.forInventorySlot(inventorySlot), key, 1);
-                        }
-                        // Item is not craftable
-                        else {
-                            player.displayClientMessage(AAEText.ItemNotCraftable.text(), true);
                         }
                     }
                     // No available target
@@ -137,8 +135,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
     }
 
     @Override
-    public ItemMenuHost getMenuHost(Player player, int inventorySlot, ItemStack stack,
-                                       @Nullable BlockPos pos) {
+    public ItemMenuHost getMenuHost(Player player, int inventorySlot, ItemStack stack, @Nullable BlockPos pos) {
         if (player.getPersistentData().contains(MENU_TYPE)
                 && player.getPersistentData().getInt(MENU_TYPE) == MenuId.STANDARD.id) {
             player.getPersistentData().remove(MENU_TYPE);
@@ -189,11 +186,13 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
         MutableObject<Component> errorHolder = new MutableObject<>();
         var grid = this.getLinkedGrid(stack, player.level(), player);
         if (grid != null) {
-            return grid.getCraftingService().isCraftable(whatToCraft);
-        }
-        // Grid unavailable
-        else {
-            player.displayClientMessage(errorHolder.getValue(), true);
+            if (grid.getCraftingService().isCraftable(whatToCraft)) {
+                return true;
+            }
+            // Item is not craftable
+            else {
+                player.displayClientMessage(AAEText.ItemNotCraftable.text(), true);
+            }
         }
         return false;
     }

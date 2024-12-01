@@ -1,5 +1,19 @@
 package net.pedroksl.advanced_ae.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.pedroksl.advanced_ae.api.ISetAmountMenuHost;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
@@ -12,19 +26,6 @@ import appeng.menu.guisync.GuiSync;
 import appeng.menu.locator.MenuLocator;
 import appeng.menu.slot.FakeSlot;
 import appeng.util.ConfigInventory;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.api.ISetAmountMenuHost;
-import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
-import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu, ISetAmountMenuHost {
 
@@ -39,6 +40,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
     protected final FakeSlot[] slots = new FakeSlot[9];
 
     protected static final String OPEN_AMOUNT_MENU = "open_amount_menu";
+    private boolean updatingFilters = false;
 
     public QuantumArmorFilterConfigMenu(MenuType<?> type, int id, Inventory playerInventory, ISubMenuHost host) {
         super(type, id, playerInventory, host);
@@ -62,11 +64,9 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
     }
 
     private boolean typeFilter(AEKey aeKey) {
-        if (inv.keySet().contains(aeKey)) return false;
-
         if (upgradeType == UpgradeType.AUTO_FEED) {
             if (aeKey instanceof AEItemKey key) {
-                return key.toStack().has(DataComponents.FOOD);
+                return key.toStack().getFoodProperties(getPlayer()) != null;
             }
             return false;
         }
@@ -117,7 +117,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
                 if (filter != null) {
                     if (filter.what() instanceof AEItemKey key) {
                         var stack = key.toStack();
-                        stack.setCount((int) filter.amount());
+                        stack.setCount(Math.max(1, (int) filter.amount()));
                         this.slots[x].set(stack);
                         continue;
                     }
@@ -128,7 +128,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
     }
 
     public void onSlotChanged() {
-        if (isClientSide()) {
+        if (isClientSide() || this.updatingFilters) {
             return;
         }
 
@@ -136,6 +136,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
     }
 
     private void updateItemStack() {
+        this.updatingFilters = true;
         List<GenericStack> filterList = makeFilterList();
 
         var stack = getPlayer().getInventory().getItem(this.slotIndex);
@@ -146,15 +147,15 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
                 }
             }
         }
+        this.updatingFilters = false;
     }
 
     protected List<GenericStack> makeFilterList() {
         List<GenericStack> filterList = new ArrayList<>();
-        new ArrayList<>();
         for (var x = 0; x < inv.size(); x++) {
-            var stack = this.slots[x].getItem();
-            if (!stack.isEmpty()) {
-                filterList.add(GenericStack.fromItemStack(stack));
+            var stack = inv.getStack(x);
+            if (stack != null) {
+                filterList.add(stack);
             }
         }
         return filterList;

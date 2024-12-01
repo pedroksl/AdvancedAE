@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.network.packet.quantumarmor;
 
 import com.glodblock.github.glodium.network.packet.IMessage;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
@@ -11,9 +12,7 @@ public class QuantumArmorUpgradeTogglePacket implements IMessage<QuantumArmorUpg
     private UpgradeType upgradeType;
     private boolean state;
 
-    public QuantumArmorUpgradeTogglePacket() {
-
-    }
+    public QuantumArmorUpgradeTogglePacket() {}
 
     public QuantumArmorUpgradeTogglePacket(UpgradeType upgradeType, boolean state) {
         this.upgradeType = upgradeType;

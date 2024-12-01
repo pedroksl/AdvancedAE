@@ -1,10 +1,8 @@
 package net.pedroksl.advanced_ae.xmod.apoth;
 
-import dev.shadowsoffire.apothic_enchanting.Ench;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import org.apache.commons.lang3.mutable.MutableBoolean;
+
+import dev.shadowsoffire.apotheosis.ench.enchantments.StableFootingEnchant;
 
 public class ApoEnchPlugin {
 
@@ -12,19 +10,25 @@ public class ApoEnchPlugin {
         STABLE_FOOTING
     }
 
-    public static DataComponentType<?> getEnchantment(Enchantment enchantment) {
+    public static boolean isSameAs(net.minecraft.world.item.enchantment.Enchantment enchantment, Enchantment ench) {
+        return switch (ench) {
+            case STABLE_FOOTING -> enchantment instanceof StableFootingEnchant;
+        };
+    }
+
+    public static net.minecraft.world.item.enchantment.Enchantment getEnchantment(Enchantment enchantment) {
         return switch (enchantment) {
-            case STABLE_FOOTING -> Ench.EnchantEffects.STABLE_FOOTING;
+            case STABLE_FOOTING -> new StableFootingEnchant();
         };
     }
 
     public static boolean checkForEnchant(Player player, Enchantment enchantment) {
-        MutableBoolean flag = new MutableBoolean(false);
-        EnchantmentHelper.runIterationOnEquipment(player, (ench, level, item) -> {
-            if (ench.value().effects().has(getEnchantment(enchantment))) {
-                flag.setTrue();
+        var armor = player.getArmorSlots();
+        for (var stack : armor) {
+            if (stack.getEnchantmentLevel(getEnchantment(enchantment)) > 0) {
+                return true;
             }
-        });
-        return flag.getValue();
+        }
+        return false;
     }
 }

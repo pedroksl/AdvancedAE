@@ -1,5 +1,15 @@
 package net.pedroksl.advanced_ae.common.inventory;
 
+import java.util.function.BiConsumer;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
+import net.pedroksl.advanced_ae.common.definitions.AAENbt;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
+
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.storage.ISubMenuHost;
@@ -7,18 +17,8 @@ import appeng.hooks.ticking.TickHandler;
 import appeng.menu.ISubMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.definitions.AAENbt;
-import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
-import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 
-import java.util.function.BiConsumer;
-
-public class QuantumArmorMenuHost extends ItemMenuHost
-        implements InternalInventoryHost, ISubMenuHost {
+public class QuantumArmorMenuHost extends ItemMenuHost implements InternalInventoryHost, ISubMenuHost {
 
     private static final int MAX_PROCESSING_TIME = 10;
 

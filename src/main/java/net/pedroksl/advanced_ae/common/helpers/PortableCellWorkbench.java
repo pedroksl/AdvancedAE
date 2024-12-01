@@ -1,5 +1,9 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+
 import appeng.api.config.CopyMode;
 import appeng.api.config.Settings;
 import appeng.api.inventories.ISegmentedInventory;
@@ -13,10 +17,6 @@ import appeng.util.ConfigInventory;
 import appeng.util.ConfigManager;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 public class PortableCellWorkbench implements InternalInventoryHost {
 

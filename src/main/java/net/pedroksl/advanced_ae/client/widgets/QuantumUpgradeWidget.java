@@ -1,9 +1,9 @@
 package net.pedroksl.advanced_ae.client.widgets;
 
-import appeng.client.gui.Icon;
-import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.AECheckbox;
-import appeng.client.gui.widgets.IconButton;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -16,9 +16,10 @@ import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeTogglePacket;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import appeng.client.gui.Icon;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.widgets.AECheckbox;
+import appeng.client.gui.widgets.IconButton;
 
 @OnlyIn(Dist.CLIENT)
 public class QuantumUpgradeWidget {
@@ -46,16 +47,16 @@ public class QuantumUpgradeWidget {
 
     public void add() {
         if (state.type().getSettingType() != UpgradeType.SettingType.NONE) {
-            configureButton = new ConfigButton(x + 72, y - 2, this::configRequested);
+            configureButton = new ConfigButton(x + 82, y - 1, this::configRequested);
             host.addChildWidget("upgrade_config" + index, configureButton, children);
         }
 
-        enableButton = new AECheckbox(x + 90, y + 1, 16, 16, style, Component.empty());
+        enableButton = new AECheckbox(x + 98, y, 16, 16, style, Component.empty());
         enableButton.setSelected(state.enabled());
         enableButton.setChangeListener(this::toggleEnable);
         host.addChildWidget("upgrade_enable" + index, enableButton, children);
 
-        uninstallButton = new UninstallButton(x + 113, y - 2, this::uninstallRequested);
+        uninstallButton = new UninstallButton(x + 110, y, this::uninstallRequested);
         host.addChildWidget("upgrade_uninstall" + index, uninstallButton, children);
     }
 
@@ -98,10 +99,10 @@ public class QuantumUpgradeWidget {
     public void setY(int y, int topPos) {
         this.y = y;
         this.children.values().forEach(w -> {
-            if (w instanceof AECheckbox) {
-                w.setY(topPos + y + 1);
+            if (w instanceof ConfigButton) {
+                w.setY(topPos + y - 1);
             } else {
-                w.setY(topPos + y - 2);
+                w.setY(topPos + y);
             }
         });
     }
@@ -116,7 +117,8 @@ public class QuantumUpgradeWidget {
     }
 
     private void toggleEnable() {
-        AAENetworkHandler.INSTANCE.sendToServer(new QuantumArmorUpgradeTogglePacket(state.type(), enableButton.isSelected()));
+        AAENetworkHandler.INSTANCE.sendToServer(
+                new QuantumArmorUpgradeTogglePacket(state.type(), enableButton.isSelected()));
     }
 
     private void uninstallRequested(Button button) {

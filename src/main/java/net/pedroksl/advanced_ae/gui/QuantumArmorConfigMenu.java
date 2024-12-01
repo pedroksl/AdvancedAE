@@ -1,5 +1,21 @@
 package net.pedroksl.advanced_ae.gui;
 
+import java.util.List;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
+import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.advanced_ae.network.AAENetworkHandler;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeStatePacket;
+
 import appeng.api.inventories.InternalInventory;
 import appeng.api.stacks.GenericStack;
 import appeng.api.storage.ISubMenuHost;
@@ -10,22 +26,6 @@ import appeng.menu.guisync.GuiSync;
 import appeng.menu.interfaces.IProgressProvider;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.DisabledSlot;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.definitions.AAENbt;
-import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
-import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
-import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
-import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
-import net.pedroksl.advanced_ae.network.AAENetworkHandler;
-import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeStatePacket;
-
-import java.util.List;
 
 public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, IProgressProvider {
 
@@ -151,6 +151,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         if (locator != null) {
             QuantumArmorNumInputConfigMenu.open(
                     ((ServerPlayer) this.getPlayer()),
+                    getLocator(),
                     this.getSelectedSlotIndex(),
                     upgradeType,
                     currentValue);
@@ -170,6 +171,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         if (locator != null && isServerSide()) {
             QuantumArmorMagnetMenu.open(
                     ((ServerPlayer) this.getPlayer()),
+                    getLocator(),
                     this.getSelectedSlotIndex(),
                     filter,
                     currentValue,

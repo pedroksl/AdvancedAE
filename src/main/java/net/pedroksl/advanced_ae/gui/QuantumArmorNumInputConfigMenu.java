@@ -1,18 +1,17 @@
 package net.pedroksl.advanced_ae.gui;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+
 import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.guisync.GuiSync;
-import appeng.menu.locator.MenuHostLocator;
-import appeng.menu.locator.MenuLocators;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.pedroksl.advanced_ae.common.definitions.AAENbt;
-import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
-import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import appeng.menu.locator.MenuLocator;
 
 public class QuantumArmorNumInputConfigMenu extends AEBaseMenu implements ISubMenu {
 
@@ -41,8 +40,8 @@ public class QuantumArmorNumInputConfigMenu extends AEBaseMenu implements ISubMe
     }
 
     public static void open(
-            ServerPlayer player, int slotIndex, UpgradeType type, int currentValue) {
-        MenuOpener.open(AAEMenus.QUANTUM_ARMOR_NUM_INPUT, player, MenuLocators.forInventorySlot(Inventory.INVENTORY_SIZE + slotIndex));
+            ServerPlayer player, MenuLocator locator, int slotIndex, UpgradeType type, int currentValue) {
+        MenuOpener.open(AAEMenus.QUANTUM_ARMOR_NUM_INPUT, player, locator);
 
         if (player.containerMenu instanceof QuantumArmorNumInputConfigMenu cca) {
             cca.setUpgradeType(type);
@@ -72,7 +71,7 @@ public class QuantumArmorNumInputConfigMenu extends AEBaseMenu implements ISubMe
         if (stack.getItem() instanceof QuantumArmorBase item) {
             if (item.getPossibleUpgrades().contains(this.type)) {
                 if (item.hasUpgrade(stack, this.type)) {
-                    stack.set(AAENbt.UPGRADE_VALUE.get(this.type), value);
+                    item.setUpgradeValue(stack, this.type, value);
                 }
             }
         }
