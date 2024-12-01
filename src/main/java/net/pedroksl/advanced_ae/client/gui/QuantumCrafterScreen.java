@@ -63,7 +63,6 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
             configButtons.add(cfgButton);
 
             var enableButton = widgets.addCheckbox("enableButton" + (1 + i), Component.empty(), new onEnableToggle(i));
-            enableButton.setRadio(true);
             enableButton.setTooltip(Tooltip.create(AAEText.EnablePatternButton.text()));
             enableButtons.add(enableButton);
         }
