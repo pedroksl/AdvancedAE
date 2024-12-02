@@ -35,10 +35,6 @@ public class AAEPlayerEvents {
         MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::playerTickEnd);
     }
 
-    public static void initClient() {
-        MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::playerRender);
-    }
-
     @SuppressWarnings("deprecation")
     public static void breakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
@@ -60,42 +56,6 @@ public class AAEPlayerEvents {
                     if (value < 1) {
                         event.setNewSpeed(event.getOriginalSpeed() / value);
                     }
-                }
-            }
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void playerRender(RenderPlayerEvent.Pre event) {
-        Player player = event.getEntity();
-        if (!(player instanceof ServerPlayer)) {
-            var renderer = event.getRenderer();
-            var model = renderer.getModel();
-
-            ItemStack helmetStack = player.getItemBySlot(EquipmentSlot.HEAD);
-            if (helmetStack.getItem() instanceof QuantumHelmet) {
-                model.hat.visible = false;
-            }
-
-            ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-            if (chestStack.getItem() instanceof QuantumChestplate) {
-                model.leftSleeve.visible = false;
-                model.rightSleeve.visible = false;
-                model.jacket.visible = false;
-
-                model.leftArm.visible = false;
-                model.rightArm.visible = false;
-            }
-
-            ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
-            ItemStack bootsStack = player.getItemBySlot(EquipmentSlot.FEET);
-            if (leggingsStack.getItem() instanceof QuantumLeggings) {
-                model.leftPants.visible = false;
-                model.rightPants.visible = false;
-
-                if (bootsStack.getItem() instanceof QuantumBoots) {
-                    model.leftLeg.visible = false;
-                    model.rightLeg.visible = false;
                 }
             }
         }

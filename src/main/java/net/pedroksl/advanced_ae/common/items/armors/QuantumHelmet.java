@@ -1,5 +1,7 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -50,11 +52,14 @@ public class QuantumHelmet extends QuantumArmorBase {
                     tickUpgrades(level, player, stack);
                 }
 
-                toggleBoneVisibilities(stack, player);
+                if (level.isClientSide()) {
+                    toggleBoneVisibilities(stack, player);
+                }
             }
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     private void toggleBoneVisibilities(ItemStack stack, Player player) {
         var item = (QuantumArmorBase) stack.getItem();
         var renderer = IClientItemExtensions.of(item).getHumanoidArmorModel(player, stack, EquipmentSlot.HEAD, null);

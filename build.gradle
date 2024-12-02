@@ -51,7 +51,6 @@ minecraft {
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
             arg "-mixin.config=" + "mixins.aae.json"
-            args '--nogui'
         }
 
         gameTestServer {

@@ -2,6 +2,8 @@ package net.pedroksl.advanced_ae.common.items.armors;
 
 import java.util.List;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -74,11 +76,14 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
                     tickUpgrades(level, player, stack);
                 }
 
-                toggleBoneVisibilities(stack, player);
+                if (level.isClientSide()) {
+                    toggleBoneVisibilities(stack, player);
+                }
             }
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     private void toggleBoneVisibilities(ItemStack stack, Player player) {
         var item = (QuantumArmorBase) stack.getItem();
         var renderer = IClientItemExtensions.of(item).getHumanoidArmorModel(player, stack, EquipmentSlot.CHEST, null);

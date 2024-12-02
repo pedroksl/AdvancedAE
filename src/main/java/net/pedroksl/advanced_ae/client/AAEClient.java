@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.client;
 
+import net.pedroksl.advanced_ae.events.AAEClientPlayerEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,7 @@ public class AAEClient extends AdvancedAE {
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        AAEPlayerEvents.initClient();
+        AAEClientPlayerEvents.init();
 
         eventBus.addListener(AAEClient::initItemBlockRenderTypes);
         eventBus.addListener(AAEClient::initItemColours);
