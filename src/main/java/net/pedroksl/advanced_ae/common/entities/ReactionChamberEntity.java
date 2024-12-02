@@ -211,6 +211,11 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
     }
 
     @Override
+    public Level getEntityLevel() {
+        return this.getLevel();
+    }
+
+    @Override
     public EnumSet<RelativeSide> getAllowedOutputs() {
         return this.allowedOutputs;
     }

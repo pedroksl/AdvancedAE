@@ -19,7 +19,7 @@ public interface IDirectionalOutputHost extends ISubMenuHost {
 
     BlockPos getBlockPosition();
 
-    Level getLevel();
+    Level getEntityLevel();
 
     EnumSet<RelativeSide> getAllowedOutputs();
 
@@ -29,7 +29,7 @@ public interface IDirectionalOutputHost extends ISubMenuHost {
         var dir = getOrientation().getSide(side);
         BlockPos blockPos = getBlockPosition().relative(dir);
 
-        Level level = getLevel();
+        Level level = getEntityLevel();
         if (level == null) {
             return null;
         }
