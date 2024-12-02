@@ -80,7 +80,7 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
     public static final String NBT_ALLOWED_SIDES = "allowedSides";
 
     private final IUpgradeInventory upgrades;
-    private final IConfigManager configManager = new ConfigManager(this::saveChanges);
+    private final IConfigManager configManager = new ConfigManager(this::onConfigChanged);
 
     private final AppEngInternalInventory inputInv = new AppEngInternalInventory(this, MAX_INPUT_SLOTS, 64);
     private final AppEngInternalInventory outputInv = new AppEngInternalInventory(this, 1, 64);

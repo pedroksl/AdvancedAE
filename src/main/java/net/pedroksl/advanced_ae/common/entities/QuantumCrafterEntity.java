@@ -85,7 +85,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
     public static final String NBT_ALLOWED_SIDES = "allowedSides";
 
     private final IUpgradeInventory upgrades;
-    private final IConfigManager configManager = new ConfigManager(this::saveChanges);
+    private final IConfigManager configManager = new ConfigManager(this::onConfigChanged);
 
     private final AppEngInternalInventory patternInv = new AppEngInternalInventory(this, 9, 1);
     private final AppEngInternalInventory outputInv = new AppEngInternalInventory(this, 18, MAX_OUTPUT_INV_SIZE);
