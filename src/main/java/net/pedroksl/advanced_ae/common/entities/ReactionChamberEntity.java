@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
@@ -763,7 +764,7 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
     @SuppressWarnings("UnstableApiUsage")
     @Override
     public <T> @NotNull LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-        if (capability == Capabilities.GENERIC_INTERNAL_INV) {
+        if (capability == Capabilities.GENERIC_INTERNAL_INV || capability == ForgeCapabilities.FLUID_HANDLER) {
             LazyOptional<T> cap = LazyOptional.of(this::getTank).cast();
             if (cap.isPresent()) return cap;
         }
