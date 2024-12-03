@@ -405,7 +405,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
             var target = adapterMap.get(what);
             var inserted = 0L;
             if (target != null) {
-                inserted = adapterMap.get(what).insert(what, amount, Actionable.MODULATE);
+                inserted = target.insert(what, amount, Actionable.MODULATE);
             }
             if (inserted < amount) {
                 this.addToSendList(what, amount - inserted);
