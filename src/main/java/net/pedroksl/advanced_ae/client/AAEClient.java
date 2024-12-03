@@ -47,6 +47,8 @@ public class AAEClient extends AdvancedAE {
     public AAEClient() {
         super();
 
+        initBuiltInModels();
+
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         AAEClientPlayerEvents.init();
@@ -78,6 +80,13 @@ public class AAEClient extends AdvancedAE {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private static void initBuiltInModels() {
+        var type = AAECraftingUnitType.STRUCTURE;
+        BuiltInModelHooks.addBuiltInModel(
+                AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
+                new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
     }
 
     private static void initScreens() {
@@ -121,14 +130,6 @@ public class AAEClient extends AdvancedAE {
     @SuppressWarnings("deprecation")
     private static void initItemBlockRenderTypes(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            for (var type : AAECraftingUnitType.values()) {
-                if (type == AAECraftingUnitType.STRUCTURE) {
-                    BuiltInModelHooks.addBuiltInModel(
-                            AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
-                            new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
-                }
-            }
-
             ItemBlockRenderTypes.setRenderLayer(AAEFluids.QUANTUM_INFUSION.source(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(AAEFluids.QUANTUM_INFUSION.flowing(), RenderType.translucent());
         });
