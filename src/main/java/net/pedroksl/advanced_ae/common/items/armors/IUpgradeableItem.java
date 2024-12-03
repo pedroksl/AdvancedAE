@@ -22,7 +22,15 @@ import appeng.core.localization.Tooltips;
 public interface IUpgradeableItem extends IGridLinkedItem {
     List<UpgradeType> getPossibleUpgrades();
 
-    List<UpgradeType> getAppliedUpgrades(ItemStack stack);
+    default List<UpgradeType> getAppliedUpgrades(ItemStack stack) {
+        var appliedUpgrades = new ArrayList<UpgradeType>();
+        for (var upgrade : getPossibleUpgrades()) {
+            if (hasUpgrade(stack, upgrade)) {
+                appliedUpgrades.add(upgrade);
+            }
+        }
+        return appliedUpgrades;
+    }
 
     default List<UpgradeType> getPassiveUpgrades(ItemStack itemStack) {
         List<UpgradeType> abilityList = new ArrayList<>();

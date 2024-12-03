@@ -60,7 +60,6 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
-    private List<UpgradeType> appliedUpgrades;
 
     protected static final String MENU_TYPE = "aae$menutype";
 
@@ -132,19 +131,6 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     @Override
     public List<UpgradeType> getPossibleUpgrades() {
         return possibleUpgrades;
-    }
-
-    @Override
-    public List<UpgradeType> getAppliedUpgrades(ItemStack stack) {
-        if (appliedUpgrades == null) {
-            appliedUpgrades = new ArrayList<>();
-            for (var upgrade : possibleUpgrades) {
-                if (hasUpgrade(stack, upgrade)) {
-                    appliedUpgrades.add(upgrade);
-                }
-            }
-        }
-        return appliedUpgrades;
     }
 
     protected boolean checkPreconditions(ItemStack item) {
