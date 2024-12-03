@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.client;
 
-import net.pedroksl.advanced_ae.events.AAEClientPlayerEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +28,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.events.AAEPlayerEvents;
+import net.pedroksl.advanced_ae.events.AAEClientPlayerEvents;
 
 import appeng.api.util.AEColor;
 import appeng.client.gui.me.common.PinnedKeys;
