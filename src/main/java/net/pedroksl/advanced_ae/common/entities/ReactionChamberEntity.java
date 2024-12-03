@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.common.entities;
 
 import java.util.*;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -761,7 +762,7 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
 
     @SuppressWarnings("UnstableApiUsage")
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
+    public <T> @NotNull LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
         if (capability == Capabilities.GENERIC_INTERNAL_INV) {
             LazyOptional<T> cap = LazyOptional.of(this::getTank).cast();
             if (cap.isPresent()) return cap;

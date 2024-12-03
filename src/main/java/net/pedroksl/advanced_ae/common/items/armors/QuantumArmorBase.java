@@ -68,7 +68,6 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
-    private List<UpgradeType> appliedUpgrades;
 
     protected static final UUID LUCK_MOD = UUID.fromString("64e83581-dcdb-4045-a749-ce2f45d47e48");
     protected static final UUID REACH_MOD = UUID.fromString("2083e57d-4744-4d2b-bad5-5517c13a1734");
@@ -203,19 +202,6 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     @Override
     public List<UpgradeType> getPossibleUpgrades() {
         return possibleUpgrades;
-    }
-
-    @Override
-    public List<UpgradeType> getAppliedUpgrades(ItemStack stack) {
-        if (appliedUpgrades == null) {
-            appliedUpgrades = new ArrayList<>();
-            for (var upgrade : possibleUpgrades) {
-                if (hasUpgrade(stack, upgrade)) {
-                    appliedUpgrades.add(upgrade);
-                }
-            }
-        }
-        return appliedUpgrades;
     }
 
     protected boolean checkPreconditions(ItemStack item) {

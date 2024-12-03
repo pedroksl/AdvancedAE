@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.common.items.armors;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 
+import appeng.capabilities.Capabilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,12 +26,13 @@ import appeng.api.config.Actionable;
 import appeng.api.implementations.items.IAEItemPowerStorage;
 import appeng.core.localization.Tooltips;
 
-public class PoweredItem extends ArmorItem implements IAEItemPowerStorage, ICapabilityProvider {
+public class PoweredItem extends ArmorItem implements IAEItemPowerStorage {
 
     private static final double MIN_POWER = 0.0001;
     private static final String CURRENT_POWER_NBT_KEY = "internalCurrentPower";
     private static final String MAX_POWER_NBT_KEY = "internalMaxPower";
     private final DoubleSupplier powerCapacity;
+    private PoweredItemCapabilities cap;
 
     public PoweredItem(ArmorMaterial material, Type type, Properties properties, DoubleSupplier powerCapacity) {
         super(material, type, properties);
@@ -165,10 +167,5 @@ public class PoweredItem extends ArmorItem implements IAEItemPowerStorage, ICapa
     @Override
     public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new PoweredItemCapabilities(stack, this);
-    }
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return null;
     }
 }
