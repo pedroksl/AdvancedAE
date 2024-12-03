@@ -2,8 +2,6 @@ package net.pedroksl.advanced_ae.common.entities;
 
 import java.util.*;
 
-import appeng.helpers.externalstorage.GenericStackFluidStorage;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +22,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.blocks.ReactionChamberBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
@@ -61,6 +60,7 @@ import appeng.api.util.IConfigurableObject;
 import appeng.blockentity.grid.AENetworkPowerBlockEntity;
 import appeng.capabilities.Capabilities;
 import appeng.core.definitions.AEItems;
+import appeng.helpers.externalstorage.GenericStackFluidStorage;
 import appeng.helpers.externalstorage.GenericStackInv;
 import appeng.me.storage.CompositeStorage;
 import appeng.menu.ISubMenu;
@@ -781,7 +781,8 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
         } else if (capability == ForgeCapabilities.FLUID_HANDLER) {
             if (this.genericCapOp == null) {
                 this.genericCapOp = LazyOptional.of(this::getTank)
-                        .lazyMap(GenericStackFluidStorage::new).cast();
+                        .lazyMap(GenericStackFluidStorage::new)
+                        .cast();
             }
             return this.genericCapOp.cast();
         }
