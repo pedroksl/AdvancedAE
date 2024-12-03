@@ -2,6 +2,8 @@ package net.pedroksl.advanced_ae.common.entities;
 
 import java.util.*;
 
+import appeng.helpers.externalstorage.GenericStackFluidStorage;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
@@ -94,6 +97,7 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
     private final InternalInventory invExposed = new CombinedInternalInventory(this.inputExposed, this.outputExposed);
 
     private final CustomGenericInv fluidInv = new CustomGenericInv(this::onChangeTank, GenericStackInv.Mode.STORAGE, 2);
+    private LazyOptional<IFluidHandler> genericCapOp;
 
     private boolean working = false;
     private int processingTime = 0;
@@ -121,6 +125,14 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
         this.configManager.registerSetting(Settings.AUTO_EXPORT, YesNo.YES);
 
         this.setPowerSides(getGridConnectableSides(getOrientation()));
+    }
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        if (this.genericCapOp != null) {
+            this.genericCapOp.invalidate();
+        }
     }
 
     public boolean isWorking() {
@@ -766,6 +778,12 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
         if (capability == Capabilities.GENERIC_INTERNAL_INV) {
             LazyOptional<T> cap = LazyOptional.of(this::getTank).cast();
             if (cap.isPresent()) return cap;
+        } else if (capability == ForgeCapabilities.FLUID_HANDLER) {
+            if (this.genericCapOp == null) {
+                this.genericCapOp = LazyOptional.of(this::getTank)
+                        .lazyMap(GenericStackFluidStorage::new).cast();
+            }
+            return this.genericCapOp.cast();
         }
 
         return super.getCapability(capability, facing);
