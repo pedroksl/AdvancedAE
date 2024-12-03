@@ -6,7 +6,6 @@
 	"refmap": "mixins.aae.refmap.json",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"eae.MixinContainerPatternModifier",
 		"MixinPatternEncodingTermMenu",
 		"MixinPatternProviderLogic",
 		"appflux.MixinAdvPatternProviderLogic",
@@ -15,7 +14,8 @@
 		"client.BuiltInModelHooksAccessor",
 		"client.ModelBakeryMixin",
 		"cpu.MixinCraftingCPUMenu",
-		"cpu.MixinCraftingService"
+		"cpu.MixinCraftingService",
+		"eae.MixinContainerPatternModifier"
 	],
 	"client": [
 		"appflux.MixinAdvPatternProviderScreen",

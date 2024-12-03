@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.client.gui.SmallAdvPatternProviderScreen;
-import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
 
 import appeng.api.upgrades.Upgrades;
@@ -26,7 +25,8 @@ import appeng.core.localization.GuiText;
 import appeng.menu.SlotSemantics;
 
 @Mixin(SmallAdvPatternProviderScreen.class)
-public abstract class MixinSmallAdvPatternProviderScreen<C extends AdvPatternProviderMenu> extends AEBaseScreen<C> {
+public abstract class MixinSmallAdvPatternProviderScreen<C extends SmallAdvPatternProviderMenu>
+        extends AEBaseScreen<C> {
 
     @Inject(method = "<init>", at = @At("TAIL"), remap = false)
     private void initUpgrade(
