@@ -42,6 +42,8 @@ public class AAEClient extends AdvancedAE {
     public AAEClient(IEventBus eventBus, ModContainer container) {
         super(eventBus, container);
 
+        initBuiltInModels();
+
         eventBus.addListener(AAEClient::initScreens);
         eventBus.addListener(AAEClient::initItemBlockRenderTypes);
         eventBus.addListener(AAEClient::initItemColours);
@@ -55,6 +57,13 @@ public class AAEClient extends AdvancedAE {
             tickPinnedKeys(Minecraft.getInstance());
             Hotkeys.checkHotkeys();
         });
+    }
+
+    private static void initBuiltInModels() {
+        var type = AAECraftingUnitType.STRUCTURE;
+        BuiltInModelHooks.addBuiltInModel(
+                AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
+                new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
     }
 
     private static void initScreens(RegisterMenuScreensEvent event) {
@@ -117,14 +126,6 @@ public class AAEClient extends AdvancedAE {
     @SuppressWarnings("deprecation")
     private static void initItemBlockRenderTypes(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            for (var type : AAECraftingUnitType.values()) {
-                if (type == AAECraftingUnitType.STRUCTURE) {
-                    BuiltInModelHooks.addBuiltInModel(
-                            AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
-                            new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
-                }
-            }
-
             ItemBlockRenderTypes.setRenderLayer(AAEFluids.QUANTUM_INFUSION.source(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(AAEFluids.QUANTUM_INFUSION.flowing(), RenderType.translucent());
         });
