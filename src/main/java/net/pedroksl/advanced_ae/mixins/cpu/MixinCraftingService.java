@@ -168,8 +168,8 @@ public class MixinCraftingService {
             CallbackInfoReturnable<ICraftingSubmitResult> cir,
             @Local CraftingCPUCluster cpuCluster,
             @Local MutableObject<UnsuitableCpus> unsuitableCpusResult) {
-        if (target instanceof AdvCraftingCPU advCpu) {
-            cir.setReturnValue(advCpu.craftingLogic.trySubmitJob(this.grid, job, src, requestingMachine));
+        if (target instanceof AdvCraftingCPUCluster advCpuCluster) {
+            cir.setReturnValue(advCpuCluster.submitJob(this.grid, job, src, requestingMachine));
         } else {
             var advCluster = advancedAE$findSuitableAdvCraftingCPU(job, src, unsuitableCpusResult);
             if (advCluster != null) {
