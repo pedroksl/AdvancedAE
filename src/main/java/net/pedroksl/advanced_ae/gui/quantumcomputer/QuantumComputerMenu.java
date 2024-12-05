@@ -71,7 +71,7 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
 
     @Override
     public void broadcastChanges() {
-        if (this.host.getGridNode() == null) {
+        if (this.host == null) {
             super.broadcastChanges();
             return;
         }
