@@ -269,6 +269,7 @@ public class MixinCraftingService {
             for (var activeCpu : cluster.getActiveCPUs()) {
                 if (activeCpu == cpu) {
                     cir.setReturnValue(true);
+                    return;
                 }
             }
         }
