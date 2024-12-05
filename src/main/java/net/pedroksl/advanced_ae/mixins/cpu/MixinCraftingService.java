@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.nbt.CompoundTag;
-import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
 import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPUCluster;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 
@@ -262,6 +261,7 @@ public class MixinCraftingService {
             for (var activeCpu : cluster.getActiveCPUs()) {
                 if (activeCpu == cpu) {
                     cir.setReturnValue(true);
+                    return;
                 }
             }
         }

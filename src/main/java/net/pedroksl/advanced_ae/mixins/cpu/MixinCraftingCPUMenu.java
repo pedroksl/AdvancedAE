@@ -108,7 +108,7 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
     }
 
     @Inject(method = "cancelCrafting", at = @At("TAIL"))
-    public void cancelCrafting(CallbackInfo ci) {
+    public void onCancelCrafting(CallbackInfo ci) {
         if (!isClientSide()) {
             if (this.advancedAE$advCpu != null) {
                 this.advancedAE$advCpu.cancelJob();
@@ -117,14 +117,14 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
     }
 
     @Inject(method = "removed", at = @At("TAIL"))
-    public void removed(Player player, CallbackInfo ci) {
+    public void onRemoved(Player player, CallbackInfo ci) {
         if (this.advancedAE$advCpu != null) {
             this.advancedAE$advCpu.craftingLogic.removeListener(cpuChangeListener);
         }
     }
 
-    @Inject(method = "broadcastChanges", at = @At(value = "HEAD"))
-    public void broadcastChanges(CallbackInfo ci) {
+    @Inject(method = "broadcastChanges", at = @At(value = "HEAD"), remap = true)
+    public void onBroadcastChanges(CallbackInfo ci) {
         if (isServerSide() && this.advancedAE$advCpu != null) {
             this.schedulingMode = this.advancedAE$advCpu.getSelectionMode();
             this.cantStoreItems = this.advancedAE$advCpu.craftingLogic.isCantStoreItems();

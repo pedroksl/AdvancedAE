@@ -80,7 +80,7 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
 
     @Override
     public void broadcastChanges() {
-        if (this.host.getGridNode() == null) {
+        if (this.host == null) {
             super.broadcastChanges();
             return;
         }
@@ -120,7 +120,7 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
             }
             // If we couldn't find a busy one, just select the first
             if (selectedCpuSerial == -1 && !cpuList.cpus().isEmpty()) {
-                selectCpu(cpuList.cpus().get(0).serial());
+                selectCpu(cpuList.cpus().getFirst().serial());
             }
         }
 
