@@ -195,7 +195,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
         controllers.add(new AnimationController<GeoAnimatable>(this, 20, state -> {
             state.getController().setAnimation(RawAnimation.begin().thenLoop("animation.quantum_armor.idle"));
             Entity entity = state.getData(DataTickets.ENTITY);
-            if (entity instanceof ArmorStand) return PlayState.CONTINUE;
+            if (!(entity instanceof Player)) return PlayState.CONTINUE;
 
             Set<Item> wornArmor = new ObjectOpenHashSet<>();
             for (ItemStack stack : ((Player) entity).getArmorSlots()) {
