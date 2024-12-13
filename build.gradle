@@ -99,7 +99,7 @@ dependencies {
     minecraft "net.neoforged:forge:${minecraft_version}-${forge_version}"
     implementation fg.deobf("curse.maven:glodium-957920:5226922")
     implementation fg.deobf("curse.maven:applied-flux-965012:5772439")
-    implementation fg.deobf("appeng:appliedenergistics2-forge:15.2.13")
+    implementation fg.deobf("appeng:appliedenergistics2-forge:15.2.15")
     implementation fg.deobf("curse.maven:ex-pattern-provider-892005:5867594")
     implementation fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:5217955")
     implementation fg.deobf("curse.maven:jei-238222:5846810")

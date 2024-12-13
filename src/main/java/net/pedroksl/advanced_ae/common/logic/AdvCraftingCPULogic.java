@@ -175,9 +175,11 @@ public class AdvCraftingCPULogic {
 
             var details = task.getKey();
             var expectedOutputs = new KeyCounter();
+            var expectedContainerItems = new KeyCounter();
             // Contains the inputs for the pattern.
             @Nullable
-            var craftingContainer = CraftingCpuHelper.extractPatternInputs(details, inventory, level, expectedOutputs);
+            var craftingContainer = CraftingCpuHelper.extractPatternInputs(
+                    details, inventory, level, expectedOutputs, expectedContainerItems);
 
             // Try to push to each provider.
             for (var provider : craftingService.getProviders(details)) {
@@ -197,6 +199,15 @@ public class AdvCraftingCPULogic {
                         job.waitingFor.insert(
                                 expectedOutput.getKey(), expectedOutput.getLongValue(), Actionable.MODULATE);
                     }
+                    for (var expectedContainerItem : expectedContainerItems) {
+                        job.waitingFor.insert(
+                                expectedContainerItem.getKey(),
+                                expectedContainerItem.getLongValue(),
+                                Actionable.MODULATE);
+                        job.timeTracker.addMaxItems(
+                                expectedContainerItem.getLongValue(),
+                                expectedContainerItem.getKey().getType());
+                    }
 
                     cpu.markDirty();
 
@@ -212,8 +223,9 @@ public class AdvCraftingCPULogic {
 
                     // Prepare next inputs.
                     expectedOutputs.reset();
-                    craftingContainer =
-                            CraftingCpuHelper.extractPatternInputs(details, inventory, level, expectedOutputs);
+                    expectedContainerItems.reset();
+                    craftingContainer = CraftingCpuHelper.extractPatternInputs(
+                            details, inventory, level, expectedOutputs, expectedContainerItems);
                 }
             }
 
@@ -248,7 +260,7 @@ public class AdvCraftingCPULogic {
         }
 
         if (type == Actionable.MODULATE) {
-            job.timeTracker.decrementItems(amount);
+            job.timeTracker.decrementItems(amount, what.getType()); // Process Fluid and Items
             job.waitingFor.extract(what, amount, Actionable.MODULATE);
             cpu.markDirty();
         }
@@ -304,9 +316,7 @@ public class AdvCraftingCPULogic {
         // TODO: log
 
         // Clear waitingFor list and post all the relevant changes.
-        if (!success) {
-            job.waitingFor.clear();
-        }
+        job.waitingFor.clear();
         // Notify opened menus of cancelled scheduled tasks.
         for (var entry : job.tasks.entrySet()) {
             for (var output : entry.getKey().getOutputs()) {
@@ -386,7 +396,7 @@ public class AdvCraftingCPULogic {
         if (this.job != null) {
             return this.job.timeTracker;
         } else {
-            return new ElapsedTimeTracker(0);
+            return new ElapsedTimeTracker();
         }
     }
 
@@ -394,10 +404,10 @@ public class AdvCraftingCPULogic {
         this.inventory.readFromNBT(data.getList("inventory", 10));
         if (data.contains("job")) {
             this.job = new ExecutingCraftingJob(data.getCompound("job"), this::postChange, this);
-            if (this.job.finalOutput == null) {
-                finishJob(false);
-            } else {
+            if (this.job.finalOutput != null) {
                 cpu.updateOutput(new GenericStack(job.finalOutput.what(), job.remainingAmount));
+            } else {
+                cpu.updateOutput(null);
             }
         } else {
             cpu.updateOutput(null);
@@ -496,7 +506,7 @@ public class AdvCraftingCPULogic {
 
         var server = cpu.getLevel().getServer();
         var connectedPlayer = IPlayerRegistry.getConnected(server, playerId);
-        if (connectedPlayer != null) {
+        if (connectedPlayer != null && job.finalOutput != null) {
             var jobId = job.link.getCraftingID();
             NetworkHandler.instance()
                     .sendTo(
