@@ -27,6 +27,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.helpers.PickCraftMenuHost;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeCards;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.MenuSelectionPacket;
@@ -70,8 +71,8 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (slotId == EquipmentSlot.CHEST.getIndex()) {
-            if (entity instanceof Player player) {
+        if (entity instanceof Player player) {
+            if (slotId == EquipmentSlot.CHEST.getIndex()) {
                 if (!getPassiveUpgrades(stack).isEmpty()) {
                     tickUpgrades(level, player, stack);
                 }
@@ -79,6 +80,17 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
                 if (level.isClientSide()) {
                     toggleBoneVisibilities(stack, player);
                 }
+            } else {
+                tickCreativeFlight(level, player, stack);
+            }
+        }
+    }
+
+    public void tickCreativeFlight(Level level, Player player, ItemStack stack) {
+        if (getPassiveUpgrades(stack).contains(UpgradeType.FLIGHT)) {
+            UpgradeCards.creativeFlight(level, player, stack, false);
+            if (player.getAbilities().flying) {
+                consumeEnergy(player, stack, UpgradeType.FLIGHT);
             }
         }
     }

@@ -124,9 +124,13 @@ public class UpgradeCards {
     }
 
     public static boolean creativeFlight(Level level, Player player, ItemStack stack) {
+        return creativeFlight(level, player, stack, true);
+    }
+
+    public static boolean creativeFlight(Level level, Player player, ItemStack stack, boolean equipped) {
         if (stack.getItem() instanceof QuantumChestplate chest) {
             var upgrade = UpgradeType.FLIGHT;
-            if (chest.isUpgradeEnabledAndPowered(stack, upgrade)) {
+            if (equipped && chest.isUpgradeEnabledAndPowered(stack, upgrade)) {
                 if (!player.getAbilities().mayfly) {
                     player.getAbilities().mayfly = true;
                     player.getPersistentData().putBoolean("aaeFlightCard", true);
