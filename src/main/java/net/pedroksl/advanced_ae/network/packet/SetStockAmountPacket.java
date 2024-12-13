@@ -25,8 +25,8 @@ public class SetStockAmountPacket implements IMessage<SetStockAmountPacket> {
 
     @Override
     public void fromBytes(FriendlyByteBuf stream) {
-        var index = stream.readInt();
-        var amount = stream.readLong();
+        index = stream.readInt();
+        amount = stream.readLong();
     }
 
     @Override
