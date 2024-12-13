@@ -69,6 +69,8 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
 
+    protected static final UUID ATTACK_DAMAGE_MOD = UUID.fromString("7c305230-fd62-4f14-8364-934bfc86ce74");
+    protected static final UUID ATTACK_SPEED_MOD = UUID.fromString("47e9e666-e9a4-4bd7-8cce-ea2774b3fbc5");
     protected static final UUID LUCK_MOD = UUID.fromString("64e83581-dcdb-4045-a749-ce2f45d47e48");
     protected static final UUID REACH_MOD = UUID.fromString("2083e57d-4744-4d2b-bad5-5517c13a1734");
     protected static final UUID HP_BUFFER_MOD = UUID.fromString("d610c37e-3223-4e85-80dc-cb6fd58bfc81");
@@ -160,13 +162,13 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
                 if (armor.isUpgradeEnabledAndPowered(stack, UpgradeType.STRENGTH)) {
                     int value = armor.getUpgradeValue(stack, UpgradeType.STRENGTH, 0);
                     var att = new AttributeModifier(
-                            BASE_ATTACK_DAMAGE_UUID, "aae_strength_boost", value, AttributeModifier.Operation.ADDITION);
+                            ATTACK_DAMAGE_MOD, "aae_strength_boost", value, AttributeModifier.Operation.ADDITION);
                     builder.put(Attributes.ATTACK_DAMAGE, att);
                 }
                 if (armor.isUpgradeEnabledAndPowered(stack, UpgradeType.ATTACK_SPEED)) {
                     int value = armor.getUpgradeValue(stack, UpgradeType.ATTACK_SPEED, 0);
                     var att = new AttributeModifier(
-                            BASE_ATTACK_SPEED_UUID, "aae_attack_speed", value, AttributeModifier.Operation.ADDITION);
+                            ATTACK_SPEED_MOD, "aae_attack_speed", value, AttributeModifier.Operation.ADDITION);
                     builder.put(Attributes.ATTACK_SPEED, att);
                 }
             }
@@ -184,7 +186,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
                     int value = armor.getUpgradeValue(stack, UpgradeType.STEP_ASSIST, 0);
                     var att = new AttributeModifier(
                             STEP_ASSIST_MOD, "aae_step_assist", value, AttributeModifier.Operation.ADDITION);
-                    builder.put(ForgeMod.STEP_HEIGHT_ADDITION.get(), att);
+                    builder.put(ForgeMod.STEP_HEIGHT.get(), att);
                 }
             }
         }
