@@ -404,10 +404,10 @@ public class AdvCraftingCPULogic {
         this.inventory.readFromNBT(data.getList("inventory", 10));
         if (data.contains("job")) {
             this.job = new ExecutingCraftingJob(data.getCompound("job"), this::postChange, this);
-            if (this.job.finalOutput != null) {
-                cpu.updateOutput(new GenericStack(job.finalOutput.what(), job.remainingAmount));
+            if (this.job.finalOutput == null) {
+                finishJob(false);
             } else {
-                cpu.updateOutput(null);
+                cpu.updateOutput(new GenericStack(job.finalOutput.what(), job.remainingAmount));
             }
         } else {
             cpu.updateOutput(null);
