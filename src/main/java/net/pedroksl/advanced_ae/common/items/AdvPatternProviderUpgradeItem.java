@@ -4,16 +4,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.glodblock.github.extendedae.common.parts.PartExPatternProvider;
-import com.glodblock.github.extendedae.common.tileentities.TileExPatternProvider;
-import com.glodblock.github.extendedae.util.FCUtil;
-
+import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.eae.ExtendedAEPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,7 +30,7 @@ import appeng.blockentity.networking.CableBusBlockEntity;
 import appeng.parts.AEBasePart;
 import appeng.parts.crafting.PatternProviderPart;
 
-public class AdvPatternProviderUpgradeItem extends Item {
+public class AdvPatternProviderUpgradeItem extends BlockUpgradeItem {
 
     public AdvPatternProviderUpgradeItem(Properties properties) {
         super(properties);
@@ -49,7 +46,7 @@ public class AdvPatternProviderUpgradeItem extends Item {
         if (entity != null) {
             var ctx = new BlockPlaceContext(context);
             var tClazz = entity.getClass();
-            if (tClazz == PatternProviderBlockEntity.class || tClazz == TileExPatternProvider.class) {
+            if (tClazz == PatternProviderBlockEntity.class || (Addons.EXPATTERNPROVIDER.isLoaded() && ExtendedAEPlugin.isEntityProvider(tClazz))) {
 
                 var originState = world.getBlockState(pos);
                 var isSmall = tClazz == PatternProviderBlockEntity.class;
@@ -76,7 +73,7 @@ public class AdvPatternProviderUpgradeItem extends Item {
                         ? AAEBlockEntities.SMALL_ADV_PATTERN_PROVIDER.get()
                         : AAEBlockEntities.ADV_PATTERN_PROVIDER.get();
                 BlockEntity te = tileType.create(pos, state);
-                FCUtil.replaceTile(world, pos, entity, te, state);
+                replaceTile(world, pos, entity, te, state);
                 context.getItemInHand().shrink(1);
                 return InteractionResult.CONSUME;
 
@@ -86,7 +83,7 @@ public class AdvPatternProviderUpgradeItem extends Item {
                 var part = cable.getCableBus().selectPartLocal(hitInBlock).part;
                 if (part instanceof AEBasePart basePart
                         && (part.getClass() == PatternProviderPart.class
-                                || part.getClass() == PartExPatternProvider.class)) {
+                                || (Addons.EXPATTERNPROVIDER.isLoaded()) && ExtendedAEPlugin.isPartProvider(part.getClass()))) {
                     var side = basePart.getSide();
                     var contents = new CompoundTag();
 

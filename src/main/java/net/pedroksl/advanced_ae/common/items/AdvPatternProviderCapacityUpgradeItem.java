@@ -4,14 +4,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.glodblock.github.extendedae.util.FCUtil;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -30,7 +27,7 @@ import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import appeng.blockentity.networking.CableBusBlockEntity;
 import appeng.parts.AEBasePart;
 
-public class AdvPatternProviderCapacityUpgradeItem extends Item {
+public class AdvPatternProviderCapacityUpgradeItem extends BlockUpgradeItem {
 
     public AdvPatternProviderCapacityUpgradeItem(Properties properties) {
         super(properties);
@@ -64,7 +61,7 @@ public class AdvPatternProviderCapacityUpgradeItem extends Item {
                     }
                 }
                 BlockEntity te = AAEBlockEntities.ADV_PATTERN_PROVIDER.get().create(pos, state);
-                FCUtil.replaceTile(world, pos, entity, te, state);
+                replaceTile(world, pos, entity, te, state);
                 context.getItemInHand().shrink(1);
                 return InteractionResult.CONSUME;
 
