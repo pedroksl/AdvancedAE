@@ -27,7 +27,7 @@ import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import appeng.blockentity.networking.CableBusBlockEntity;
 import appeng.parts.AEBasePart;
 
-public class AdvPatternProviderCapacityUpgradeItem extends Item {
+public class AdvPatternProviderCapacityUpgradeItem extends BlockUpgradeItem {
 
     public AdvPatternProviderCapacityUpgradeItem(Properties properties) {
         super(properties);
@@ -61,7 +61,7 @@ public class AdvPatternProviderCapacityUpgradeItem extends Item {
                     }
                 }
                 BlockEntity te = AAEBlockEntities.ADV_PATTERN_PROVIDER.get().create(pos, state);
-                FCUtil.replaceTile(world, pos, entity, te, state);
+                replaceTile(world, pos, entity, te, state);
                 context.getItemInHand().shrink(1);
                 return InteractionResult.CONSUME;
 
