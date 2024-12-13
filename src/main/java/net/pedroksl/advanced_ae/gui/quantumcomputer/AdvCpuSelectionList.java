@@ -113,7 +113,7 @@ public class AdvCpuSelectionList implements ICompositeWidget {
                         .append(" ")
                         .append(currentJob.what().getDisplayName()));
                 tooltipLines.add(ButtonToolTips.CpuStatusCraftedIn.text(
-                        Tooltips.ofNumber(cpu.progress()),
+                        Tooltips.ofPercent(cpu.progress()),
                         Tooltips.ofDuration(cpu.elapsedTimeNanos(), TimeUnit.NANOSECONDS)));
             }
             return new Tooltip(tooltipLines);
@@ -215,7 +215,7 @@ public class AdvCpuSelectionList implements ICompositeWidget {
                 infoBar.add(currentJob.what(), 0.666f, x + 55, y + 9);
 
                 // Draw a bar at the bottom of the button to indicate job progress
-                var progress = (int) (cpu.progress() * (buttonBg.getSrcWidth() - 1) / Math.max(1, cpu.totalItems()));
+                var progress = (int) (cpu.progress() * (buttonBg.getSrcWidth() - 1));
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().translate(1, -1, 0);
                 guiGraphics.fill(

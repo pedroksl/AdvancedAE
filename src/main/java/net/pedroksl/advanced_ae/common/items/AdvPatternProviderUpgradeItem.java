@@ -19,13 +19,13 @@ import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
+import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.eae.ExtendedAEPlugin;
 
 import appeng.blockentity.crafting.PatternProviderBlockEntity;
 import appeng.blockentity.networking.CableBusBlockEntity;
 import appeng.parts.AEBasePart;
 import appeng.parts.crafting.PatternProviderPart;
-import net.pedroksl.advanced_ae.xmod.Addons;
-import net.pedroksl.advanced_ae.xmod.eae.ExtendedAEPlugin;
 
 public class AdvPatternProviderUpgradeItem extends BlockUpgradeItem {
 
@@ -43,7 +43,8 @@ public class AdvPatternProviderUpgradeItem extends BlockUpgradeItem {
         if (entity != null) {
             var ctx = new BlockPlaceContext(context);
             var tClazz = entity.getClass();
-            if (tClazz == PatternProviderBlockEntity.class || (Addons.EXTENDEDAE.isLoaded() && ExtendedAEPlugin.isEntityProvider(tClazz))) {
+            if (tClazz == PatternProviderBlockEntity.class
+                    || (Addons.EXTENDEDAE.isLoaded() && ExtendedAEPlugin.isEntityProvider(tClazz))) {
 
                 var originState = world.getBlockState(pos);
                 var isSmall = tClazz == PatternProviderBlockEntity.class;
@@ -80,7 +81,8 @@ public class AdvPatternProviderUpgradeItem extends BlockUpgradeItem {
                 var part = cable.getCableBus().selectPartLocal(hitInBlock).part;
                 if (part instanceof AEBasePart basePart
                         && (part.getClass() == PatternProviderPart.class
-                        || (Addons.EXTENDEDAE.isLoaded()) && ExtendedAEPlugin.isPartProvider(part.getClass()))) {
+                                || (Addons.EXTENDEDAE.isLoaded())
+                                        && ExtendedAEPlugin.isPartProvider(part.getClass()))) {
                     var side = basePart.getSide();
                     var contents = new CompoundTag();
 

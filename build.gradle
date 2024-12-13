@@ -118,20 +118,22 @@ repositories {
 
 dependencies {
     implementation "curse.maven:glodium-957920:5614731"
-    implementation "curse.maven:applied-energistics-2-223794:5662490"
-    implementation "curse.maven:ex-pattern-provider-892005:5680210"
-    implementation "de.mari_023:ae2wtlib_api:19.1.6-beta"
+    implementation "appeng:appliedenergistics2:19.0.26"
+    implementation "curse.maven:ex-pattern-provider-892005:5976911"
+    implementation "de.mari_023:ae2wtlib_api:19.1.7"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    compileOnly "curse.maven:emi-580555:5704405"
-    implementation "curse.maven:applied-flux-965012:5639620"
-    implementation "curse.maven:jade-324717:5706149"
+    compileOnly "curse.maven:emi-580555:5872513"
+    implementation "curse.maven:applied-flux-965012:5946853"
+    implementation "curse.maven:jade-324717:5976517"
     compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.729"
-    implementation "curse.maven:mega-cells-622112:5662141"
+    implementation "curse.maven:mega-cells-622112:5981446"
     implementation "curse.maven:mekanism-268560:5680395"
     implementation "curse.maven:adorned-1036809:5740650"
     compileOnly "curse.maven:jei-238222:5846880"
 
-    compileOnly "curse.maven:apothic-enchanting-1063926:5787344"
+    runtimeOnly "curse.maven:placebo-283644:5869769"
+    runtimeOnly "curse.maven:apothic-attributes-898963:5751458"
+    implementation "curse.maven:apothic-enchanting-1063926:5787344"
     compileOnly "curse.maven:irisshaders-455508:5765375"
     // setup Xei
     switch (use_Xei) {

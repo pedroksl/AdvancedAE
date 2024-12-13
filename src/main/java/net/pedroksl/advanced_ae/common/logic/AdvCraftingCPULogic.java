@@ -204,7 +204,9 @@ public class AdvCraftingCPULogic {
                                 expectedContainerItem.getKey(),
                                 expectedContainerItem.getLongValue(),
                                 Actionable.MODULATE);
-                        job.timeTracker.addMaxItems(expectedContainerItem.getLongValue());
+                        job.timeTracker.addMaxItems(
+                                expectedContainerItem.getLongValue(),
+                                expectedContainerItem.getKey().getType());
                     }
 
                     cpu.markDirty();
@@ -258,7 +260,7 @@ public class AdvCraftingCPULogic {
         }
 
         if (type == Actionable.MODULATE) {
-            job.timeTracker.decrementItems(amount);
+            job.timeTracker.decrementItems(amount, what.getType());
             job.waitingFor.extract(what, amount, Actionable.MODULATE);
             cpu.markDirty();
         }
@@ -314,9 +316,7 @@ public class AdvCraftingCPULogic {
         // TODO: log
 
         // Clear waitingFor list and post all the relevant changes.
-        if (!success) {
-            job.waitingFor.clear();
-        }
+        job.waitingFor.clear();
         // Notify opened menus of cancelled scheduled tasks.
         for (var entry : job.tasks.entrySet()) {
             for (var output : entry.getKey().getOutputs()) {
@@ -396,7 +396,7 @@ public class AdvCraftingCPULogic {
         if (this.job != null) {
             return this.job.timeTracker;
         } else {
-            return new ElapsedTimeTracker(0);
+            return new ElapsedTimeTracker();
         }
     }
 
