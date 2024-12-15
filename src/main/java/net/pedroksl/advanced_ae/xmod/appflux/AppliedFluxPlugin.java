@@ -43,14 +43,18 @@ public class AppliedFluxPlugin {
             IGrid grid, double neededPower, Player player, ItemStack stack, IAEItemPowerStorage aePowerStorage) {
         try {
             var storage = grid.getStorageService();
-            var extracted = storage.getInventory()
+
+            var mult = PowerMultiplier.CONFIG;
+            var neededFePower = mult.divide(neededPower);
+
+            var extracted = mult.multiply(storage.getInventory()
                     .extract(
                             FluxKey.of(EnergyType.FE),
-                            (long) (neededPower / PowerMultiplier.CONFIG.multiplier),
+                            (long) neededFePower,
                             Actionable.MODULATE,
-                            IActionSource.ofPlayer(player));
+                            IActionSource.ofPlayer(player)));
 
-            aePowerStorage.injectAEPower(stack, extracted * PowerMultiplier.CONFIG.multiplier, Actionable.MODULATE);
+            aePowerStorage.injectAEPower(stack, extracted, Actionable.MODULATE);
 
             neededPower -= extracted;
         } catch (Throwable ignored) {
@@ -66,7 +70,7 @@ public class AppliedFluxPlugin {
             var extracted = storage.getInventory()
                     .extract(
                             FluxKey.of(EnergyType.FE),
-                            (long) (afRate / PowerMultiplier.CONFIG.multiplier),
+                            afRate,
                             Actionable.MODULATE,
                             source);
             var inserted = cap.receiveEnergy((int) extracted, false);
