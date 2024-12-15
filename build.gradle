@@ -102,7 +102,7 @@ dependencies {
     implementation fg.deobf("appeng:appliedenergistics2-forge:15.2.15")
     implementation fg.deobf("curse.maven:ex-pattern-provider-892005:5867594")
     implementation fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:5217955")
-    implementation fg.deobf("curse.maven:jei-238222:5846810")
+    compileOnly fg.deobf("curse.maven:jei-238222:5846810")
     implementation fg.deobf("curse.maven:jade-324717:4768593")
     compileOnly fg.deobf("curse.maven:emi-580555:5872526")
     implementation fg.deobf("curse.maven:mega-cells-622112:5881252")
@@ -118,14 +118,13 @@ dependencies {
     compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:12.0.622")
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.136")
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
-    switch (use_xei) {
-        case "emi":
-            runtimeOnly fg.deobf("curse.maven:emi-580555:5872526")
-            break
-        case "jei":
-            runtimeOnly fg.deobf("dev.architectury:architectury-forge:7.0.66")
-            break
-    }
+
+    // emi
+    runtimeOnly fg.deobf("curse.maven:emi-580555:5872526")
+
+    // jei
+    //runtimeOnly fg.deobf("curse.maven:jei-238222:5846810")
+    //runtimeOnly fg.deobf("dev.architectury:architectury-forge:7.0.66")
 }
 
 tasks.named('processResources', ProcessResources).configure {
