@@ -186,7 +186,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
                     int value = armor.getUpgradeValue(stack, UpgradeType.STEP_ASSIST, 0);
                     var att = new AttributeModifier(
                             STEP_ASSIST_MOD, "aae_step_assist", value, AttributeModifier.Operation.ADDITION);
-                    builder.put(ForgeMod.STEP_HEIGHT.get(), att);
+                    builder.put(ForgeMod.STEP_HEIGHT_ADDITION.get(), att);
                 }
             }
         }
