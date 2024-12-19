@@ -389,7 +389,7 @@ public class UpgradeCards {
         var capOf = stack.getCapability(ForgeCapabilities.ENERGY);
         var afRate = Integer.MAX_VALUE;
         capOf.ifPresent(cap -> {
-            if (cap.canReceive()) {
+            if (cap.canReceive() && cap.getEnergyStored() < cap.getMaxEnergyStored()) {
                 if (Addons.APPFLUX.isLoaded()) {
                     AppliedFluxPlugin.rechargeEnergyStorage(grid, afRate, IActionSource.ofPlayer(player), cap);
                 }
