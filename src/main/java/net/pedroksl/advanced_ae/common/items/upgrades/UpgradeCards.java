@@ -370,7 +370,7 @@ public class UpgradeCards {
             Player player, ItemStack stack, IGrid grid, double rate, IEnergyService energyService) {
         var cap = stack.getCapability(Capabilities.EnergyStorage.ITEM);
         var afRate = Integer.MAX_VALUE;
-        if (cap != null && cap.canReceive()) {
+        if (cap != null && cap.canReceive() && cap.getEnergyStored() < cap.getMaxEnergyStored()) {
             if (Addons.APPFLUX.isLoaded()) {
                 AppliedFluxPlugin.rechargeEnergyStorage(grid, afRate, IActionSource.ofPlayer(player), cap);
             }

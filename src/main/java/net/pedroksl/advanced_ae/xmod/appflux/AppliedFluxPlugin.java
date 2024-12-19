@@ -67,12 +67,8 @@ public class AppliedFluxPlugin {
         try {
             var storage = grid.getStorageService();
 
-            var extracted = storage.getInventory()
-                    .extract(
-                            FluxKey.of(EnergyType.FE),
-                            afRate,
-                            Actionable.MODULATE,
-                            source);
+            var extracted =
+                    storage.getInventory().extract(FluxKey.of(EnergyType.FE), afRate, Actionable.MODULATE, source);
             var inserted = cap.receiveEnergy((int) extracted, false);
             storage.getInventory().insert(FluxKey.of(EnergyType.FE), extracted - inserted, Actionable.MODULATE, source);
         } catch (Throwable ignored) {
