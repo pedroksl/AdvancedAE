@@ -30,7 +30,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
     public Pair<AEKey, Long> output;
 
     public QuantumCrafterConfigPatternMenu(int id, Inventory ip, QuantumCrafterEntity host) {
-        this(AAEMenus.CRAFTER_PATTERN_CONFIG, id, ip, host);
+        this(AAEMenus.CRAFTER_PATTERN_CONFIG.get(), id, ip, host);
     }
 
     protected QuantumCrafterConfigPatternMenu(
@@ -52,7 +52,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
             int index,
             LinkedHashMap<AEKey, Long> inputs,
             Pair<AEKey, Long> output) {
-        MenuOpener.open(AAEMenus.CRAFTER_PATTERN_CONFIG, player, locator);
+        MenuOpener.open(AAEMenus.CRAFTER_PATTERN_CONFIG.get(), player, locator);
 
         if (player.containerMenu instanceof QuantumCrafterConfigPatternMenu cca) {
             cca.setIndex(index);

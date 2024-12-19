@@ -53,7 +53,7 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     private final List<Slot> inputs = new ArrayList<>(9);
 
     public ReactionChamberMenu(int id, Inventory ip, ReactionChamberEntity host) {
-        super(AAEMenus.REACTION_CHAMBER, id, ip, host);
+        super(AAEMenus.REACTION_CHAMBER.get(), id, ip, host);
 
         var inputs = host.getInput();
 

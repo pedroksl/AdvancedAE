@@ -1018,7 +1018,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
 
     @Override
     public void returnToMainMenu(Player player, ISubMenu iSubMenu) {
-        MenuOpener.returnTo(AAEMenus.QUANTUM_CRAFTER, player, MenuLocators.forBlockEntity(this));
+        MenuOpener.returnTo(AAEMenus.QUANTUM_CRAFTER.get(), player, MenuLocators.forBlockEntity(this));
     }
 
     @Override

@@ -228,7 +228,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
             Player player, int inventorySlot, ItemStack stack, boolean returningFromSubmenu) {
         if (!player.level().isClientSide() && checkPreconditions(stack)) {
             return MenuOpener.open(
-                    AAEMenus.QUANTUM_ARMOR_CONFIG,
+                    AAEMenus.QUANTUM_ARMOR_CONFIG.get(),
                     player,
                     MenuLocators.forInventorySlot(inventorySlot),
                     returningFromSubmenu);

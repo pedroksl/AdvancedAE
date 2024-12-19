@@ -27,7 +27,7 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
     private static final String CLEAR = "clearSides";
 
     public OutputDirectionMenu(int id, Inventory ip, IDirectionalOutputHost host) {
-        this(AAEMenus.OUTPUT_DIRECTION, id, ip, host);
+        this(AAEMenus.OUTPUT_DIRECTION.get(), id, ip, host);
     }
 
     protected OutputDirectionMenu(
@@ -44,7 +44,7 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
     }
 
     public static void open(ServerPlayer player, MenuLocator locator, EnumSet<RelativeSide> allowedOutputs) {
-        MenuOpener.open(AAEMenus.OUTPUT_DIRECTION, player, locator);
+        MenuOpener.open(AAEMenus.OUTPUT_DIRECTION.get(), player, locator);
 
         if (player.containerMenu instanceof OutputDirectionMenu cca) {
             cca.setAllowedOutputs(allowedOutputs);

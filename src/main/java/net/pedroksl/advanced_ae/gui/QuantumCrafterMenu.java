@@ -37,7 +37,7 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
     private final Slot[] patternSlots = new Slot[9];
 
     public QuantumCrafterMenu(int id, Inventory ip, QuantumCrafterEntity host) {
-        super(AAEMenus.QUANTUM_CRAFTER, id, ip, host);
+        super(AAEMenus.QUANTUM_CRAFTER.get(), id, ip, host);
 
         var patterns = host.getPatternInventory();
         for (var x = 0; x < patterns.size(); x++) {

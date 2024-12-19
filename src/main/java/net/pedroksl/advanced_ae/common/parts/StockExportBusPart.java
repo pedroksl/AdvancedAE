@@ -205,11 +205,11 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
     }
 
     protected MenuType<?> getMenuType() {
-        return AAEMenus.STOCK_EXPORT_BUS;
+        return AAEMenus.STOCK_EXPORT_BUS.get();
     }
 
     public void returnToMainMenu(Player player, ISubMenu subMenu) {
-        MenuOpener.open(AAEMenus.STOCK_EXPORT_BUS, player, MenuLocators.forPart(this));
+        MenuOpener.open(AAEMenus.STOCK_EXPORT_BUS.get(), player, MenuLocators.forPart(this));
     }
 
     public ItemStack getMainMenuIcon() {

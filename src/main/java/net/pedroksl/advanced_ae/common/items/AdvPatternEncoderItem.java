@@ -30,7 +30,7 @@ public class AdvPatternEncoderItem extends AEBaseItem implements IMenuItem {
     public @NotNull InteractionResultHolder<ItemStack> use(
             @NotNull Level level, @NotNull Player p, @NotNull InteractionHand hand) {
         if (!level.isClientSide()) {
-            MenuOpener.open(AAEMenus.ADV_PATTERN_ENCODER, p, MenuLocators.forHand(p, hand));
+            MenuOpener.open(AAEMenus.ADV_PATTERN_ENCODER.get(), p, MenuLocators.forHand(p, hand));
         }
         return new InteractionResultHolder<>(
                 InteractionResult.sidedSuccess(level.isClientSide()), p.getItemInHand(hand));
@@ -49,7 +49,7 @@ public class AdvPatternEncoderItem extends AEBaseItem implements IMenuItem {
 
         if (!player.level().isClientSide() && checkPreconditions(is)) {
             return MenuOpener.open(
-                    AAEMenus.ADV_PATTERN_ENCODER,
+                    AAEMenus.ADV_PATTERN_ENCODER.get(),
                     player,
                     MenuLocators.forInventorySlot(inventorySlot),
                     returningFromSubmenu);

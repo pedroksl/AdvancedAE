@@ -17,7 +17,7 @@ public class StockExportBusMenu extends UpgradeableMenu<StockExportBusPart> {
     private static final String OPEN_AMOUNT_MENU = "open_amount_menu";
 
     public StockExportBusMenu(int id, Inventory ip, StockExportBusPart host) {
-        this(AAEMenus.STOCK_EXPORT_BUS, id, ip, host);
+        this(AAEMenus.STOCK_EXPORT_BUS.get(), id, ip, host);
     }
 
     public StockExportBusMenu(

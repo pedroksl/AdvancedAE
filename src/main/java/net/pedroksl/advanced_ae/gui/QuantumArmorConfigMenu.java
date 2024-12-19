@@ -49,7 +49,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
     public static final String LAST_SLOT_INDEX = "aae$lastSlotIndex";
 
     public QuantumArmorConfigMenu(int id, Inventory playerInventory, QuantumArmorMenuHost host) {
-        super(AAEMenus.QUANTUM_ARMOR_CONFIG, id, playerInventory, host);
+        super(AAEMenus.QUANTUM_ARMOR_CONFIG.get(), id, playerInventory, host);
         this.host = host;
         this.createPlayerInventorySlots(playerInventory);
 

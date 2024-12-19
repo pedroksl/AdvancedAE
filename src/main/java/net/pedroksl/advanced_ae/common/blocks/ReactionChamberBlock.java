@@ -67,7 +67,7 @@ public class ReactionChamberBlock extends AEBaseEntityBlock<ReactionChamberEntit
         var be = this.getBlockEntity(level, pos);
         if (be != null) {
             if (!level.isClientSide()) {
-                MenuOpener.open(AAEMenus.REACTION_CHAMBER, player, MenuLocators.forBlockEntity(be));
+                MenuOpener.open(AAEMenus.REACTION_CHAMBER.get(), player, MenuLocators.forBlockEntity(be));
             }
             return InteractionResult.sidedSuccess(level.isClientSide());
         }

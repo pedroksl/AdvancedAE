@@ -38,7 +38,7 @@ public class AdvPatternProviderMenu extends AEBaseMenu {
     public GenericStack unlockStack = null;
 
     public AdvPatternProviderMenu(int id, Inventory playerInventory, AdvPatternProviderLogicHost host) {
-        this(AAEMenus.ADV_PATTERN_PROVIDER, id, playerInventory, host);
+        this(AAEMenus.ADV_PATTERN_PROVIDER.get(), id, playerInventory, host);
     }
 
     public AdvPatternProviderMenu(

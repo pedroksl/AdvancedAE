@@ -90,41 +90,52 @@ public class AAEClient extends AdvancedAE {
     }
 
     private static void initScreens() {
-        InitScreens.register(AAEMenus.QUANTUM_COMPUTER, QuantumComputerScreen::new, "/screens/quantum_computer.json");
         InitScreens.register(
-                AAEMenus.ADV_PATTERN_PROVIDER, AdvPatternProviderScreen::new, "/screens/adv_pattern_provider.json");
+                AAEMenus.QUANTUM_COMPUTER.get(), QuantumComputerScreen::new, "/screens/quantum_computer" + ".json");
         InitScreens.register(
-                AAEMenus.SMALL_ADV_PATTERN_PROVIDER,
+                AAEMenus.ADV_PATTERN_PROVIDER.get(),
+                AdvPatternProviderScreen::new,
+                "/screens/adv_pattern_provider.json");
+        InitScreens.register(
+                AAEMenus.SMALL_ADV_PATTERN_PROVIDER.get(),
                 SmallAdvPatternProviderScreen::new,
                 "/screens/small_adv_pattern_provider.json");
         InitScreens.register(
-                AAEMenus.ADV_PATTERN_ENCODER, AdvPatternEncoderScreen::new, "/screens/adv_pattern_encoder.json");
-        InitScreens.register(AAEMenus.REACTION_CHAMBER, ReactionChamberScreen::new, "/screens/reaction_chamber.json");
-        InitScreens.register(AAEMenus.QUANTUM_CRAFTER, QuantumCrafterScreen::new, "/screens/quantum_crafter.json");
-
-        InitScreens.register(AAEMenus.STOCK_EXPORT_BUS, StockExportBusScreen::new, "/screens/stock_export_bus.json");
-
-        InitScreens.register(AAEMenus.OUTPUT_DIRECTION, OutputDirectionScreen::new, "/screens/output_direction.json");
+                AAEMenus.ADV_PATTERN_ENCODER.get(), AdvPatternEncoderScreen::new, "/screens/adv_pattern_encoder.json");
         InitScreens.register(
-                AAEMenus.CRAFTER_PATTERN_CONFIG,
+                AAEMenus.REACTION_CHAMBER.get(), ReactionChamberScreen::new, "/screens/reaction_chamber.json");
+        InitScreens.register(
+                AAEMenus.QUANTUM_CRAFTER.get(), QuantumCrafterScreen::new, "/screens/quantum_crafter.json");
+
+        InitScreens.register(
+                AAEMenus.STOCK_EXPORT_BUS.get(), StockExportBusScreen::new, "/screens/stock_export_bus.json");
+
+        InitScreens.register(
+                AAEMenus.OUTPUT_DIRECTION.get(), OutputDirectionScreen::new, "/screens/output_direction.json");
+        InitScreens.register(
+                AAEMenus.CRAFTER_PATTERN_CONFIG.get(),
                 QuantumCrafterConfigPatternScreen::new,
                 "/screens/quantum_crafter_pattern_config.json");
-        InitScreens.register(AAEMenus.SET_AMOUNT, SetAmountScreen::new, "/screens/aae_set_amount.json");
+        InitScreens.register(AAEMenus.SET_AMOUNT.get(), SetAmountScreen::new, "/screens/aae_set_amount.json");
 
         InitScreens.register(
-                AAEMenus.QUANTUM_ARMOR_CONFIG, QuantumArmorConfigScreen::new, "/screens/quantum_armor_config.json");
+                AAEMenus.QUANTUM_ARMOR_CONFIG.get(),
+                QuantumArmorConfigScreen::new,
+                "/screens/quantum_armor_config.json");
         InitScreens.register(
-                AAEMenus.QUANTUM_ARMOR_NUM_INPUT,
+                AAEMenus.QUANTUM_ARMOR_NUM_INPUT.get(),
                 QuantumArmorNumInputConfigScreen::new,
                 "/screens/quantum_armor_num_input_config.json");
         InitScreens.register(
-                AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG,
+                AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG.get(),
                 QuantumArmorFilterConfigScreen::new,
                 "/screens/quantum_armor_filter_config.json");
         InitScreens.register(
-                AAEMenus.QUANTUM_ARMOR_MAGNET, QuantumArmorMagnetScreen::new, "/screens/quantum_armor_magnet.json");
+                AAEMenus.QUANTUM_ARMOR_MAGNET.get(),
+                QuantumArmorMagnetScreen::new,
+                "/screens/quantum_armor_magnet.json");
         InitScreens.register(
-                AAEMenus.PORTABLE_WORKBENCH, PortableWorkbenchScreen::new, "/screens/portable_workbench.json");
+                AAEMenus.PORTABLE_WORKBENCH.get(), PortableWorkbenchScreen::new, "/screens/portable_workbench.json");
     }
 
     @SuppressWarnings("deprecation")

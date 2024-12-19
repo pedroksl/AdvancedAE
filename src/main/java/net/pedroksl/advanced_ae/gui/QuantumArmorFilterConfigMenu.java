@@ -74,7 +74,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
     }
 
     public QuantumArmorFilterConfigMenu(int id, Inventory playerInventory, ISubMenuHost host) {
-        this(AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG, id, playerInventory, host);
+        this(AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG.get(), id, playerInventory, host);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
             int slotIndex,
             List<GenericStack> filterList,
             UpgradeType upgradeType) {
-        MenuOpener.open(AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG, player, locator);
+        MenuOpener.open(AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG.get(), player, locator);
 
         if (player.containerMenu instanceof QuantumArmorFilterConfigMenu cca) {
             cca.setSlotIndex(slotIndex);

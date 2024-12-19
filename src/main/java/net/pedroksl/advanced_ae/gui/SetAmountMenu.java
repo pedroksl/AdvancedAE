@@ -45,7 +45,7 @@ public class SetAmountMenu extends AEBaseMenu implements ISubMenu {
 
     public SetAmountMenu(
             int id, Inventory playerInventory, ISubMenuHost host, @Nullable ISetAmountMenuHost menuToReturnTo) {
-        super(AAEMenus.SET_AMOUNT, id, playerInventory, host);
+        super(AAEMenus.SET_AMOUNT.get(), id, playerInventory, host);
         this.host = host;
         this.menuToReturnTo = menuToReturnTo;
 
@@ -72,7 +72,7 @@ public class SetAmountMenu extends AEBaseMenu implements ISubMenu {
             Consumer<GenericStack> consumer,
             ISetAmountMenuHost menuToReturnTo,
             long maxAmount) {
-        MenuOpener.open(AAEMenus.SET_AMOUNT, player, locator);
+        MenuOpener.open(AAEMenus.SET_AMOUNT.get(), player, locator);
 
         if (player.containerMenu instanceof SetAmountMenu cca) {
             cca.setStack(stack, maxAmount);

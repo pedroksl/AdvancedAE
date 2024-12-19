@@ -76,7 +76,7 @@ public class AdvPatternProviderBlock extends AEBaseEntityBlock<AdvPatternProvide
         var be = this.getBlockEntity(level, pos);
         if (be != null) {
             if (!level.isClientSide()) {
-                MenuOpener.open(AAEMenus.ADV_PATTERN_PROVIDER, p, MenuLocators.forBlockEntity(be));
+                MenuOpener.open(AAEMenus.ADV_PATTERN_PROVIDER.get(), p, MenuLocators.forBlockEntity(be));
             }
             return InteractionResult.sidedSuccess(level.isClientSide());
         }

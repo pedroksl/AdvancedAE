@@ -91,7 +91,7 @@ public class QuantumHelmet extends QuantumArmorBase {
                 AAENetworkHandler.INSTANCE.sendTo(
                         new MenuSelectionPacket(MENU_TYPE, MenuId.WORKBENCH.id), serverPlayer);
                 return MenuOpener.open(
-                        AAEMenus.PORTABLE_WORKBENCH,
+                        AAEMenus.PORTABLE_WORKBENCH.get(),
                         player,
                         MenuLocators.forInventorySlot(inventorySlot),
                         returningFromSubmenu);

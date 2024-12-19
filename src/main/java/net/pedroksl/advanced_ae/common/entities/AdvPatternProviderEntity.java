@@ -244,11 +244,11 @@ public class AdvPatternProviderEntity extends AENetworkBlockEntity implements Ad
 
     @Override
     public void openMenu(Player player, MenuLocator locator) {
-        MenuOpener.open(AAEMenus.ADV_PATTERN_PROVIDER, player, locator);
+        MenuOpener.open(AAEMenus.ADV_PATTERN_PROVIDER.get(), player, locator);
     }
 
     @Override
     public void returnToMainMenu(Player player, ISubMenu subMenu) {
-        MenuOpener.returnTo(AAEMenus.ADV_PATTERN_PROVIDER, player, subMenu.getLocator());
+        MenuOpener.returnTo(AAEMenus.ADV_PATTERN_PROVIDER.get(), player, subMenu.getLocator());
     }
 }
