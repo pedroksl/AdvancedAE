@@ -77,6 +77,14 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
                 case MINUTE -> TICK;
             };
         }
+
+        public static WorkRoutine fromInt(int value) {
+            return switch (value) {
+                case 0 -> TICK;
+                case 2 -> MINUTE;
+                default -> SECOND;
+            };
+        }
     }
 
     public ThroughputMonitorPart(IPartItem<?> partItem) {
@@ -120,7 +128,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         super.writeVisualStateToNBT(data);
         data.putLong("lastValue", this.lastReportedValue);
         data.putString("throughput", this.lastHumanReadableValue);
-        data.putString("routine", this.workRoutine.name());
+        data.putInt("routine", this.workRoutine.ordinal());
     }
 
     @Override
@@ -128,8 +136,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         super.readVisualStateFromNBT(data);
         this.lastReportedValue = data.getLong("lastValue");
         this.lastHumanReadableValue = data.getString("throughput");
-        var routine = data.getString("routine");
-        this.workRoutine = routine.isEmpty() ? WorkRoutine.SECOND : WorkRoutine.valueOf(routine);
+        this.workRoutine = WorkRoutine.fromInt(data.getInt("routine"));
     }
 
     @Override
