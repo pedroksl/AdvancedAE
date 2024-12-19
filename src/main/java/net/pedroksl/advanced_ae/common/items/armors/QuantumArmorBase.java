@@ -157,7 +157,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
         var is = locator.locateItem(player);
 
         if (!player.level().isClientSide() && checkPreconditions(is)) {
-            return MenuOpener.open(AAEMenus.QUANTUM_ARMOR_CONFIG, player, locator, returningFromSubmenu);
+            return MenuOpener.open(AAEMenus.QUANTUM_ARMOR_CONFIG.get(), player, locator, returningFromSubmenu);
         }
         return false;
     }

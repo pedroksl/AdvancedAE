@@ -7,7 +7,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -35,7 +34,7 @@ public class ReactionChamberRecipeSerializer implements RecipeSerializer<Reactio
                     (r) -> r.inputs,
                     IngredientStack.FLUID_STREAM_CODEC,
                     (r) -> r.fluid,
-                    StreamCodec.of(FriendlyByteBuf::writeInt, FriendlyByteBuf::readInt),
+                    ByteBufCodecs.INT,
                     (r) -> r.energy,
                     ReactionChamberRecipe::new);
 

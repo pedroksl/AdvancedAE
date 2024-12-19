@@ -92,7 +92,7 @@ public class QuantumHelmet extends QuantumArmorBase {
                 player.getPersistentData().putInt(MENU_TYPE, MenuId.WORKBENCH.id);
                 PacketDistributor.sendToPlayer(
                         ((ServerPlayer) player), new MenuSelectionPacket(MENU_TYPE, MenuId.WORKBENCH.id));
-                return MenuOpener.open(AAEMenus.PORTABLE_WORKBENCH, player, locator, returningFromSubmenu);
+                return MenuOpener.open(AAEMenus.PORTABLE_WORKBENCH.get(), player, locator, returningFromSubmenu);
             } else {
                 var id = Component.translatable(
                         UpgradeType.WORKBENCH.item().asItem().getDescriptionId());

@@ -48,7 +48,7 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
     private final AdvCraftingBlockEntity host;
 
     public QuantumComputerMenu(int id, Inventory ip, AdvCraftingBlockEntity te) {
-        this(AAEMenus.QUANTUM_COMPUTER, id, ip, te);
+        this(AAEMenus.QUANTUM_COMPUTER.get(), id, ip, te);
     }
 
     public QuantumComputerMenu(MenuType<?> menuType, int id, Inventory ip, AdvCraftingBlockEntity te) {

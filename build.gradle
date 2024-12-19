@@ -33,7 +33,7 @@ neoForge {
     }
 
     mods {
-        ae2netanalyser {
+        advanced_ae {
             sourceSet sourceSets.main
         }
     }
@@ -118,7 +118,7 @@ repositories {
 
 dependencies {
     implementation "curse.maven:glodium-957920:5614731"
-    implementation "appeng:appliedenergistics2:19.0.26"
+    implementation "appeng:appliedenergistics2:19.1.0-beta"
     implementation "curse.maven:ex-pattern-provider-892005:5976911"
     implementation "de.mari_023:ae2wtlib_api:19.1.7"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"

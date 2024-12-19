@@ -30,7 +30,7 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
     private final AdvPatternEncoderHost host;
 
     public AdvPatternEncoderMenu(int id, Inventory playerInventory, AdvPatternEncoderHost host) {
-        super(AAEMenus.ADV_PATTERN_ENCODER, id, playerInventory, host);
+        super(AAEMenus.ADV_PATTERN_ENCODER.get(), id, playerInventory, host);
         this.createPlayerInventorySlots(playerInventory);
         this.host = host;
 

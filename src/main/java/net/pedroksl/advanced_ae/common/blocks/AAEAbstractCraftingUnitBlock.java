@@ -88,7 +88,7 @@ public abstract class AAEAbstractCraftingUnitBlock<T extends AdvCraftingBlockEnt
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof AdvCraftingBlockEntity be && be.isFormed() && be.isActive()) {
             if (!level.isClientSide()) {
-                MenuOpener.open(AAEMenus.QUANTUM_COMPUTER, player, MenuLocators.forBlockEntity(be));
+                MenuOpener.open(AAEMenus.QUANTUM_COMPUTER.get(), player, MenuLocators.forBlockEntity(be));
             }
 
             return InteractionResult.sidedSuccess(level.isClientSide());

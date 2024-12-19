@@ -56,18 +56,18 @@ public interface AdvPatternProviderLogicHost extends IConfigurableObject, IPrior
 
     default void openMenu(Player player, MenuHostLocator locator) {
         if (numberOfPatternSlots() == 36) {
-            MenuOpener.open(AAEMenus.ADV_PATTERN_PROVIDER, player, locator);
+            MenuOpener.open(AAEMenus.ADV_PATTERN_PROVIDER.get(), player, locator);
         } else {
-            MenuOpener.open(AAEMenus.SMALL_ADV_PATTERN_PROVIDER, player, locator);
+            MenuOpener.open(AAEMenus.SMALL_ADV_PATTERN_PROVIDER.get(), player, locator);
         }
     }
 
     @Override
     default void returnToMainMenu(Player player, ISubMenu subMenu) {
         if (numberOfPatternSlots() == 36) {
-            MenuOpener.returnTo(AAEMenus.ADV_PATTERN_PROVIDER, player, subMenu.getLocator());
+            MenuOpener.returnTo(AAEMenus.ADV_PATTERN_PROVIDER.get(), player, subMenu.getLocator());
         } else {
-            MenuOpener.returnTo(AAEMenus.SMALL_ADV_PATTERN_PROVIDER, player, subMenu.getLocator());
+            MenuOpener.returnTo(AAEMenus.SMALL_ADV_PATTERN_PROVIDER.get(), player, subMenu.getLocator());
         }
     }
 

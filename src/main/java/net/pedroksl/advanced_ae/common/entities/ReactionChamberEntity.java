@@ -687,7 +687,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     @Override
     public void returnToMainMenu(Player player, ISubMenu iSubMenu) {
-        MenuOpener.returnTo(AAEMenus.REACTION_CHAMBER, player, MenuLocators.forBlockEntity(this));
+        MenuOpener.returnTo(AAEMenus.REACTION_CHAMBER.get(), player, MenuLocators.forBlockEntity(this));
     }
 
     @Override

@@ -28,7 +28,7 @@ public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
     private static final String SET_CURRENT_VALUE = "set_current_value";
 
     public QuantumArmorMagnetMenu(int id, Inventory playerInventory, ISubMenuHost host) {
-        super(AAEMenus.QUANTUM_ARMOR_MAGNET, id, playerInventory, host);
+        super(AAEMenus.QUANTUM_ARMOR_MAGNET.get(), id, playerInventory, host);
 
         registerClientAction(SET_BLACKLIST, Boolean.class, this::setBlacklist);
         registerClientAction(SET_CURRENT_VALUE, Integer.class, this::setCurrentValue);
@@ -41,7 +41,7 @@ public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
             List<GenericStack> filterList,
             int currentValue,
             boolean blacklist) {
-        MenuOpener.open(AAEMenus.QUANTUM_ARMOR_MAGNET, player, locator);
+        MenuOpener.open(AAEMenus.QUANTUM_ARMOR_MAGNET.get(), player, locator);
 
         if (player.containerMenu instanceof QuantumArmorMagnetMenu cca) {
             cca.setUpgradeType(UpgradeType.MAGNET);
