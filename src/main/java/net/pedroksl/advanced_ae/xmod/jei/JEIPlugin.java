@@ -67,6 +67,8 @@ public class JEIPlugin implements IModPlugin {
 
     public static List<FluidStack> stackOf(IngredientStack.Fluid stack) {
         FluidIngredient ingredient = stack.getIngredient();
-        return Arrays.asList(ingredient.getStacks());
+        return Arrays.stream(ingredient.getStacks())
+                .map(oldStack -> oldStack.copyWithAmount(stack.getAmount()))
+                .toList();
     }
 }
