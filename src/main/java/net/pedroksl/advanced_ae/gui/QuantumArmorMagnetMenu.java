@@ -22,7 +22,7 @@ public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
     public boolean blacklist;
 
     @GuiSync(9)
-    public int currentValue;
+    public int currentValue = -1;
 
     private static final String SET_BLACKLIST = "set_blacklist";
     private static final String SET_CURRENT_VALUE = "set_current_value";

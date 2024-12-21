@@ -39,7 +39,7 @@ public class QuantumArmorMagnetScreen extends QuantumArmorFilterScreen<QuantumAr
 
         this.toggleButton.setState(this.menu.blacklist);
 
-        if (!sliderInitialized) {
+        if (!sliderInitialized && this.menu.currentValue != -1) {
             this.slider.setValue(this.menu.currentValue);
             sliderInitialized = true;
         }
