@@ -31,7 +31,7 @@ public class QuantumArmorNumInputConfigScreen extends AEBaseScreen<QuantumArmorN
     protected void updateBeforeRender() {
         super.updateBeforeRender();
 
-        if (!this.sliderInitialized) {
+        if (!this.sliderInitialized && menu.type != null) {
             var settings = menu.type.getSettings();
 
             this.multiplier = settings.multiplier;
