@@ -5,8 +5,6 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.google.common.collect.Iterators;
-
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -339,7 +337,15 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
         if (this.getCluster() == null) {
             return new ChainedIterator<>();
         }
-        return Iterators.transform(this.getCluster().getBlockEntities(), AdvCraftingBlockEntity::getGridNode);
+        var nodes = new ArrayList<IGridNode>();
+        var it = this.getCluster().getBlockEntities();
+        while (it.hasNext()) {
+            var node = it.next().getGridNode();
+            if (node != null) {
+                nodes.add(node);
+            }
+        }
+        return nodes.iterator();
     }
 
     @Override
