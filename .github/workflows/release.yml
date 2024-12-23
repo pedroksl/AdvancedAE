@@ -1,0 +1,115 @@
+name: 'Release'
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    outputs:
+      ARTIFACT_PATH: ${{ steps.prepare_artifact_metadata.outputs.ARTIFACT_PATH }}
+      ARTIFACT_NAME: ${{ steps.prepare_artifact_metadata.outputs.ARTIFACT_NAME }}
+      VERSION: ${{ steps.prepare_artifact_metadata.outputs.VERSION }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+      - run: git fetch origin --tags
+        shell: bash
+      - uses: ./.github/actions/gradle-setup
+      - name: Build with Gradle
+        run: ./gradlew printProjectVersion build publish -x check --max-workers 1
+      - name: Prepare artifact metadata. Note that VERSION is set by the gradle script.
+        id: prepare_artifact_metadata
+        run: |
+          echo ARTIFACT_PATH=./build/libs/AdvancedAE-${VERSION}-1.21.1.jar >> $GITHUB_OUTPUT
+          echo ARTIFACT_NAME=AdvancedAE-${VERSION}-1.21.1.jar >> $GITHUB_OUTPUT
+          echo VERSION=${VERSION} >> $GITHUB_OUTPUT
+      - name: Archive build results
+        # It is important to  archive .gradle as well since gradle stores the incremental build state there
+        run: tar -I zstd -cf build.tar.zst build/libs build/repo
+      - name: Upload build and gradle folders
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: build.tar.zst
+          if-no-files-found: error
+          retention-days: 3
+
+  upload-release-artifacts:
+    name: Upload Release Artifacts
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+      - name: Unpack build artifact
+        run: tar axf build.tar.zst
+      - name: Upload Release Artifact
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ needs.build.outputs.ARTIFACT_PATH }}
+          asset_name: ${{ needs.build.outputs.ARTIFACT_NAME }}
+          asset_content_type: application/zip
+
+  deploy-curseforge:
+    name: Deploy to Curseforge
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+      - name: Unpack build artifact
+        run: tar axf build.tar.zst
+      - name: Validate artifacts exist
+        run: test -d ./build
+      - name: Upload to Curseforge
+        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659
+        with:
+          name: AAE ${{ needs.build.outputs.VERSION }} [NEOFORGE]
+          version: ${{ needs.build.outputs.VERSION }}
+          files: ${{ needs.build.outputs.ARTIFACT_PATH }}
+          dependencies: |
+            ae2(required){modrinth:XxWD5pD3}{curseforge:223794}
+            glodium(required){modrinth:UhW5uCKw}{curseforge:957920}
+            geckolib(optional){modrinth:8BmcQJ2H}{curseforge:388172}
+          curseforge-id: 1084104
+          curseforge-token: ${{ secrets.CURSEFORGE }}
+          loaders: neoforge
+
+  deploy-modrinth:
+    name: Deploy to Modrinth
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+      - name: Unpack build artifact
+        run: tar axf build.tar.zst
+      - name: Validate artifacts exist
+        run: test -d ./build
+      - name: Upload to Modrinth
+        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659
+        with:
+          name: AE2 ${{ needs.build.outputs.VERSION }} [NEOFORGE]
+          version: ${{ needs.build.outputs.VERSION }}
+          files: ${{ needs.build.outputs.ARTIFACT_PATH }}
+          dependencies: |
+            ae2(required){modrinth:XxWD5pD3}{curseforge:223794}
+            glodium(required){modrinth:UhW5uCKw}{curseforge:957920}
+            geckolib(optional){modrinth:8BmcQJ2H}{curseforge:388172}
+          modrinth-id: rxYaglEe
+          modrinth-token: ${{ secrets.MODRINTH }}
+          loaders: neoforge
