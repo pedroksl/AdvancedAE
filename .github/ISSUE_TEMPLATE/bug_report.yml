@@ -22,7 +22,9 @@ body:
     attributes:
       label: Did you test the latest version?
       options:
-        - {label: yes, no}
+        - label: Yes
+        - label: No
+          required: true
   - type: dropdown
     id: severity
     attributes:
