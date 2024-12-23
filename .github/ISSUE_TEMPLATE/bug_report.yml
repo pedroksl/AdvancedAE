@@ -72,7 +72,6 @@ body:
       label: Crash log
       description: |
         Provide a link to a crashlog. E.g. on [mclo.gs](https://mclo.gs/), or similar.
-        If it is not a crash report, you can hold F3+C for over 10 seconds to force one. This provides with more details to reproduce it without needing to manually acquire them.
-        Please do not have it expire after some time. We might have to go back to it in the future to compare it with other bug reports, or simply have to delay it when being pretty minor.
+        If this is not a crash report, you can hold F3+C for over 10 seconds to force one. This provides with more details to reproduce it without needing to manually acquire them.
     validations:
       required: true
