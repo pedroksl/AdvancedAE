@@ -1,0 +1,1 @@
+- Fixed progress bar exceeding 100% on the quantum computer menu.
