@@ -1,3 +1,1 @@
-- Fixed a crash that could happen when opening the quantum crafter job config screen
-- Potential fix to server/client desync when adding certaing upgrades to the quantum armor
-- Fixed filtered item slots in quantum armor configuration allowing for multiple of the same item
+- Fixed progress bar exceeding 100% on the quantum computer menu.
