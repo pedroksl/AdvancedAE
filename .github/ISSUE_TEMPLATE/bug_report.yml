@@ -12,19 +12,20 @@ body:
         - "1.20.1"
     validations:
       required: true
-  - type: textarea
+  - type: input
     attributes:
       label: Mod Version
       description: What version of AdvancedAE are you using.
     validations:
       required: true
-  - type: checkboxes
+  - type: dropdown
     attributes:
       label: Did you test the latest version?
       options:
-        - label: Yes
-        - label: No
-          required: true
+        - "No"
+        - "Yes"
+    validations:
+      required: true
   - type: dropdown
     id: severity
     attributes:
