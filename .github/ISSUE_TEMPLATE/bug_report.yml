@@ -1,0 +1,66 @@
+name: Bug
+description: "Found a bug. Note, older versions of Minecraft are unlikely to be fixed."
+title: "[Bug]: "
+labels: [ "bug" ]
+body:
+  - type: dropdown
+    attributes:
+      label: Minecraft Version
+      multiple: false
+      options:
+        - "1.21.1"
+        - "1.20.1"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Mod Version
+      description: What version of AdvancedAE are you using.
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Did you test the latest version?
+      options:
+        - {label: yes, no}
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      multiple: false
+      options:
+        - Odd Results
+        - Performance
+        - Crashing
+    validations:
+      required: true
+  - type: input
+    id: neoversion
+    attributes:
+      label: NeoForge Version
+    validations:
+      required: true
+  - type: textarea
+    id: desc
+    attributes:
+      label: Describe the Issue
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction Steps
+      description: Explain in detail what happened before you experienced the issue.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots and Videos
+      description: If applicable, add screenshots or videos to help explain your issue.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Add any extra context about the issue here.
+    validations:
+      required: false
