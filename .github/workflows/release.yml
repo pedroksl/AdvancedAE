@@ -21,7 +21,7 @@ jobs:
         shell: bash
       - uses: ./.github/actions/gradle-setup
       - name: Build with Gradle
-        run: ./gradlew printProjectVersion build publish -x check --max-workers 1
+        run: chmod +x ./gradlew printProjectVersion build publish -x check --max-workers 1
       - name: Prepare artifact metadata. Note that VERSION is set by the gradle script.
         id: prepare_artifact_metadata
         run: |
