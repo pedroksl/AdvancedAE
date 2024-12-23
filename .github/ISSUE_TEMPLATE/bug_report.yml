@@ -1,6 +1,6 @@
-name: Bug
+name: Bug Report
 description: "Found a bug. Note, older versions of Minecraft are unlikely to be fixed."
-title: "[Bug]: "
+title: "[Bug Report]: "
 labels: [ "bug" ]
 body:
   - type: dropdown

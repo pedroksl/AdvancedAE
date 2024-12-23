@@ -1,6 +1,6 @@
-name: Suggestion
+name: Feature Request
 description: "Feature that you'd like to see added or changed. Note that newer features will likely only happen in the current/newer version of Minecraft."
-title: "[Suggestion]: "
+title: "[Feature Request]: "
 labels: [ "enhancement" ]
 body:
   -   type: textarea
