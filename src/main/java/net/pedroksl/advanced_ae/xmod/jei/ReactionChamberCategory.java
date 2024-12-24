@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.xmod.jei;
 
 import java.util.Arrays;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -127,7 +128,7 @@ public class ReactionChamberCategory implements IRecipeCategory<ReactionChamberR
         var text = AAEText.ReactionChamberEnergy.text(recipe.getEnergy() / 1000);
         FormattedCharSequence formattedcharsequence = text.getVisualOrderText();
         var textX = getWidth() / 2 + 4 - font.width(formattedcharsequence) / 2;
-        guiGraphics.drawString(font, text, textX, 66, AAEText.TOOLTIP_DEFAULT_COLOR.getColor(), false);
+        guiGraphics.drawString(font, text, textX, 66, ChatFormatting.DARK_GRAY.getColor(), false);
 
         bolt.draw(guiGraphics, textX - 12, 64);
     }
