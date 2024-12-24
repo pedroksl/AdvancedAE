@@ -103,7 +103,7 @@ dependencies {
     implementation fg.deobf("curse.maven:glodium-957920:5226922")
     implementation fg.deobf("curse.maven:applied-flux-965012:5772439")
     implementation fg.deobf("appeng:appliedenergistics2-forge:15.3.0-beta")
-    implementation fg.deobf("curse.maven:ex-pattern-provider-892005:5867594")
+    implementation fg.deobf("curse.maven:ex-pattern-provider-892005:6019114")
     implementation fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:5217955")
     compileOnly fg.deobf("curse.maven:jei-238222:5846810")
     implementation fg.deobf("curse.maven:jade-324717:4768593")
@@ -126,8 +126,8 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:emi-580555:5872526")
 
     // jei
-    //runtimeOnly fg.deobf("curse.maven:jei-238222:5846810")
-    //runtimeOnly fg.deobf("dev.architectury:architectury-forge:7.0.66")
+    runtimeOnly fg.deobf("curse.maven:jei-238222:5846810")
+    runtimeOnly fg.deobf("dev.architectury:architectury-forge:7.0.66")
 }
 
 publisher {

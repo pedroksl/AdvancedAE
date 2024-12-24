@@ -1,1 +1,3 @@
-- Fixed progress bar exceeding 100% on the quantum computer menu.
+- Added compatibility with the newly ported ciruit cutterter menu
+- Removed EMI plugin to fix missing "Fill recipe" button for Reaction Chamber recipes
+- Changed text color in JEI/EMI to make it more readable
