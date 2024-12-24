@@ -11,6 +11,9 @@ pluginManagement {
             url = 'https://repo.spongepowered.org/maven'
         }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven {
+            url "https://maven.firstdark.dev/releases"
+        }
     }
     plugins {
         id("com.diffplug.spotless") version "6.25.0"
