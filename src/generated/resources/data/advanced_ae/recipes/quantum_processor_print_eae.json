@@ -1,0 +1,32 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "expatternprovider"
+        }
+      ],
+      "recipe": {
+        "type": "expatternprovider:circuit_cutter",
+        "fluid_input": {
+          "amount": 100,
+          "ingredient": {
+            "fluid": "minecraft:water"
+          }
+        },
+        "item_input": {
+          "amount": 1,
+          "ingredient": {
+            "item": "advanced_ae:quantum_alloy_block"
+          }
+        },
+        "output": {
+          "count": 9,
+          "item": "advanced_ae:printed_quantum_processor"
+        }
+      }
+    }
+  ]
+}

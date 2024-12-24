@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import com.glodblock.github.appflux.common.AFItemAndBlock;
 import com.glodblock.github.extendedae.common.EPPItemAndBlock;
 
+import com.glodblock.github.extendedae.recipe.CircuitCutterRecipeBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.HolderLookup;
@@ -194,10 +195,10 @@ public class AAERecipeProvider extends RecipeProvider {
                 .setTop(Ingredient.of(AAEItems.QUANTUM_PROCESSOR_PRESS))
                 .setMode(InscriberProcessType.INSCRIBE)
                 .save(c, AdvancedAE.makeId("quantum_processor_print"));
-        //        CircuitCutterRecipeBuilder.cut(AAEItems.QUANTUM_PROCESSOR_PRINT, 9)
-        //                .input(AAEBlocks.QUANTUM_ALLOY_BLOCK, 1)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c),
-        // AdvancedAE.makeId("quantum_processor_print_eae"));
+        var cutterRecipe = CircuitCutterRecipeBuilder.cut(AAEItems.QUANTUM_PROCESSOR_PRINT, 9)
+                .input(AAEBlocks.QUANTUM_ALLOY_BLOCK, 1)
+                .fluid(Fluids.WATER, 100);
+        Addons.EXPATTERNPROVIDER.conditionalRecipe(c, cutterRecipe::save, AdvancedAE.makeId("quantum_processor_print_eae"));
         InscriberRecipeBuilder.inscribe(ConventionTags.REDSTONE, AAEItems.QUANTUM_PROCESSOR, 1)
                 .setTop(Ingredient.of(AAEItems.QUANTUM_PROCESSOR_PRINT))
                 .setBottom(Ingredient.of(AEItems.SILICON_PRINT))
