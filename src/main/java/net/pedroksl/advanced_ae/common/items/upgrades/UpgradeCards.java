@@ -165,7 +165,7 @@ public class UpgradeCards {
                                                     1,
                                                     Actionable.MODULATE,
                                                     IActionSource.ofPlayer(player));
-                                    foodStack.finishUsingItem(level, player);
+                                    foodStack = foodStack.finishUsingItem(level, player);
                                     if (!foodStack.isEmpty()) {
                                         storage.getInventory()
                                                 .insert(
