@@ -251,6 +251,10 @@ publisher {
     // Disable the built in Fractureizer scanner
     setDisableMalwareScanner(true)
 
+    // Add supported java versions. Currently only used by CurseForge
+    // Supports anything that can be parsed using JavaVersion.toVersion()
+    setJavaVersions(JavaVersion.VERSION_21, 21)
+
     // Safety check to check if the artifact contains a valid mod metadata entry,
     // which could possibly mean that the jar is empty
     setDisableEmptyJarCheck(true)
