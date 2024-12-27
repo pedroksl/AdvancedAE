@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.xmod.emi.recipes;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -52,7 +53,7 @@ public class EMIReactionChamberRecipe extends BasicEmiRecipe {
                         AAEText.ReactionChamberEnergy.text(this.recipe.getEnergy() / 1000),
                         width / 2 + 4,
                         70,
-                        AAEText.TOOLTIP_DEFAULT_COLOR,
+                        ChatFormatting.DARK_GRAY.getColor(),
                         false)
                 .horizontalAlign(TextWidget.Alignment.CENTER);
         var energyLabelX = energyLabel.getBounds().x();
