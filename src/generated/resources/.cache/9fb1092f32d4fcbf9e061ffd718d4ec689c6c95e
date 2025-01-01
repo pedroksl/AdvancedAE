@@ -1,4 +1,4 @@
-// 1.20.1	2024-12-24T15:08:50.1454911	Recipes
+// 1.20.1	2025-01-01T18:36:32.4992804	Recipes
 a0980cb5245494a2ce3017b3bac08d619d2841a6 data/advanced_ae/advancements/recipes/misc/advpartenc.json
 6f12940967f70208e960ad055b040190b78211c4 data/advanced_ae/advancements/recipes/misc/advpatpro2.json
 6662e2730916aa3400dfdb66488adb4684194ee8 data/advanced_ae/advancements/recipes/misc/advpatpropart.json
@@ -124,7 +124,7 @@ eeb1a11518ad90e5aa473a129f2784a4454c5aa4 data/advanced_ae/recipes/quantum_proces
 8cd6be423f509882ab3030c6dd5c0b1a53e83c07 data/advanced_ae/recipes/quantum_processor_print.json
 c2e598a337c3d3b4ae8e248879476f7c6061e839 data/advanced_ae/recipes/quantum_processor_print_eae.json
 f5792cb8314326ec14ff92e67e8230e1d468cb8b data/advanced_ae/recipes/quantum_storage_component.json
-f981de338f9bafecb437a1a22bfd8048ec365bc8 data/advanced_ae/recipes/quartzcrystal.json
+2382525d8b57b348e3a4fb41315dd550456f8d41 data/advanced_ae/recipes/quartzcrystal.json
 fb5ac556a946145f5717702fd8053fc25dbb510a data/advanced_ae/recipes/reach_card.json
 4087817b0906f9de007838591476f14c54574c7a data/advanced_ae/recipes/reactionchamber.json
 72c9ddc22892127deff8fce741e0adc53504b00d data/advanced_ae/recipes/recharging_card.json
