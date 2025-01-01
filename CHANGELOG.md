@@ -1,3 +1,1 @@
-- Added compatibility with the newly ported ciruit cutterter menu
-- Removed EMI plugin to fix missing "Fill recipe" button for Reaction Chamber recipes
-- Changed text color in JEI/EMI to make it more readable
+- Changed default charging recipe to accept any quartz dust
