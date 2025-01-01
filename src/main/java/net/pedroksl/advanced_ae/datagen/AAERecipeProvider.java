@@ -353,7 +353,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .save(c, "singularity");
         ReactionChamberRecipeBuilder.react(AEItems.CERTUS_QUARTZ_CRYSTAL, 64, 50000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 16)
-                .input(AEItems.CERTUS_QUARTZ_DUST, 16)
+                .input(ConventionTags.CERTUS_QUARTZ_DUST, 16)
                 .fluid(Fluids.WATER, 500)
                 .save(c, "quartzcrystal");
         ReactionChamberRecipeBuilder.react(AEItems.FLUIX_CRYSTAL, 64, 200000)
