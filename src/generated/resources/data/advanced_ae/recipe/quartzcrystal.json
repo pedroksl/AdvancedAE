@@ -17,7 +17,7 @@
     {
       "amount": 16,
       "ingredient": {
-        "item": "ae2:certus_quartz_dust"
+        "tag": "c:dusts/certus_quartz"
       }
     }
   ],
