@@ -1,2 +1,1 @@
-- Changed default charging recipe to accept any quartz dust
-- Fixed auto feed deleting some non-consumed items when feeding them to the player
+- Fixed level emitters not working with the quantum computer
