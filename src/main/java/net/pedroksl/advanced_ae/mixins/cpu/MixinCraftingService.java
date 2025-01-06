@@ -11,9 +11,7 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
@@ -80,11 +78,11 @@ public class MixinCraftingService {
     @Inject(
             method = "onServerEndTick",
             at =
-            @At(
-                    value = "FIELD",
-                    target = "Lappeng/me/service/CraftingService;lastProcessedCraftingLogicChangeTick:J",
-                    opcode = Opcodes.GETFIELD,
-                    ordinal = 0),
+                    @At(
+                            value = "FIELD",
+                            target = "Lappeng/me/service/CraftingService;lastProcessedCraftingLogicChangeTick:J",
+                            opcode = Opcodes.GETFIELD,
+                            ordinal = 0),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private void tickAdvClusters1(CallbackInfo ci, long latestChange) {
         long latestChangeLocal = 0;
@@ -106,12 +104,12 @@ public class MixinCraftingService {
     @Inject(
             method = "onServerEndTick",
             at =
-            @At(
-                    value = "FIELD",
-                    target =
-                            "Lappeng/me/service/CraftingService;interests:Lcom/google/common/collect/Multimap;",
-                    opcode = Opcodes.GETFIELD,
-                    ordinal = 0))
+                    @At(
+                            value = "FIELD",
+                            target =
+                                    "Lappeng/me/service/CraftingService;interests:Lcom/google/common/collect/Multimap;",
+                            opcode = Opcodes.GETFIELD,
+                            ordinal = 0))
     private void tickAdvClusters2(CallbackInfo ci) {
         for (var cluster : this.advancedAE$advCraftingCPUClusters) {
             if (cluster != null) {
