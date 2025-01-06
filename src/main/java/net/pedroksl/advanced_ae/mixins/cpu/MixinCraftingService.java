@@ -8,6 +8,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 import org.apache.commons.lang3.mutable.MutableObject;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -72,26 +73,50 @@ public class MixinCraftingService {
     @Shadow
     private void updateCPUClusters() {}
 
-    @ModifyConstant(method = "onServerEndTick", constant = @Constant(longValue = 0, ordinal = 0))
-    private long injectLatestChanged(long value) {
-        return advancedAE$latestChange;
-    }
+    @Final
+    @Shadow
+    private Set<AEKey> currentlyCrafting;
 
-    @Inject(method = "onServerEndTick", at = @At("HEAD"))
-    private void tickAdvClusters(CallbackInfo ci) {
-        if (this.updateList) {
-            this.updateList = false;
-            this.updateCPUClusters();
-            lastProcessedCraftingLogicChangeTick = -1; // Ensure caches below are also updated
-        }
-
-        advancedAE$latestChange = 0;
+    @Inject(
+            method = "onServerEndTick",
+            at =
+            @At(
+                    value = "FIELD",
+                    target = "Lappeng/me/service/CraftingService;lastProcessedCraftingLogicChangeTick:J",
+                    opcode = Opcodes.GETFIELD,
+                    ordinal = 0),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private void tickAdvClusters1(CallbackInfo ci, long latestChange) {
+        long latestChangeLocal = 0;
         for (var cluster : this.advancedAE$advCraftingCPUClusters) {
             if (cluster != null) {
                 for (var cpu : cluster.getActiveCPUs()) {
                     cpu.craftingLogic.tickCraftingLogic(energyGrid, (CraftingService) (Object) this);
-                    advancedAE$latestChange =
-                            Math.max(advancedAE$latestChange, cpu.craftingLogic.getLastModifiedOnTick());
+                    latestChangeLocal = Math.max(latestChangeLocal, cpu.craftingLogic.getLastModifiedOnTick());
+                }
+            }
+        }
+
+        if (latestChangeLocal > latestChange) {
+            // our crafting CPUs did something, fire notifications
+            this.lastProcessedCraftingLogicChangeTick = -1;
+        }
+    }
+
+    @Inject(
+            method = "onServerEndTick",
+            at =
+            @At(
+                    value = "FIELD",
+                    target =
+                            "Lappeng/me/service/CraftingService;interests:Lcom/google/common/collect/Multimap;",
+                    opcode = Opcodes.GETFIELD,
+                    ordinal = 0))
+    private void tickAdvClusters2(CallbackInfo ci) {
+        for (var cluster : this.advancedAE$advCraftingCPUClusters) {
+            if (cluster != null) {
+                for (var cpu : cluster.getActiveCPUs()) {
+                    cpu.craftingLogic.getAllWaitingFor(this.currentlyCrafting);
                 }
             }
         }
