@@ -25,6 +25,7 @@ public class SmallAdvPatternProviderScreen extends AEBaseScreen<SmallAdvPatternP
     private final SettingToggleButton<LockCraftingMode> lockCraftingModeButton;
     private final ToggleButton showInPatternAccessTerminalButton;
     private final SmallAdvPatternProviderLockReason lockReason;
+    private final SettingToggleButton<YesNo> filterInput;
 
     public SmallAdvPatternProviderScreen(
             SmallAdvPatternProviderMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
@@ -46,6 +47,9 @@ public class SmallAdvPatternProviderScreen extends AEBaseScreen<SmallAdvPatternP
                 btn -> selectNextPatternProviderMode());
         this.addToLeftToolbar(this.showInPatternAccessTerminalButton);
 
+        this.filterInput = new ServerSettingToggleButton<>(Settings.FILTER_ON_EXTRACT, YesNo.NO);
+        this.addToLeftToolbar(this.filterInput);
+
         this.lockReason = new SmallAdvPatternProviderLockReason(this);
         widgets.add("lockReason", this.lockReason);
     }
@@ -58,6 +62,7 @@ public class SmallAdvPatternProviderScreen extends AEBaseScreen<SmallAdvPatternP
         this.blockingModeButton.set(this.menu.getBlockingMode());
         this.lockCraftingModeButton.set(this.menu.getLockCraftingMode());
         this.showInPatternAccessTerminalButton.setState(this.menu.getShowInAccessTerminal() == YesNo.YES);
+        this.filterInput.set(this.menu.getFilterInputMode());
     }
 
     private void selectNextPatternProviderMode() {

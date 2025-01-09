@@ -31,6 +31,9 @@ public class AdvPatternProviderMenu extends AEBaseMenu {
     @GuiSync(4)
     public YesNo showInAccessTerminal = YesNo.YES;
 
+    @GuiSync(8)
+    public YesNo filterInput = YesNo.NO;
+
     @GuiSync(5)
     public LockCraftingMode lockCraftingMode = LockCraftingMode.NONE;
 
@@ -76,6 +79,7 @@ public class AdvPatternProviderMenu extends AEBaseMenu {
             blockingMode = logic.getConfigManager().getSetting(Settings.BLOCKING_MODE);
             showInAccessTerminal = logic.getConfigManager().getSetting(Settings.PATTERN_ACCESS_TERMINAL);
             lockCraftingMode = logic.getConfigManager().getSetting(Settings.LOCK_CRAFTING_MODE);
+            filterInput = logic.getConfigManager().getSetting(Settings.FILTER_ON_EXTRACT);
             craftingLockedReason = logic.getCraftingLockedReason();
             unlockStack = logic.getUnlockStack();
         }
@@ -105,5 +109,9 @@ public class AdvPatternProviderMenu extends AEBaseMenu {
 
     public YesNo getShowInAccessTerminal() {
         return showInAccessTerminal;
+    }
+
+    public YesNo getFilterInputMode() {
+        return filterInput;
     }
 }

@@ -12,6 +12,7 @@ import appeng.api.config.YesNo;
 public final class AAESettings {
     private static final Map<String, Setting<?>> SETTINGS = new HashMap<>();
     public static final Setting<YesNo> ME_EXPORT = register("me_export", YesNo.YES, YesNo.NO);
+    public static final Setting<YesNo> FILTERED_IMPORT = register("filtered_import", YesNo.NO, YesNo.YES);
 
     private AAESettings() {}
 

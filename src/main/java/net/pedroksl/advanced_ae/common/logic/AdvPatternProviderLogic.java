@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.common.logic;
 
 import java.util.*;
 
+import net.pedroksl.advanced_ae.common.inventory.AdvPatternProviderReturnInventory;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,12 +126,13 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
                 .registerSetting(Settings.BLOCKING_MODE, YesNo.NO)
                 .registerSetting(Settings.PATTERN_ACCESS_TERMINAL, YesNo.YES)
                 .registerSetting(Settings.LOCK_CRAFTING_MODE, LockCraftingMode.NONE)
+                .registerSetting(Settings.FILTER_ON_EXTRACT, YesNo.NO)
                 .build();
 
-        this.returnInv = new PatternProviderReturnInventory(() -> {
+        this.returnInv = new AdvPatternProviderReturnInventory(() -> {
             this.mainNode.ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
             this.host.saveChanges();
-        });
+        }, this);
     }
 
     public int getPriority() {
