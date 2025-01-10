@@ -62,7 +62,7 @@ import appeng.util.inv.PlayerInternalInventory;
 /**
  * Shared code between the pattern provider block and part.
  */
-public class AdvPatternProviderLogic implements InternalInventoryHost, ICraftingProvider, ICraftingWatcherNode {
+public class AdvPatternProviderLogic implements InternalInventoryHost, ICraftingProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdvPatternProviderLogic.class);
 
     public static final String NBT_MEMORY_CARD_PATTERNS = "patterns";
@@ -110,6 +110,26 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
     private int roundRobinIndex = 0;
 
+    private final ICraftingWatcherNode craftingWatcherNode = new ICraftingWatcherNode() {
+        @Override
+        public void updateWatcher(IStackWatcher newWatcher) {
+            craftingWatcher = newWatcher;
+            updatePatterns();
+        }
+
+        @Override
+        public void onRequestChange(AEKey what) {
+            if (trackedCrafts.contains(what)) {
+                trackedCrafts.remove(what);
+            } else {
+                trackedCrafts.add(what);
+            }
+        }
+
+        @Override
+        public void onCraftableChange(AEKey what) {}
+    };
+
     public AdvPatternProviderLogic(IManagedGridNode mainNode, AdvPatternProviderLogicHost host) {
         this(mainNode, host, 36);
     }
@@ -121,7 +141,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
         this.mainNode = mainNode.setFlags(GridFlags.REQUIRE_CHANNEL)
                 .addService(IGridTickable.class, new Ticker())
                 .addService(ICraftingProvider.class, this)
-                .addService(ICraftingWatcherNode.class, this);
+                .addService(ICraftingWatcherNode.class, craftingWatcherNode);
         this.actionSource = new MachineSource(mainNode::getNode);
 
         configManager = IConfigManager.builder(this::configChanged)
@@ -794,24 +814,6 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
             }
         }
     }
-
-    @Override
-    public void updateWatcher(IStackWatcher newWatcher) {
-        craftingWatcher = newWatcher;
-        updatePatterns();
-    }
-
-    @Override
-    public void onRequestChange(AEKey what) {
-        if (trackedCrafts.contains(what)) {
-            trackedCrafts.remove(what);
-        } else {
-            trackedCrafts.add(what);
-        }
-    }
-
-    @Override
-    public void onCraftableChange(AEKey what) {}
 
     public Set<AEKey> getTrackedCrafts() {
         return trackedCrafts;

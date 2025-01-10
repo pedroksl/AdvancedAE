@@ -69,8 +69,8 @@ public enum AAEText implements LocalizationEnum {
     MeExportOn("Produced items will be exported to the ME System.", Type.TOOLTIP),
     MeExportOff("Produces items will be exported to allowed nearby containers", Type.TOOLTIP),
     FilteredImport("Filtered Import", Type.TOOLTIP),
-    FilteredImportOn("Piped input will be restricted to match active crafting jobs", Type.TOOLTIP),
-    FilteredImportOff("Piped input will be unrestricted", Type.TOOLTIP),
+    FilteredImportOn("Input must match crafting outputs while crafting jobs are active", Type.TOOLTIP),
+    FilteredImportOff("Input is unrestricted", Type.TOOLTIP),
     DirectionalOutput("Directional Output", Type.TOOLTIP),
     DirectionOutputHint("Configure which directions are allowed for output auto-export", Type.TOOLTIP),
 
