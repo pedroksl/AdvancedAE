@@ -90,6 +90,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         interfaceOrProviderPart(AAEItems.ADV_PATTERN_PROVIDER);
         interfaceOrProviderPart(AAEItems.SMALL_ADV_PATTERN_PROVIDER);
         interfaceOrProviderPart(AAEItems.STOCK_EXPORT_BUS, true);
+        interfaceOrProviderPart(AAEItems.IMPORT_EXPORT_BUS, true);
 
         // PATTERN PROVIDER
         patternProvider(AAEBlocks.ADV_PATTERN_PROVIDER);

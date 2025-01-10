@@ -92,6 +92,8 @@ public class AAEClient extends AdvancedAE {
 
         InitScreens.register(
                 event, AAEMenus.STOCK_EXPORT_BUS.get(), StockExportBusScreen::new, "/screens/stock_export_bus.json");
+        InitScreens.register(
+                event, AAEMenus.IMPORT_EXPORT_BUS.get(), ImportExportBusScreen::new, "/screens/import_export_bus.json");
 
         InitScreens.register(
                 event, AAEMenus.OUTPUT_DIRECTION.get(), OutputDirectionScreen::new, "/screens/output_direction.json");

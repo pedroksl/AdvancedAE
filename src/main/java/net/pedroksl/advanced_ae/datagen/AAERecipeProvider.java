@@ -129,6 +129,15 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
                 .save(c, AdvancedAE.makeId("stock_export_bus"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.IMPORT_EXPORT_BUS)
+                .pattern("   ")
+                .pattern("ILE")
+                .pattern("   ")
+                .define('I', AEParts.EXPORT_BUS)
+                .define('L', AEItems.LOGIC_PROCESSOR)
+                .define('E', AEParts.EXPORT_BUS)
+                .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
+                .save(c, AdvancedAE.makeId("import_export_bus"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_ENCODER)
                 .pattern("QRQ")
                 .pattern("RER")

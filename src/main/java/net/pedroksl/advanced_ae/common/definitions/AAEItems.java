@@ -14,10 +14,7 @@ import net.pedroksl.advanced_ae.common.items.AdvPatternProviderUpgradeItem;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
-import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
-import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
-import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
-import net.pedroksl.advanced_ae.common.parts.ThroughputMonitorPart;
+import net.pedroksl.advanced_ae.common.parts.*;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
 
 import appeng.api.crafting.PatternDetailsHelper;
@@ -61,7 +58,9 @@ public class AAEItems {
             SmallAdvPatternProviderPart.class,
             SmallAdvPatternProviderPart::new);
     public static final ItemDefinition<PartItem<StockExportBusPart>> STOCK_EXPORT_BUS =
-            part("Stock Export Bus", "stock_export_bus_part", StockExportBusPart.class, StockExportBusPart::new);
+            part("ME Stock Export Bus", "stock_export_bus_part", StockExportBusPart.class, StockExportBusPart::new);
+    public static final ItemDefinition<PartItem<ImportExportBusPart>> IMPORT_EXPORT_BUS =
+            part("ME Import Export Bus", "import_export_bus_part", ImportExportBusPart.class, ImportExportBusPart::new);
     public static final ItemDefinition<PartItem<ThroughputMonitorPart>> THROUGHPUT_MONITOR = part(
             "ME Throughput Monitor", "throughput_monitor", ThroughputMonitorPart.class, ThroughputMonitorPart::new);
 

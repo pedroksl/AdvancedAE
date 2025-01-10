@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-03T21:53:31.8265319	Block States / Models
+// 1.21.1	2025-01-09T22:40:32.7867923	Block States / Models
 95a299ecaf1f57e89c3507297d4be2fc99a2749c assets/advanced_ae/blockstates/adv_pattern_provider.json
 fef5598f6fe49cc3150d9233ce01bc5a7136fcf9 assets/advanced_ae/blockstates/data_entangler.json
 9f77870684c7b9108903c29765927a81ea7d4cfd assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -50,6 +50,7 @@ e35a61f186f90f6dd0480f8de0e005464ac09ccf assets/advanced_ae/models/block/small_a
 18bc3382d92249c7a25ec5a0f3d2b13d29bbbf1b assets/advanced_ae/models/item/flight_card.json
 f35c490f4bbe7a90e37e79eb1c5e4a483f0dc173 assets/advanced_ae/models/item/flight_drift_card.json
 4b807cc954db0ab98470a3a9916958c24145ae07 assets/advanced_ae/models/item/hp_buffer_card.json
+ee4ba8be893b32cc3e2111d6d4d4d0459424bf95 assets/advanced_ae/models/item/import_export_bus_part.json
 80a84c314c1c8a52aee00e41de53d76aa6426017 assets/advanced_ae/models/item/jump_height_card.json
 4baa96609f9c01bfe753d9314ed45d1f129c7cc3 assets/advanced_ae/models/item/lava_immunity_card.json
 cc11a19eaad2f958156a078c5584029b442ecbb7 assets/advanced_ae/models/item/luck_card.json
@@ -95,5 +96,6 @@ bb7474d30fbe3abc133ca72263ceb2b52b582167 assets/advanced_ae/models/item/throughp
 0290e8691b2f37c73875043ccc90bce56b0a31b9 assets/advanced_ae/models/item/walk_speed_card.json
 bff85a3e62c8e237eb7ea9df55f40d89765b4988 assets/advanced_ae/models/item/water_breathing_card.json
 bc562a06060cc38c38d195c0f1bbc6dbc29aed97 assets/advanced_ae/models/part/adv_pattern_provider_part.json
+6209b845229ce1d1ca9afb308004d3ada5e232d4 assets/advanced_ae/models/part/import_export_bus_part.json
 b2db4877af0be594a4a1851ef4d5e28b28a9e46d assets/advanced_ae/models/part/small_adv_pattern_provider_part.json
 c5876573d553e04010c9d84c69a2247261b4db74 assets/advanced_ae/models/part/stock_export_bus_part.json
