@@ -63,7 +63,8 @@ public class AAEPlayerEvents {
 
         Player player = event.player;
 
-        if (!(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof QuantumArmorBase) && player.getPersistentData().getBoolean("aaeFlightCard")) {
+        if (!(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof QuantumArmorBase)
+                && player.getPersistentData().getBoolean("aaeFlightCard")) {
             player.getAbilities().mayfly = false;
             player.getAbilities().flying = false;
             player.getPersistentData().remove("aaeFlightCard");
