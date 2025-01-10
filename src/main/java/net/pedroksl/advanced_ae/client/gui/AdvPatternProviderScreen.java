@@ -3,6 +3,9 @@ package net.pedroksl.advanced_ae.client.gui;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.pedroksl.advanced_ae.api.AAESettings;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEServerSettingToggleButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAESettingToggleButton;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderLockReason;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 
@@ -23,6 +26,7 @@ public class AdvPatternProviderScreen extends AEBaseScreen<AdvPatternProviderMen
     private final SettingToggleButton<LockCraftingMode> lockCraftingModeButton;
     private final ToggleButton showInPatternAccessTerminalButton;
     private final AdvPatternProviderLockReason lockReason;
+    private final AAESettingToggleButton<YesNo> filterInput;
 
     public AdvPatternProviderScreen(
             AdvPatternProviderMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
@@ -44,6 +48,9 @@ public class AdvPatternProviderScreen extends AEBaseScreen<AdvPatternProviderMen
                 btn -> selectNextPatternProviderMode());
         this.addToLeftToolbar(this.showInPatternAccessTerminalButton);
 
+        this.filterInput = new AAEServerSettingToggleButton<>(AAESettings.FILTERED_IMPORT, YesNo.NO);
+        this.addToLeftToolbar(this.filterInput);
+
         this.lockReason = new AdvPatternProviderLockReason(this);
         widgets.add("lockReason", this.lockReason);
     }
@@ -56,6 +63,7 @@ public class AdvPatternProviderScreen extends AEBaseScreen<AdvPatternProviderMen
         this.blockingModeButton.set(this.menu.getBlockingMode());
         this.lockCraftingModeButton.set(this.menu.getLockCraftingMode());
         this.showInPatternAccessTerminalButton.setState(this.menu.getShowInAccessTerminal() == YesNo.YES);
+        this.filterInput.set(this.menu.getFilterInputMode());
     }
 
     private void selectNextPatternProviderMode() {

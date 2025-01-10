@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.gui.advpatternprovider;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
+import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
@@ -30,6 +31,9 @@ public class AdvPatternProviderMenu extends AEBaseMenu {
 
     @GuiSync(4)
     public YesNo showInAccessTerminal = YesNo.YES;
+
+    @GuiSync(8)
+    public YesNo filterInput = YesNo.NO;
 
     @GuiSync(5)
     public LockCraftingMode lockCraftingMode = LockCraftingMode.NONE;
@@ -76,6 +80,7 @@ public class AdvPatternProviderMenu extends AEBaseMenu {
             blockingMode = logic.getConfigManager().getSetting(Settings.BLOCKING_MODE);
             showInAccessTerminal = logic.getConfigManager().getSetting(Settings.PATTERN_ACCESS_TERMINAL);
             lockCraftingMode = logic.getConfigManager().getSetting(Settings.LOCK_CRAFTING_MODE);
+            filterInput = logic.getConfigManager().getSetting(AAESettings.FILTERED_IMPORT);
             craftingLockedReason = logic.getCraftingLockedReason();
             unlockStack = logic.getUnlockStack();
         }
@@ -105,5 +110,9 @@ public class AdvPatternProviderMenu extends AEBaseMenu {
 
     public YesNo getShowInAccessTerminal() {
         return showInAccessTerminal;
+    }
+
+    public YesNo getFilterInputMode() {
+        return filterInput;
     }
 }
