@@ -1,10 +1,9 @@
 package net.pedroksl.advanced_ae.common.inventory;
 
-import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
-import appeng.api.crafting.IPatternDetails;
-import appeng.api.stacks.GenericStack;
+import appeng.api.stacks.AEKey;
 import appeng.helpers.patternprovider.PatternProviderReturnInventory;
+import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 
 public class AdvPatternProviderReturnInventory extends PatternProviderReturnInventory {
@@ -12,12 +11,12 @@ public class AdvPatternProviderReturnInventory extends PatternProviderReturnInve
         super(listener);
 
         this.setFilter((slot, what) -> {
-            var filter = logic.getConfigManager().getSetting(Settings.FILTER_ON_EXTRACT);
+            var filter = logic.getConfigManager().getSetting(AAESettings.FILTERED_IMPORT);
             if (filter != YesNo.YES) return true;
 
-            for (IPatternDetails pattern : logic.getAvailablePatterns()) {
-                for (GenericStack output : pattern.getOutputs()) {
-                    if (what.matches(output)) return true;
+            for (AEKey craft : logic.getTrackedCrafts()) {
+                if (what.equals(craft)) {
+                    return true;
                 }
             }
             return false;
