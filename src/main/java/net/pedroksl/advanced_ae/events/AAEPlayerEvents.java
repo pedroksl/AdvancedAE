@@ -62,6 +62,14 @@ public class AAEPlayerEvents {
         if (event.phase != TickEvent.Phase.START) return;
 
         Player player = event.player;
+
+        if (!(player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof QuantumArmorBase) && player.getPersistentData().getBoolean("aaeFlightCard")) {
+            player.getAbilities().mayfly = false;
+            player.getAbilities().flying = false;
+            player.getPersistentData().remove("aaeFlightCard");
+            player.onUpdateAbilities();
+        }
+
         if (player instanceof ServerPlayer serverPlayer) {
             var nv = serverPlayer.getEffect(MobEffects.NIGHT_VISION);
 
@@ -92,7 +100,6 @@ public class AAEPlayerEvents {
                         if (motion.x != 0 || motion.z != 0) {
                             var value = boots.getUpgradeValue(bootStack, upgrade, 100) / 100f;
                             player.setDeltaMovement(motion.x * value, motion.y, motion.z * value);
-                            boots.consumeEnergy(player, bootStack, upgrade);
                         }
                     }
                 }
