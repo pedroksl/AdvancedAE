@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.gui;
 
-import appeng.menu.MenuOpener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +11,7 @@ import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
 
 import appeng.api.stacks.GenericStack;
 import appeng.core.definitions.AEItems;
+import appeng.menu.MenuOpener;
 import appeng.menu.SlotSemantics;
 import appeng.menu.implementations.UpgradeableMenu;
 

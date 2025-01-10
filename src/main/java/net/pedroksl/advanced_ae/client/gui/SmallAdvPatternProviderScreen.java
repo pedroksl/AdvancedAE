@@ -6,7 +6,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEServerSettingToggleButton;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAESettingToggleButton;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEToggleButton;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderLockReason;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
 

@@ -2,10 +2,6 @@ package net.pedroksl.advanced_ae.common.logic;
 
 import java.util.*;
 
-import appeng.api.networking.*;
-import appeng.api.networking.crafting.ICraftingWatcherNode;
-import net.pedroksl.advanced_ae.api.AAESettings;
-import net.pedroksl.advanced_ae.common.inventory.AdvPatternProviderReturnInventory;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.pedroksl.advanced_ae.api.AAESettings;
+import net.pedroksl.advanced_ae.common.inventory.AdvPatternProviderReturnInventory;
 import net.pedroksl.advanced_ae.common.patterns.IAdvPatternDetails;
 
 import appeng.api.config.Actionable;
@@ -38,7 +36,9 @@ import appeng.api.ids.AEComponents;
 import appeng.api.implementations.blockentities.ICraftingMachine;
 import appeng.api.implementations.blockentities.PatternContainerGroup;
 import appeng.api.inventories.InternalInventory;
+import appeng.api.networking.*;
 import appeng.api.networking.crafting.ICraftingProvider;
+import appeng.api.networking.crafting.ICraftingWatcherNode;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
@@ -90,6 +90,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
      * target, the pattern won't be pushed. Always contains keys with the secondary component dropped.
      */
     private final Set<AEKey> patternInputs = new HashSet<>();
+
     private final Set<AEKey> trackedCrafts = new HashSet<>();
     // Pattern sending logic
     private final List<GenericStack> sendList = new ArrayList<>();
@@ -152,10 +153,13 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
                 .registerSetting(AAESettings.FILTERED_IMPORT, YesNo.NO)
                 .build();
 
-        this.returnInv = new AdvPatternProviderReturnInventory(() -> {
-            this.mainNode.ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
-            this.host.saveChanges();
-        }, this);
+        this.returnInv = new AdvPatternProviderReturnInventory(
+                () -> {
+                    this.mainNode.ifPresent(
+                            (grid, node) -> grid.getTickManager().alertDevice(node));
+                    this.host.saveChanges();
+                },
+                this);
     }
 
     public int getPriority() {

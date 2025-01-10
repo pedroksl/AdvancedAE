@@ -1,13 +1,14 @@
 package net.pedroksl.advanced_ae.common.inventory;
 
-import appeng.api.config.YesNo;
-import appeng.api.stacks.AEKey;
-import appeng.helpers.patternprovider.PatternProviderReturnInventory;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 
-import java.util.HashSet;
-import java.util.Set;
+import appeng.api.config.YesNo;
+import appeng.api.stacks.AEKey;
+import appeng.helpers.patternprovider.PatternProviderReturnInventory;
 
 public class AdvPatternProviderReturnInventory extends PatternProviderReturnInventory {
     public AdvPatternProviderReturnInventory(Runnable listener, AdvPatternProviderLogic logic) {

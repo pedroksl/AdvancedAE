@@ -1,5 +1,2 @@
-# New
-- Added the Import Export Bus. A bus part capable of importing and exporting at the same time
-
-# Bug Fixes
-- Fixed quantum armor auto stock card not working
+- Filtered import for Advanced Pattern Providers. You can enable this setting to only allow inputs of active patterns/patterns present in the pattern provider.
+- ME Stock Export Bus behavior changed to be able to set stack sizes bigger than 64 (up to Max Int).
