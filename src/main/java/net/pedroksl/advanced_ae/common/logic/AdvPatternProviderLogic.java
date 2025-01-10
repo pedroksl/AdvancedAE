@@ -99,6 +99,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     private final PatternProviderReturnInventory returnInv;
 
     private final AdvPatternProviderTargetCache[] targetCaches = new AdvPatternProviderTargetCache[6];
+    private final HashSet<AEKey> outputCache = new HashSet<>();
 
     private YesNo redstoneState = YesNo.UNDECIDED;
 
@@ -291,6 +292,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     public void updatePatterns() {
         patterns.clear();
         patternInputs.clear();
+        outputCache.clear();
         if (craftingWatcher != null) {
             craftingWatcher.reset();
         }
@@ -305,6 +307,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
                 if (craftingWatcher != null) {
                     for (var output : details.getOutputs()) {
                         craftingWatcher.add(output.what());
+                        outputCache.add(output.what());
                     }
                 }
 
@@ -817,6 +820,10 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
     public Set<AEKey> getTrackedCrafts() {
         return trackedCrafts;
+    }
+
+    public HashSet<AEKey> getOutputCache() {
+        return outputCache;
     }
 
     private class Ticker implements IGridTickable {
