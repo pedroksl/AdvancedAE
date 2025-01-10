@@ -21,6 +21,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.pedroksl.advanced_ae.api.AAESettings;
+import net.pedroksl.advanced_ae.common.inventory.AdvPatternProviderReturnInventory;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetails;
 
 import appeng.api.config.Actionable;
@@ -33,11 +35,13 @@ import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.implementations.blockentities.ICraftingMachine;
 import appeng.api.implementations.blockentities.PatternContainerGroup;
 import appeng.api.inventories.InternalInventory;
+import appeng.api.networking.*;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IManagedGridNode;
 import appeng.api.networking.crafting.ICraftingProvider;
+import appeng.api.networking.crafting.ICraftingWatcherNode;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IStorageService;
 import appeng.api.networking.ticking.IGridTickable;
@@ -79,6 +83,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     private final IManagedGridNode mainNode;
     private final IActionSource actionSource;
     private final ConfigManager configManager = new ConfigManager(this::configChanged);
+    private IStackWatcher craftingWatcher;
 
     private int priority;
 
@@ -90,6 +95,8 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
      * target, the pattern won't be pushed. Always contains keys with the secondary component dropped.
      */
     private final Set<AEKey> patternInputs = new HashSet<>();
+
+    private final Set<AEKey> trackedCrafts = new HashSet<>();
     // Pattern sending logic
     private final List<GenericStack> sendList = new ArrayList<>();
     private Direction sendDirection;
@@ -98,6 +105,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     private final PatternProviderReturnInventory returnInv;
 
     private final AdvPatternProviderTargetCache[] targetCaches = new AdvPatternProviderTargetCache[6];
+    private final HashSet<AEKey> outputCache = new HashSet<>();
 
     private YesNo redstoneState = YesNo.UNDECIDED;
 
@@ -109,6 +117,26 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
     private int roundRobinIndex = 0;
 
+    private final ICraftingWatcherNode craftingWatcherNode = new ICraftingWatcherNode() {
+        @Override
+        public void updateWatcher(IStackWatcher newWatcher) {
+            craftingWatcher = newWatcher;
+            updatePatterns();
+        }
+
+        @Override
+        public void onRequestChange(AEKey what) {
+            if (trackedCrafts.contains(what)) {
+                trackedCrafts.remove(what);
+            } else {
+                trackedCrafts.add(what);
+            }
+        }
+
+        @Override
+        public void onCraftableChange(AEKey what) {}
+    };
+
     public AdvPatternProviderLogic(IManagedGridNode mainNode, AdvPatternProviderLogicHost host) {
         this(mainNode, host, 36);
     }
@@ -119,17 +147,22 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
         this.host = host;
         this.mainNode = mainNode.setFlags(GridFlags.REQUIRE_CHANNEL)
                 .addService(IGridTickable.class, new AdvPatternProviderLogic.Ticker())
-                .addService(ICraftingProvider.class, this);
+                .addService(ICraftingProvider.class, this)
+                .addService(ICraftingWatcherNode.class, craftingWatcherNode);
         this.actionSource = new MachineSource(mainNode::getNode);
 
         this.configManager.registerSetting(Settings.BLOCKING_MODE, YesNo.NO);
         this.configManager.registerSetting(Settings.PATTERN_ACCESS_TERMINAL, YesNo.YES);
         this.configManager.registerSetting(Settings.LOCK_CRAFTING_MODE, LockCraftingMode.NONE);
+        this.configManager.registerSetting(AAESettings.FILTERED_IMPORT, YesNo.NO);
 
-        this.returnInv = new PatternProviderReturnInventory(() -> {
-            this.mainNode.ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
-            this.host.saveChanges();
-        });
+        this.returnInv = new AdvPatternProviderReturnInventory(
+                () -> {
+                    this.mainNode.ifPresent(
+                            (grid, node) -> grid.getTickManager().alertDevice(node));
+                    this.host.saveChanges();
+                },
+                this);
     }
 
     public int getPriority() {
@@ -278,6 +311,10 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     public void updatePatterns() {
         patterns.clear();
         patternInputs.clear();
+        outputCache.clear();
+        if (craftingWatcher != null) {
+            craftingWatcher.reset();
+        }
 
         for (var stack : this.patternInventory) {
             var details = PatternDetailsHelper.decodePattern(
@@ -285,6 +322,13 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
 
             if (details != null) {
                 patterns.add(details);
+
+                if (craftingWatcher != null) {
+                    for (var output : details.getOutputs()) {
+                        craftingWatcher.add(output.what());
+                        outputCache.add(output.what());
+                    }
+                }
 
                 for (var iinput : details.getInputs()) {
                     for (var inputCandidate : iinput.getPossibleInputs()) {
@@ -790,6 +834,14 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
                 unlockStack = new GenericStack(unlockStack.what(), remainingAmount);
             }
         }
+    }
+
+    public Set<AEKey> getTrackedCrafts() {
+        return trackedCrafts;
+    }
+
+    public HashSet<AEKey> getOutputCache() {
+        return outputCache;
     }
 
     private class Ticker implements IGridTickable {

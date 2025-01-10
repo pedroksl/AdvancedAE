@@ -55,6 +55,18 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
             appearances = new HashMap<>();
             registerApp(AAEIcon.ME_EXPORT_ON, AAESettings.ME_EXPORT, YesNo.YES, AAEText.MeExport, AAEText.MeExportOn);
             registerApp(AAEIcon.ME_EXPORT_OFF, AAESettings.ME_EXPORT, YesNo.NO, AAEText.MeExport, AAEText.MeExportOff);
+            registerApp(
+                    AAEIcon.FILTERED_IMPORT_ON,
+                    AAESettings.FILTERED_IMPORT,
+                    YesNo.YES,
+                    AAEText.FilteredImport,
+                    AAEText.FilteredImportOn);
+            registerApp(
+                    AAEIcon.FILTERED_IMPORT_OFF,
+                    AAESettings.FILTERED_IMPORT,
+                    YesNo.NO,
+                    AAEText.FilteredImport,
+                    AAEText.FilteredImportOff);
         }
     }
 
