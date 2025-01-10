@@ -47,7 +47,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
         this.host = host;
         createPlayerInventorySlots(playerInventory);
 
-        var filterQuantities = type == AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG;
+        var filterQuantities = type == AAEMenus.QUANTUM_ARMOR_FILTER_CONFIG.get();
         if (filterQuantities) {
             this.inv = ConfigInventory.configStacks(this::typeFilter, 9, this::onSlotChanged, true);
         } else {
