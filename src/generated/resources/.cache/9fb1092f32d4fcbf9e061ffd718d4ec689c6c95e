@@ -1,4 +1,4 @@
-// 1.20.1	2025-01-01T18:36:32.4992804	Recipes
+// 1.20.1	2025-01-10T19:11:27.6633561	Recipes
 a0980cb5245494a2ce3017b3bac08d619d2841a6 data/advanced_ae/advancements/recipes/misc/advpartenc.json
 6f12940967f70208e960ad055b040190b78211c4 data/advanced_ae/advancements/recipes/misc/advpatpro2.json
 6662e2730916aa3400dfdb66488adb4684194ee8 data/advanced_ae/advancements/recipes/misc/advpatpropart.json
@@ -9,6 +9,7 @@ cfb31bf6a7c17b2e683ccbeea7ef724ceff9d2af data/advanced_ae/advancements/recipes/m
 92e39bbb8041fe989fb4cb6273712c3ee79cc6b7 data/advanced_ae/advancements/recipes/misc/flight_card.json
 b931ef4ef2cbd3325888b8306092dcce38ce6f4c data/advanced_ae/advancements/recipes/misc/flight_drift_card.json
 cb89a00bc75904de3f7e2c42ff58896a9971b042 data/advanced_ae/advancements/recipes/misc/hp_buffer_card.json
+16827889156124c0680680f5ca43c2633a8f755a data/advanced_ae/advancements/recipes/misc/import_export_bus.json
 1ba22ccdedaff257e9530387ad5b38211fc7303f data/advanced_ae/advancements/recipes/misc/jump_height_card.json
 676e8c97819522197f24a1dcbdccfc02038d61d8 data/advanced_ae/advancements/recipes/misc/largeappupgrade.json
 39751c6f6e9c9c38833b6e30dfdfed69968f2229 data/advanced_ae/advancements/recipes/misc/lava_immunity_card.json
@@ -79,6 +80,7 @@ ec53e003e7cbca53bb7b7caeecb32c46b4e9339c data/advanced_ae/recipes/evasion_card.j
 e6a9256b58a9aca22fb9548e95f1b95b0faf7d48 data/advanced_ae/recipes/fluixcrystalfromdust.json
 76deb0a32c259de959955031b0e9ab31d86703d0 data/advanced_ae/recipes/fluixcrystals.json
 e9733bf94539037d9ba917dbb123cb055a2c9d8d data/advanced_ae/recipes/hp_buffer_card.json
+3897fdee21c7fb1611ef686cac941064c4b95c9d data/advanced_ae/recipes/import_export_bus.json
 549b1da005890ed121a222073420231d3d50bdb2 data/advanced_ae/recipes/jump_height_card.json
 22a71ea7bc9ff18496dacbcd6f1d67637c239e39 data/advanced_ae/recipes/largeappupgrade.json
 8cb2f8f8a2c70400c3e5baa024c211116880812c data/advanced_ae/recipes/lava_immunity_card.json

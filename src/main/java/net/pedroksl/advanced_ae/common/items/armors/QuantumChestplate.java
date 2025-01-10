@@ -69,6 +69,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
         lines.add(AAEText.QuantumArmorStableFootingTooltip.text().withStyle(Tooltips.NUMBER_TEXT));
     }
 
+
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (entity instanceof Player player) {
