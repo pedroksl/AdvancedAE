@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "ae2:export_bus"
+    },
+    "I": {
+      "item": "ae2:export_bus"
+    },
+    "L": {
+      "item": "ae2:logic_processor"
+    }
+  },
+  "pattern": [
+    "   ",
+    "ILE",
+    "   "
+  ],
+  "result": {
+    "item": "advanced_ae:import_export_bus_part"
+  },
+  "show_notification": true
+}

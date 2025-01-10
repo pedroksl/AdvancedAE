@@ -13,6 +13,7 @@ import net.pedroksl.advanced_ae.common.helpers.PortableCellWorkbenchMenuHost;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
+import net.pedroksl.advanced_ae.common.parts.ImportExportBusPart;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
 import net.pedroksl.advanced_ae.gui.*;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
@@ -44,6 +45,8 @@ public class AAEMenus {
 
     public static final Supplier<MenuType<StockExportBusMenu>> STOCK_EXPORT_BUS =
             create("stock_export_bus", StockExportBusMenu::new, StockExportBusPart.class);
+    public static final Supplier<MenuType<ImportExportBusMenu>> IMPORT_EXPORT_BUS =
+            create("import_export_bus", ImportExportBusMenu::new, ImportExportBusPart.class);
 
     public static final Supplier<MenuType<OutputDirectionMenu>> OUTPUT_DIRECTION =
             create("output_direction", OutputDirectionMenu::new, IDirectionalOutputHost.class);
