@@ -1,9 +1,12 @@
 package net.pedroksl.advanced_ae.gui;
 
+import appeng.menu.MenuOpener;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
+import net.pedroksl.advanced_ae.api.ISetAmountMenuHost;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
 
@@ -12,7 +15,7 @@ import appeng.core.definitions.AEItems;
 import appeng.menu.SlotSemantics;
 import appeng.menu.implementations.UpgradeableMenu;
 
-public class StockExportBusMenu extends UpgradeableMenu<StockExportBusPart> {
+public class StockExportBusMenu extends UpgradeableMenu<StockExportBusPart> implements ISetAmountMenuHost {
 
     private static final String OPEN_AMOUNT_MENU = "open_amount_menu";
 
@@ -57,8 +60,18 @@ public class StockExportBusMenu extends UpgradeableMenu<StockExportBusPart> {
                         ((ServerPlayer) this.getPlayer()),
                         getLocator(),
                         currentStack,
-                        (newStack) -> this.setFilter(slot.index, GenericStack.wrapInItemStack(newStack)));
+                        (newStack) -> this.setFilter(slot.index, GenericStack.wrapInItemStack(newStack)),
+                        this,
+                        slot.getMaxStackSize());
             }
+        }
+    }
+
+    @Override
+    public void returnFromSetAmountMenu() {
+        Player player = getPlayerInventory().player;
+        if (player instanceof ServerPlayer serverPlayer) {
+            MenuOpener.open(AAEMenus.STOCK_EXPORT_BUS.get(), serverPlayer, getLocator(), true);
         }
     }
 }
