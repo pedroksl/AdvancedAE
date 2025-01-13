@@ -6,7 +6,7 @@
       "item": "ae2:export_bus"
     },
     "I": {
-      "item": "ae2:export_bus"
+      "item": "ae2:import_bus"
     },
     "L": {
       "item": "ae2:logic_processor"

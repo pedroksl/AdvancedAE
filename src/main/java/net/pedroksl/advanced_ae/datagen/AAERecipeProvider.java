@@ -133,7 +133,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .pattern("   ")
                 .pattern("ILE")
                 .pattern("   ")
-                .define('I', AEParts.EXPORT_BUS)
+                .define('I', AEParts.IMPORT_BUS)
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .define('E', AEParts.EXPORT_BUS)
                 .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
