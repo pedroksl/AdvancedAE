@@ -18,7 +18,6 @@ public class FilteredImportStackTransferContext implements StackTransferContext 
     private final IEnergySource energySource;
     private final IActionSource actionSource;
     private final IPartitionList filter;
-    private final Set<AEKeyType> keyTypes;
     private final int initialOperations;
     private int operationsRemaining;
     private boolean isInverted;
@@ -35,10 +34,6 @@ public class FilteredImportStackTransferContext implements StackTransferContext 
         this.filter = filter;
         this.initialOperations = operationsRemaining;
         this.operationsRemaining = operationsRemaining;
-        this.keyTypes = new HashSet<>();
-        for (AEKey item : filter.getItems()) {
-            this.keyTypes.add(item.getType());
-        }
     }
 
     @Override
@@ -78,7 +73,7 @@ public class FilteredImportStackTransferContext implements StackTransferContext 
 
     @Override
     public boolean isKeyTypeEnabled(AEKeyType space) {
-        return keyTypes.isEmpty() || keyTypes.contains(space);
+        return true;
     }
 
     @Override
