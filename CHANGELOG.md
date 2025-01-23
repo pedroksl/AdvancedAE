@@ -1,1 +1,2 @@
 - Fixed import export bus recipe
+- Fixed ResourceLocationException that happens with the Turkish language

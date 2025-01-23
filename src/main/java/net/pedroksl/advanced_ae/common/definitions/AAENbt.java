@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
@@ -21,7 +22,7 @@ public final class AAENbt {
 
     public static void init() {
         for (var upgrade : UpgradeType.values()) {
-            UPGRADE_TAG.put(upgrade, upgrade.name().toLowerCase() + "_tag");
+            UPGRADE_TAG.put(upgrade, upgrade.name().toLowerCase(Locale.ROOT) + "_tag");
         }
     }
 }

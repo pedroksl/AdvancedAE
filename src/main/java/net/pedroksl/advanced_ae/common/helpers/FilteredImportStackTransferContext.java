@@ -1,8 +1,5 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import appeng.api.behaviors.StackTransferContext;
 import appeng.api.config.Actionable;
 import appeng.api.networking.energy.IEnergySource;
