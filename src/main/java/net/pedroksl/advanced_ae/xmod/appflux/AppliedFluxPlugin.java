@@ -63,8 +63,12 @@ public class AppliedFluxPlugin {
                             IActionSource.ofPlayer(player)));
 
             var remainder = aePowerStorage.injectAEPower(stack, extracted, Actionable.MODULATE);
-            storage.getInventory().insert(FluxKey.of(EnergyType.FE), (long) mult.divide(remainder),
-                    Actionable.MODULATE, IActionSource.ofPlayer(player));
+            storage.getInventory()
+                    .insert(
+                            FluxKey.of(EnergyType.FE),
+                            (long) mult.divide(remainder),
+                            Actionable.MODULATE,
+                            IActionSource.ofPlayer(player));
 
             neededPower -= extracted - remainder;
         } catch (Throwable ignored) {
