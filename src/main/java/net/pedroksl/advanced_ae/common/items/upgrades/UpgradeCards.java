@@ -349,8 +349,8 @@ public class UpgradeCards {
 
                 if (neededPower > 0 && energy.getStoredPower() > 0) {
                     var extracted = energy.extractAEPower(rate, Actionable.MODULATE, PowerMultiplier.CONFIG);
-                    var inserted = armor.injectAEPower(stack, extracted, Actionable.MODULATE);
-                    energy.injectPower(extracted - inserted, Actionable.MODULATE);
+                    var remainder = armor.injectAEPower(stack, extracted, Actionable.MODULATE);
+                    energy.injectPower(remainder, Actionable.MODULATE);
                 }
 
                 if (stack.getItem() instanceof QuantumChestplate) {

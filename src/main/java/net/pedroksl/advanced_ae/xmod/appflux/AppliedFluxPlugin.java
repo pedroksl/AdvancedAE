@@ -32,8 +32,16 @@ public class AppliedFluxPlugin {
                     AAEItems.ADV_PATTERN_PROVIDER,
                     1,
                     AAEText.AdvPatternProvider.getTranslationKey());
-            Upgrades.add(AFItemAndBlock.INDUCTION_CARD, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER, 1);
-            Upgrades.add(AFItemAndBlock.INDUCTION_CARD, AAEItems.SMALL_ADV_PATTERN_PROVIDER, 1);
+            Upgrades.add(
+                    AFItemAndBlock.INDUCTION_CARD,
+                    AAEBlocks.SMALL_ADV_PATTERN_PROVIDER,
+                    1,
+                    AAEText.AdvPatternProvider.getTranslationKey());
+            Upgrades.add(
+                    AFItemAndBlock.INDUCTION_CARD,
+                    AAEItems.SMALL_ADV_PATTERN_PROVIDER,
+                    1,
+                    AAEText.AdvPatternProvider.getTranslationKey());
         } catch (Throwable ignored) {
             // NO-OP
         }
@@ -54,9 +62,15 @@ public class AppliedFluxPlugin {
                             Actionable.MODULATE,
                             IActionSource.ofPlayer(player)));
 
-            aePowerStorage.injectAEPower(stack, extracted, Actionable.MODULATE);
+            var remainder = aePowerStorage.injectAEPower(stack, extracted, Actionable.MODULATE);
+            storage.getInventory()
+                    .insert(
+                            FluxKey.of(EnergyType.FE),
+                            (long) mult.divide(remainder),
+                            Actionable.MODULATE,
+                            IActionSource.ofPlayer(player));
 
-            neededPower -= extracted;
+            neededPower -= extracted - remainder;
         } catch (Throwable ignored) {
             // NO_OP
         }

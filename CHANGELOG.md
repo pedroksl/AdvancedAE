@@ -1,2 +1,4 @@
 - Fixed import export bus recipe
 - Fixed ResourceLocationException that happens with the Turkish language
+- Added the fuzzy card upgrade to the import export bus
+- Fixed Quantum Armor consuming full power even when nothing needed recharging with the recharging card
