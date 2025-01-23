@@ -44,12 +44,12 @@ public final class AAEComponents {
 
     public static void init() {
         for (var upgrade : UpgradeType.values()) {
-            DataComponentType<Boolean> toggle =
-                    register(upgrade.name().toLowerCase(Locale.ROOT) + "_toggle", builder -> builder.persistent(Codec.BOOL)
-                            .networkSynchronized(ByteBufCodecs.BOOL));
-            DataComponentType<Integer> value =
-                    register(upgrade.name().toLowerCase(Locale.ROOT) + "_value", builder -> builder.persistent(Codec.INT)
-                            .networkSynchronized(ByteBufCodecs.INT));
+            DataComponentType<Boolean> toggle = register(
+                    upgrade.name().toLowerCase(Locale.ROOT) + "_toggle",
+                    builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+            DataComponentType<Integer> value = register(
+                    upgrade.name().toLowerCase(Locale.ROOT) + "_value",
+                    builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
             DataComponentType<List<GenericStack>> filter =
                     register(upgrade.name().toLowerCase(Locale.ROOT) + "_filter", builder -> builder.persistent(
                                     Codec.list(GenericStack.CODEC))
@@ -58,9 +58,9 @@ public final class AAEComponents {
             UPGRADE_VALUE.put(upgrade, value);
             UPGRADE_FILTER.put(upgrade, filter);
             if (upgrade.getExtraSettings() != UpgradeType.ExtraSettings.NONE) {
-                DataComponentType<Boolean> extra =
-                        register(upgrade.name().toLowerCase(Locale.ROOT) + "_extra", builder -> builder.persistent(Codec.BOOL)
-                                .networkSynchronized(ByteBufCodecs.BOOL));
+                DataComponentType<Boolean> extra = register(
+                        upgrade.name().toLowerCase(Locale.ROOT) + "_extra",
+                        builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
                 UPGRADE_EXTRA.put(upgrade, extra);
             }
         }
