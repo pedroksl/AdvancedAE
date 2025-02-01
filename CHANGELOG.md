@@ -1,5 +1,1 @@
-- Fixed import export bus recipe
-- Fixed import export bus not import types not present in the export filter (#99)
-- Fixed ResourceLocationException that happens with the Turkish language (#100)
-- Added the fuzzy card upgrade to the import export bus
-- Fixed Quantum Armor consuming full power even when nothing needed recharging with the recharging card (#98)
+- Updated to latest AE2

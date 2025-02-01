@@ -23,8 +23,6 @@ import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.implementations.AESubScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.Scrollbar;
-import appeng.client.guidebook.document.LytRect;
-import appeng.client.guidebook.render.SimpleRenderContext;
 import appeng.core.AppEng;
 import appeng.menu.slot.FakeSlot;
 
@@ -94,8 +92,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
             var x = LIST_ANCHOR_X + 1;
             var y = LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING);
             InputRow row = this.rows.get(currentRow);
-            var renderContext = new SimpleRenderContext(LytRect.empty(), guiGraphics);
-            renderContext.renderItem(row.key().wrapForDisplayOrFilter(), x, y, 16, 16);
+            guiGraphics.renderItem(row.key.wrapForDisplayOrFilter(), x, y);
 
             x += 37;
             y += 4;
@@ -115,8 +112,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
         if (outputRow != null) {
             var x = OUTPUT_X + 1;
             var y = OUTPUT_Y + 1;
-            var renderContext = new SimpleRenderContext(LytRect.empty(), guiGraphics);
-            renderContext.renderItem(outputRow.key().wrapForDisplayOrFilter(), x, y, 16, 16);
+            guiGraphics.renderItem(outputRow.key.wrapForDisplayOrFilter(), x, y);
 
             x += 37;
             y += 4;

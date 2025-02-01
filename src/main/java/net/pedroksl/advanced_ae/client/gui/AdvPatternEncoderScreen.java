@@ -28,8 +28,6 @@ import appeng.api.stacks.AEKey;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.Scrollbar;
-import appeng.client.guidebook.document.LytRect;
-import appeng.client.guidebook.render.SimpleRenderContext;
 import appeng.core.AppEng;
 import appeng.menu.slot.FakeSlot;
 
@@ -103,13 +101,10 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
             }
 
             InputRow row = this.rows.get(currentRow);
-            var renderContext = new SimpleRenderContext(LytRect.empty(), guiGraphics);
-            renderContext.renderItem(
+            guiGraphics.renderItem(
                     row.key().wrapForDisplayOrFilter(),
                     LIST_ANCHOR_X + 1,
-                    LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING),
-                    16,
-                    16);
+                    LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING));
 
             var buttons = this.directionButtons.get(row.key);
             var highlight = getSelectedDirButton(row.dir);
