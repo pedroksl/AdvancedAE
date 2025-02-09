@@ -61,6 +61,8 @@ public class AAETagProvider {
             tag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK).add(AAEBlocks.QUANTUM_ALLOY_BLOCK.block());
             tag(Tags.Blocks.STORAGE_BLOCKS).addTag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK);
             tag(BlockTags.WALLS).add(AAEBlocks.QUANTUM_ALLOY_WALL.block());
+            tag(BlockTags.STAIRS).add(AAEBlocks.QUANTUM_ALLOY_STAIRS.block());
+            tag(BlockTags.SLABS).add(AAEBlocks.QUANTUM_ALLOY_SLAB.block());
         }
 
         private static final BlockDefinition<?>[] QUANTUM_ALLOY_BLOCKS = {
@@ -118,6 +120,18 @@ public class AAETagProvider {
             tag(ItemTags.LEG_ARMOR).add(AAEItems.QUANTUM_LEGGINGS.asItem());
             tag(ItemTags.FOOT_ARMOR).add(AAEItems.QUANTUM_BOOTS.asItem());
             tag(Tags.Items.BUCKETS).add(AAEFluids.QUANTUM_INFUSION.bucketItem());
+
+            tag(Tags.Items.DUSTS).add(AAEItems.QUANTUM_INFUSED_DUST.asItem());
+            tag(AAEConventionTags.SHATTERED_SINGULARITY).add(AAEItems.QUANTUM_INFUSED_DUST.asItem());
+
+            tag(AAEConventionTags.QUANTUM_ALLOY_PLATE).add(AAEItems.QUANTUM_ALLOY_PLATE.asItem());
+            tag(AAEConventionTags.PLATES).addTag(AAEConventionTags.QUANTUM_ALLOY_PLATE);
+
+            tag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_ITEM).add(AAEBlocks.QUANTUM_ALLOY_BLOCK.asItem());
+            tag(Tags.Items.STORAGE_BLOCKS).addTag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_ITEM);
+
+            tag(ItemTags.STAIRS).add(AAEBlocks.QUANTUM_ALLOY_STAIRS.asItem());
+            tag(ItemTags.SLABS).add(AAEBlocks.QUANTUM_ALLOY_SLAB.asItem());
         }
 
         @NotNull

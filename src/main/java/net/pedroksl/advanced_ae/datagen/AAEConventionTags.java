@@ -10,16 +10,18 @@ public final class AAEConventionTags {
 
     private AAEConventionTags() {}
 
-    /**
-     * This tag contains all data component types that should be cleared from a memory card when it is
-     * shift+right-clicked.
-     */
     public static final TagKey<Item> OSMIUM_INGOT = tag("c:ingots/osmium");
 
     public static final TagKey<Item> CURIOS = tag("curios:curio");
     public static final TagKey<Item> ENCODER_CURIO = tag("curios:adv_pattern_encoder");
 
     public static final TagKey<Block> QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK = blockTag("c:storage_blocks/quantum_alloy");
+    public static final TagKey<Item> QUANTUM_ALLOY_STORAGE_BLOCK_ITEM = tag("c:storage_blocks/quantum_alloy");
+
+    public static final TagKey<Item> QUANTUM_ALLOY = tag("c:ingots/quantum_alloy");
+    public static final TagKey<Item> PLATES = tag("c:plates");
+    public static final TagKey<Item> QUANTUM_ALLOY_PLATE = tag("c:plates/quantum_alloy");
+    public static final TagKey<Item> SHATTERED_SINGULARITY = tag("c:dusts/shattered_singularity");
 
     private static TagKey<Item> tag(String name) {
         return TagKey.create(Registries.ITEM, ResourceLocation.parse(name));
