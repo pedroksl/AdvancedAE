@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -96,6 +97,22 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         super(partItem, false);
 
         getMainNode().addService(IGridTickable.class, this);
+    }
+
+    @Override
+    public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
+        super.writeToNBT(data, registries);
+        data.putLong("lastValue", this.lastReportedValue);
+        data.putString("throughput", this.lastHumanReadableValue);
+        data.putInt("routine", this.workRoutine.ordinal());
+    }
+
+    @Override
+    public void readFromNBT(CompoundTag data, HolderLookup.Provider registries) {
+        super.readFromNBT(data, registries);
+        this.lastReportedValue = data.getLong("lastValue");
+        this.lastHumanReadableValue = data.getString("throughput");
+        this.workRoutine = WorkRoutine.fromInt(data.getInt("routine"));
     }
 
     @Override
