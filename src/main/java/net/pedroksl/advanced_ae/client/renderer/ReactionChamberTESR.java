@@ -187,11 +187,7 @@ public class ReactionChamberTESR implements BlockEntityRenderer<ReactionChamberE
             ms.scale(ITEM_RENDER_SCALE, ITEM_RENDER_SCALE, ITEM_RENDER_SCALE);
 
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-
-            var model = itemRenderer.getItemModelShaper().getItemModel(stack);
-            RenderSystem.applyModelViewMatrix();
-            itemRenderer.render(
-                    stack, ItemDisplayContext.GROUND, false, ms, buffers, combinedLight, combinedOverlay, model);
+            itemRenderer.renderStatic(stack, ItemDisplayContext.GROUND, combinedLight, combinedOverlay, ms, buffers, Minecraft.getInstance().level, 0);
             ms.popPose();
         }
     }

@@ -19,7 +19,7 @@ public final class ReactionChamberRecipes {
     private ReactionChamberRecipes() {}
 
     public static Iterable<RecipeHolder<ReactionChamberRecipe>> getRecipes(Level level) {
-        return level.getRecipeManager().byType(ReactionChamberRecipe.TYPE);
+        return level.getRecipeManager().getAllRecipesFor(ReactionChamberRecipe.TYPE);
     }
 
     @Nullable

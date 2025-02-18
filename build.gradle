@@ -124,7 +124,7 @@ repositories {
 
 dependencies {
     implementation "curse.maven:glodium-957920:5614731"
-    implementation "org.appliedenergistics:appliedenergistics2:19.2.1-beta"
+    implementation "org.appliedenergistics:appliedenergistics2:19.2.3-beta"
     implementation "curse.maven:ex-pattern-provider-892005:6138925"
     implementation "de.mari_023:ae2wtlib_api:19.1.7"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
