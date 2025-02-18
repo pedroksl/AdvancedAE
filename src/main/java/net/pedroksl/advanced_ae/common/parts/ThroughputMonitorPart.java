@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.common.parts;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -91,6 +92,22 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         super(partItem, false);
 
         getMainNode().addService(IGridTickable.class, this);
+    }
+
+    @Override
+    public void writeToNBT(CompoundTag data) {
+        super.writeToNBT(data);
+        data.putLong("lastValue", this.lastReportedValue);
+        data.putString("throughput", this.lastHumanReadableValue);
+        data.putInt("routine", this.workRoutine.ordinal());
+    }
+
+    @Override
+    public void readFromNBT(CompoundTag data) {
+        super.readFromNBT(data);
+        this.lastReportedValue = data.getLong("lastValue");
+        this.lastHumanReadableValue = data.getString("throughput");
+        this.workRoutine = WorkRoutine.fromInt(data.getInt("routine"));
     }
 
     @Override
