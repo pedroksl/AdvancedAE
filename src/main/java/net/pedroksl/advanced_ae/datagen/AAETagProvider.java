@@ -3,6 +3,8 @@ package net.pedroksl.advanced_ae.datagen;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
+import net.minecraft.tags.ItemTags;
+import net.pedroksl.advanced_ae.common.definitions.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,10 +20,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.definitions.AAEBlockDefinition;
-import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
-import net.pedroksl.advanced_ae.common.definitions.AAEItems;
-import net.pedroksl.advanced_ae.common.definitions.AAETags;
 
 import appeng.datagen.providers.tags.ConventionTags;
 
@@ -57,6 +55,8 @@ public class AAETagProvider {
             tag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK).add(AAEBlocks.QUANTUM_ALLOY_BLOCK.block());
             tag(Tags.Blocks.STORAGE_BLOCKS).addTag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK);
             tag(BlockTags.WALLS).add(AAEBlocks.QUANTUM_ALLOY_WALL.block());
+            tag(BlockTags.STAIRS).add(AAEBlocks.QUANTUM_ALLOY_STAIRS.block());
+            tag(BlockTags.SLABS).add(AAEBlocks.QUANTUM_ALLOY_SLAB.block());
         }
 
         private static final AAEBlockDefinition<?>[] QUANTUM_ALLOY_BLOCKS = {
@@ -103,17 +103,29 @@ public class AAETagProvider {
 
             tag(Tags.Items.INGOTS).add(AAEItems.QUANTUM_ALLOY.asItem());
 
-            //            tag(Tags.Items.ARMORS)
-            //                    .add(
-            //                            AAEItems.QUANTUM_HELMET.asItem(),
-            //                            AAEItems.QUANTUM_CHESTPLATE.asItem(),
-            //                            AAEItems.QUANTUM_LEGGINGS.asItem(),
-            //                            AAEItems.QUANTUM_BOOTS.asItem());
-            //            tag(ItemTags.HEAD_ARMOR).add(AAEItems.QUANTUM_HELMET.asItem());
-            //            tag(ItemTags.CHEST_ARMOR).add(AAEItems.QUANTUM_CHESTPLATE.asItem());
-            //            tag(ItemTags.LEG_ARMOR).add(AAEItems.QUANTUM_LEGGINGS.asItem());
-            //            tag(ItemTags.FOOT_ARMOR).add(AAEItems.QUANTUM_BOOTS.asItem());
-            //            tag(Tags.Items.BUCKETS).add(AAEFluids.QUANTUM_INFUSION.bucketItem());
+            tag(Tags.Items.ARMORS)
+                    .add(
+                            AAEItems.QUANTUM_HELMET.asItem(),
+                            AAEItems.QUANTUM_CHESTPLATE.asItem(),
+                            AAEItems.QUANTUM_LEGGINGS.asItem(),
+                            AAEItems.QUANTUM_BOOTS.asItem());
+            tag(Tags.Items.ARMORS_HELMETS).add(AAEItems.QUANTUM_HELMET.asItem());
+            tag(Tags.Items.ARMORS_CHESTPLATES).add(AAEItems.QUANTUM_CHESTPLATE.asItem());
+            tag(Tags.Items.ARMORS_LEGGINGS).add(AAEItems.QUANTUM_LEGGINGS.asItem());
+            tag(Tags.Items.ARMORS_BOOTS).add(AAEItems.QUANTUM_BOOTS.asItem());
+            //tag(Tags.Items.BUCKETS).add(AAEFluids.QUANTUM_INFUSION.bucketItem());
+
+            tag(Tags.Items.DUSTS).add(AAEItems.QUANTUM_INFUSED_DUST.asItem());
+            tag(AAEConventionTags.SHATTERED_SINGULARITY).add(AAEItems.QUANTUM_INFUSED_DUST.asItem());
+
+            tag(AAEConventionTags.QUANTUM_ALLOY_PLATE).add(AAEItems.QUANTUM_ALLOY_PLATE.asItem());
+            tag(AAEConventionTags.PLATES).addTag(AAEConventionTags.QUANTUM_ALLOY_PLATE);
+
+            tag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_ITEM).add(AAEBlocks.QUANTUM_ALLOY_BLOCK.asItem());
+            tag(Tags.Items.STORAGE_BLOCKS).addTag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_ITEM);
+
+            tag(ItemTags.STAIRS).add(AAEBlocks.QUANTUM_ALLOY_STAIRS.asItem());
+            tag(ItemTags.SLABS).add(AAEBlocks.QUANTUM_ALLOY_SLAB.asItem());
         }
 
         @NotNull

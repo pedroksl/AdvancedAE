@@ -1,6 +1,19 @@
-// 1.20.1	2024-11-28T03:02:33.3577309	Tags (Item)
+// 1.20.1	2025-02-17T21:51:12.4477985	Tags (Item)
 93c314f395bf189b2a44d6db9a54a13fba8818c4 data/advanced_ae/tags/items/adv_pattern_provider.json
 93c314f395bf189b2a44d6db9a54a13fba8818c4 data/ae2/tags/items/pattern_provider.json
 1fd89e4e2f19aa45e536dc325c5c34a0e332ef3e data/curios/tags/items/adv_pattern_encoder.json
+0c6fd83db60ae0551c5b8a9c87fbc7f8f0aea985 data/c/tags/items/dusts/shattered_singularity.json
+9576a9f7bd984969c0d57cac31918c3c872514dd data/c/tags/items/plates.json
+c1afe1ac88eb4e74f7b4f6322f197c4a172a7da4 data/c/tags/items/plates/quantum_alloy.json
+0cbbe2e860eea9b17f21adc62740a60318a0c11a data/c/tags/items/storage_blocks/quantum_alloy.json
+48bf4b15546f45aca3ebda8062e12836eecfa56e data/forge/tags/items/armors.json
+648269cab19570b7da5abbcec81bcc1efb1a7138 data/forge/tags/items/armors/boots.json
+3df8a19e360d724d833ce526d6f633b85626f8c2 data/forge/tags/items/armors/chestplates.json
+3c53ce226c427db6350f01bca3a59e3ebe31ef69 data/forge/tags/items/armors/helmets.json
+36007fea7a15f43d386b0b8ffc48f31750ad8418 data/forge/tags/items/armors/leggings.json
+0c6fd83db60ae0551c5b8a9c87fbc7f8f0aea985 data/forge/tags/items/dusts.json
 8bccf5f8409a6731d8c0cf6dc162a2414324b4ca data/forge/tags/items/ingots.json
+7c78b65a5d84650d08d02e5fd233350623df3c4c data/forge/tags/items/storage_blocks.json
 7e5e537211927dcfbc42d19ce9a043a6e9d1d81a data/forge/tags/items/tools/wrench.json
+44f2fd28815bb5e8f13d75eb341336ca9ded8727 data/minecraft/tags/items/slabs.json
+e9650bafaea8e8323d2f68b8e74c978b93edc482 data/minecraft/tags/items/stairs.json
