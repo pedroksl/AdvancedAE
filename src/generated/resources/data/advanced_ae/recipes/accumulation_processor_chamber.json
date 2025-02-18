@@ -1,0 +1,48 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "megacells"
+        }
+      ],
+      "recipe": {
+        "type": "advanced_ae:reaction",
+        "energy": 20000,
+        "fluid": {
+          "fluidStack": {
+            "Amount": 100,
+            "FluidName": "minecraft:water"
+          }
+        },
+        "input_items": [
+          {
+            "amount": 4,
+            "ingredient": {
+              "item": "megacells:printed_accumulation_processor"
+            }
+          },
+          {
+            "amount": 4,
+            "ingredient": {
+              "item": "ae2:printed_silicon"
+            }
+          },
+          {
+            "amount": 4,
+            "ingredient": {
+              "tag": "forge:dusts/redstone"
+            }
+          }
+        ],
+        "output": {
+          "#": 4,
+          "#c": "ae2:i",
+          "id": "megacells:accumulation_processor"
+        }
+      }
+    }
+  ]
+}

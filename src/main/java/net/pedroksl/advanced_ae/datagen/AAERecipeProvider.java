@@ -653,6 +653,48 @@ public class AAERecipeProvider extends RecipeProvider {
 
         loadAppFluxRecipes(c);
         loadMegaCellsRecipes(c);
+
+        ReactionChamberRecipeBuilder.react(AEItems.LOGIC_PROCESSOR, 4, 20000)
+                .input(AEItems.LOGIC_PROCESSOR_PRINT, 4)
+                .input(AEItems.SILICON_PRINT, 4)
+                .input(ConventionTags.REDSTONE, 4)
+                .fluid(Fluids.WATER, 100)
+                .save(c, AdvancedAE.makeId("logic_processor_chamber"));
+        ReactionChamberRecipeBuilder.react(AEItems.ENGINEERING_PROCESSOR, 4, 20000)
+                .input(AEItems.ENGINEERING_PROCESSOR_PRINT, 4)
+                .input(AEItems.SILICON_PRINT, 4)
+                .input(ConventionTags.REDSTONE, 4)
+                .fluid(Fluids.WATER, 100)
+                .save(c, AdvancedAE.makeId("engineering_processor_chamber"));
+        ReactionChamberRecipeBuilder.react(AEItems.CALCULATION_PROCESSOR, 4, 20000)
+                .input(AEItems.CALCULATION_PROCESSOR_PRINT, 4)
+                .input(AEItems.SILICON_PRINT, 4)
+                .input(ConventionTags.REDSTONE, 4)
+                .fluid(Fluids.WATER, 100)
+                .save(c, AdvancedAE.makeId("calculation_processor_chamber"));
+        ReactionChamberRecipeBuilder.react(AAEItems.QUANTUM_PROCESSOR, 4, 20000)
+                .input(AAEItems.QUANTUM_PROCESSOR_PRINT, 4)
+                .input(AEItems.SILICON_PRINT, 4)
+                .input(ConventionTags.REDSTONE, 4)
+                .fluid(Fluids.WATER, 100)
+                .save(c, AdvancedAE.makeId("quantum_processor_chamber"));
+
+        var accumulationRecipe = ReactionChamberRecipeBuilder.react(MEGAItems.ACCUMULATION_PROCESSOR, 4, 20000)
+                .input(MEGAItems.ACCUMULATION_PROCESSOR_PRINT, 4)
+                .input(AEItems.SILICON_PRINT, 4)
+                .input(ConventionTags.REDSTONE, 4)
+                .fluid(Fluids.WATER, 100);
+        var accumulationId = "accumulation_processor_chamber";
+        Addons.MEGACELLS.conditionalRecipe(
+                c, r -> accumulationRecipe.save(r, accumulationId), AdvancedAE.makeId(accumulationId));
+
+        var energyRecipe = ReactionChamberRecipeBuilder.react(AFItemAndBlock.ENERGY_PROCESSOR, 4, 20000)
+                .input(AFItemAndBlock.ENERGY_PROCESSOR_PRINT, 4)
+                .input(AEItems.SILICON_PRINT, 4)
+                .input(ConventionTags.REDSTONE, 4)
+                .fluid(Fluids.WATER, 100);
+        var energyId = "energy_processor_chamber";
+        Addons.APPFLUX.conditionalRecipe(c, r -> energyRecipe.save(r, energyId), AdvancedAE.makeId(energyId));
     }
 
     private void resetNbtRecipe(@NotNull Consumer<FinishedRecipe> c, BlockDefinition<?> block) {

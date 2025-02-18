@@ -3,8 +3,6 @@ package net.pedroksl.advanced_ae.datagen;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-import net.minecraft.tags.ItemTags;
-import net.pedroksl.advanced_ae.common.definitions.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,11 +13,13 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.definitions.*;
 
 import appeng.datagen.providers.tags.ConventionTags;
 
@@ -113,7 +113,7 @@ public class AAETagProvider {
             tag(Tags.Items.ARMORS_CHESTPLATES).add(AAEItems.QUANTUM_CHESTPLATE.asItem());
             tag(Tags.Items.ARMORS_LEGGINGS).add(AAEItems.QUANTUM_LEGGINGS.asItem());
             tag(Tags.Items.ARMORS_BOOTS).add(AAEItems.QUANTUM_BOOTS.asItem());
-            //tag(Tags.Items.BUCKETS).add(AAEFluids.QUANTUM_INFUSION.bucketItem());
+            // tag(Tags.Items.BUCKETS).add(AAEFluids.QUANTUM_INFUSION.bucketItem());
 
             tag(Tags.Items.DUSTS).add(AAEItems.QUANTUM_INFUSED_DUST.asItem());
             tag(AAEConventionTags.SHATTERED_SINGULARITY).add(AAEItems.QUANTUM_INFUSED_DUST.asItem());
