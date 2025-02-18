@@ -1,5 +1,6 @@
-- Fixed import export bus recipe
-- Fixed import export bus not import types not present in the export filter (#99)
-- Fixed ResourceLocationException that happens with the Turkish language (#100)
-- Added the fuzzy card upgrade to the import export bus
-- Fixed Quantum Armor consuming full power even when nothing needed recharging with the recharging card (#98)
+- Fixed crash that could happen when inserting items with custom models in the reaction chamber
+- Added missing tags (#106)
+- Removed range requirement for the pick craft upgrade card (#112)
+- Fixed Throughput monitor always default to "per-second" on game restart (#113)
+- Fixed a crash that could happen when handling events (#118)
+- Temporarily added AE2 Processor recipes to the reaction chamber while the Crystal Assembler is not ported to 1.20
