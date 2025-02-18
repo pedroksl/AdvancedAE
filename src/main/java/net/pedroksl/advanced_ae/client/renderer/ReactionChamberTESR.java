@@ -2,7 +2,6 @@ package net.pedroksl.advanced_ae.client.renderer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -187,7 +186,15 @@ public class ReactionChamberTESR implements BlockEntityRenderer<ReactionChamberE
             ms.scale(ITEM_RENDER_SCALE, ITEM_RENDER_SCALE, ITEM_RENDER_SCALE);
 
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-            itemRenderer.renderStatic(stack, ItemDisplayContext.GROUND, combinedLight, combinedOverlay, ms, buffers, Minecraft.getInstance().level, 0);
+            itemRenderer.renderStatic(
+                    stack,
+                    ItemDisplayContext.GROUND,
+                    combinedLight,
+                    combinedOverlay,
+                    ms,
+                    buffers,
+                    Minecraft.getInstance().level,
+                    0);
             ms.popPose();
         }
     }
