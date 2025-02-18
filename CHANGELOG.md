@@ -1,1 +1,5 @@
-- Updated to latest AE2
+- Fixed crash that could happen when inserting items with custom models in the reaction chamber
+- Added missing tags (#106)
+- Removed range requirement for the pick craft upgrade card (#112)
+- Fixed Throughput monitor always default to "per-second" on game restart (#113)
+- Fixed a crash that could happen when handling events (#118)
