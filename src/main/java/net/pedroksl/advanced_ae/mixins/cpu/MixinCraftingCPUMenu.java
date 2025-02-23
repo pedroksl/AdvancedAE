@@ -134,7 +134,7 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
                         advancedAE$create(this.incrementalUpdateHelper, this.advancedAE$advCpu.craftingLogic);
                 this.incrementalUpdateHelper.commitChanges();
 
-                sendPacketToClient(new CraftingStatusPacket(status));
+                sendPacketToClient(new CraftingStatusPacket(containerId, status));
             }
         }
     }
