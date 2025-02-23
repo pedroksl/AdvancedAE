@@ -124,6 +124,7 @@ repositories {
 
 dependencies {
     implementation "curse.maven:glodium-957920:5614731"
+    implementation "curse.maven:guideme-1173950:6223759"
     implementation "curse.maven:applied-energistics-2-223794:6225422"
     //implementation "org.appliedenergistics:appliedenergistics2:19.2.4-beta"
     implementation "curse.maven:ex-pattern-provider-892005:6138925"
