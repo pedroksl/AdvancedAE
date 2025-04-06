@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.common.items.upgrades;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -228,6 +229,35 @@ public enum UpgradeType {
             case WORKBENCH -> AAEText.PortableWorkbenchTooltip.text();
             case PICK_CRAFT -> AAEText.PickCraftTooltip.text();
                 //            case HUD -> AAEText.PortableWorkbenchTooltip.text();
+        };
+    }
+
+    public Component getTranslatedName() {
+        return switch (this) {
+            case EMPTY -> Component.literal(name);
+            case WALK_SPEED -> AAEText.WalkSpeedUpgrade.text();
+            case SPRINT_SPEED -> AAEText.SprintSpeedUpgrade.text();
+            case STEP_ASSIST -> AAEText.StepAssistUpgrade.text();
+            case JUMP_HEIGHT -> AAEText.JumpHeightUpgrade.text();
+            case LAVA_IMMUNITY -> AAEText.LavaImmunityUpgrade.text();
+            case FLIGHT -> AAEText.FlightUpgrade.text();
+            case WATER_BREATHING -> AAEText.WaterBreathingUpgrade.text();
+            case AUTO_FEED -> AAEText.AutoFeedUpgrade.text();
+            case AUTO_STOCK -> AAEText.AutoStockUpgrade.text();
+            case MAGNET -> AAEText.MagnetUpgrade.text();
+            case HP_BUFFER -> AAEText.HpBufferUpgrade.text();
+            case EVASION -> AAEText.EvasionUpgrade.text();
+            case REGENERATION -> AAEText.RegenerationUpgrade.text();
+            case STRENGTH -> AAEText.StrengthUpgrade.text();
+            case ATTACK_SPEED -> AAEText.AttackSpeedUpgrade.text();
+            case LUCK -> AAEText.LuckUpgrade.text();
+            case REACH -> AAEText.ReachUpgrade.text();
+            case SWIM_SPEED -> AAEText.SwimSpeedUpgrade.text();
+            case NIGHT_VISION -> AAEText.NightVisionUpgrade.text();
+            case FLIGHT_DRIFT -> AAEText.FlightDriftUpgrade.text();
+            case CHARGING -> AAEText.RechargingUpgrade.text();
+            case WORKBENCH -> AAEText.WorkbenchUpgrade.text();
+            case PICK_CRAFT -> AAEText.PickCraftUpgrade.text();
         };
     }
 
