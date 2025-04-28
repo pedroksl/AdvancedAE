@@ -120,7 +120,7 @@
 	"item.advanced_ae.flight_card": "Карта полёта",
 	"item.advanced_ae.flight_drift_card": "Карта улучшенного полёта",
 	"item.advanced_ae.hp_buffer_card": "Карта буфера HP",
-        "item.advanced_ae.import_export_bus_part": "МЭ шина импорта-экспорта",
+        "item.advanced_ae.import_export_bus_part": "МЭ шина импорта/экспорта",
 	"item.advanced_ae.jump_height_card": "Карта высоты прыжка",
 	"item.advanced_ae.lava_immunity_card": "Карта иммунитета к лаве",
 	"item.advanced_ae.luck_card": "Карта удачи",
