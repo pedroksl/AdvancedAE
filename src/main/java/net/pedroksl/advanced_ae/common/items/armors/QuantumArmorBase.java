@@ -24,7 +24,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -186,7 +185,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
                     int value = armor.getUpgradeValue(stack, UpgradeType.STEP_ASSIST, 0);
                     var att = new AttributeModifier(
                             STEP_ASSIST_MOD, "aae_step_assist", value, AttributeModifier.Operation.ADDITION);
-                    builder.put(ForgeMod.STEP_HEIGHT_ADDITION.get(), att);
+                    builder.put(ForgeMod.STEP_HEIGHT.get(), att);
                 }
             }
         }
@@ -213,8 +212,8 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         if (Addons.APOTHIC_ENCHANTING.isLoaded()) {
-            ApoEnchPlugin.isSameAs(enchantment, ApoEnchPlugin.Enchantment.STABLE_FOOTING);
-            return false;
+            if (ApoEnchPlugin.isSameAs(enchantment, ApoEnchPlugin.Enchantment.STABLE_FOOTING))
+                return false;
         }
 
         return super.canApplyAtEnchantingTable(stack, enchantment);
@@ -270,10 +269,10 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
         controllers.add(new AnimationController<GeoAnimatable>(this, 20, state -> {
             state.getController().setAnimation(RawAnimation.begin().thenLoop("animation.quantum_armor.idle"));
             Entity entity = state.getData(DataTickets.ENTITY);
-            if (entity instanceof ArmorStand) return PlayState.CONTINUE;
+            if (!(entity instanceof Player player)) return PlayState.CONTINUE;
 
             Set<Item> wornArmor = new ObjectOpenHashSet<>();
-            for (ItemStack stack : ((Player) entity).getArmorSlots()) {
+            for (ItemStack stack : player.getArmorSlots()) {
                 if (stack.isEmpty()) return PlayState.STOP;
 
                 wornArmor.add(stack.getItem());
