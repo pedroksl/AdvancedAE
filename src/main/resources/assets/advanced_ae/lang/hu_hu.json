@@ -160,10 +160,10 @@
 "item.advanced_ae.water_breathing_card": "Víz alatti légzés kártya",
 "key.advanced_ae.category": "Fejlett AE",
 "key.advanced_ae.pattern_encoder_action": "Fejlett mintakódoló megnyitása",
-"key.advanced_ae.pick_craft": "Kiválasztott blokk barkácsolásának megkísérlése",
+"key.advanced_ae.pick_craft": "Kiv. blokk barkácsolás megkísérlése",
 "key.advanced_ae.portable_workbench": "Hordozható munkaaasztal megnyitása",
 "key.advanced_ae.quantum_armor_config": "Kvantumpáncél konfiguráció megnyitása",
-"key.advanced_ae.quantum_auto_stock_upgrade": "kvantumpáncél automatikus készlet váltás",
+"key.advanced_ae.quantum_auto_stock_upgrade": "Kvantumpáncél automata készlet váltás",
 "key.advanced_ae.quantum_magnet_upgrade": "Kvantumpáncél mágnes váltás",
 "key.advanced_ae.quantum_night_vision_upgrade": "Kvantumpáncél éjjellátás váltás",
 "material.advanced_ae.quantum_alloy": "Kvantumötvözet"
