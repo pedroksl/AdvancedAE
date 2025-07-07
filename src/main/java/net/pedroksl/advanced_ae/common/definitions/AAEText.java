@@ -88,6 +88,30 @@ public enum AAEText implements LocalizationEnum {
     OverdriveThroughputMonitorValue("%s" + "%s" + "/t", Type.GUI),
     SlowThroughputMonitorValue("%s" + "%s" + "/m", Type.GUI),
 
+    WalkSpeedUpgrade("Walk Speed", Type.UPGRADE),
+    SprintSpeedUpgrade("Sprint Speed", Type.UPGRADE),
+    StepAssistUpgrade("Step Assist", Type.UPGRADE),
+    JumpHeightUpgrade("Jump Height", Type.UPGRADE),
+    LavaImmunityUpgrade("Lava Immunity", Type.UPGRADE),
+    FlightUpgrade("Flight", Type.UPGRADE),
+    WaterBreathingUpgrade("Water Breathing", Type.UPGRADE),
+    AutoFeedUpgrade("Auto Feed", Type.UPGRADE),
+    AutoStockUpgrade("Auto Stock", Type.UPGRADE),
+    MagnetUpgrade("Magnet", Type.UPGRADE),
+    HpBufferUpgrade("HP Buffer", Type.UPGRADE),
+    EvasionUpgrade("Evasion", Type.UPGRADE),
+    RegenerationUpgrade("Regeneration", Type.UPGRADE),
+    StrengthUpgrade("Strength", Type.UPGRADE),
+    AttackSpeedUpgrade("Attack Speed", Type.UPGRADE),
+    LuckUpgrade("Luck Boost", Type.UPGRADE),
+    ReachUpgrade("Reach Boost", Type.UPGRADE),
+    SwimSpeedUpgrade("Swim Speed", Type.UPGRADE),
+    NightVisionUpgrade("Night Vision", Type.UPGRADE),
+    FlightDriftUpgrade("No Flight Drift", Type.UPGRADE),
+    RechargingUpgrade("ME Recharging", Type.UPGRADE),
+    WorkbenchUpgrade("Portable Workbench", Type.UPGRADE),
+    PickCraftUpgrade("Pick-Craft", Type.UPGRADE),
+
     QuantumUpgradeTooltip("Quantum Armor Upgrade", Type.TOOLTIP),
     UpgradeBaseTooltip("Base upgrade card required to craft the others.", Type.TOOLTIP),
     WalkSpeedTooltip("Boosts the walking speed.", Type.TOOLTIP),
@@ -151,6 +175,7 @@ public enum AAEText implements LocalizationEnum {
     private enum Type {
         GUI("gui"),
         TOOLTIP("gui.tooltips"),
+        UPGRADE("gui.upgrade"),
         EMI_CATEGORY("emi.category"),
         EMI_TEXT("emi.text");
 
