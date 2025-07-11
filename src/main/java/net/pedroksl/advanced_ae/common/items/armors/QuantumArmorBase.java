@@ -212,8 +212,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         if (Addons.APOTHIC_ENCHANTING.isLoaded()) {
-            if (ApoEnchPlugin.isSameAs(enchantment, ApoEnchPlugin.Enchantment.STABLE_FOOTING))
-                return false;
+            if (ApoEnchPlugin.isSameAs(enchantment, ApoEnchPlugin.Enchantment.STABLE_FOOTING)) return false;
         }
 
         return super.canApplyAtEnchantingTable(stack, enchantment);

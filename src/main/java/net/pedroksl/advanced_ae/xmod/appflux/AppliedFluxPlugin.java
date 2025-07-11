@@ -3,7 +3,11 @@ package net.pedroksl.advanced_ae.xmod.appflux;
 import com.glodblock.github.appflux.common.AFItemAndBlock;
 import com.glodblock.github.appflux.common.me.key.FluxKey;
 import com.glodblock.github.appflux.common.me.key.type.EnergyType;
+import com.glodblock.github.appflux.util.AFUtil;
+import com.glodblock.github.appflux.util.helpers.INeighborListener;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -85,6 +89,27 @@ public class AppliedFluxPlugin {
                     storage.getInventory().extract(FluxKey.of(EnergyType.FE), afRate, Actionable.MODULATE, source);
             var inserted = cap.receiveEnergy((int) extracted, false);
             storage.getInventory().insert(FluxKey.of(EnergyType.FE), extracted - inserted, Actionable.MODULATE, source);
+        } catch (Throwable ignored) {
+            // NO_OP
+        }
+    }
+
+    public static void notifyBlockUpdate(Object obj, BlockPos self, BlockPos from) {
+        try {
+            if (obj instanceof INeighborListener listener) {
+                AFUtil.notifyNeighbor(listener, self, from);
+            }
+        } catch (Throwable ignored) {
+            // NO_OP
+        }
+    }
+
+    public static void notifyBlockUpdate(Object obj, Direction face, BlockPos self, BlockPos from) {
+        try {
+            var d = AFUtil.getBlockDirection(self, from);
+            if (d == face && d != null && obj instanceof INeighborListener listener) {
+                listener.onChange(d);
+            }
         } catch (Throwable ignored) {
             // NO_OP
         }
