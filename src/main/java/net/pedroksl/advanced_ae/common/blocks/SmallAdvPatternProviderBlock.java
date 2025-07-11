@@ -15,12 +15,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
+import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 
 import appeng.block.AEBaseEntityBlock;
 import appeng.block.crafting.PushDirection;
@@ -51,6 +54,17 @@ public class SmallAdvPatternProviderBlock extends AEBaseEntityBlock<SmallAdvPatt
         var be = this.getBlockEntity(level, pos);
         if (be != null) {
             be.getLogic().updateRedstoneState();
+            if (Addons.APPFLUX.isLoaded() && !level.isClientSide()) {
+                AppliedFluxPlugin.notifyBlockUpdate(be.getLogic(), pos, fromPos);
+            }
+        }
+    }
+
+    @Override
+    public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
+        var be = this.getBlockEntity(level, pos);
+        if (be != null && Addons.APPFLUX.isLoaded() && !level.isClientSide()) {
+            AppliedFluxPlugin.notifyBlockUpdate(be.getLogic(), pos, neighbor);
         }
     }
 

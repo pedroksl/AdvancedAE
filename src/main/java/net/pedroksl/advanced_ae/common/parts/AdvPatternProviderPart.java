@@ -21,6 +21,8 @@ import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
+import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNodeListener;
@@ -126,6 +128,9 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
     @Override
     public void onNeighborChanged(BlockGetter level, BlockPos pos, BlockPos neighbor) {
         this.logic.updateRedstoneState();
+        if (Addons.APPFLUX.isLoaded()) {
+            AppliedFluxPlugin.notifyBlockUpdate(this.getLogic(), this.getSide(), pos, neighbor);
+        }
     }
 
     @Override
