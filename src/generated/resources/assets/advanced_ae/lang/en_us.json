@@ -42,6 +42,7 @@
   "gui.advanced_ae.SetAmount": "Set Stock Amount",
   "gui.advanced_ae.SetAmountButtonHint": "Middle click to set the amount to keep in stock",
   "gui.advanced_ae.SlowThroughputMonitorValue": "%s%s/m",
+  "gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10m",
   "gui.advanced_ae.StockExportBus": "ME Stock Export Bus",
   "gui.advanced_ae.ThroughputMonitorValue": "%s%s/s",
   "gui.advanced_ae.UpgradeNotEnabledMessage": "%s is not enabled.",
