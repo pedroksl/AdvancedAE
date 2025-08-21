@@ -1,8 +1,8 @@
-// 1.21.1	2025-02-09T18:06:48.9066339	Tags (Block)
-7c78b65a5d84650d08d02e5fd233350623df3c4c data/c/tags/block/storage_blocks.json
-0cbbe2e860eea9b17f21adc62740a60318a0c11a data/c/tags/block/storage_blocks/quantum_alloy.json
-4d56c543fc61fcd42b33ecb8174e1e88a3a2b367 data/minecraft/tags/block/mineable/pickaxe.json
-083b59492bcab20026b7bba06c5ec5af42c1cb90 data/minecraft/tags/block/needs_iron_tool.json
-44f2fd28815bb5e8f13d75eb341336ca9ded8727 data/minecraft/tags/block/slabs.json
-e9650bafaea8e8323d2f68b8e74c978b93edc482 data/minecraft/tags/block/stairs.json
-f8ebb9ed06e37ac21b8df3a51209db0caf50619f data/minecraft/tags/block/walls.json
+// 1.21.1	2025-08-20T23:13:00.8287035	Tags (Block)
+d7e633ecdb79ed54026c54b83cbd7a54168d941f data/c/tags/block/storage_blocks.json
+86fe74fc51ce3047aabc48a289b4e9661e98aa9c data/c/tags/block/storage_blocks/quantum_alloy.json
+274313dfaf0273b348561a162e9d1f92b26cf535 data/minecraft/tags/block/mineable/pickaxe.json
+8f909d6acbee35f2fc16ab5f4786deea716a043c data/minecraft/tags/block/needs_iron_tool.json
+4f44f6d4f80c2c7d6ac582a1d2ec509dc51da49b data/minecraft/tags/block/slabs.json
+0c37f69cc0edad01c49f7957395fa70ef030a391 data/minecraft/tags/block/stairs.json
+a645fe456a659a0f706333346c96d52f2b46b645 data/minecraft/tags/block/walls.json

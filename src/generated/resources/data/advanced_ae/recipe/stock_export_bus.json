@@ -1,24 +1,24 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "C": {
-      "item": "ae2:calculation_processor"
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "C": {
+            "item": "ae2:calculation_processor"
+        },
+        "E": {
+            "item": "ae2:export_bus"
+        },
+        "L": {
+            "item": "ae2:logic_processor"
+        }
     },
-    "E": {
-      "item": "ae2:export_bus"
-    },
-    "L": {
-      "item": "ae2:logic_processor"
+    "pattern": [
+        "   ",
+        "CEL",
+        "   "
+    ],
+    "result": {
+        "count": 1,
+        "id": "advanced_ae:stock_export_bus_part"
     }
-  },
-  "pattern": [
-    "   ",
-    "CEL",
-    "   "
-  ],
-  "result": {
-    "count": 1,
-    "id": "advanced_ae:stock_export_bus_part"
-  }
 }

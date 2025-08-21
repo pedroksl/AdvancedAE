@@ -1,18 +1,18 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "extendedae"
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "extendedae"
+        }
+    ],
+    "type": "extendedae:circuit_cutter",
+    "input": {
+        "ingredient": {
+            "item": "advanced_ae:quantum_alloy_block"
+        }
+    },
+    "output": {
+        "count": 9,
+        "id": "advanced_ae:printed_quantum_processor"
     }
-  ],
-  "type": "extendedae:circuit_cutter",
-  "input": {
-    "ingredient": {
-      "item": "advanced_ae:quantum_alloy_block"
-    }
-  },
-  "output": {
-    "count": 9,
-    "id": "advanced_ae:printed_quantum_processor"
-  }
 }

@@ -42,7 +42,7 @@
 	"gui.advanced_ae.SetAmount": "Stok Miktarını Ayarla",
 	"gui.advanced_ae.SetAmountButtonHint": "Stokta tutulacak miktarı ayarlamak için orta tuşa tıklayın",
 	"gui.advanced_ae.SlowThroughputMonitorValue": "%s%s/d",
-    "gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10d",
+	"gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10d",
 	"gui.advanced_ae.StockExportBus": "ME Stok Dışa Aktarma Veriyolu",
 	"gui.advanced_ae.ThroughputMonitorValue": "%s%s/s",
 	"gui.advanced_ae.UpgradeNotEnabledMessage": "%s etkin değil.",

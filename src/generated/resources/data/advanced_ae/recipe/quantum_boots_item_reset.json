@@ -1,13 +1,13 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "advanced_ae:quantum_boots"
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        {
+            "item": "advanced_ae:quantum_boots"
+        }
+    ],
+    "result": {
+        "count": 1,
+        "id": "advanced_ae:quantum_boots"
     }
-  ],
-  "result": {
-    "count": 1,
-    "id": "advanced_ae:quantum_boots"
-  }
 }

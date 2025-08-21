@@ -1,19 +1,19 @@
 {
-  "type": "ae2:inscriber",
-  "ingredients": {
-    "bottom": {
-      "item": "ae2:logic_processor_press"
+    "type": "ae2:inscriber",
+    "ingredients": {
+        "bottom": {
+            "item": "ae2:logic_processor_press"
+        },
+        "middle": {
+            "item": "advanced_ae:shattered_singularity"
+        },
+        "top": {
+            "item": "ae2:engineering_processor_press"
+        }
     },
-    "middle": {
-      "item": "advanced_ae:shattered_singularity"
-    },
-    "top": {
-      "item": "ae2:engineering_processor_press"
+    "mode": "press",
+    "result": {
+        "count": 1,
+        "id": "advanced_ae:quantum_processor_press"
     }
-  },
-  "mode": "press",
-  "result": {
-    "count": 1,
-    "id": "advanced_ae:quantum_processor_press"
-  }
 }

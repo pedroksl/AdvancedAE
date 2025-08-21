@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "advanced_ae:block/crafting/quantum_storage_128"
+    "variants": {
+        "": {
+            "model": "advanced_ae:block/crafting/quantum_storage_128"
+        }
     }
-  }
 }

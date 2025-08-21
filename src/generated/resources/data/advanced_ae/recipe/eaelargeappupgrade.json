@@ -1,43 +1,43 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "extendedae"
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "extendedae"
+        }
+    ],
+    "type": "extendedae:crystal_assembler",
+    "input_items": [
+        {
+            "ingredient": {
+                "tag": "c:ingots"
+            }
+        },
+        {
+            "amount": 3,
+            "ingredient": {
+                "item": "ae2:capacity_card"
+            }
+        },
+        {
+            "amount": 3,
+            "ingredient": {
+                "item": "minecraft:crafting_table"
+            }
+        },
+        {
+            "ingredient": {
+                "item": "extendedae:concurrent_processor"
+            }
+        },
+        {
+            "amount": 6,
+            "ingredient": {
+                "tag": "ae2:glass_cable"
+            }
+        }
+    ],
+    "output": {
+        "count": 1,
+        "id": "advanced_ae:adv_pattern_provider_capacity_upgrade"
     }
-  ],
-  "type": "extendedae:crystal_assembler",
-  "input_items": [
-    {
-      "ingredient": {
-        "tag": "c:ingots"
-      }
-    },
-    {
-      "amount": 3,
-      "ingredient": {
-        "item": "ae2:capacity_card"
-      }
-    },
-    {
-      "amount": 3,
-      "ingredient": {
-        "item": "minecraft:crafting_table"
-      }
-    },
-    {
-      "ingredient": {
-        "item": "extendedae:concurrent_processor"
-      }
-    },
-    {
-      "amount": 6,
-      "ingredient": {
-        "tag": "ae2:glass_cable"
-      }
-    }
-  ],
-  "output": {
-    "count": 1,
-    "id": "advanced_ae:adv_pattern_provider_capacity_upgrade"
-  }
 }

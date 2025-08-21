@@ -1,10 +1,10 @@
 {
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "advanced_ae:quantum_alloy_block"
-  },
-  "result": {
-    "count": 2,
-    "id": "advanced_ae:quantum_alloy_slab"
-  }
+    "type": "minecraft:stonecutting",
+    "ingredient": {
+        "item": "advanced_ae:quantum_alloy_block"
+    },
+    "result": {
+        "count": 2,
+        "id": "advanced_ae:quantum_alloy_slab"
+    }
 }

@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "advanced_ae:block/crafting/quantum_unit"
+    "variants": {
+        "": {
+            "model": "advanced_ae:block/crafting/quantum_unit"
+        }
     }
-  }
 }

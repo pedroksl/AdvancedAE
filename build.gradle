@@ -123,39 +123,38 @@ repositories {
 }
 
 dependencies {
-    implementation "curse.maven:glodium-957920:5614731"
-    implementation "curse.maven:guideme-1173950:6223759"
-    implementation "curse.maven:applied-energistics-2-223794:6225422"
-    //implementation "org.appliedenergistics:appliedenergistics2:19.2.4-beta"
-    implementation "curse.maven:ex-pattern-provider-892005:6138925"
-    implementation "de.mari_023:ae2wtlib_api:19.1.7"
+    implementation "curse.maven:glodium-957920:5821676"
+    implementation "curse.maven:guideme-1173950:6812025"
+    implementation "org.appliedenergistics:appliedenergistics2:19.2.15"
+    implementation "curse.maven:ex-pattern-provider-892005:6863556"
+    implementation "de.mari_023:ae2wtlib_api:19.2.5"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    compileOnly "curse.maven:emi-580555:5872513"
-    implementation "curse.maven:applied-flux-965012:5946853"
-    implementation "curse.maven:jade-324717:5976517"
-    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.729"
-    implementation "curse.maven:mega-cells-622112:5981446"
-    implementation "curse.maven:mekanism-268560:5680395"
-    implementation "curse.maven:adorned-1036809:5740650"
-    compileOnly "curse.maven:jei-238222:5846880"
+    compileOnly "curse.maven:emi-580555:6420931"
+    implementation "curse.maven:applied-flux-965012:6649565"
+    implementation "curse.maven:jade-324717:6853386"
+    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.799"
+    implementation "curse.maven:mega-cells-622112:6853076"
+    implementation "curse.maven:mekanism-268560:6895130"
+    implementation "curse.maven:curios-309927:6529130"
+    compileOnly "curse.maven:jei-238222:6829086"
 
-    runtimeOnly "curse.maven:placebo-283644:5869769"
-    runtimeOnly "curse.maven:apothic-attributes-898963:5751458"
-    implementation "curse.maven:apothic-enchanting-1063926:5787344"
-    compileOnly "curse.maven:irisshaders-455508:5765375"
+    runtimeOnly "curse.maven:placebo-283644:6751290"
+    runtimeOnly "curse.maven:apothic-attributes-898963:6751650"
+    implementation "curse.maven:apothic-enchanting-1063926:6751658"
+    compileOnly "curse.maven:irisshaders-455508:6661598"
     // setup Xei
     switch (use_Xei) {
         case "emi":
-            runtimeOnly "curse.maven:emi-580555:5704405"
+            runtimeOnly "curse.maven:emi-580555:6420931"
             break
         case "rei":
-            runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.729"
-            runtimeOnly "dev.architectury:architectury-neoforge:13.0.6"
-            runtimeOnly "curse.maven:cloth-config-348521:5424576"
+            runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.799"
+            runtimeOnly "dev.architectury:architectury-neoforge:15.0.8"
+            runtimeOnly "curse.maven:cloth-config-348521:5729127"
             break
         case "jei":
-            runtimeOnly "curse.maven:jei-238222:5846880"
-            runtimeOnly "dev.architectury:architectury-neoforge:13.0.6"
+            runtimeOnly "curse.maven:jei-238222:6829086"
+            runtimeOnly "dev.architectury:architectury-neoforge:13.0.8"
     }
 }
 
@@ -300,8 +299,8 @@ spotless {
     }
 
     json {
-        target("src/**/resources/**/*.json")
-        targetExclude("src/generated/resources/**")
+        target('src/**/resources/**/*.json')
+        targetExclude('src/generated/resources/**')
         biome()
         indentWithTabs(1)
         endWithNewline()

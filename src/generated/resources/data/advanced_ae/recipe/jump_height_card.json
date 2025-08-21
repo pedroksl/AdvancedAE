@@ -1,27 +1,27 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "B": {
-      "item": "minecraft:blaze_powder"
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "B": {
+            "item": "minecraft:blaze_powder"
+        },
+        "C": {
+            "item": "advanced_ae:quantum_upgrade_base"
+        },
+        "E": {
+            "item": "minecraft:end_crystal"
+        },
+        "G": {
+            "item": "minecraft:gunpowder"
+        }
     },
-    "C": {
-      "item": "advanced_ae:quantum_upgrade_base"
-    },
-    "E": {
-      "item": "minecraft:end_crystal"
-    },
-    "G": {
-      "item": "minecraft:gunpowder"
+    "pattern": [
+        " C ",
+        " G ",
+        "BEB"
+    ],
+    "result": {
+        "count": 1,
+        "id": "advanced_ae:jump_height_card"
     }
-  },
-  "pattern": [
-    " C ",
-    " G ",
-    "BEB"
-  ],
-  "result": {
-    "count": 1,
-    "id": "advanced_ae:jump_height_card"
-  }
 }

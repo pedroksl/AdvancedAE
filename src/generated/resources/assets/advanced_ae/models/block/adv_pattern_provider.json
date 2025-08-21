@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "advanced_ae:block/adv_pattern_provider"
-  }
+    "parent": "minecraft:block/cube_all",
+    "textures": {
+        "all": "advanced_ae:block/adv_pattern_provider"
+    }
 }
