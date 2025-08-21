@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
+import net.pedroksl.advanced_ae.AdvancedAE;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.Component;
@@ -175,7 +176,7 @@ public enum UpgradeType {
     }
 
     public String getTranslationKey() {
-        return "gui.upgrades.advanced_ae." + this.name.replaceAll("\\s+", "") + "Upgrade";
+        return "gui.upgrades." + AdvancedAE.MOD_ID + "." + this.name.replaceAll("\\s+", "") + "Upgrade";
     }
 
     public Component getTranslatedName() {
