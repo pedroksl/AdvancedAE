@@ -1,1 +1,1 @@
-- Updated to latest AE2
+- Reworked throughput monitor logic to include history caching for added precision
