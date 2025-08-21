@@ -1,34 +1,34 @@
 {
-  "type": "advanced_ae:reaction",
-  "input_energy": 200000,
-  "input_fluid": {
-    "amount": 100,
-    "ingredient": {
-      "fluid": "minecraft:lava"
-    }
-  },
-  "input_items": [
-    {
-      "ingredient": {
-        "item": "ae2:singularity"
-      }
+    "type": "advanced_ae:reaction",
+    "input_energy": 200000,
+    "input_fluid": {
+        "amount": 100,
+        "ingredient": {
+            "fluid": "minecraft:lava"
+        }
     },
-    {
-      "amount": 2,
-      "ingredient": {
-        "tag": "c:dusts/ender_pearl"
-      }
-    },
-    {
-      "amount": 2,
-      "ingredient": {
-        "item": "ae2:sky_dust"
-      }
+    "input_items": [
+        {
+            "ingredient": {
+                "item": "ae2:singularity"
+            }
+        },
+        {
+            "amount": 2,
+            "ingredient": {
+                "tag": "c:dusts/ender_pearl"
+            }
+        },
+        {
+            "amount": 2,
+            "ingredient": {
+                "item": "ae2:sky_dust"
+            }
+        }
+    ],
+    "output": {
+        "#": 2,
+        "#t": "ae2:i",
+        "id": "advanced_ae:shattered_singularity"
     }
-  ],
-  "output": {
-    "#": 2,
-    "#t": "ae2:i",
-    "id": "advanced_ae:shattered_singularity"
-  }
 }

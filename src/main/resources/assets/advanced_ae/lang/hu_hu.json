@@ -42,7 +42,7 @@
 	"gui.advanced_ae.SetAmount": "Készlet mennyiség beállítása",
 	"gui.advanced_ae.SetAmountButtonHint": "Középső kattintás a készletben tartandó mennyiség beállításához",
 	"gui.advanced_ae.SlowThroughputMonitorValue": "%s%s/p",
-    "gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10p",
+	"gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10p",
 	"gui.advanced_ae.StockExportBus": "ME készlet exportbusz",
 	"gui.advanced_ae.ThroughputMonitorValue": "%s%s/s",
 	"gui.advanced_ae.UpgradeNotEnabledMessage": "%s nincs engedélyezve.",

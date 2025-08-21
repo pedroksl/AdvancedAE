@@ -41,7 +41,7 @@
 	"gui.advanced_ae.SetAmount": "设置目标仓库存货量",
 	"gui.advanced_ae.SetAmountButtonHint": "点击鼠标中键设置目标仓库存货量",
 	"gui.advanced_ae.SlowThroughputMonitorValue": "%s%s/m",
-    "gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10m",
+	"gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10m",
 	"gui.advanced_ae.StockExportBus": "库存输出总线",
 	"gui.advanced_ae.ThroughputMonitorValue": "%s%s/s",
 	"gui.advanced_ae.UpgradeNotEnabledMessage": "%s 未启用。",

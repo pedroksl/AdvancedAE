@@ -1,21 +1,21 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "P": {
-      "item": "advanced_ae:quantum_alloy_plate"
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "P": {
+            "item": "advanced_ae:quantum_alloy_plate"
+        },
+        "Q": {
+            "item": "advanced_ae:quantum_processor"
+        }
     },
-    "Q": {
-      "item": "advanced_ae:quantum_processor"
+    "pattern": [
+        " Q ",
+        "QPQ",
+        " Q "
+    ],
+    "result": {
+        "count": 1,
+        "id": "advanced_ae:quantum_upgrade_base"
     }
-  },
-  "pattern": [
-    " Q ",
-    "QPQ",
-    " Q "
-  ],
-  "result": {
-    "count": 1,
-    "id": "advanced_ae:quantum_upgrade_base"
-  }
 }

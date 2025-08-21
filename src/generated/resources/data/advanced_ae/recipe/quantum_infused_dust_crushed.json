@@ -1,17 +1,17 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "mekanism"
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "mekanism"
+        }
+    ],
+    "type": "mekanism:crushing",
+    "input": {
+        "count": 1,
+        "item": "advanced_ae:shattered_singularity"
+    },
+    "output": {
+        "count": 1,
+        "id": "advanced_ae:quantum_infused_dust"
     }
-  ],
-  "type": "mekanism:crushing",
-  "input": {
-    "count": 1,
-    "item": "advanced_ae:shattered_singularity"
-  },
-  "output": {
-    "count": 1,
-    "id": "advanced_ae:quantum_infused_dust"
-  }
 }

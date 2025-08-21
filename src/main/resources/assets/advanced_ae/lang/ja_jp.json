@@ -41,7 +41,7 @@
 	"gui.advanced_ae.SetAmount": "在庫量設定",
 	"gui.advanced_ae.SetAmountButtonHint": "ミドルクリックして、在庫を保持する量を設定します",
 	"gui.advanced_ae.SlowThroughputMonitorValue": "%s%s/m",
-    "gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10m",
+	"gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10m",
 	"gui.advanced_ae.StockExportBus": "ストック出力バス",
 	"gui.advanced_ae.ThroughputMonitorValue": "%s%s/s",
 	"gui.advanced_ae.UpgradeNotEnabledMessage": "%s は有効ではありません。",

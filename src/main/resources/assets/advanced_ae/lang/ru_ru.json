@@ -42,7 +42,7 @@
 	"gui.advanced_ae.SetAmount": "Установить сумму заказа",
 	"gui.advanced_ae.SetAmountButtonHint": "Нажмите среднюю кнопку мыши, чтобы задать количество, которое нужно держать в запасе",
 	"gui.advanced_ae.SlowThroughputMonitorValue": "%s%s/m",
-    "gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10m",
+	"gui.advanced_ae.SlowerThroughputMonitorValue": "%s%s/10m",
 	"gui.advanced_ae.StockExportBus": "Шина экспорта запаса",
 	"gui.advanced_ae.ThroughputMonitorValue": "%s%s/s",
 	"gui.advanced_ae.UpgradeNotEnabledMessage": "%s не включен.",

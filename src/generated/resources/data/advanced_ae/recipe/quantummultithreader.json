@@ -1,36 +1,36 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:mod_loaded",
-        "modid": "extendedae"
-      }
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:not",
+            "value": {
+                "type": "neoforge:mod_loaded",
+                "modid": "extendedae"
+            }
+        }
+    ],
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "A": {
+            "item": "advanced_ae:quantum_accelerator"
+        },
+        "C": {
+            "item": "advanced_ae:quantum_core"
+        },
+        "S": {
+            "item": "advanced_ae:shattered_singularity"
+        },
+        "U": {
+            "item": "advanced_ae:quantum_unit"
+        }
+    },
+    "pattern": [
+        "SSS",
+        "AUA",
+        "ACA"
+    ],
+    "result": {
+        "count": 1,
+        "id": "advanced_ae:quantum_multi_threader"
     }
-  ],
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "A": {
-      "item": "advanced_ae:quantum_accelerator"
-    },
-    "C": {
-      "item": "advanced_ae:quantum_core"
-    },
-    "S": {
-      "item": "advanced_ae:shattered_singularity"
-    },
-    "U": {
-      "item": "advanced_ae:quantum_unit"
-    }
-  },
-  "pattern": [
-    "SSS",
-    "AUA",
-    "ACA"
-  ],
-  "result": {
-    "count": 1,
-    "id": "advanced_ae:quantum_multi_threader"
-  }
 }

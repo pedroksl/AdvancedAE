@@ -1,41 +1,41 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:mod_loaded",
-        "modid": "extendedae"
-      }
-    }
-  ],
-  "parent": "minecraft:recipes/root",
-  "criteria": {
-    "hasItem": {
-      "conditions": {
-        "items": [
-          {
-            "items": "advanced_ae:quantum_unit"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:not",
+            "value": {
+                "type": "neoforge:mod_loaded",
+                "modid": "extendedae"
+            }
+        }
+    ],
+    "parent": "minecraft:recipes/root",
+    "criteria": {
+        "hasItem": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "advanced_ae:quantum_unit"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "has_the_recipe": {
+            "conditions": {
+                "recipe": "advanced_ae:quantummultithreader"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+        }
     },
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "advanced_ae:quantummultithreader"
-      },
-      "trigger": "minecraft:recipe_unlocked"
+    "requirements": [
+        [
+            "has_the_recipe",
+            "hasItem"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "advanced_ae:quantummultithreader"
+        ]
     }
-  },
-  "requirements": [
-    [
-      "has_the_recipe",
-      "hasItem"
-    ]
-  ],
-  "rewards": {
-    "recipes": [
-      "advanced_ae:quantummultithreader"
-    ]
-  }
 }

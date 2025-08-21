@@ -1,16 +1,16 @@
 {
-  "type": "ae2:inscriber",
-  "ingredients": {
-    "middle": {
-      "item": "minecraft:iron_block"
+    "type": "ae2:inscriber",
+    "ingredients": {
+        "middle": {
+            "item": "minecraft:iron_block"
+        },
+        "top": {
+            "item": "advanced_ae:quantum_processor_press"
+        }
     },
-    "top": {
-      "item": "advanced_ae:quantum_processor_press"
+    "mode": "inscribe",
+    "result": {
+        "count": 1,
+        "id": "advanced_ae:quantum_processor_press"
     }
-  },
-  "mode": "inscribe",
-  "result": {
-    "count": 1,
-    "id": "advanced_ae:quantum_processor_press"
-  }
 }

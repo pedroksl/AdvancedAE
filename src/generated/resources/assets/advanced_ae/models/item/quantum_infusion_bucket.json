@@ -1,5 +1,5 @@
 {
-  "parent": "neoforge:item/bucket",
-  "fluid": "advanced_ae:quantum_infusion_source",
-  "loader": "neoforge:fluid_container"
+    "parent": "neoforge:item/bucket",
+    "fluid": "advanced_ae:quantum_infusion_source",
+    "loader": "neoforge:fluid_container"
 }
