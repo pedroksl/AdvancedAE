@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.*;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 
 public class AAELanguageProvider extends LanguageProvider {
     public AAELanguageProvider(PackOutput output) {
@@ -40,14 +41,18 @@ public class AAELanguageProvider extends LanguageProvider {
         }
 
         for (var key : AAEHotkeys.Keys.values()) {
-            add("key.advanced_ae." + key.getId(), key.getEnglishTranslation());
+            add("key." + AdvancedAE.MOD_ID + "." + key.getId(), key.getEnglishTranslation());
+        }
+
+        for (var upgrade : UpgradeType.values()) {
+            add(upgrade.getTranslationKey(), upgrade.name);
         }
 
         generateLocalizations();
     }
 
     private void generateLocalizations() {
-        add("key.advanced_ae.category", "Advanced AE");
+        add("key." + AdvancedAE.MOD_ID + ".category", "Advanced AE");
         add("curios.identifier.adv_pattern_encoder", "Pattern Encoder");
     }
 

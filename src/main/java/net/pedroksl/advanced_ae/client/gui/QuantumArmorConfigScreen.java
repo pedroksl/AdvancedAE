@@ -133,7 +133,12 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
             poseStack.translate(10.0F, 8.0F + (i * 3.5F), 0.0F);
             poseStack.scale(0.8F, 0.8F, 1.0F);
             guiGraphics.drawString(
-                    this.font, upgrade.getName(), upgrade.getX() + 2, upgrade.getY() + 3, color.toARGB(), false);
+                    this.font,
+                    upgrade.getType().getTranslatedName(),
+                    upgrade.getX() + 2,
+                    upgrade.getY() + 3,
+                    color.toARGB(),
+                    false);
             poseStack.popPose();
         }
     }
