@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.common.items.upgrades;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -166,6 +167,14 @@ public enum UpgradeType {
 
     public ApplicationType getApplicationType() {
         return this.applicationType;
+    }
+
+    public String getTranslationKey() {
+        return "gui.upgrades.advanced_ae." + this.name.replaceAll("\\s+", "") + "Upgrade";
+    }
+
+    public Component getTranslatedName() {
+        return Component.translatable(getTranslationKey());
     }
 
     public UpgradeSettings getSettings() {
