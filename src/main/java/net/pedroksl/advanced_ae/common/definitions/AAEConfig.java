@@ -176,14 +176,14 @@ public class AAEConfig {
                     8,
                     4,
                     16,
-                    "Define the maximum amount of multi threaders per Quantum Computer Multiblock.");
+                    "Define the amount of Threads per Quantum Computer Accelerator.");
             quantumComputerMaxMultiThreaders = define(
                     builder,
                     "quantumComputerMaxMultiThreaders",
                     1,
                     1,
                     2,
-                    "Define the maximum amount of multi threaders per Quantum Computer Multiblock.");
+                    "Define the maximum amount of Multi Threaders per Quantum Computer Multiblock.");
             quantumComputerMaxDataEntanglers = define(
                     builder,
                     "quantumComputermaxDataEntanglers",
