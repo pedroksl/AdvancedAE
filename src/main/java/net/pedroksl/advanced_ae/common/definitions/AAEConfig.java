@@ -103,6 +103,10 @@ public class AAEConfig {
         return common.percentageDamageAbsorption.get();
     }
 
+    public int getThroughputMonitorCacheSize() {
+        return common.throughputMonitorCacheSize.get();
+    }
+
     public void save() {
         common.spec.save();
         client.spec.save();
@@ -154,6 +158,8 @@ public class AAEConfig {
         public final ForgeConfigSpec.IntValue swimSpeedBoost;
         public final ForgeConfigSpec.IntValue regenerationPerTick;
         public final ForgeConfigSpec.IntValue percentageDamageAbsorption;
+
+        public final ForgeConfigSpec.IntValue throughputMonitorCacheSize;
 
         public CommonConfig() {
             var builder = new ForgeConfigSpec.Builder();
@@ -284,6 +290,16 @@ public class AAEConfig {
                     5,
                     100,
                     "Define the maximum percentage of incoming damage absorbed by the Quantum Armor. This value is still limited by the energy buffer in the equipment.");
+            builder.pop();
+
+            builder.push("Miscellaneous");
+            throughputMonitorCacheSize = define(
+                    builder,
+                    "throughputMonitorCacheSize",
+                    80,
+                    40,
+                    400,
+                    "Define the size of the cache for the Throughput Monitor. Only affects \"Per minute\" and \"Per 10 minutes\" configurations. Higher values will increase precison, but will make the monitor react slower to changes.");
             builder.pop();
 
             this.spec = builder.build();
