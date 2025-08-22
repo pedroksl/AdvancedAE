@@ -2,16 +2,16 @@ package net.pedroksl.advanced_ae.api;
 
 import java.util.EnumSet;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 import appeng.api.orientation.BlockOrientation;
 import appeng.api.orientation.RelativeSide;
 import appeng.api.storage.ISubMenuHost;
-import appeng.blockentity.networking.CableBusBlockEntity;
 
 public interface IDirectionalOutputHost extends ISubMenuHost {
 
@@ -35,20 +35,15 @@ public interface IDirectionalOutputHost extends ISubMenuHost {
         }
 
         BlockState blockState = level.getBlockState(blockPos);
-        ItemStack itemStack = blockState.getBlock().asItem().getDefaultInstance();
-        if (blockState.hasBlockEntity()) {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity != null) {
-                if (blockEntity instanceof CableBusBlockEntity cable) {
-                    var part = cable.getPart(dir.getOpposite());
-                    if (part != null) {
-                        itemStack = new ItemStack(part.getPartItem().asItem(), 1);
-                    }
-                } else {
-                    blockEntity.saveToItem(itemStack, level.registryAccess());
-                }
-            }
+        if (!blockState.isAir()) {
+            return blockState.getCloneItemStack(
+                    new BlockHitResult(
+                            blockPos.getCenter().relative(dir.getOpposite(), 0.5), dir.getOpposite(), blockPos, false),
+                    level,
+                    blockPos,
+                    Minecraft.getInstance().player);
+        } else {
+            return ItemStack.EMPTY;
         }
-        return itemStack;
     }
 }
