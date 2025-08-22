@@ -1,3 +1,2 @@
-- Updated AppliedFlux API to latest @GlodBlock
-- Ported the fix for quantum armor crashing the game when worn by non-player entities
-- Updated chinese translations @hel10word
+- Revert step height attribute to increase forge version compatibility
+- Fixed large tooltip for pattern providers and reaction chamber when applied mekanistics is installed

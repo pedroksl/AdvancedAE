@@ -298,8 +298,8 @@ spotless {
     }
 
     json {
-        target("src/**/resources/**/*.json")
-        targetExclude("src/generated/resources/**")
+        target('src/**/resources/**/*.json')
+        targetExclude('src/generated/resources/**')
         biome()
         indentWithTabs(1)
         endWithNewline()
