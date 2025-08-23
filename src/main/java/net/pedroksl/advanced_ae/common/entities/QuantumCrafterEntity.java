@@ -550,12 +550,15 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             if (job.isInputConsumed(input)) {
                 toReturn -= (required * completeRecipes);
             }
-            var successfulReturn = storage.getInventory()
-                    .insert(extractedItems.get(x).what(), toReturn, Actionable.MODULATE, this.mySrc);
 
-            // Failed to add to ME System, add to send list to try again later
-            if (successfulReturn < toReturn) {
-                this.sendList.add(new GenericStack(input.what(), toReturn - successfulReturn));
+            if (toReturn > 0) {
+                var successfulReturn = storage.getInventory()
+                        .insert(extractedItems.get(x).what(), toReturn, Actionable.MODULATE, this.mySrc);
+
+                // Failed to add to ME System, add to send list to try again later
+                if (successfulReturn < toReturn) {
+                    this.sendList.add(new GenericStack(input.what(), toReturn - successfulReturn));
+                }
             }
         }
     }
@@ -1287,7 +1290,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             }
 
             ItemStack remainingItem = findMatchingRemainingItem(input);
-            if (input.amount() < remainingItem.getCount()) {
+            if (input.amount() <= remainingItem.getCount()) {
                 return multiplier;
             }
 
@@ -1315,7 +1318,8 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             for (var output : pattern.getOutputs()) {
                 ItemStack outStack = ((AEItemKey) output.what()).toStack();
 
-                if (inStack.getComponentsPatch().equals(outStack.getComponentsPatch())
+
+                if ((!inStack.isComponentsPatchEmpty() && inStack.getComponentsPatch().equals(outStack.getComponentsPatch()))
                         || inStack.is(outStack.getItem())) {
                     return outStack;
                 }
@@ -1324,8 +1328,12 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
 
         public boolean isInputConsumed(GenericStack input) {
-            ItemStack in = findMatchingOutput(input);
-            return !(!in.isEmpty() && !this.hasDataChange);
+            ItemStack in = findMatchingRemainingItem(input);
+            if (in.getCount() >= input.amount())
+                return false;
+
+            ItemStack out = findMatchingOutput(input);
+            return !(!out.isEmpty() && !this.hasDataChange);
         }
 
         public ItemStack findMatchingRemainingItem(GenericStack input) {

@@ -138,6 +138,9 @@ dependencies {
     implementation "curse.maven:curios-309927:6529130"
     compileOnly "curse.maven:jei-238222:6829086"
 
+    runtimeOnly "curse.maven:cucumber-272335:5663120"
+    runtimeOnly "curse.maven:mystical-agriculture-246640:5938110"
+
     runtimeOnly "curse.maven:placebo-283644:6751290"
     runtimeOnly "curse.maven:apothic-attributes-898963:6751650"
     implementation "curse.maven:apothic-enchanting-1063926:6751658"
