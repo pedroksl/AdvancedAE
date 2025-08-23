@@ -5,8 +5,7 @@ import java.util.*;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
@@ -15,10 +14,7 @@ import appeng.api.config.CpuSelectionMode;
 import appeng.api.config.Settings;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
-import appeng.api.networking.crafting.CraftingJobStatus;
-import appeng.api.networking.crafting.ICraftingPlan;
-import appeng.api.networking.crafting.ICraftingRequester;
-import appeng.api.networking.crafting.ICraftingSubmitResult;
+import appeng.api.networking.crafting.*;
 import appeng.api.networking.events.GridCraftingCpuChange;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.GenericStack;
@@ -37,7 +33,7 @@ public class AdvCraftingCPUCluster implements IAECluster {
     private final BlockPos boundsMin;
     private final BlockPos boundsMax;
 
-    private final HashMap<ICraftingPlan, AdvCraftingCPU> activeCpus = new HashMap<>();
+    private final HashMap<UUID, AdvCraftingCPU> activeCpus = new HashMap<>();
     private AdvCraftingCPU remainingStorageCpu;
     private final List<AdvCraftingBlockEntity> blockEntities = new ArrayList<>();
     private final List<CraftingMonitorBlockEntity> status = new ArrayList<>();
@@ -163,8 +159,8 @@ public class AdvCraftingCPUCluster implements IAECluster {
         if (this.storageMultiplier > 0) totalStorage *= this.storageMultiplier;
 
         long usedStorage = 0;
-        for (var plan : activeCpus.keySet()) {
-            usedStorage += plan.bytes();
+        for (var cpu : this.activeCpus.values()) {
+            usedStorage += cpu.getAvailableStorage();
         }
 
         this.remainingStorage = totalStorage - usedStorage;
@@ -204,15 +200,15 @@ public class AdvCraftingCPUCluster implements IAECluster {
     }
 
     public void cancelJobs() {
-        for (var plan : activeCpus.keySet()) {
-            killCpu(plan, false);
+        for (var id : activeCpus.keySet()) {
+            killCpu(id, false);
         }
     }
 
-    public void cancelJob(ICraftingPlan plan) {
-        var cpu = activeCpus.get(plan);
+    public void cancelJob(UUID uniqueId) {
+        var cpu = activeCpus.get(uniqueId);
         if (cpu != null) {
-            killCpu(plan);
+            killCpu(uniqueId);
         }
     }
 
@@ -223,19 +219,20 @@ public class AdvCraftingCPUCluster implements IAECluster {
         // Check bytes.
         if (getAvailableStorage() < plan.bytes()) return CraftingSubmitResult.CPU_TOO_SMALL;
 
-        var newCpu = new AdvCraftingCPU(this, plan);
+        var uniqueId = UUID.randomUUID();
+        var newCpu = new AdvCraftingCPU(this, uniqueId, plan.bytes());
 
         var submitResult = newCpu.craftingLogic.trySubmitJob(grid, plan, src, requestingMachine);
         if (submitResult.successful()) {
-            this.activeCpus.put(plan, newCpu);
+            this.activeCpus.put(uniqueId, newCpu);
             recalculateRemainingStorage();
             updateGridForChangedCpu(this);
         }
         return submitResult;
     }
 
-    private void killCpu(ICraftingPlan plan, boolean updateGrid) {
-        var cpu = this.activeCpus.get(plan);
+    private void killCpu(UUID id, boolean updateGrid) {
+        var cpu = this.activeCpus.get(id);
         cpu.craftingLogic.cancel();
         cpu.craftingLogic.markForDeletion();
         recalculateRemainingStorage();
@@ -244,19 +241,19 @@ public class AdvCraftingCPUCluster implements IAECluster {
         }
     }
 
-    private void killCpu(ICraftingPlan plan) {
-        killCpu(plan, true);
+    private void killCpu(UUID uniqueId) {
+        killCpu(uniqueId, true);
     }
 
-    protected void deactivate(ICraftingPlan plan) {
-        this.activeCpus.remove(plan);
+    protected void deactivate(UUID uniqueId) {
+        this.activeCpus.remove(uniqueId);
         recalculateRemainingStorage();
         updateGridForChangedCpu(this);
     }
 
     public List<AdvCraftingCPU> getActiveCPUs() {
         var list = new ArrayList<AdvCraftingCPU>();
-        var killList = new ArrayList<ICraftingPlan>();
+        var killList = new ArrayList<UUID>();
         for (var cpuEntry : activeCpus.entrySet()) {
             var cpu = cpuEntry.getValue();
             if (cpu.craftingLogic.hasJob() || cpu.craftingLogic.isMarkedForDeletion()) {
@@ -265,8 +262,8 @@ public class AdvCraftingCPUCluster implements IAECluster {
                 killList.add(cpuEntry.getKey());
             }
         }
-        for (var cpu : killList) {
-            killCpu(cpu);
+        for (var cpuId : killList) {
+            killCpu(cpuId);
         }
 
         return list;
@@ -281,8 +278,8 @@ public class AdvCraftingCPUCluster implements IAECluster {
     }
 
     @Nullable
-    public CraftingJobStatus getJobStatus(ICraftingPlan plan) {
-        var cpu = activeCpus.get(plan);
+    public CraftingJobStatus getJobStatus(UUID uniqueId) {
+        var cpu = activeCpus.get(uniqueId);
         if (cpu != null) {
             return cpu.getJobStatus();
         }
@@ -318,26 +315,19 @@ public class AdvCraftingCPUCluster implements IAECluster {
         ListTag listCpus = new ListTag();
         for (var cpu : activeCpus.entrySet()) {
             if (cpu != null) {
-                CompoundTag keyTag = new CompoundTag();
-                writeCraftingPlanToNBT(cpu.getKey(), keyTag);
+                StringTag keyTag = StringTag.valueOf(cpu.getKey().toString());
+                LongTag bytesTag = LongTag.valueOf(cpu.getValue().getAvailableStorage());
                 CompoundTag cpuTag = new CompoundTag();
                 cpu.getValue().writeToNBT(cpuTag);
                 CompoundTag pair = new CompoundTag();
                 pair.put("key", keyTag);
+                pair.put("bytes", bytesTag);
                 pair.put("cpu", cpuTag);
                 listCpus.add(pair);
             }
         }
         data.put("cpuList", listCpus);
         this.configManager.writeToNBT(data);
-    }
-
-    private void writeCraftingPlanToNBT(ICraftingPlan plan, CompoundTag tag) {
-        CompoundTag outputTag = GenericStack.writeTag(plan.finalOutput());
-        tag.put("output", outputTag);
-        tag.putLong("bytes", plan.bytes());
-        tag.putBoolean("simulation", plan.simulation());
-        tag.putBoolean("multiplePaths", plan.multiplePaths());
     }
 
     void done() {
@@ -358,9 +348,22 @@ public class AdvCraftingCPUCluster implements IAECluster {
         if (cpuList != null) {
             for (var x = 0; x < cpuList.size(); x++) {
                 CompoundTag pair = cpuList.getCompound(x);
-                var plan = readCraftingPlanFromNBT(pair.getCompound("key"));
-                var cpu = new AdvCraftingCPU(this, plan);
-                this.activeCpus.put(plan, cpu);
+
+                // fix old cpus
+                UUID id;
+                long bytes;
+                Tag keyTag = pair.get("key");
+                if (keyTag != null && keyTag.getType() instanceof CompoundTag planTag) {
+                    var plan = readCraftingPlanFromNBT(planTag);
+                    id = UUID.randomUUID();
+                    bytes = plan.bytes();
+                } else {
+                    id = UUID.fromString(pair.getString("key"));
+                    bytes = pair.getLong("bytes");
+                }
+
+                var cpu = new AdvCraftingCPU(this, id, bytes);
+                this.activeCpus.put(id, cpu);
                 cpu.readFromNBT(pair.getCompound("cpu"));
             }
         }

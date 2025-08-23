@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
-import net.pedroksl.advanced_ae.AdvancedAE;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.Component;
@@ -8,6 +7,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.definitions.AAEItemDefinition;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;

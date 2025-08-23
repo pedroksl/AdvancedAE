@@ -1,5 +1,7 @@
 package net.pedroksl.advanced_ae.common.cluster;
 
+import java.util.UUID;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -11,28 +13,28 @@ import appeng.api.config.CpuSelectionMode;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.CraftingJobStatus;
 import appeng.api.networking.crafting.ICraftingCPU;
-import appeng.api.networking.crafting.ICraftingPlan;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.GenericStack;
 import appeng.crafting.inv.ListCraftingInventory;
 
 public class AdvCraftingCPU implements ICraftingCPU {
 
-    final ICraftingPlan plan;
-    private long fakeStorage = 0;
+    final UUID uniqueId;
+    final long bytes;
     private final AdvCraftingCPUCluster cluster;
     public final AdvCraftingCPULogic craftingLogic = new AdvCraftingCPULogic(this);
     public GenericStack finalOutput;
 
-    public AdvCraftingCPU(AdvCraftingCPUCluster cluster, ICraftingPlan plan) {
+    public AdvCraftingCPU(AdvCraftingCPUCluster cluster, UUID uniqueId, long bytes) {
+        this.uniqueId = uniqueId;
         this.cluster = cluster;
-        this.plan = plan;
+        this.bytes = bytes;
     }
 
-    protected AdvCraftingCPU(AdvCraftingCPUCluster cluster, long fakeStorage) {
+    protected AdvCraftingCPU(AdvCraftingCPUCluster cluster, long storage) {
+        this.uniqueId = null;
         this.cluster = cluster;
-        this.plan = null;
-        this.fakeStorage = fakeStorage;
+        this.bytes = storage;
     }
 
     @Override
@@ -56,17 +58,17 @@ public class AdvCraftingCPU implements ICraftingCPU {
 
     @Override
     public void cancelJob() {
-        if (this.plan == null) {
+        if (this.uniqueId == null) {
             return;
         }
 
         craftingLogic.cancel();
-        this.cluster.cancelJob(plan);
+        this.cluster.cancelJob(uniqueId);
     }
 
     @Override
     public long getAvailableStorage() {
-        return this.plan != null ? this.plan.bytes() : fakeStorage;
+        return this.bytes;
     }
 
     @Override
@@ -109,7 +111,7 @@ public class AdvCraftingCPU implements ICraftingCPU {
     }
 
     public void deactivate() {
-        cluster.deactivate(plan);
+        cluster.deactivate(uniqueId);
     }
 
     public IActionSource getSrc() {
