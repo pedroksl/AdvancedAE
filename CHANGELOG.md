@@ -1,2 +1,1 @@
-- Fixed missing textures
-- Updated translations
+- Backported quantum crafter changes and bug fixes from 1.21.1

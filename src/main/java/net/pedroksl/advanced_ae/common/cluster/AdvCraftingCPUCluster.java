@@ -358,7 +358,11 @@ public class AdvCraftingCPUCluster implements IAECluster {
                     id = UUID.randomUUID();
                     bytes = plan.bytes();
                 } else {
-                    id = UUID.fromString(pair.getString("key"));
+                    try {
+                        id = UUID.fromString(pair.getString("key"));
+                    } catch (IllegalArgumentException e) {
+                        id = UUID.randomUUID();
+                    }
                     bytes = pair.getLong("bytes");
                 }
 

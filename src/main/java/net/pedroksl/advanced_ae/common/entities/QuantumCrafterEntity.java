@@ -76,6 +76,7 @@ import appeng.util.inv.filter.IAEItemFilter;
 
 public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         implements IGridTickable, IUpgradeableObject, IConfigurableObject, IDirectionalOutputHost {
+    private static final int PATTERN_SLOTS = 9;
     private static final int MAX_POWER_STORAGE = 8000;
     private static final int MAX_CRAFT_AMOUNT = 1024;
     private static final int MAX_OUTPUT_INV_SIZE = 1024;
@@ -105,12 +106,11 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
     private final IActionSource mySrc;
     private boolean isActive = false;
 
-    private final CraftingContainer testFrame;
-
-    private final List<CraftingJob> craftingJobs = Arrays.asList(new CraftingJob[9]);
+    private final List<CraftingJob> craftingJobs = Arrays.asList(new CraftingJob[PATTERN_SLOTS]);
 
     private EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
-    private final List<Boolean> enabledPatternSlots = Arrays.asList(new Boolean[9]);
+    private final List<Boolean> invalidPatternSlots = Arrays.asList(new Boolean[PATTERN_SLOTS]);
+    private final List<Boolean> enabledPatternSlots = Arrays.asList(new Boolean[PATTERN_SLOTS]);
 
     public QuantumCrafterEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
@@ -131,8 +131,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         this.mySrc = new MachineSource(this);
         this.lastRedstoneState = YesNo.UNDECIDED;
 
-        this.testFrame = new TransientCraftingContainer(new AutoCraftingMenu(), 3, 3);
-
+        Collections.fill(invalidPatternSlots, false);
         Collections.fill(enabledPatternSlots, false);
     }
 
@@ -234,15 +233,24 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
                 IPatternDetails details = PatternDetailsHelper.decodePattern(is, this.getLevel());
                 if (details instanceof AECraftingPattern craftPattern) {
                     if (craftingJobs.get(x) != null) {
-                        if (craftingJobs.get(x).pattern == null) {
+                        if (craftingJobs.get(x).pattern == craftPattern) {
+                            setInvalidPattern(x, craftingJobs.get(x).consumesDurability);
+                            continue;
+                        } else if (craftingJobs.get(x).pattern == null) {
                             craftingJobs.get(x).setPattern(craftPattern);
+                            setInvalidPattern(x, craftingJobs.get(x).consumesDurability);
+                            continue;
                         }
-                        continue;
                     }
-                    craftingJobs.set(x, new CraftingJob(craftPattern));
+                    var newJob = new CraftingJob(craftPattern);
+                    craftingJobs.set(x, newJob);
+                    setInvalidPattern(x, newJob.consumesDurability);
                     success = true;
                 }
+            } else {
+                setInvalidPattern(x, false);
             }
+
             if (!success) {
                 craftingJobs.set(x, null);
             }
@@ -698,6 +706,12 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         }
         data.put("outputSides", outputTags);
 
+        ListTag invalidTags = new ListTag();
+        for (var value : invalidPatternSlots) {
+            invalidTags.add(ByteTag.valueOf(value));
+        }
+        data.put("invalidPatterns", invalidTags);
+
         ListTag enabledTags = new ListTag();
         for (var value : enabledPatternSlots) {
             enabledTags.add(ByteTag.valueOf(value));
@@ -729,6 +743,13 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
             for (var x = 0; x < outputTags.size(); x++) {
                 RelativeSide side = Enum.valueOf(RelativeSide.class, outputTags.getString(x));
                 this.allowedOutputs.add(side);
+            }
+        }
+
+        ListTag invalidTags = data.getList("invalidPatterns", Tag.TAG_BYTE);
+        if (!invalidTags.isEmpty()) {
+            for (var x = 0; x < invalidPatternSlots.size(); x++) {
+                invalidPatternSlots.set(x, ((ByteTag) invalidTags.get(x)).getAsByte() > 0);
             }
         }
 
@@ -877,7 +898,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
                     if (!this.patternInv
                             .addItems(pattern.getDefinition().toStack())
                             .isEmpty()) {
-                        AELog.warn("Failed to add pattern to pattern provider");
+                        AELog.warn("Failed to add pattern to quantum crafter");
                         blankPatternsUsed--;
                     }
                 }
@@ -1016,6 +1037,14 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         return new ItemStack(AAEBlocks.QUANTUM_CRAFTER.asItem());
     }
 
+    public List<Boolean> getInvalidPatternSlots() {
+        return invalidPatternSlots;
+    }
+
+    public void setInvalidPattern(int index, boolean value) {
+        this.invalidPatternSlots.set(index, value);
+    }
+
     public List<Boolean> getEnabledPatternSlots() {
         return enabledPatternSlots;
     }
@@ -1086,11 +1115,17 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         private final CraftingContainer testFrame =
                 new TransientCraftingContainer(new AutoCraftingMenu(), GRID_SIZE, GRID_SIZE);
 
+        public boolean consumesDurability = false;
+        public HashMap<AEItemKey, Integer> keysThatConsumeDurability = new HashMap<>();
+        public boolean hasDataChange;
+
         public CraftingJob(AECraftingPattern pattern) {
             this.pattern = pattern;
             this.remainingItems = getRemainingItems();
             this.keepMinInput = createNewInputMap();
             this.limitMaxOutput = DEFAULT_KEEP_OUTPUT;
+
+            analyzePattern();
         }
 
         private CraftingJob(
@@ -1102,6 +1137,40 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
             this.remainingItems = remainingItems;
             this.keepMinInput = keepMinInput;
             this.limitMaxOutput = limitMaxOutput;
+
+            analyzePattern();
+        }
+
+        private void analyzePattern() {
+            if (pattern == null) return;
+
+            for (var input : pattern.getInputs()) {
+                var in = input.getPossibleInputs()[0];
+
+                if (in.what() instanceof AEItemKey inKey) {
+                    var inStack = inKey.toStack();
+
+                    if (!this.keysThatConsumeDurability.containsKey(inKey)) {
+                        ItemStack remainingStack = findMatchingRemainingItem(in);
+                        if (remainingStack != ItemStack.EMPTY) {
+                            var damage = remainingStack.getDamageValue() - inStack.getDamageValue();
+                            if (damage > 0) {
+                                this.keysThatConsumeDurability.put(inKey, damage);
+                                this.consumesDurability = true;
+                                continue;
+                            }
+                        }
+                    }
+
+                    if (!this.hasDataChange) {
+                        ItemStack outputStack = findMatchingOutput(in);
+                        if (!ItemStack.isSameItemSameTags(inStack.copyWithCount(outputStack.getCount()), outputStack)) {
+                            this.hasDataChange = true;
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         public void writeToNBT(CompoundTag data) {
@@ -1125,31 +1194,38 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         }
 
         public static CraftingJob fromTag(CompoundTag data) {
-            ListTag remainingTag = data.getList("remainingItems", Tag.TAG_COMPOUND);
-            List<ItemStack> remainingItems = Arrays.asList(new ItemStack[remainingTag.size()]);
-            if (!remainingTag.isEmpty()) {
+            List<ItemStack> remainingItems = new ArrayList<>();
+            if (data.contains("remainingItems")) {
+                ListTag remainingTag = data.getList("remainingItems", Tag.TAG_COMPOUND);
+                remainingItems = Arrays.asList(new ItemStack[remainingTag.size()]);
+                if (!remainingTag.isEmpty()) {
 
-                for (var x = 0; x < remainingTag.size(); x++) {
-                    remainingItems.set(x, ItemStack.of(remainingTag.getCompound(x)));
+                    for (var x = 0; x < remainingTag.size(); x++) {
+                        remainingItems.set(x, ItemStack.of(remainingTag.getCompound(x)));
+                    }
                 }
             }
 
-            ListTag listMinTag = data.getList("listMinInput", Tag.TAG_LONG);
-            List<Long> keepMinInput = Arrays.asList(new Long[listMinTag.size()]);
-            if (!listMinTag.isEmpty()) {
+            List<Long> keepMinInput = new ArrayList<>();
+            if (data.contains("listMinInput")) {
+                ListTag listMinTag = data.getList("listMinInput", Tag.TAG_LONG);
+                keepMinInput = Arrays.asList(new Long[listMinTag.size()]);
+                if (!listMinTag.isEmpty()) {
 
-                for (var x = 0; x < listMinTag.size(); x++) {
-                    keepMinInput.set(x, ((LongTag) listMinTag.get(x)).getAsLong());
+                    for (var x = 0; x < listMinTag.size(); x++) {
+                        keepMinInput.set(x, ((LongTag) listMinTag.get(x)).getAsLong());
+                    }
                 }
             }
 
-            var limitMaxOutput = data.getLong("limitMaxOutput");
+            var limitMaxOutput = data.contains("limitMaxOutput") ? data.getLong("limitMaxOutput") : 0;
 
             return new CraftingJob(null, remainingItems, keepMinInput, limitMaxOutput);
         }
 
         public void setPattern(AECraftingPattern pattern) {
             this.pattern = pattern;
+            analyzePattern();
         }
 
         public long minimumInputToKeep(IPatternDetails.IInput stack) {
@@ -1166,6 +1242,15 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
             if (inputIndex >= pattern.getInputs().length) return;
 
             keepMinInput.set(inputIndex, value);
+        }
+
+        public int requiredDurability(GenericStack input) {
+            if (input.what() instanceof AEItemKey inputKey) {
+                if (this.keysThatConsumeDurability.containsKey(inputKey)) {
+                    return this.keysThatConsumeDurability.get(inputKey);
+                }
+            }
+            return 0;
         }
 
         public long requiredInputTotal(GenericStack input, int toCraft) {
@@ -1185,7 +1270,13 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
                 }
             }
 
-            if (!isInputConsumed(input)) {
+            int durability = requiredDurability(input);
+            if (durability > 0) {
+                return durability * multiplier * toCraft;
+            }
+
+            ItemStack remainingItem = findMatchingRemainingItem(input);
+            if (input.amount() < remainingItem.getCount()) {
                 return multiplier;
             }
 
@@ -1206,18 +1297,33 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
             return 0;
         }
 
-        public boolean isInputConsumed(GenericStack input) {
-            for (var item : remainingItems) {
-                if (input.what().wrapForDisplayOrFilter().is(item.getItem())) {
-                    return false;
-                }
-            }
+        public ItemStack findMatchingOutput(GenericStack input) {
+            if (!(input.what() instanceof AEItemKey inKey)) return ItemStack.EMPTY;
+            ItemStack inStack = inKey.toStack();
+
             for (var output : pattern.getOutputs()) {
-                if (input.what().matches(output)) {
-                    return output.amount() - input.amount() <= 0;
+                ItemStack outStack = ((AEItemKey) output.what()).toStack();
+
+                if (inStack.getOrCreateTag().equals(outStack.getOrCreateTag()) || inStack.is(outStack.getItem())) {
+                    return outStack;
                 }
             }
-            return true;
+            return ItemStack.EMPTY;
+        }
+
+        public boolean isInputConsumed(GenericStack input) {
+            ItemStack in = findMatchingOutput(input);
+            return !(!in.isEmpty() && !this.hasDataChange);
+        }
+
+        public ItemStack findMatchingRemainingItem(GenericStack input) {
+            for (var item : remainingItems) {
+                if (input.what() instanceof AEItemKey inputKey
+                        && inputKey.getItem().equals(item.getItem())) {
+                    return item;
+                }
+            }
+            return ItemStack.EMPTY;
         }
 
         public boolean isStackAnInput(ItemStack stack) {
@@ -1275,22 +1381,27 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
             }
             var itemList = pattern.getRemainingItems(this.testFrame);
 
-            HashMap<Item, Integer> condensedItemList = new HashMap<>();
+            HashMap<Item, ItemStack> condensedItemList = new HashMap<>();
             for (var item : itemList) {
-                condensedItemList.merge(item.getItem(), item.getCount(), Integer::sum);
+                if (item == ItemStack.EMPTY) continue;
+
+                if (condensedItemList.containsKey(item.getItem())) {
+                    condensedItemList.computeIfPresent(
+                            item.getItem(), (k, current) -> item.copyWithCount(current.getCount() + item.getCount()));
+                } else {
+                    condensedItemList.put(item.getItem(), item);
+                }
             }
 
             List<ItemStack> finalList = new ArrayList<>();
             for (var entry : condensedItemList.entrySet()) {
-                if (entry.getKey() != ItemStack.EMPTY.getItem()) {
-                    if (bucketsToRemove > 0 && entry.getKey() == Items.BUCKET) {
-                        var bucketCount = Math.max(0, entry.getValue() - bucketsToRemove);
-                        if (bucketCount > 0) {
-                            finalList.add(new ItemStack(entry.getKey(), bucketCount));
-                        }
-                    } else {
-                        finalList.add(new ItemStack(entry.getKey(), entry.getValue()));
+                if (bucketsToRemove > 0 && entry.getKey() == Items.BUCKET) {
+                    var bucketCount = Math.max(0, entry.getValue().getCount() - bucketsToRemove);
+                    if (bucketCount > 0) {
+                        finalList.add(entry.getValue().copyWithCount(bucketCount));
                     }
+                } else {
+                    finalList.add(entry.getValue().copy());
                 }
             }
             return Collections.unmodifiableList(finalList);

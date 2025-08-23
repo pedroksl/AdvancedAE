@@ -11,7 +11,7 @@ import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
-import net.pedroksl.advanced_ae.network.packet.EnabledPatternsUpdatePacket;
+import net.pedroksl.advanced_ae.network.packet.PatternsUpdatePacket;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
@@ -28,6 +28,7 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
     @GuiSync(2)
     public YesNo meExport = YesNo.YES;
 
+    public List<Boolean> invalidPatterns = new ArrayList<>();
     public List<Boolean> enabledPatterns = new ArrayList<>();
 
     private static final String CONFIGURE_OUTPUT = "configureOutput";
@@ -51,6 +52,7 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
             this.addSlot(new AppEngSlot(outputs, x), SlotSemantics.MACHINE_OUTPUT);
         }
 
+        setInvalidPatterns(host.getInvalidPatternSlots());
         setEnabledPatterns(host.getEnabledPatternSlots());
 
         registerClientAction(CONFIGURE_OUTPUT, this::configureOutput);
@@ -67,6 +69,18 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
         return meExport;
     }
 
+    public void setInvalidPatterns(List<Boolean> invalidPatterns) {
+        setInvalidPatterns(invalidPatterns, true);
+    }
+
+    public void setInvalidPatterns(List<Boolean> invalidPatterns, boolean broadcastUpdate) {
+        this.invalidPatterns = new ArrayList<>(invalidPatterns);
+
+        if (broadcastUpdate) {
+            broadcastChanges();
+        }
+    }
+
     public void setEnabledPatterns(List<Boolean> enabledPatterns) {
         this.enabledPatterns = new ArrayList<>(enabledPatterns);
 
@@ -78,7 +92,9 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
         super.broadcastChanges();
 
         if (isServerSide() && getPlayer() instanceof ServerPlayer player) {
-            AAENetworkHandler.INSTANCE.sendTo(new EnabledPatternsUpdatePacket(this.enabledPatterns), player);
+            setInvalidPatterns(getHost().getInvalidPatternSlots(), false);
+            AAENetworkHandler.INSTANCE.sendTo(
+                    new PatternsUpdatePacket(this.invalidPatterns, this.enabledPatterns), player);
         }
     }
 
@@ -114,6 +130,10 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
             QuantumCrafterConfigPatternMenu.open(
                     ((ServerPlayer) this.getPlayer()), getLocator(), index, inputs, output);
         }
+    }
+
+    public void toggleInvalidPattern(int index, boolean invalid) {
+        this.invalidPatterns.set(index, invalid);
     }
 
     public void toggleEnablePattern(int index) {

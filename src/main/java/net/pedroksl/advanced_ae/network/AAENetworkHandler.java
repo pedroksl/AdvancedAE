@@ -22,7 +22,7 @@ public class AAENetworkHandler extends NetworkHandler {
         registerPacket(AdvPatternEncoderPacket.class, AdvPatternEncoderPacket::new);
         registerPacket(AdvPatternEncoderChangeDirectionPacket.class, AdvPatternEncoderChangeDirectionPacket::new);
         registerPacket(PatternConfigServerUpdatePacket.class, PatternConfigServerUpdatePacket::new);
-        registerPacket(EnabledPatternsUpdatePacket.class, EnabledPatternsUpdatePacket::new);
+        registerPacket(PatternsUpdatePacket.class, PatternsUpdatePacket::new);
         registerPacket(SetStockAmountPacket.class, SetStockAmountPacket::new);
         registerPacket(FluidTankClientAudioPacket.class, FluidTankClientAudioPacket::new);
         registerPacket(FluidTankStackUpdatePacket.class, FluidTankStackUpdatePacket::new);

@@ -1,12 +1,17 @@
 package net.pedroksl.advanced_ae.client.gui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEServerSettingToggleButton;
@@ -17,14 +22,17 @@ import net.pedroksl.advanced_ae.gui.QuantumCrafterMenu;
 import appeng.api.config.RedstoneMode;
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
+import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.Icon;
 import appeng.client.gui.implementations.UpgradeableScreen;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.AECheckbox;
 import appeng.client.gui.widgets.IconButton;
 import appeng.client.gui.widgets.ServerSettingToggleButton;
 import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.core.definitions.AEItems;
+import appeng.core.localization.Tooltips;
 import appeng.menu.SlotSemantics;
 
 public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> {
@@ -35,6 +43,9 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
 
     private final List<Button> configButtons = new ArrayList<>();
     private final List<AECheckbox> enableButtons = new ArrayList<>();
+    private final InvalidPatternAlert invalidPatternAlert;
+
+    private final List<Boolean> invalidPatternSlots;
 
     public QuantumCrafterScreen(
             QuantumCrafterMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
@@ -52,6 +63,7 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         this.addToLeftToolbar(this.outputConfigure);
 
         var patternSlots = menu.getSlots(SlotSemantics.MACHINE_INPUT);
+        invalidPatternSlots = new ArrayList<>(Collections.nCopies(patternSlots.size(), Boolean.FALSE));
         for (int i = 0; i < patternSlots.size(); i++) {
             var cfgButton = new ConfigButton(btn -> {
                 var idx = configButtons.indexOf(btn);
@@ -66,6 +78,14 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
             enableButton.setTooltip(Tooltip.create(AAEText.EnablePatternButton.text()));
             enableButtons.add(enableButton);
         }
+
+        this.invalidPatternAlert = new InvalidPatternAlert(style.getImage("invalidPatternAlert"));
+        this.invalidPatternAlert.setTooltip(Tooltip.create(Tooltips.of(
+                AAEText.InvalidPattern.text().withStyle(Tooltips.RED),
+                Component.literal("\n")
+                        .append(AAEText.InvalidPatternDetails.text())
+                        .withStyle(Tooltips.NORMAL_TOOLTIP_TEXT))));
+        this.widgets.add("invalidPatternAlert", this.invalidPatternAlert);
     }
 
     @Override
@@ -76,6 +96,27 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         this.redstoneMode.setVisibility(menu.hasUpgrade(AEItems.REDSTONE_CARD));
         this.meExportBtn.set(getMenu().getMeExport());
         this.outputConfigure.setVisibility(getMenu().getMeExport() == YesNo.NO);
+        this.invalidPatternAlert.visible = this.invalidPatternSlots.contains(true);
+    }
+
+    @Override
+    public void drawBG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+        super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
+
+        for (var x = 0; x < this.invalidPatternSlots.size(); x++) {
+            if (this.invalidPatternSlots.get(x)) {
+                Slot slot = menu.getSlots(SlotSemantics.MACHINE_INPUT).get(x);
+                AEBaseScreen.renderSlotHighlight(guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, 0x78fa0a0a);
+            }
+        }
+    }
+
+    public void updateInvalidButtons(List<Boolean> invalidPatterns) {
+        for (var x = 0; x < this.invalidPatternSlots.size(); x++) {
+            if (invalidPatterns.size() > x) {
+                this.invalidPatternSlots.set(x, invalidPatterns.get(x));
+            }
+        }
     }
 
     public void updateEnabledButtons(List<Boolean> enabledButtons) {
@@ -108,5 +149,23 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         public void run() {
             menu.toggleEnablePattern(this.index);
         }
+    }
+
+    private static class InvalidPatternAlert extends AbstractWidget {
+
+        private final Blitter invalidPatternAlert;
+
+        public InvalidPatternAlert(Blitter powerAlert) {
+            super(0, 0, 18, 18, Component.empty());
+            this.invalidPatternAlert = powerAlert;
+        }
+
+        @Override
+        protected void renderWidget(GuiGraphics guiGraphics, int i, int i1, float v) {
+            this.invalidPatternAlert.dest(this.getX(), this.getY()).blit(guiGraphics);
+        }
+
+        @Override
+        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
     }
 }

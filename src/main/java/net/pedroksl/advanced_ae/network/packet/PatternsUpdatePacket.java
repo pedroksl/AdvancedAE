@@ -10,28 +10,43 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.client.gui.QuantumCrafterScreen;
 
-public class EnabledPatternsUpdatePacket implements IMessage<EnabledPatternsUpdatePacket> {
+public class PatternsUpdatePacket implements IMessage<PatternsUpdatePacket> {
+    private List<Boolean> invalidPatterns;
     private List<Boolean> enabledPatterns;
 
-    public EnabledPatternsUpdatePacket() {}
+    public PatternsUpdatePacket() {}
 
-    public EnabledPatternsUpdatePacket(List<Boolean> enabledPatterns) {
+    public PatternsUpdatePacket(List<Boolean> invalidPatterns, List<Boolean> enabledPatterns) {
+        this.invalidPatterns = invalidPatterns;
         this.enabledPatterns = enabledPatterns;
     }
 
     @Override
     public void fromBytes(FriendlyByteBuf stream) {
-        List<Boolean> list = new ArrayList<>();
+        List<Boolean> invalidList = new ArrayList<>();
+        List<Boolean> enabledList = new ArrayList<>();
 
         var size = stream.readInt();
         for (var x = 0; x < size; x++) {
-            list.add(stream.readBoolean());
+            invalidList.add(stream.readBoolean());
         }
-        this.enabledPatterns = list;
+
+        size = stream.readInt();
+        for (var x = 0; x < size; x++) {
+            enabledList.add(stream.readBoolean());
+        }
+
+        this.invalidPatterns = invalidList;
+        this.enabledPatterns = enabledList;
     }
 
     @Override
     public void toBytes(FriendlyByteBuf data) {
+        data.writeInt(this.invalidPatterns.size());
+        for (var entry : this.invalidPatterns) {
+            data.writeBoolean(entry);
+        }
+
         data.writeInt(this.enabledPatterns.size());
         for (var entry : this.enabledPatterns) {
             data.writeBoolean(entry);
@@ -41,13 +56,14 @@ public class EnabledPatternsUpdatePacket implements IMessage<EnabledPatternsUpda
     @Override
     public void onMessage(Player player) {
         if (Minecraft.getInstance().screen instanceof QuantumCrafterScreen screen) {
+            screen.updateInvalidButtons(this.invalidPatterns);
             screen.updateEnabledButtons(this.enabledPatterns);
         }
     }
 
     @Override
-    public Class<EnabledPatternsUpdatePacket> getPacketClass() {
-        return EnabledPatternsUpdatePacket.class;
+    public Class<PatternsUpdatePacket> getPacketClass() {
+        return PatternsUpdatePacket.class;
     }
 
     @Override

@@ -76,6 +76,8 @@
   "gui.tooltips.advanced_ae.InsufficientPower": "Insufficient Power",
   "gui.tooltips.advanced_ae.InsufficientPowerDetails": "Unable to extract enough power for full speed progress. Check guide for possible solutions.",
   "gui.tooltips.advanced_ae.InvalidHexInput": "Invalid hex code input",
+  "gui.tooltips.advanced_ae.InvalidPattern": "Invalid Pattern",
+  "gui.tooltips.advanced_ae.InvalidPatternDetails": "Invalid Pattern detected and highlighted. Recipes that consume durability are not supported.",
   "gui.tooltips.advanced_ae.JumpHeightTooltip": "Boosts the jump height by %s.",
   "gui.tooltips.advanced_ae.LavaImmunityTooltip": "Makes the user immune to lava and fire.",
   "gui.tooltips.advanced_ae.LuckTooltip": "Boosts the user's luck by %s.",
