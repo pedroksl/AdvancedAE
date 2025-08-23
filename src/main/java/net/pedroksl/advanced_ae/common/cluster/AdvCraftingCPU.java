@@ -1,5 +1,7 @@
 package net.pedroksl.advanced_ae.common.cluster;
 
+import java.util.UUID;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.HolderLookup;
@@ -12,12 +14,9 @@ import appeng.api.config.CpuSelectionMode;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.CraftingJobStatus;
 import appeng.api.networking.crafting.ICraftingCPU;
-import appeng.api.networking.crafting.ICraftingPlan;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.GenericStack;
 import appeng.crafting.inv.ListCraftingInventory;
-
-import java.util.UUID;
 
 public class AdvCraftingCPU implements ICraftingCPU {
 

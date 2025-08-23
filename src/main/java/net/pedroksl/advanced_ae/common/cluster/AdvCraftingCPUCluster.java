@@ -2,11 +2,11 @@ package net.pedroksl.advanced_ae.common.cluster;
 
 import java.util.*;
 
-import net.minecraft.nbt.*;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;

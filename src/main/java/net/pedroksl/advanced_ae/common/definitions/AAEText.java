@@ -122,7 +122,12 @@ public enum AAEText implements LocalizationEnum {
 
     InsufficientPower("Insufficient Power", Type.TOOLTIP),
     InsufficientPowerDetails(
-            "Unable to extract enough power for full speed progress. Check guide for possible " + "solutions.",
+            "Unable to extract enough power for full speed progress. Check guide for possible solutions.",
+            Type.TOOLTIP),
+
+    InvalidPattern("Invalid Pattern", Type.TOOLTIP),
+    InvalidPatternDetails(
+            "Invalid Pattern detected and highlighted. Recipes that consume durability are not supported.",
             Type.TOOLTIP),
 
     QuantumArmorHotkeyTooltip("Press [%s] with this equipped to configure.", Type.TOOLTIP),
