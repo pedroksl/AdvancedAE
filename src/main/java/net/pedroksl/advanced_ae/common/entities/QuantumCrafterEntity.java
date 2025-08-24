@@ -1318,8 +1318,8 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             for (var output : pattern.getOutputs()) {
                 ItemStack outStack = ((AEItemKey) output.what()).toStack();
 
-
-                if ((!inStack.isComponentsPatchEmpty() && inStack.getComponentsPatch().equals(outStack.getComponentsPatch()))
+                if ((!inStack.isComponentsPatchEmpty()
+                                && inStack.getComponentsPatch().equals(outStack.getComponentsPatch()))
                         || inStack.is(outStack.getItem())) {
                     return outStack;
                 }
@@ -1329,8 +1329,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
         public boolean isInputConsumed(GenericStack input) {
             ItemStack in = findMatchingRemainingItem(input);
-            if (in.getCount() >= input.amount())
-                return false;
+            if (in.getCount() >= input.amount()) return false;
 
             ItemStack out = findMatchingOutput(input);
             return !(!out.isEmpty() && !this.hasDataChange);
