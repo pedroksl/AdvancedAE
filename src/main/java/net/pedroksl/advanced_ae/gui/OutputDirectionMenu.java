@@ -2,10 +2,14 @@ package net.pedroksl.advanced_ae.gui;
 
 import java.util.EnumSet;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
@@ -49,6 +53,28 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
         if (player.containerMenu instanceof OutputDirectionMenu cca) {
             cca.setAllowedOutputs(allowedOutputs);
             cca.broadcastChanges();
+        }
+    }
+
+    public ItemStack getAdjacentBlock(RelativeSide side) {
+        var dir = host.getOrientation().getSide(side);
+        BlockPos blockPos = host.getBlockPos().relative(dir);
+
+        Level level = getLevel();
+        if (level == null) {
+            return null;
+        }
+
+        BlockState blockState = level.getBlockState(blockPos);
+        if (!blockState.isAir()) {
+            return blockState.getCloneItemStack(
+                    new BlockHitResult(
+                            blockPos.getCenter().relative(dir.getOpposite(), 0.5), dir.getOpposite(), blockPos, false),
+                    level,
+                    blockPos,
+                    this.getPlayerInventory().player);
+        } else {
+            return ItemStack.EMPTY;
         }
     }
 
