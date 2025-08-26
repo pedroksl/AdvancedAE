@@ -65,6 +65,12 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     }
 
     @Override
+    protected void init() {
+        super.init();
+        refreshList(true);
+    }
+
+    @Override
     public boolean mouseClicked(double xCoord, double yCoord, int btn) {
         assert this.minecraft != null;
 
