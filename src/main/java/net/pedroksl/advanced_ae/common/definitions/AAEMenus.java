@@ -62,6 +62,8 @@ public class AAEMenus {
             create("quantum_armor_filter_config", QuantumArmorFilterConfigMenu::new, ISubMenuHost.class);
     public static final Supplier<MenuType<QuantumArmorMagnetMenu>> QUANTUM_ARMOR_MAGNET =
             create("quantum_armor_magnet", QuantumArmorMagnetMenu::new, ISubMenuHost.class);
+    public static final Supplier<MenuType<QuantumArmorStyleConfigMenu>> QUANTUM_ARMOR_STYLE_CONFIG =
+            create("quantum_armor_style_config", QuantumArmorStyleConfigMenu::new, QuantumArmorMenuHost.class);
     public static final Supplier<MenuType<PortableWorkbenchMenu>> PORTABLE_WORKBENCH =
             create("portable_workbench", PortableWorkbenchMenu::new, PortableCellWorkbenchMenuHost.class);
 

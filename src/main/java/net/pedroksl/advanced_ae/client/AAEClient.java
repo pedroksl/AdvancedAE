@@ -126,6 +126,11 @@ public class AAEClient extends AdvancedAE {
                 "/screens/quantum_armor_magnet.json");
         InitScreens.register(
                 event,
+                AAEMenus.QUANTUM_ARMOR_STYLE_CONFIG.get(),
+                QuantumArmorStyleConfigScreen::new,
+                "/screens/quantum_armor_style.json");
+        InitScreens.register(
+                event,
                 AAEMenus.PORTABLE_WORKBENCH.get(),
                 PortableWorkbenchScreen::new,
                 "/screens/portable_workbench.json");

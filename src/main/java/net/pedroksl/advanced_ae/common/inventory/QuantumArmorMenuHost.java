@@ -14,6 +14,7 @@ import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.storage.ISubMenuHost;
 import appeng.hooks.ticking.TickHandler;
 import appeng.menu.ISubMenu;
+import appeng.menu.guisync.GuiSync;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
@@ -32,6 +33,7 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
 
     private long consumeCardStartTick = -1;
 
+    @GuiSync(10)
     private int selectedItemSlot = -1;
 
     public QuantumArmorMenuHost(

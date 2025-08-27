@@ -24,7 +24,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
-import net.pedroksl.advanced_ae.common.helpers.ColorContainer;
+import net.pedroksl.advanced_ae.common.helpers.AAEColor;
 import net.pedroksl.advanced_ae.network.packet.FluidTankItemUsePacket;
 
 import appeng.api.stacks.GenericStack;
@@ -92,9 +92,9 @@ public class FluidTankSlot extends AbstractWidget {
     protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         if (content == null || fluidTexture == null || this.disableRender) return;
 
-        var argb = new ColorContainer(
+        var color = AAEColor.ofArgb(
                 IClientFluidTypeExtensions.of(this.content.getFluid()).getTintColor());
-        guiGraphics.setColor(argb.r(), argb.g(), argb.b(), argb.a());
+        guiGraphics.setColor(color.r(), color.g(), color.b(), color.a());
 
         float levels = content.getAmount() / 1000f / maxLevel;
         var usedY = (int) Math.ceil(levels * this.height);

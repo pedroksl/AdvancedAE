@@ -144,7 +144,9 @@ dependencies {
     runtimeOnly "curse.maven:placebo-283644:6751290"
     runtimeOnly "curse.maven:apothic-attributes-898963:6751650"
     implementation "curse.maven:apothic-enchanting-1063926:6751658"
-    compileOnly "curse.maven:irisshaders-455508:6661598"
+
+    runtimeOnly "curse.maven:sodium-394468:6382651"
+    implementation "curse.maven:irisshaders-455508:6661598"
     // setup Xei
     switch (use_Xei) {
         case "emi":

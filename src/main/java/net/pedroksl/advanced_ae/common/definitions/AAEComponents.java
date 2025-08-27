@@ -26,6 +26,8 @@ public final class AAEComponents {
     public static final DataComponentType<CompoundTag> STACK_TAG =
             register("generic_nbt", builder -> builder.persistent(CompoundTag.CODEC)
                     .networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
+    public static final DataComponentType<Integer> TINT_COLOR_TAG =
+            register("tint_color", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final DataComponentType<CompoundTag> PORTABLE_CELL_STACK_TAG =
             register("portable_cell_stack", builder -> builder.persistent(CompoundTag.CODEC)
                     .networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
