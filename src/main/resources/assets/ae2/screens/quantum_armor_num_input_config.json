@@ -25,9 +25,15 @@
 		},
 		"slider": {
 			"left": 15,
-			"top": 29,
+			"top": 32,
 			"width": 71,
 			"height": 20
+		},
+		"colorPicker": {
+			"left": 15,
+			"top": 0,
+			"width": 71,
+			"height": 50
 		}
 	}
 }

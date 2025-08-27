@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +19,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.Hotkeys;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAEIconButton;
 import net.pedroksl.advanced_ae.client.widgets.QuantumUpgradeWidget;
 import net.pedroksl.advanced_ae.client.widgets.UpgradeState;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
@@ -39,7 +42,7 @@ import appeng.core.AppEng;
 
 public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMenu> {
 
-    private static final int LIST_ANCHOR_X = 30;
+    private static final int LIST_ANCHOR_X = 9;
     private static final int LIST_ANCHOR_Y = 32;
     private static final int LIST_LINE_HEIGHT = 16;
     private static final int VISIBLE_ROWS = 4;
@@ -49,6 +52,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
     private final Scrollbar scrollbar;
     private final ProgressBar pb;
+    private final PaletteButton paletteButton;
 
     private int selectedIndex = -1;
 
@@ -61,7 +65,10 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
         this.pb = new ProgressBar(menu, style.getImage("progressBar"), ProgressBar.Direction.VERTICAL);
         this.pb.active = false;
-        widgets.add("progressBar", this.pb);
+        this.widgets.add("progressBar", this.pb);
+
+        this.paletteButton = new PaletteButton(btn -> getMenu().openStyleScreen());
+        this.widgets.add("styleButton", this.paletteButton);
     }
 
     @Override
@@ -75,7 +82,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         assert this.minecraft != null;
 
         // Handle item selection
-        if (this.minecraft.options.keyAttack.matchesMouse(btn)) {
+        if (btn == InputConstants.MOUSE_BUTTON_LEFT) {
             Slot slot = this.findSlot(xCoord, yCoord);
             if (this.isArmorSlot(slot)) {
                 this.selectedIndex = slot.index;
@@ -289,6 +296,17 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
                             new QuantumArmorMagnetPacket(state.currentValue(), state.filter(), blacklist));
                 }
             }
+        }
+    }
+
+    static class PaletteButton extends AAEIconButton {
+        public PaletteButton(OnPress onPress) {
+            super(onPress);
+        }
+
+        @Override
+        protected AAEIcon getIcon() {
+            return isHoveredOrFocused() ? AAEIcon.PALETTE : AAEIcon.PALETTE_DISABLED;
         }
     }
 }

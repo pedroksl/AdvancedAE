@@ -38,6 +38,7 @@ public class AAENetworkHandler extends NetworkHandler {
         serverbound(this.registrar, QuantumArmorUpgradeTogglePacket.TYPE, QuantumArmorUpgradeTogglePacket.STREAM_CODEC);
         serverbound(this.registrar, QuantumArmorUpgradeValuePacket.TYPE, QuantumArmorUpgradeValuePacket.STREAM_CODEC);
         serverbound(this.registrar, QuantumArmorUpgradeFilterPacket.TYPE, QuantumArmorUpgradeFilterPacket.STREAM_CODEC);
+        serverbound(this.registrar, QuantumArmorStylePacket.TYPE, QuantumArmorStylePacket.STREAM_CODEC);
         serverbound(this.registrar, QuantumArmorMagnetPacket.TYPE, QuantumArmorMagnetPacket.STREAM_CODEC);
         serverbound(this.registrar, FluidTankItemUsePacket.TYPE, FluidTankItemUsePacket.STREAM_CODEC);
         serverbound(this.registrar, KeysPressedPacket.TYPE, KeysPressedPacket.STREAM_CODEC);
