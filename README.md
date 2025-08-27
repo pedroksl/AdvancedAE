@@ -67,6 +67,12 @@ items, fluids and even energy in FE Cells (from AppliedFlux). To set it to track
 container with the desired ingredient twice. You can also configure the scale by using the Throughput Monitor Configurator.
 Right-clicking a monitor with it will cycle between the options of "per tick", "per second" and "per minute".
 
+### Localization
+
+All contributions with translations are welcome. Localization is now handled by our [Crowdin page]
+(https://crowdin.com/project/advanced-ae/invite?h=464374806115e6b9f8ec8b93d2fdff762537248). Please be aware that we use
+string format, so things like "%s" should be preserved.
+
 Found a bug? Missing a feature?
 
 [Create an Issue!](https://github.com/pedroksl/AdvancedAE/issues)
