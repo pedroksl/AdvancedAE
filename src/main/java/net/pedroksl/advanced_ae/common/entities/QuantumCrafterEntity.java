@@ -996,12 +996,12 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
     }
 
     @Override
-    public BlockPos getBlockPosition() {
+    public BlockPos getBlockPos() {
         return this.getBlockPos();
     }
 
     @Override
-    public Level getEntityLevel() {
+    public Level getLevel() {
         return this.getLevel();
     }
 

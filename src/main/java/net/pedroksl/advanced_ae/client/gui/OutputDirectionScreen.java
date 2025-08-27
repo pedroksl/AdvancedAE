@@ -80,7 +80,7 @@ public class OutputDirectionScreen extends AEBaseScreen<OutputDirectionMenu> {
                 var pos = getButtonPosition(side);
                 button.setPosition(this.leftPos + pos[0], this.topPos + pos[1]);
 
-                ItemStack item = this.getMenu().getHost().getAdjacentBlock(side);
+                ItemStack item = this.getMenu().getAdjacentBlock(side);
                 button.setItemStack(item);
             }
         }
