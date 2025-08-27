@@ -69,8 +69,7 @@ Right-clicking a monitor with it will cycle between the options of "per tick", "
 
 ### Localization
 
-All contributions with translations are welcome. Localization is now handled by our [Crowdin page]
-(https://crowdin.com/project/advanced-ae/invite?h=464374806115e6b9f8ec8b93d2fdff762537248). Please be aware that we use
+All contributions with translations are welcome. Localization is now handled by our [Crowdin page](https://crowdin.com/project/advanced-ae/invite?h=464374806115e6b9f8ec8b93d2fdff762537248). Please be aware that we use
 string format, so things like "%s" should be preserved.
 
 Found a bug? Missing a feature?
