@@ -45,6 +45,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
     private static final String SELECT_SLOT = "select_slot";
     private static final String REQUEST_UNINSTALL = "request_uninstall";
     private static final String EMPTY_SLOT = "empty_slot";
+    private static final String OPEN_STYLE = "open_style";
 
     public static final String LAST_SLOT_INDEX = "aae$lastSlotIndex";
 
@@ -76,6 +77,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         registerClientAction(SELECT_SLOT, Integer.class, this::setSelectedItemSlot);
         registerClientAction(REQUEST_UNINSTALL, UpgradeType.class, this::requestUninstall);
         registerClientAction(EMPTY_SLOT, this::emptyUpgradeSlot);
+        registerClientAction(OPEN_STYLE, this::openStyleScreen);
 
         if (getPlayer().getPersistentData().contains(LAST_SLOT_INDEX)) {
             setSelectedItemSlot(getPlayer().getPersistentData().getInt(LAST_SLOT_INDEX));
@@ -176,6 +178,19 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
                     filter,
                     currentValue,
                     blacklist);
+        }
+    }
+
+    public void openStyleScreen() {
+        if (isClientSide()) {
+            sendClientAction(OPEN_STYLE);
+            return;
+        }
+
+        var locator = getLocator();
+        if (locator != null) {
+            QuantumArmorStyleConfigMenu.open(
+                    ((ServerPlayer) this.getPlayer()), getLocator(), this.getSelectedSlotIndex());
         }
     }
 

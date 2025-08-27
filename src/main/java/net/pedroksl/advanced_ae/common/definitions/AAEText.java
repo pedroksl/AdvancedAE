@@ -128,7 +128,11 @@ public enum AAEText implements LocalizationEnum {
 
     QuantumArmorHotkeyTooltip("Press [%s] with this equipped to configure.", Type.TOOLTIP),
     QuantumArmorStableFootingTooltip("Negates mining speed penalty when flying.", Type.TOOLTIP),
-    QuantumArmorFallDamageTooltip("Negates fall damage when worn.", Type.TOOLTIP);
+    QuantumArmorFallDamageTooltip("Negates fall damage when worn.", Type.TOOLTIP),
+
+    StyleConfig("Style Config", Type.GUI),
+    InvalidHexInput("Invalid hex code input", Type.TOOLTIP),
+    ApplyToAll("Apply to all", Type.GUI);
 
     private final String englishText;
     private final Type type;

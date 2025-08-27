@@ -996,16 +996,6 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
     }
 
     @Override
-    public BlockPos getBlockPos() {
-        return this.getBlockPos();
-    }
-
-    @Override
-    public Level getLevel() {
-        return this.getLevel();
-    }
-
-    @Override
     public EnumSet<RelativeSide> getAllowedOutputs() {
         return allowedOutputs;
     }

@@ -9,6 +9,8 @@ import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 public final class AAENbt {
     public static final String STACK_TAG = "generic_nbt";
 
+    public static final String TINT_COLOR_TAG = "tint_color";
+
     public static final String PORTABLE_CELL_STACK_TAG = "portable_cell_stack";
 
     public static final String NIGHT_VISION_ACTIVATED = "night_vision_on";

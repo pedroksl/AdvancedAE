@@ -35,10 +35,8 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.pedroksl.advanced_ae.client.Hotkeys;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
-import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
-import net.pedroksl.advanced_ae.common.definitions.AAEItems;
-import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.common.definitions.AAEText;
+import net.pedroksl.advanced_ae.common.definitions.*;
+import net.pedroksl.advanced_ae.common.helpers.AAEColor;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.xmod.Addons;
@@ -60,11 +58,12 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem, IUpgradeableItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    protected static final int DEFAULT_TINT_COLOR = AAEColor.PURPLE.argb();
 
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
 
@@ -95,6 +94,26 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     protected void registerUpgrades(UpgradeType... upgrades) {
         this.possibleUpgrades.addAll(Arrays.asList(upgrades));
+    }
+
+    public int getTintColor(ItemStack stack) {
+        var tag = stack.getTag();
+        if (tag != null) {
+            if (tag.contains(AAENbt.TINT_COLOR_TAG)) {
+                return tag.getInt(AAENbt.TINT_COLOR_TAG);
+            }
+        }
+        return DEFAULT_TINT_COLOR;
+    }
+
+    public void setTintColor(Player player, ItemStack stack, int color) {
+        stack.getOrCreateTag().putInt(AAENbt.TINT_COLOR_TAG, color);
+
+        var renderer =
+                IClientItemExtensions.of(stack).getHumanoidArmorModel(player, stack, stack.getEquipmentSlot(), null);
+        if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
+            quantumRenderer.setTintColor(color);
+        }
     }
 
     @Override
@@ -246,7 +265,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private GeoArmorRenderer<?> renderer;
+            private QuantumArmorRenderer renderer;
 
             @Override
             public @NotNull HumanoidModel<?> getHumanoidArmorModel(
@@ -255,6 +274,8 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
                     EquipmentSlot equipmentSlot,
                     HumanoidModel<?> original) {
                 if (this.renderer == null) this.renderer = new QuantumArmorRenderer();
+
+                this.renderer.setTintColor(getTintColor(itemStack));
 
                 this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
 

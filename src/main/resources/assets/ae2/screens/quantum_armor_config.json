@@ -18,7 +18,7 @@
 	},
 	"slots": {
 		"AAE_ARMOR": {
-			"left": 8,
+			"left": 152,
 			"top": 27,
 			"grid": "VERTICAL"
 		},
@@ -35,12 +35,16 @@
 	},
 	"widgets": {
 		"scrollbar": {
-			"left": 159,
+			"left": 138,
 			"top": 31
 		},
 		"progressBar": {
 			"left": 151,
 			"top": 5
+		},
+		"styleButton": {
+			"left": 132,
+			"top": 6
 		}
 	}
 }
