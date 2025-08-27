@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.mojang.datafixers.util.Pair;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -1014,6 +1015,12 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         if (reason != IGridNodeListener.State.GRID_BOOT) {
             this.markForUpdate();
         }
+    }
+
+    @Override
+    public @NotNull BlockPos getBlockPosition() {
+        var be = this.getBlockEntity();
+        return be.getBlockPos();
     }
 
     @Override

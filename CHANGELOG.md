@@ -1,1 +1,1 @@
-- Fixed the quantum crafter losing pattern configuration when inventory changed
+- Fixed a crash that happened when trying to open direction output screens

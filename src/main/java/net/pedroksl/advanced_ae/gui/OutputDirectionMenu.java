@@ -58,7 +58,7 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
 
     public ItemStack getAdjacentBlock(RelativeSide side) {
         var dir = host.getOrientation().getSide(side);
-        BlockPos blockPos = host.getBlockPos().relative(dir);
+        BlockPos blockPos = host.getBlockPosition().relative(dir);
 
         Level level = getLevel();
         if (level == null) {

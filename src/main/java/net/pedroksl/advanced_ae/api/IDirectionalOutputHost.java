@@ -12,7 +12,7 @@ public interface IDirectionalOutputHost extends ISubMenuHost {
 
     BlockOrientation getOrientation();
 
-    BlockPos getBlockPos();
+    BlockPos getBlockPosition();
 
     EnumSet<RelativeSide> getAllowedOutputs();
 
