@@ -1,1 +1,2 @@
-- Changed supported forge version range
+- Fixed missing textures
+- Updated translations

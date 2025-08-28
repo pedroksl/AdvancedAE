@@ -1,53 +1,53 @@
 {
-	"$schema": "schema.json",
-	"includes": ["common/common.json", "common/player_inventory.json"],
-	"text": {
-		"dialog_title": {
-			"text": {
-				"translate": "gui.advanced_ae.QuantumArmorSetting"
-			},
-			"position": {
-				"left": 10,
-				"top": 8
-			}
-		},
-		"range_slider": {
-			"text": {
-				"translate": "gui.advanced_ae.MagnetRangeSlider"
-			},
-			"position": {
-				"left": 100,
-				"top": 29
-			}
-		}
-	},
-	"background": {
-		"texture": "guis/quantum_armor_magnet.png",
-		"srcRect": [0, 0, 176, 184]
-	},
-	"slots": {
-		"CONFIG": {
-			"left": 8,
-			"top": 65,
-			"grid": "HORIZONTAL"
-		}
-	},
-	"widgets": {
-		"back": {
-			"left": 154,
-			"top": 0
-		},
-		"blacklist": {
-			"left": 7,
-			"top": 45,
-			"width": 16,
-			"height": 16
-		},
-		"slider": {
-			"left": 97,
-			"top": 39,
-			"width": 70,
-			"height": 20
-		}
-	}
+  "$schema": "schema.json",
+  "includes": ["common/common.json", "common/player_inventory.json"],
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "gui.advanced_ae.QuantumArmorSetting"
+      },
+      "position": {
+        "left": 10,
+        "top": 8
+      }
+    },
+    "range_slider": {
+      "text": {
+        "translate": "gui.advanced_ae.MagnetRangeSlider"
+      },
+      "position": {
+        "left": 100,
+        "top": 29
+      }
+    }
+  },
+  "background": {
+    "texture": "guis/quantum_armor_magnet.png",
+    "srcRect": [0, 0, 176, 184]
+  },
+  "slots": {
+    "CONFIG": {
+      "left": 8,
+      "top": 65,
+      "grid": "HORIZONTAL"
+    }
+  },
+  "widgets": {
+    "back": {
+      "left": 154,
+      "top": 0
+    },
+    "blacklist": {
+      "left": 7,
+      "top": 45,
+      "width": 16,
+      "height": 16
+    },
+    "slider": {
+      "left": 97,
+      "top": 39,
+      "width": 70,
+      "height": 20
+    }
+  }
 }

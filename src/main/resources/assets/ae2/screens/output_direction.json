@@ -1,20 +1,20 @@
 {
-	"$schema": "schema.json",
-	"includes": ["common/common.json"],
-	"background": {
-		"texture": "guis/output_direction.png",
-		"srcRect": [0, 0, 79, 78]
-	},
-	"widgets": {
-		"back": {
-			"left": 57,
-			"top": 0
-		},
-		"clearAll": {
-			"left": 67,
-			"top": 62,
-			"width": 8,
-			"height": 8
-		}
-	}
+  "$schema": "schema.json",
+  "includes": ["common/common.json"],
+  "background": {
+    "texture": "guis/output_direction.png",
+    "srcRect": [0, 0, 79, 78]
+  },
+  "widgets": {
+    "back": {
+      "left": 57,
+      "top": 0
+    },
+    "clearAll": {
+      "left": 67,
+      "top": 62,
+      "width": 8,
+      "height": 8
+    }
+  }
 }

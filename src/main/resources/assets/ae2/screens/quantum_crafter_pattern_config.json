@@ -1,29 +1,29 @@
 {
-	"$schema": "schema.json",
-	"includes": ["common/common.json"],
-	"text": {
-		"dialog_title": {
-			"text": {
-				"translate": "gui.advanced_ae.QuantumCrafterPatternConfig"
-			},
-			"position": {
-				"left": 10,
-				"top": 5
-			}
-		}
-	},
-	"background": {
-		"texture": "guis/pattern_config.png",
-		"srcRect": [0, 0, 176, 142]
-	},
-	"widgets": {
-		"scrollbar": {
-			"left": 10,
-			"top": 26
-		},
-		"back": {
-			"left": 154,
-			"top": 0
-		}
-	}
+  "$schema": "schema.json",
+  "includes": ["common/common.json"],
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "gui.advanced_ae.QuantumCrafterPatternConfig"
+      },
+      "position": {
+        "left": 10,
+        "top": 5
+      }
+    }
+  },
+  "background": {
+    "texture": "guis/pattern_config.png",
+    "srcRect": [0, 0, 176, 142]
+  },
+  "widgets": {
+    "scrollbar": {
+      "left": 10,
+      "top": 26
+    },
+    "back": {
+      "left": 154,
+      "top": 0
+    }
+  }
 }

@@ -1,10 +1,10 @@
 {
-	"replace": false,
-	"size": 1,
-	"operation": "SET",
-	"order": 900,
-	"icon": "advanced_ae:item/adv_pattern_encoder_curio",
-	"add_cosmetic": false,
-	"use_native_gui": true,
-	"render_toggle": false
+  "replace": false,
+  "size": 1,
+  "operation": "SET",
+  "order": 900,
+  "icon": "advanced_ae:item/adv_pattern_encoder_curio",
+  "add_cosmetic": false,
+  "use_native_gui": true,
+  "render_toggle": false
 }
