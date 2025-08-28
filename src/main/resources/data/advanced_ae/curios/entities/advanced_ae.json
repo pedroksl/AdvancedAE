@@ -1,4 +1,4 @@
 {
-	"entities": ["player"],
-	"slots": ["adv_pattern_encoder"]
+  "entities": ["player"],
+  "slots": ["adv_pattern_encoder"]
 }

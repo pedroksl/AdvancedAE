@@ -1,4 +1,4 @@
 {
-	"$schema": "schema.json",
-	"includes": ["crafting_status.json"]
+  "$schema": "schema.json",
+  "includes": ["crafting_status.json"]
 }

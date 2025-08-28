@@ -1,164 +1,164 @@
 {
-	"$schema": "schema.json",
-	"includes": [
-		"common/common.json",
-		"common/player_inventory.json",
-		"common/toolbox.json"
-	],
-	"text": {
-		"dialog_title": {
-			"text": {
-				"translate": "gui.advanced_ae.QuantumCrafter"
-			},
-			"position": {
-				"left": 8,
-				"top": 5
-			}
-		},
-		"output_inv_text": {
-			"text": {
-				"translate": "gui.advanced_ae.OutputInventory"
-			},
-			"position": {
-				"left": 8,
-				"top": 76
-			}
-		}
-	},
-	"background": {
-		"texture": "guis/quantum_crafter.png",
-		"srcRect": [0, 0, 176, 219]
-	},
-	"slots": {
-		"MACHINE_INPUT": {
-			"left": 8,
-			"top": 42,
-			"grid": "HORIZONTAL"
-		},
-		"MACHINE_OUTPUT": {
-			"left": 8,
-			"top": 87,
-			"grid": "BREAK_AFTER_9COLS"
-		}
-	},
-	"images": {
-		"invalidPatternAlert": {
-			"texture": "guis/quantum_crafter.png",
-			"srcRect": [182, 0, 18, 18]
-		}
-	},
-	"widgets": {
-		"cfgButton1": {
-			"left": 8,
-			"top": 24,
-			"width": 16,
-			"height": 16
-		},
-		"cfgButton2": {
-			"left": 26,
-			"top": 24,
-			"width": 16,
-			"height": 16
-		},
-		"cfgButton3": {
-			"left": 44,
-			"top": 24,
-			"width": 16,
-			"height": 16
-		},
-		"cfgButton4": {
-			"left": 62,
-			"top": 24,
-			"width": 16,
-			"height": 16
-		},
-		"cfgButton5": {
-			"left": 80,
-			"top": 24,
-			"width": 16,
-			"height": 16
-		},
-		"cfgButton6": {
-			"left": 98,
-			"top": 24,
-			"width": 16,
-			"height": 16
-		},
-		"cfgButton7": {
-			"left": 116,
-			"top": 24,
-			"width": 16,
-			"height": 16
-		},
-		"cfgButton8": {
-			"left": 134,
-			"top": 24,
-			"width": 16,
-			"height": 16
-		},
-		"cfgButton9": {
-			"left": 152,
-			"top": 24,
-			"width": 16,
-			"height": 16
-		},
-		"enableButton1": {
-			"left": 9,
-			"top": 60,
-			"width": 12,
-			"height": 12
-		},
-		"enableButton2": {
-			"left": 27,
-			"top": 60,
-			"width": 12,
-			"height": 12
-		},
-		"enableButton3": {
-			"left": 45,
-			"top": 60,
-			"width": 12,
-			"height": 12
-		},
-		"enableButton4": {
-			"left": 63,
-			"top": 60,
-			"width": 12,
-			"height": 12
-		},
-		"enableButton5": {
-			"left": 81,
-			"top": 60,
-			"width": 12,
-			"height": 12
-		},
-		"enableButton6": {
-			"left": 99,
-			"top": 60,
-			"width": 12,
-			"height": 12
-		},
-		"enableButton7": {
-			"left": 117,
-			"top": 60,
-			"width": 12,
-			"height": 12
-		},
-		"enableButton8": {
-			"left": 135,
-			"top": 60,
-			"width": 12,
-			"height": 12
-		},
-		"enableButton9": {
-			"left": 153,
-			"top": 60,
-			"width": 12,
-			"height": 12
-		},
-		"invalidPatternAlert": {
-			"left": 151,
-			"top": 7
-		}
-	}
+  "$schema": "schema.json",
+  "includes": [
+    "common/common.json",
+    "common/player_inventory.json",
+    "common/toolbox.json"
+  ],
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "gui.advanced_ae.QuantumCrafter"
+      },
+      "position": {
+        "left": 8,
+        "top": 5
+      }
+    },
+    "output_inv_text": {
+      "text": {
+        "translate": "gui.advanced_ae.OutputInventory"
+      },
+      "position": {
+        "left": 8,
+        "top": 76
+      }
+    }
+  },
+  "background": {
+    "texture": "guis/quantum_crafter.png",
+    "srcRect": [0, 0, 176, 219]
+  },
+  "slots": {
+    "MACHINE_INPUT": {
+      "left": 8,
+      "top": 42,
+      "grid": "HORIZONTAL"
+    },
+    "MACHINE_OUTPUT": {
+      "left": 8,
+      "top": 87,
+      "grid": "BREAK_AFTER_9COLS"
+    }
+  },
+  "images": {
+    "invalidPatternAlert": {
+      "texture": "guis/quantum_crafter.png",
+      "srcRect": [182, 0, 18, 18]
+    }
+  },
+  "widgets": {
+    "cfgButton1": {
+      "left": 8,
+      "top": 24,
+      "width": 16,
+      "height": 16
+    },
+    "cfgButton2": {
+      "left": 26,
+      "top": 24,
+      "width": 16,
+      "height": 16
+    },
+    "cfgButton3": {
+      "left": 44,
+      "top": 24,
+      "width": 16,
+      "height": 16
+    },
+    "cfgButton4": {
+      "left": 62,
+      "top": 24,
+      "width": 16,
+      "height": 16
+    },
+    "cfgButton5": {
+      "left": 80,
+      "top": 24,
+      "width": 16,
+      "height": 16
+    },
+    "cfgButton6": {
+      "left": 98,
+      "top": 24,
+      "width": 16,
+      "height": 16
+    },
+    "cfgButton7": {
+      "left": 116,
+      "top": 24,
+      "width": 16,
+      "height": 16
+    },
+    "cfgButton8": {
+      "left": 134,
+      "top": 24,
+      "width": 16,
+      "height": 16
+    },
+    "cfgButton9": {
+      "left": 152,
+      "top": 24,
+      "width": 16,
+      "height": 16
+    },
+    "enableButton1": {
+      "left": 9,
+      "top": 60,
+      "width": 12,
+      "height": 12
+    },
+    "enableButton2": {
+      "left": 27,
+      "top": 60,
+      "width": 12,
+      "height": 12
+    },
+    "enableButton3": {
+      "left": 45,
+      "top": 60,
+      "width": 12,
+      "height": 12
+    },
+    "enableButton4": {
+      "left": 63,
+      "top": 60,
+      "width": 12,
+      "height": 12
+    },
+    "enableButton5": {
+      "left": 81,
+      "top": 60,
+      "width": 12,
+      "height": 12
+    },
+    "enableButton6": {
+      "left": 99,
+      "top": 60,
+      "width": 12,
+      "height": 12
+    },
+    "enableButton7": {
+      "left": 117,
+      "top": 60,
+      "width": 12,
+      "height": 12
+    },
+    "enableButton8": {
+      "left": 135,
+      "top": 60,
+      "width": 12,
+      "height": 12
+    },
+    "enableButton9": {
+      "left": 153,
+      "top": 60,
+      "width": 12,
+      "height": 12
+    },
+    "invalidPatternAlert": {
+      "left": 151,
+      "top": 7
+    }
+  }
 }
