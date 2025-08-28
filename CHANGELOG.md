@@ -1,1 +1,1 @@
-- Fixed rare case where quantum computer deserialization could crash the game
+- Fixed the quantum crafter not working correctly for recursive patterns
