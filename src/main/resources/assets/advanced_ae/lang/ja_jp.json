@@ -120,7 +120,7 @@
     "gui.upgrades.advanced_ae.AttackSpeedUpgrade": "Attack Speed",
     "gui.upgrades.advanced_ae.AutoFeedUpgrade": "Auto Feed",
     "gui.upgrades.advanced_ae.AutoStockUpgrade": "Auto Stock",
-    "gui.upgrades.advanced_ae.EmptyUpgrade": "Empty",
+    "gui.upgrades.advanced_ae.EmptyUpgrade": "空",
     "gui.upgrades.advanced_ae.EvasionUpgrade": "Evasion",
     "gui.upgrades.advanced_ae.FlightUpgrade": "Flight",
     "gui.upgrades.advanced_ae.HPBufferUpgrade": "HP Buffer",
@@ -196,5 +196,5 @@
     "key.advanced_ae.quantum_auto_stock_upgrade": "量子アーマー自動ストック切替",
     "key.advanced_ae.quantum_magnet_upgrade": "量子アーマー磁石切替",
     "key.advanced_ae.quantum_night_vision_upgrade": "量子アーマー暗視切替",
-    "material.advanced_ae.quantum_alloy": "Quantum Alloy"
+    "material.advanced_ae.quantum_alloy": "量子合金"
 }
