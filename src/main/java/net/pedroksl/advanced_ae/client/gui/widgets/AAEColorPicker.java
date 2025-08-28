@@ -135,7 +135,11 @@ public class AAEColorPicker extends AAECompositeWidgetContainer {
 
         // guiGraphics.fill(0, 0, 1, 1, -1);
         guiGraphics.fill(
-                minX - 1, minY - 1, minX + this.width + 1, minY + PREVIEW_ROW_HEIGHT + 1, AAEColor.DARK_GRAY_BLUE.argb());
+                minX - 1,
+                minY - 1,
+                minX + this.width + 1,
+                minY + PREVIEW_ROW_HEIGHT + 1,
+                AAEColor.DARK_GRAY_BLUE.argb());
 
         guiGraphics.fill(minX, minY, minX + this.width, minY + PREVIEW_ROW_HEIGHT, this.color);
 
