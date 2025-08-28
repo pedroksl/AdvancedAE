@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.client.gui.widgets;
 
-import java.awt.*;
 import java.util.function.BiConsumer;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -51,7 +50,7 @@ public class AAESaturationValuePicker implements ICompositeWidget {
         var w = this.width;
         var h = this.height;
 
-        guiGraphics.fill(minX - 1, minY - 1, minX + w + 1, minY + h + 1, AAEColor.DARK_GRAY.argb());
+        guiGraphics.fill(minX - 1, minY - 1, minX + w + 1, minY + h + 1, AAEColor.DARK_GRAY_BLUE.argb());
 
         renderGradient(
                 guiGraphics,

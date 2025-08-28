@@ -124,8 +124,8 @@ public class AAESlider implements ICompositeWidget {
         var middleX = minX + this.width / 2;
         var middleY = minSliderY + sliderHeight / 2;
 
-        var backColor = AAEColor.NEW_COLOR.argb((int) (this.alpha * 255f));
-        var lineColor = AAEColor.DARK_GRAY.argb((int) (this.alpha * 255f));
+        var backColor = AAEColor.DARK_GRAY.argb((int) (this.alpha * 255f));
+        var lineColor = AAEColor.DARK_GRAY_BLUE.argb((int) (this.alpha * 255f));
 
         // Render background rectangles
         guiGraphics.fill(minX - 2, minSliderY - 2, maxX + 2, maxY + 2, Color.WHITE.getRGB());

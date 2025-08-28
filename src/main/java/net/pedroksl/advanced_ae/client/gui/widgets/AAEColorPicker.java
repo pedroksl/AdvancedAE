@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.client.gui.widgets;
 
-import java.awt.*;
 import java.util.function.BiConsumer;
 
 import net.minecraft.client.Minecraft;
@@ -136,7 +135,7 @@ public class AAEColorPicker extends AAECompositeWidgetContainer {
 
         // guiGraphics.fill(0, 0, 1, 1, -1);
         guiGraphics.fill(
-                minX - 1, minY - 1, minX + this.width + 1, minY + PREVIEW_ROW_HEIGHT + 1, AAEColor.DARK_GRAY.argb());
+                minX - 1, minY - 1, minX + this.width + 1, minY + PREVIEW_ROW_HEIGHT + 1, AAEColor.DARK_GRAY_BLUE.argb());
 
         guiGraphics.fill(minX, minY, minX + this.width, minY + PREVIEW_ROW_HEIGHT, this.color);
 
@@ -145,7 +144,7 @@ public class AAEColorPicker extends AAECompositeWidgetContainer {
                 "Hex:",
                 pos.getX(),
                 pos.getY() + this.height - HEX_ROW_HEIGHT,
-                AAEColor.DARK_GRAY.rgb(),
+                AAEColor.DARK_GRAY_BLUE.rgb(),
                 false);
     }
 }

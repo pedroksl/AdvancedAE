@@ -25,7 +25,7 @@ public class AAEHueSlider extends AAESlider {
         var w = this.width;
         var h = this.height;
 
-        guiGraphics.fill(minX - 1, minY - 1, minX + w + 1, minY + h + 1, AAEColor.DARK_GRAY.argb());
+        guiGraphics.fill(minX - 1, minY - 1, minX + w + 1, minY + h + 1, AAEColor.DARK_GRAY_BLUE.argb());
         for (var i = 0; i < w; i++) {
             var hue = (float) i / w;
             guiGraphics.fill(
