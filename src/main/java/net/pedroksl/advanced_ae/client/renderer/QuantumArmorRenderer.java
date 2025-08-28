@@ -95,17 +95,6 @@ public class QuantumArmorRenderer extends GeoArmorRenderer<QuantumArmorBase> {
                                 packedOverlay,
                                 this.tintColor);
             }
-
-            super.render(
-                    poseStack,
-                    animatable,
-                    bakedModel,
-                    renderType,
-                    bufferSource,
-                    buffer,
-                    partialTick,
-                    packedLight,
-                    packedOverlay);
         }
 
         @Override

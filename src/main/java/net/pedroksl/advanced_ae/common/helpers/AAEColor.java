@@ -7,10 +7,12 @@ import net.minecraft.util.Mth;
 
 public class AAEColor {
 
-    public static final AAEColor LIGHT_GRAY = AAEColor.ofRgb(11382980);
-    public static final AAEColor DARK_GRAY = AAEColor.ofRgb(4276052);
+    public static final AAEColor WHITE = AAEColor.ofArgb(0xFFFFFFFF);
+    public static final AAEColor LIGHT_GRAY = AAEColor.ofArgb(0xFFADB0C4);
+    public static final AAEColor DARK_GRAY_BLUE = AAEColor.ofArgb(0xFF413F54);
     public static final AAEColor LIGHT_PURPLE = AAEColor.ofArgb(0x787d53c1);
-    public static final AAEColor PURPLE = AAEColor.ofRgb(0x7110a5);
+    public static final AAEColor PURPLE = AAEColor.ofArgb(0xFF7110a5);
+    public static final AAEColor DARK_GRAY = AAEColor.ofArgb(0X8B8B8B);
 
     private final int red;
     private final int green;
