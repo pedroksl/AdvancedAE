@@ -1,1 +1,1 @@
-- Backported quantum crafter changes and bug fixes from 1.21.1
+- Fixed the quantum crafter losing pattern configuration when inventory changed
