@@ -1,1 +1,1 @@
-- Fixed the quantum crafter not working correctly for recursive patterns
+- Fixed the quantum crafter losing pattern configuration when inventory changed

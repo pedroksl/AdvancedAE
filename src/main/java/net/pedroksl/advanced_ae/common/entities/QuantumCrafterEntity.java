@@ -235,11 +235,11 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 IPatternDetails details = PatternDetailsHelper.decodePattern(is, this.getLevel());
                 if (details instanceof AECraftingPattern craftPattern) {
                     if (craftingJobs.get(x) != null) {
-                        if (craftingJobs.get(x).pattern == craftPattern) {
+                        if (craftingJobs.get(x).pattern == null) {
+                            craftingJobs.get(x).setPattern(craftPattern);
                             setInvalidPattern(x, craftingJobs.get(x).consumesDurability);
                             continue;
-                        } else if (craftingJobs.get(x).pattern == null) {
-                            craftingJobs.get(x).setPattern(craftPattern);
+                        } else if (craftingJobs.get(x).pattern.equals(craftPattern)) {
                             setInvalidPattern(x, craftingJobs.get(x).consumesDurability);
                             continue;
                         }
