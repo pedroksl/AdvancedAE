@@ -235,11 +235,11 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 IPatternDetails details = PatternDetailsHelper.decodePattern(is, this.getLevel());
                 if (details instanceof AECraftingPattern craftPattern) {
                     if (craftingJobs.get(x) != null) {
-                        if (craftingJobs.get(x).pattern == craftPattern) {
+                        if (craftingJobs.get(x).pattern == null) {
+                            craftingJobs.get(x).setPattern(craftPattern);
                             setInvalidPattern(x, craftingJobs.get(x).consumesDurability);
                             continue;
-                        } else if (craftingJobs.get(x).pattern == null) {
-                            craftingJobs.get(x).setPattern(craftPattern);
+                        } else if (craftingJobs.get(x).pattern.equals(craftPattern)) {
                             setInvalidPattern(x, craftingJobs.get(x).consumesDurability);
                             continue;
                         }
@@ -388,7 +388,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     private boolean hasAvailableOutputStorage(CraftingJob job) {
         for (var output : job.pattern.getOutputs()) {
             if (output.what() instanceof AEItemKey key) {
-                var stack = key.toStack();
+                var stack = key.toStack((int) output.amount());
                 for (var x = 0; x < this.outputInv.size(); x++) {
                     stack = this.outputInv.insertItem(x, stack, true);
                     if (stack.isEmpty()) {
@@ -515,7 +515,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         // Create outputs and put them in output slots
         for (var output : outputs) {
             if (output.what() instanceof AEItemKey key) {
-                var stack = key.toStack();
+                var stack = key.toStack((int) output.amount());
                 stack.setCount((int) job.outputAmountPerCraft(output) * completeRecipes);
 
                 for (var x = 0; x < this.outputInv.size(); x++) {
@@ -1175,11 +1175,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                     if (!this.hasDataChange) {
                         ItemStack outputStack = findMatchingOutput(in);
                         if (outputStack != ItemStack.EMPTY) {
-                            for (var component : inStack.getComponents()) {
-                                if (outputStack.get(component.type()) != component) {
-                                    this.hasDataChange = true;
-                                    break;
-                                }
+                            if (!ItemStack.isSameItemSameComponents(
+                                    inStack.copyWithCount(outputStack.getCount()), outputStack)) {
+                                this.hasDataChange = true;
+                                break;
                             }
                         }
                     }
@@ -1316,7 +1315,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             ItemStack inStack = inKey.toStack();
 
             for (var output : pattern.getOutputs()) {
-                ItemStack outStack = ((AEItemKey) output.what()).toStack();
+                ItemStack outStack = ((AEItemKey) output.what()).toStack((int) output.amount());
 
                 if ((!inStack.isComponentsPatchEmpty()
                                 && inStack.getComponentsPatch().equals(outStack.getComponentsPatch()))
@@ -1382,7 +1381,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 if (input == null) {
                     craftingInput.add(ItemStack.EMPTY);
                 } else if (input.what() instanceof AEItemKey key) {
-                    craftingInput.add(key.toStack());
+                    craftingInput.add(key.toStack((int) input.amount()));
                 }
                 if (pattern.canSubstituteFluids() && pattern.getValidFluid(x) != null) {
                     bucketsToRemove++;

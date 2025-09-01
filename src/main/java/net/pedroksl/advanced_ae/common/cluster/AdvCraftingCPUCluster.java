@@ -355,12 +355,16 @@ public class AdvCraftingCPUCluster implements IAECluster {
                 UUID id;
                 long bytes;
                 Tag keyTag = pair.get("key");
-                if (keyTag.getType() instanceof CompoundTag planTag) {
+                if (keyTag != null && keyTag.getType() instanceof CompoundTag planTag) {
                     var plan = readCraftingPlanFromNBT(planTag, registries);
                     id = UUID.randomUUID();
                     bytes = plan.bytes();
                 } else {
-                    id = UUID.fromString(pair.getString("key"));
+                    try {
+                        id = UUID.fromString(pair.getString("key"));
+                    } catch (IllegalArgumentException e) {
+                        id = UUID.randomUUID();
+                    }
                     bytes = pair.getLong("bytes");
                 }
 

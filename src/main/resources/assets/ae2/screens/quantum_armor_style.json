@@ -1,52 +1,52 @@
 {
-	"$schema": "schema.json",
-	"includes": ["common/common.json"],
-	"text": {
-		"dialog_title": {
-			"text": {
-				"translate": "gui.advanced_ae.StyleConfig"
-			},
-			"position": {
-				"left": 4,
-				"top": 4
-			}
-		}
-	},
-	"background": {
-		"texture": "guis/quantum_armor_style_config.png",
-		"srcRect": [0, 0, 126, 130]
-	},
-	"slots": {
-		"AAE_ARMOR": {
-			"left": 103,
-			"top": 24,
-			"grid": "VERTICAL"
-		}
-	},
-	"widgets": {
-		"back": {
-			"left": 100,
-			"top": -5,
-			"width": 20,
-			"height": 20
-		},
-		"colorPicker": {
-			"left": 8,
-			"top": 24,
-			"width": 85,
-			"height": 60
-		},
-		"checkBox": {
-			"left": 8,
-			"top": 87,
-			"width": 85,
-			"height": 10
-		},
-		"confirmButton": {
-			"right": 22,
-			"bottom": 27,
-			"width": 16,
-			"height": 16
-		}
-	}
+  "$schema": "schema.json",
+  "includes": ["common/common.json"],
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "gui.advanced_ae.StyleConfig"
+      },
+      "position": {
+        "left": 4,
+        "top": 4
+      }
+    }
+  },
+  "background": {
+    "texture": "guis/quantum_armor_style_config.png",
+    "srcRect": [0, 0, 126, 130]
+  },
+  "slots": {
+    "AAE_ARMOR": {
+      "left": 103,
+      "top": 24,
+      "grid": "VERTICAL"
+    }
+  },
+  "widgets": {
+    "back": {
+      "left": 100,
+      "top": -5,
+      "width": 20,
+      "height": 20
+    },
+    "colorPicker": {
+      "left": 8,
+      "top": 24,
+      "width": 85,
+      "height": 60
+    },
+    "checkBox": {
+      "left": 8,
+      "top": 87,
+      "width": 85,
+      "height": 10
+    },
+    "confirmButton": {
+      "right": 22,
+      "bottom": 27,
+      "width": 16,
+      "height": 16
+    }
+  }
 }

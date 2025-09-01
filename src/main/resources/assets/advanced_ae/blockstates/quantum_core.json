@@ -1,16 +1,16 @@
 {
-	"variants": {
-		"formed=false,powered=false": {
-			"model": "advanced_ae:block/quantum_core"
-		},
-		"formed=false,powered=true": {
-			"model": "advanced_ae:block/quantum_core"
-		},
-		"formed=true,powered=false": {
-			"model": "advanced_ae:block/quantum_core"
-		},
-		"formed=true,powered=true": {
-			"model": "advanced_ae:block/quantum_core_formed_on"
-		}
-	}
+  "variants": {
+    "formed=false,powered=false": {
+      "model": "advanced_ae:block/quantum_core"
+    },
+    "formed=false,powered=true": {
+      "model": "advanced_ae:block/quantum_core"
+    },
+    "formed=true,powered=false": {
+      "model": "advanced_ae:block/quantum_core"
+    },
+    "formed=true,powered=true": {
+      "model": "advanced_ae:block/quantum_core_formed_on"
+    }
+  }
 }
