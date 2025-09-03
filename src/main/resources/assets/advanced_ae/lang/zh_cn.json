@@ -77,7 +77,7 @@
     "gui.tooltips.advanced_ae.InsufficientPowerDetails": "无法获取全速前进所需的足够能量。查看指南以了解可能的解决方案。",
     "gui.tooltips.advanced_ae.InvalidHexInput": "Invalid hex code input",
     "gui.tooltips.advanced_ae.InvalidPattern": "无效样板",
-    "gui.tooltips.advanced_ae.InvalidPatternDetails": "Invalid Pattern detected and highlighted. Recipes that consume durability are not supported.",
+    "gui.tooltips.advanced_ae.InvalidPatternDetails": "检测到无效样板，已高亮标记。不支持消耗耐久的配方。",
     "gui.tooltips.advanced_ae.JumpHeightTooltip": "提升跳跃高度，最大为 %s。",
     "gui.tooltips.advanced_ae.LavaImmunityTooltip": "角色免疫熔岩和火焰。",
     "gui.tooltips.advanced_ae.LuckTooltip": "角色幸运提升 %s。",
