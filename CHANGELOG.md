@@ -1,1 +1,2 @@
 - Fixed a crash that happened when trying to open direction output screens
+- Updated localization files
