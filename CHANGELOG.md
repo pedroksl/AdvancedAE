@@ -1,1 +1,1 @@
-- Fixed the quantum crafter losing pattern configuration when inventory changed
+- Added compatibility to AE2's new feature "Resume/Suspend" crafting jobs

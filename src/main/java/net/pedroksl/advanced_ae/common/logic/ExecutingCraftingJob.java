@@ -1,3 +1,20 @@
+/*
+ * This file is part of Applied Energistics 2.
+ * Copyright (c) 2021, TeamAppliedEnergistics, All rights reserved.
+ *
+ * Applied Energistics 2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Applied Energistics 2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package net.pedroksl.advanced_ae.common.logic;
 
 import java.util.HashMap;
@@ -30,6 +47,7 @@ public class ExecutingCraftingJob {
     private static final String NBT_TIME_TRACKER = "timeTracker";
     private static final String NBT_REMAINING_AMOUNT = "remainingAmount";
     private static final String NBT_TASKS = "tasks";
+    private static final String NBT_SUSPENDED = "suspended";
     private static final String NBT_CRAFTING_PROGRESS = "#craftingProgress";
 
     final CraftingLink link;
@@ -41,6 +59,8 @@ public class ExecutingCraftingJob {
 
     @Nullable
     final Integer playerId;
+
+    boolean suspended;
 
     @FunctionalInterface
     interface CraftingDifferenceListener {
@@ -71,6 +91,7 @@ public class ExecutingCraftingJob {
         }
         this.link = link;
         this.playerId = playerId;
+        this.suspended = false;
     }
 
     ExecutingCraftingJob(
@@ -106,6 +127,8 @@ public class ExecutingCraftingJob {
                 this.tasks.put(details, tp);
             }
         }
+
+        this.suspended = data.getBoolean(NBT_SUSPENDED);
     }
 
     CompoundTag writeToNBT(HolderLookup.Provider registries) {
@@ -132,6 +155,8 @@ public class ExecutingCraftingJob {
         if (this.playerId != null) {
             data.putInt(NBT_PLAYER_ID, this.playerId);
         }
+
+        data.putBoolean(NBT_SUSPENDED, suspended);
 
         return data;
     }

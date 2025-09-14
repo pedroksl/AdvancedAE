@@ -30,7 +30,7 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="ae2"
 type="required"
-versionRange="[19.2.4-beta,)"
+versionRange="[19.2.16,)"
 ordering="AFTER"
 side="BOTH"
 [[dependencies.${mod_id}]]

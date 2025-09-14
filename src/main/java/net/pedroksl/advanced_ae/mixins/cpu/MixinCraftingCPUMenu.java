@@ -39,6 +39,9 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
     private IncrementalUpdateHelper incrementalUpdateHelper;
 
     @Shadow
+    private boolean cachedSuspend;
+
+    @Shadow
     private CraftingCPUCluster cpu;
 
     @Unique
@@ -89,6 +92,7 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
 
             // Clear helper inside the if statement because it will be cleared normally otherwise
             incrementalUpdateHelper.reset();
+            cachedSuspend = false;
 
             this.advancedAE$advCpu = advCPU;
 
@@ -116,6 +120,16 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
         }
     }
 
+    @Inject(method = "toggleScheduling", at = @At("TAIL"))
+    public void onToggleScheduling(CallbackInfo ci) {
+        if (!isClientSide()) {
+            if (this.advancedAE$advCpu != null) {
+                var logic = this.advancedAE$advCpu.craftingLogic;
+                logic.setJobSuspended(!logic.isJobSuspended());
+            }
+        }
+    }
+
     @Inject(method = "removed", at = @At("TAIL"))
     public void onRemoved(Player player, CallbackInfo ci) {
         if (this.advancedAE$advCpu != null) {
@@ -129,10 +143,12 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
             this.schedulingMode = this.advancedAE$advCpu.getSelectionMode();
             this.cantStoreItems = this.advancedAE$advCpu.craftingLogic.isCantStoreItems();
 
-            if (this.incrementalUpdateHelper.hasChanges()) {
+            if (this.incrementalUpdateHelper.hasChanges()
+                    || this.cachedSuspend != this.advancedAE$advCpu.craftingLogic.isJobSuspended()) {
                 CraftingStatus status =
                         advancedAE$create(this.incrementalUpdateHelper, this.advancedAE$advCpu.craftingLogic);
                 this.incrementalUpdateHelper.commitChanges();
+                this.cachedSuspend = status.isSuspended();
 
                 sendPacketToClient(new CraftingStatusPacket(containerId, status));
             }
@@ -167,8 +183,9 @@ public class MixinCraftingCPUMenu extends AEBaseMenu {
         long elapsedTime = logic.getElapsedTimeTracker().getElapsedTime();
         long remainingItems = logic.getElapsedTimeTracker().getRemainingItemCount();
         long startItems = logic.getElapsedTimeTracker().getStartItemCount();
+        boolean suspended = logic.isJobSuspended();
 
-        return new CraftingStatus(full, elapsedTime, remainingItems, startItems, newEntries.build());
+        return new CraftingStatus(full, elapsedTime, remainingItems, startItems, newEntries.build(), suspended);
     }
 
     public MixinCraftingCPUMenu(MenuType<?> menuType, int id, Inventory playerInventory, Object host) {
