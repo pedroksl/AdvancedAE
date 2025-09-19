@@ -67,7 +67,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     private static final int negativeColor = AEColor.RED.mediumVariant;
 
     private enum WorkRoutine {
-        TICK(1, 5),
+        TICK(1, 10),
         SECOND(20, 20),
         MINUTE(1200, AAEConfig.instance().getThroughputMonitorCacheSize() / 2),
         TEN_MINUTE(12000, AAEConfig.instance().getThroughputMonitorCacheSize() * 5);

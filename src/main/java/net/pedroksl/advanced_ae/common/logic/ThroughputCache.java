@@ -31,7 +31,7 @@ public class ThroughputCache {
         cache.clear();
     }
 
-    public long averagePerTick(int timeLimit_s) {
+    public double averagePerTick(int timeLimit_s) {
         long now = TickHandler.instance().getCurrentTick();
         long tLimit = now - timeLimit_s * 20L;
 
@@ -57,7 +57,7 @@ public class ThroughputCache {
             average += avg / (double) size;
         }
 
-        return Math.round(average);
+        return average;
     }
 
     private record CacheEntry(long amount, long timestamp) {}
