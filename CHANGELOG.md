@@ -1,1 +1,2 @@
-- Added compatibility to AE2's new feature "Resume/Suspend" crafting jobs
+- Increased the throughput monitor precision for slowly changing items
+- Fixed an issue in the translated guides
