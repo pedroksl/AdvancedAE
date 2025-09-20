@@ -86,7 +86,7 @@ Para crear una computadora cuántica multibloque, se deben seguir algunas reglas
 sin beneficios adicionales;
 - Exactamente un <ItemLink id="advanced_ae:quantum_core" />;
 - Como máximo un <ItemLink id="advanced_ae:data_entangler" />;
-- Como máximo un <ItemLink id="advanced_ae:quantum_multi_threader"
+- Como máximo un <ItemLink id="advanced_ae:quantum_multi_threader" />"
 - Todas las bloques en la capa exterior deben ser de <ItemLink id="advanced_ae:quantum_structure" />;
 - Ningún bloque en el interior puede ser de <ItemLink id="advanced_ae:quantum_structure" />.
 

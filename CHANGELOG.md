@@ -1,2 +1,2 @@
-- Fixed a crash that happened when trying to open direction output screens
-- Updated localization files
+- Increased the throughput monitor precision for slowly changing items
+- Fixed an issue in the translated guides
