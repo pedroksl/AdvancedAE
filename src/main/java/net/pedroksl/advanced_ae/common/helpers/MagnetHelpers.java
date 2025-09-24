@@ -22,17 +22,17 @@ public class MagnetHelpers {
                 && (player instanceof ServerPlayer || item.tickCount > 1)
                 && !item.getItem().isEmpty()) {
             // Don't pick if thrown by the player
-            if (!(item.thrower == null || !item.thrower.equals(player.getUUID()) || !item.hasPickUpDelay()))
-                return false;
+            if (item.hasPickUpDelay() && (item.thrower == null || item.thrower.equals(player.getUUID()))) return false;
 
             // Compatibility with demagnetization tool
             if (item.getPersistentData().contains("PreventRemoteMovement")) return false;
 
             if (filter.isEmpty()) return true;
 
-            var filteredList =
-                    filter.stream().filter(gen -> AEItemKey.of(item.getItem()).matches(gen));
-            var containedInFilter = filteredList.findAny().isPresent();
+            var containedInFilter = !filter.stream()
+                    .filter(gen -> AEItemKey.of(item.getItem()).matches(gen))
+                    .toList()
+                    .isEmpty();
             return (containedInFilter && !blacklist) || (!containedInFilter && blacklist);
         }
 

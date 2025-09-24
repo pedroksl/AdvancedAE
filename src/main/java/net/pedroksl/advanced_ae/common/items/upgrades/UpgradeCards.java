@@ -262,7 +262,7 @@ public class UpgradeCards {
 
     public static boolean magnet(Level level, Player player, ItemStack stack) {
         if (!player.isSpectator() && stack.getItem() instanceof QuantumHelmet helmet) {
-            if (helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.MAGNET, level)) {
+            if (helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.MAGNET)) {
                 var range = stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(UpgradeType.MAGNET), 5);
                 var pos = player.position();
 
