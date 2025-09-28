@@ -1317,9 +1317,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             for (var output : pattern.getOutputs()) {
                 ItemStack outStack = ((AEItemKey) output.what()).toStack((int) output.amount());
 
-                if ((!inStack.isComponentsPatchEmpty()
-                                && inStack.getComponentsPatch().equals(outStack.getComponentsPatch()))
-                        || inStack.is(outStack.getItem())) {
+                if (inStack.is(outStack.getItem())) {
                     return outStack;
                 }
             }
