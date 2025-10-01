@@ -116,6 +116,10 @@ public class AdvCraftingCPUCluster implements IAECluster {
         return this.blockEntities.iterator();
     }
 
+    public int numBlockEntities() {
+        return this.blockEntities.size();
+    }
+
     public List<ListCraftingInventory> getInventories() {
         List<ListCraftingInventory> list = new ArrayList<>();
         for (var cpu : this.activeCpus.values()) {

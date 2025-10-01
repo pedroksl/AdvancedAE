@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.datagen;
 
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
@@ -68,24 +69,22 @@ public class AAEModelProvider extends AE2BlockStateProvider {
 
         // CRAFTING UNITS
         for (var type : AAECraftingUnitType.values()) {
-            if (type == AAECraftingUnitType.QUANTUM_CORE || type == AAECraftingUnitType.STRUCTURE) {
+            if (type == AAECraftingUnitType.QUANTUM_CORE) {
                 continue;
             }
-            basicCraftingBlockModel(type);
+            var craftingBlock = type.getDefinition().block();
+            var name = type.getAffix();
+            var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" + name));
+            if (type == AAECraftingUnitType.STRUCTURE) blockModel.renderType("translucent");
+            getVariantBuilder(craftingBlock)
+                    .partialState()
+                    .with(AAEAbstractCraftingUnitBlock.FORMED, false)
+                    .setModels(new ConfiguredModel(blockModel))
+                    .partialState()
+                    .with(AAEAbstractCraftingUnitBlock.FORMED, true)
+                    .setModels(new ConfiguredModel(models().getBuilder("block/crafting/" + name + "_formed")));
+            simpleBlockItem(craftingBlock, blockModel);
         }
-
-        var type = AAECraftingUnitType.STRUCTURE;
-        var craftingBlock = type.getDefinition().block();
-        var name = type.getAffix();
-        var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" + name));
-        getVariantBuilder(craftingBlock)
-                .partialState()
-                .with(AAEAbstractCraftingUnitBlock.FORMED, false)
-                .setModels(new ConfiguredModel(blockModel))
-                .partialState()
-                .with(AAEAbstractCraftingUnitBlock.FORMED, true)
-                .setModels(new ConfiguredModel(models().getBuilder("block/crafting/" + name + "_formed")));
-        simpleBlockItem(craftingBlock, blockModel);
 
         interfaceOrProviderPart(AAEItems.ADV_PATTERN_PROVIDER);
         interfaceOrProviderPart(AAEItems.SMALL_ADV_PATTERN_PROVIDER);

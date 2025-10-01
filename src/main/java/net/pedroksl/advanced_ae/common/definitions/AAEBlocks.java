@@ -87,7 +87,7 @@ public final class AAEBlocks {
             () -> new AAECraftingUnitBlock(AAECraftingUnitType.MULTI_THREADER),
             AAECraftingBlockItem::new);
     public static final BlockDefinition<AAECraftingUnitBlock> QUANTUM_STRUCTURE = block(
-            "Quantum Computer Structure",
+            "Quantum Computer Structural Glass",
             "quantum_structure",
             () -> new AAECraftingUnitBlock(AAECraftingUnitType.STRUCTURE),
             AAECraftingBlockItem::new);

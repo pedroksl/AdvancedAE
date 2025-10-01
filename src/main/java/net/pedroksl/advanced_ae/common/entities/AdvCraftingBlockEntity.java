@@ -134,14 +134,15 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
 
         // The block entity might try to update while being destroyed
         if (current.getBlock() instanceof AAEAbstractCraftingUnitBlock) {
-            int lightLevel = this.getUnitBlock().type == AAECraftingUnitType.QUANTUM_CORE
-                    ? 10
-                    : this.getUnitBlock().type == AAECraftingUnitType.STRUCTURE ? 5 : 0;
+            var type = this.getUnitBlock().type;
+            int lightLevel = type == AAECraftingUnitType.QUANTUM_CORE ? 12 : 0;
             lightLevel = formed && power ? lightLevel : 0;
+            boolean multiblocked = this.cluster != null && this.cluster.numBlockEntities() > 1;
 
             final BlockState newState = current.setValue(AAEAbstractCraftingUnitBlock.POWERED, power)
                     .setValue(AAEAbstractCraftingUnitBlock.FORMED, formed)
-                    .setValue(AAECraftingUnitBlock.LIGHT_LEVEL, lightLevel);
+                    .setValue(AAECraftingUnitBlock.LIGHT_LEVEL, lightLevel)
+                    .setValue(AAECraftingUnitBlock.MULTIBLOCKED, multiblocked);
 
             if (current != newState) {
                 // Not using flag 2 here (only send to clients, prevent block update) will cause
