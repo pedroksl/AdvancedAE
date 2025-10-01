@@ -8,7 +8,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
@@ -78,9 +77,8 @@ public class AAELivingEntityEvents {
     public static void breath(LivingBreatheEvent event) {
         if (event.getEntity() instanceof Player player) {
             ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
-            Level level = player instanceof ServerPlayer serverPlayer ? serverPlayer.level() : null;
             if (stack.getItem() instanceof QuantumArmorBase item
-                    && item.isUpgradeEnabledAndPowered(stack, UpgradeType.WATER_BREATHING, level)) {
+                    && item.isUpgradeEnabledAndPowered(stack, UpgradeType.WATER_BREATHING)) {
                 event.setCanBreathe(true);
                 item.consumeEnergy(player, stack, UpgradeType.WATER_BREATHING);
             }
@@ -91,9 +89,8 @@ public class AAELivingEntityEvents {
     public static void jumpEvent(LivingEvent.LivingJumpEvent event) {
         if (event.getEntity() instanceof Player player) {
             ItemStack stack = player.getItemBySlot(EquipmentSlot.FEET);
-            Level level = player instanceof ServerPlayer serverPlayer ? serverPlayer.level() : null;
             if (stack.getItem() instanceof QuantumArmorBase item
-                    && item.isUpgradeEnabledAndPowered(stack, UpgradeType.JUMP_HEIGHT, level)) {
+                    && item.isUpgradeEnabledAndPowered(stack, UpgradeType.JUMP_HEIGHT)) {
                 UpgradeType.JUMP_HEIGHT.ability.execute(player.level(), player, stack);
                 item.consumeEnergy(player, stack, UpgradeType.JUMP_HEIGHT);
             }

@@ -515,7 +515,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         // Create outputs and put them in output slots
         for (var output : outputs) {
             if (output.what() instanceof AEItemKey key) {
-                var stack = key.toStack((int) output.amount());
+                var stack = key.toStack();
                 stack.setCount((int) job.outputAmountPerCraft(output) * completeRecipes);
 
                 for (var x = 0; x < this.outputInv.size(); x++) {
@@ -1317,9 +1317,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             for (var output : pattern.getOutputs()) {
                 ItemStack outStack = ((AEItemKey) output.what()).toStack((int) output.amount());
 
-                if ((!inStack.isComponentsPatchEmpty()
-                                && inStack.getComponentsPatch().equals(outStack.getComponentsPatch()))
-                        || inStack.is(outStack.getItem())) {
+                if (inStack.is(outStack.getItem())) {
                     return outStack;
                 }
             }

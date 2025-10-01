@@ -60,10 +60,11 @@ public class AAEClient extends AdvancedAE {
     }
 
     private static void initBuiltInModels() {
-        var type = AAECraftingUnitType.STRUCTURE;
-        BuiltInModelHooks.addBuiltInModel(
-                AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
-                new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
+        for (AAECraftingUnitType type : AAECraftingUnitType.values()) {
+            BuiltInModelHooks.addBuiltInModel(
+                    AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
+                    new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
+        }
     }
 
     private static void initScreens(RegisterMenuScreensEvent event) {
@@ -163,6 +164,8 @@ public class AAEClient extends AdvancedAE {
     @SuppressWarnings("deprecation")
     private static void initItemColours(RegisterColorHandlersEvent.Item event) {
         event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
+        event.register(
+                makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.QUANTUM_CRAFTER_TERMINAL.asItem());
 
         for (var bucket : AAEFluids.getFluids()) {
             event.getItemColors()

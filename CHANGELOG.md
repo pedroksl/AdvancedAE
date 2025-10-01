@@ -1,1 +1,2 @@
-- Fixed the quantum crafter losing pattern configuration when inventory changed
+- Fixed desync issues with recharging and the magnet
+- Increased display precision of the Throughput Monitor when displayed value is under 10

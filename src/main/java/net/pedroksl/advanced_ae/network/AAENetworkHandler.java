@@ -49,6 +49,7 @@ public class AAENetworkHandler extends NetworkHandler {
         clientbound(this.registrar, FluidTankStackUpdatePacket.TYPE, FluidTankStackUpdatePacket.STREAM_CODEC);
         clientbound(this.registrar, FluidTankClientAudioPacket.TYPE, FluidTankClientAudioPacket.STREAM_CODEC);
         clientbound(this.registrar, MenuSelectionPacket.TYPE, MenuSelectionPacket.STREAM_CODEC);
+        clientbound(this.registrar, ItemTrackingPacket.TYPE, ItemTrackingPacket.STREAM_CODEC);
     }
 
     private static <T extends ClientboundPacket> void clientbound(

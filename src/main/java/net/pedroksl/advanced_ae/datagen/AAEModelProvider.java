@@ -71,21 +71,18 @@ public class AAEModelProvider extends AE2BlockStateProvider {
             if (type == AAECraftingUnitType.QUANTUM_CORE || type == AAECraftingUnitType.STRUCTURE) {
                 continue;
             }
-            basicCraftingBlockModel(type);
+            var craftingBlock = type.getDefinition().block();
+            var name = type.getAffix();
+            var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" + name));
+            getVariantBuilder(craftingBlock)
+                    .partialState()
+                    .with(AAEAbstractCraftingUnitBlock.FORMED, false)
+                    .setModels(new ConfiguredModel(blockModel))
+                    .partialState()
+                    .with(AAEAbstractCraftingUnitBlock.FORMED, true)
+                    .setModels(new ConfiguredModel(models().getBuilder("block/crafting/" + name + "_formed")));
+            simpleBlockItem(craftingBlock, blockModel);
         }
-
-        var type = AAECraftingUnitType.STRUCTURE;
-        var craftingBlock = type.getDefinition().block();
-        var name = type.getAffix();
-        var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" + name));
-        getVariantBuilder(craftingBlock)
-                .partialState()
-                .with(AAEAbstractCraftingUnitBlock.FORMED, false)
-                .setModels(new ConfiguredModel(blockModel))
-                .partialState()
-                .with(AAEAbstractCraftingUnitBlock.FORMED, true)
-                .setModels(new ConfiguredModel(models().getBuilder("block/crafting/" + name + "_formed")));
-        simpleBlockItem(craftingBlock, blockModel);
 
         interfaceOrProviderPart(AAEItems.ADV_PATTERN_PROVIDER);
         interfaceOrProviderPart(AAEItems.SMALL_ADV_PATTERN_PROVIDER);

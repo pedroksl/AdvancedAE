@@ -3,9 +3,6 @@ package net.pedroksl.advanced_ae.common.items.armors;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.mutable.MutableObject;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -46,34 +43,12 @@ public interface IUpgradeableItem extends IGridLinkedItem {
     }
 
     default boolean isUpgradePowered(ItemStack stack, UpgradeType upgrade) {
-        return isUpgradePowered(stack, upgrade, null);
-    }
-
-    default boolean isUpgradePowered(ItemStack stack, UpgradeType upgrade, Level level) {
-        // Use internal buffer
         var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        if (energy != null && energy.getEnergyStored() >= upgrade.getCost()) return true;
-
-        // If that failed, try to pull from the grid
-        if (level != null && getLinkedPosition(stack) != null) {
-            MutableObject<Component> errorHolder = new MutableObject<>();
-            var grid = getLinkedGrid(stack, level, errorHolder::setValue);
-            if (grid != null) {
-                var energyService = grid.getEnergyService();
-                var extracted =
-                        energyService.extractAEPower(upgrade.getCost(), Actionable.SIMULATE, PowerMultiplier.CONFIG);
-                return extracted >= upgrade.getCost() - 0.01;
-            }
-        }
-        return false;
+        return energy != null && energy.getEnergyStored() >= upgrade.getCost();
     }
 
     default boolean isUpgradeEnabledAndPowered(ItemStack stack, UpgradeType upgrade) {
         return isUpgradeEnabled(stack, upgrade) && isUpgradePowered(stack, upgrade);
-    }
-
-    default boolean isUpgradeEnabledAndPowered(ItemStack stack, UpgradeType upgrade, @Nullable Level level) {
-        return isUpgradeEnabled(stack, upgrade) && isUpgradePowered(stack, upgrade, level);
     }
 
     default boolean isUpgradeAllowed(UpgradeType type) {
