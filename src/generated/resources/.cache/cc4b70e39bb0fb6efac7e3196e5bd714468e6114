@@ -1,4 +1,4 @@
-// 1.21.1	2025-09-30T23:03:35.7566833	Block States / Models
+// 1.21.1	2025-10-01T01:30:49.0117957	Block States / Models
 f3d87a02dfae65fcf894b47e01745ed10d937139 assets/advanced_ae/blockstates/adv_pattern_provider.json
 6114895d7c99885522ce6dd817e7bd97adfdce9d assets/advanced_ae/blockstates/data_entangler.json
 2735d4e9864fa34725433e6c5182d7da05cdc561 assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -10,7 +10,6 @@ b4d7ad1085a20fd20659c897f9ff800a1c1323c8 assets/advanced_ae/blockstates/quantum_
 61ea5305df83039c69fe6bd351d35bb0bcfe7e0c assets/advanced_ae/blockstates/quantum_multi_threader.json
 5f0534f0ba87d6c54b2e4dc4013abdd3b440b9f3 assets/advanced_ae/blockstates/quantum_storage_128.json
 30d3a8c15a6df15760d1262e67729ff444622d9f assets/advanced_ae/blockstates/quantum_storage_256.json
-6dd06c07c19c323efcc9a026117c128dddeea863 assets/advanced_ae/blockstates/quantum_structure.json
 c35d71709e5b3b3434a69fb05726657b1bd5762a assets/advanced_ae/blockstates/quantum_unit.json
 a0f37be36a01e0fa7d14c4254e9598136420b96d assets/advanced_ae/blockstates/small_adv_pattern_provider.json
 3c0506f54de0aa72746ef697d8cb4922cef7d7eb assets/advanced_ae/models/block/adv_pattern_provider.json
@@ -25,8 +24,6 @@ bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/advanced_ae/models/block/craftin
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/advanced_ae/models/block/crafting/quantum_storage_128_formed.json
 252fda7a216584c5e90043d6c3a538edc89abdaa assets/advanced_ae/models/block/crafting/quantum_storage_256.json
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/advanced_ae/models/block/crafting/quantum_storage_256_formed.json
-4f533c1e23217c269efa6e6f0a057249cc9762c0 assets/advanced_ae/models/block/crafting/quantum_structure.json
-bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/advanced_ae/models/block/crafting/quantum_structure_formed.json
 d6f8e46d744cf928b23fea96d0ab6eb91bd2dde9 assets/advanced_ae/models/block/crafting/quantum_unit.json
 bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f assets/advanced_ae/models/block/crafting/quantum_unit_formed.json
 9b325e773402aea6f1ae98a969d8e0a160db3763 assets/advanced_ae/models/block/quantum_alloy_slab.json
@@ -84,7 +81,6 @@ f02a7d4bb6829bab9a832609ecf9cfe171ce1ccd assets/advanced_ae/models/item/quantum_
 4f6deea744e0b0a0ff056d93d50a52d0f3f982a9 assets/advanced_ae/models/item/quantum_storage_128.json
 452ea9658089ac89d5e36a5a14ac4032e5c73d2a assets/advanced_ae/models/item/quantum_storage_256.json
 bc3b95718a039e0b573a90486968a3055152e8f3 assets/advanced_ae/models/item/quantum_storage_component.json
-c4e708874aec4652a93864e05656f445bab40c47 assets/advanced_ae/models/item/quantum_structure.json
 fac6a7f3bd0fe23aa25e49465efbf5bd53e659f7 assets/advanced_ae/models/item/quantum_unit.json
 38fb896ef3ffda4bff15b318ff1c02bd9df8eb50 assets/advanced_ae/models/item/quantum_upgrade_base.json
 ce443aa1b7a463a0eb8b41c5b88934ec0fdd6d4f assets/advanced_ae/models/item/reach_card.json

@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.datagen;
 
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
@@ -69,13 +68,12 @@ public class AAEModelProvider extends AE2BlockStateProvider {
 
         // CRAFTING UNITS
         for (var type : AAECraftingUnitType.values()) {
-            if (type == AAECraftingUnitType.QUANTUM_CORE) {
+            if (type == AAECraftingUnitType.QUANTUM_CORE || type == AAECraftingUnitType.STRUCTURE) {
                 continue;
             }
             var craftingBlock = type.getDefinition().block();
             var name = type.getAffix();
             var blockModel = models().cubeAll("block/crafting/" + name, AdvancedAE.makeId("block/crafting/" + name));
-            if (type == AAECraftingUnitType.STRUCTURE) blockModel.renderType("translucent");
             getVariantBuilder(craftingBlock)
                     .partialState()
                     .with(AAEAbstractCraftingUnitBlock.FORMED, false)

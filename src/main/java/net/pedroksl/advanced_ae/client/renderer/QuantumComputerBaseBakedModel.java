@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.function.Function;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.neoforged.neoforge.client.model.QuadTransformers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.ChunkRenderTypeSet;
 import net.neoforged.neoforge.client.model.IDynamicBakedModel;
+import net.neoforged.neoforge.client.model.QuadTransformers;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import net.neoforged.neoforge.client.model.pipeline.QuadBakingVertexConsumer;
@@ -147,7 +147,8 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
         addSides(quads, connect, side, powered, false);
     }
 
-    private void addSides(List<BakedQuad> quads, Connect connect, Direction side, boolean powered, boolean renderOpposite) {
+    private void addSides(
+            List<BakedQuad> quads, Connect connect, Direction side, boolean powered, boolean renderOpposite) {
         this.addQuad(quads, side, connect.getIndex(side, LU), LU, powered, renderOpposite);
         this.addQuad(quads, side, connect.getIndex(side, RU), RU, powered, renderOpposite);
         this.addQuad(quads, side, connect.getIndex(side, LD), LD, powered, renderOpposite);
@@ -166,7 +167,8 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
         var cons = F_MAP.get(side);
         var normal = side.getNormal();
         // Render the face a fraction of a pixel inwards to avoid z-fighting
-        var normalF = new Vector3f(getNormalStep(normal.getX()), getNormalStep(normal.getY()), getNormalStep(normal.getZ()));
+        var normalF =
+                new Vector3f(getNormalStep(normal.getX()), getNormalStep(normal.getY()), getNormalStep(normal.getZ()));
         var c1 = new Vector3f(cons.get(0)).sub(normalF);
         var c2 = new Vector3f(cons.get(1)).sub(normalF);
         var c3 = new Vector3f(cons.get(2)).sub(normalF);
@@ -182,8 +184,7 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
         this.putVertex(builder, this.face, normal, c4.x(), c4.y(), c4.z(), 1, 0);
         var quad = builder.bakeQuad();
         if (this.isFaceEmissive && powered) {
-            QuadTransformers.settingMaxEmissivity()
-                    .processInPlace(quad);
+            QuadTransformers.settingMaxEmissivity().processInPlace(quad);
         }
         quads.add(quad);
 
@@ -199,14 +200,14 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
 
             var aniQuad = builder.bakeQuad();
             if (this.isFaceAnimationEmissive) {
-                QuadTransformers.settingMaxEmissivity()
-                        .processInPlace(aniQuad);
+                QuadTransformers.settingMaxEmissivity().processInPlace(aniQuad);
             }
             quads.add(aniQuad);
         }
     }
 
-    private void addQuad(List<BakedQuad> quads, Direction side, int index, int corner, boolean powered, boolean renderOpposite) {
+    private void addQuad(
+            List<BakedQuad> quads, Direction side, int index, int corner, boolean powered, boolean renderOpposite) {
         if (index < 0) {
             return;
         }
@@ -224,7 +225,8 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
         var c4 = renderOpposite ? cons.get(0) : cons.get(3);
         if (renderOpposite) {
             // Render the face a fraction of a pixel inwards to avoid z-fighting
-            var normalF = new Vector3f(getNormalStep(normal.getX()), getNormalStep(normal.getY()), getNormalStep(normal.getZ()));
+            var normalF = new Vector3f(
+                    getNormalStep(normal.getX()), getNormalStep(normal.getY()), getNormalStep(normal.getZ()));
             c1 = new Vector3f(c1).sub(normalF);
             c2 = new Vector3f(c2).sub(normalF);
             c3 = new Vector3f(c3).sub(normalF);
@@ -262,8 +264,7 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
         }
         var quad = builder.bakeQuad();
         if (this.isSideEmissive && powered) {
-            QuadTransformers.settingMaxEmissivity()
-                    .processInPlace(quad);
+            QuadTransformers.settingMaxEmissivity().processInPlace(quad);
         }
         quads.add(quad);
     }

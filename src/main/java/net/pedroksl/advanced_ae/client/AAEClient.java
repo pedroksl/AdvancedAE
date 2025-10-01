@@ -164,6 +164,8 @@ public class AAEClient extends AdvancedAE {
     @SuppressWarnings("deprecation")
     private static void initItemColours(RegisterColorHandlersEvent.Item event) {
         event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
+        event.register(
+                makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.QUANTUM_CRAFTER_TERMINAL.asItem());
 
         for (var bucket : AAEFluids.getFluids()) {
             event.getItemColors()

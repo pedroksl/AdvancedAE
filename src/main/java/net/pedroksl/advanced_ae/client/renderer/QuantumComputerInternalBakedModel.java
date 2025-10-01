@@ -1,21 +1,21 @@
 package net.pedroksl.advanced_ae.client.renderer;
 
+import java.util.HashMap;
+
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 
-import java.util.HashMap;
-
 public class QuantumComputerInternalBakedModel extends QuantumComputerBaseBakedModel {
     public QuantumComputerInternalBakedModel(
-            TextureAtlasSprite face, TextureAtlasSprite side, TextureAtlasSprite poweredSides, TextureAtlasSprite faceAnimation, TextureAtlasSprite faceTopAnimation, TextureAtlasSprite faceBottomAnimation) {
-        super(
-                RenderType.CUTOUT,
-                face,
-                side,
-                poweredSides,
-                block -> block.type != AAECraftingUnitType.STRUCTURE);
+            TextureAtlasSprite face,
+            TextureAtlasSprite side,
+            TextureAtlasSprite poweredSides,
+            TextureAtlasSprite faceAnimation,
+            TextureAtlasSprite faceTopAnimation,
+            TextureAtlasSprite faceBottomAnimation) {
+        super(RenderType.CUTOUT, face, side, poweredSides, block -> block.type != AAECraftingUnitType.STRUCTURE);
 
         setSideEmissive(true);
 
