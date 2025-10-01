@@ -58,7 +58,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
             new PartModel(MODEL_BASE, MODEL_LOCKED_ON, MODEL_STATUS_HAS_CHANNEL);
 
     private final ThroughputCache cache = new ThroughputCache();
-    protected long lastReportedValue = -1;
+    protected double lastReportedValue = -1;
     protected String lastHumanReadableValue = "";
     private WorkRoutine workRoutine = WorkRoutine.SECOND;
     private WorkRoutine lastWorkRoutine = WorkRoutine.SECOND;
@@ -122,7 +122,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     @Override
     public void writeToStream(FriendlyByteBuf data) {
         super.writeToStream(data);
-        data.writeLong(this.lastReportedValue);
+        data.writeDouble(this.lastReportedValue);
         data.writeUtf(this.lastHumanReadableValue);
         data.writeEnum(this.workRoutine);
     }
@@ -147,7 +147,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     @Override
     public void writeVisualStateToNBT(CompoundTag data) {
         super.writeVisualStateToNBT(data);
-        data.putLong("lastValue", this.lastReportedValue);
+        data.putDouble("lastValue", this.lastReportedValue);
         data.putString("throughput", this.lastHumanReadableValue);
         data.putInt("routine", this.workRoutine.ordinal());
     }
@@ -279,8 +279,14 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         // Normal update schedule
         if (this.workRoutine == this.lastWorkRoutine) {
             var amountPerTick = cache.averagePerTick(this.workRoutine.timeLimit_s);
-            this.lastReportedValue = Math.round(amountPerTick * this.workRoutine.ticks);
-            this.lastHumanReadableValue = getDisplayed().formatAmount(Math.abs(lastReportedValue), AmountFormat.SLOT);
+            this.lastReportedValue = amountPerTick * this.workRoutine.ticks;
+            if (this.lastReportedValue > 10 || this.lastReportedValue == 0) {
+                this.lastHumanReadableValue =
+                        getDisplayed().formatAmount(Math.round(Math.abs(lastReportedValue)), AmountFormat.SLOT);
+            } else {
+                this.lastHumanReadableValue = String.format("%.2f", Math.abs(this.lastReportedValue));
+            }
+
         } else {
             this.lastHumanReadableValue = "";
         }

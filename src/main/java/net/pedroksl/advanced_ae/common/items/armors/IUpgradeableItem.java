@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -52,21 +51,13 @@ public interface IUpgradeableItem extends IGridLinkedItem {
         return false;
     }
 
-    default boolean isUpgradePowered(ItemStack stack, UpgradeType upgrade) {
-        return isUpgradePowered(stack, upgrade, null);
-    }
-
-    default boolean isUpgradePowered(@NotNull ItemStack stack, UpgradeType upgrade, Level level) {
+    default boolean isUpgradePowered(@NotNull ItemStack stack, UpgradeType upgrade) {
         var energyOp = stack.getCapability(ForgeCapabilities.ENERGY);
         return energyOp.isPresent() && energyOp.resolve().get().getEnergyStored() >= upgrade.getCost();
     }
 
     default boolean isUpgradeEnabledAndPowered(ItemStack stack, UpgradeType upgrade) {
         return isUpgradeEnabled(stack, upgrade) && isUpgradePowered(stack, upgrade);
-    }
-
-    default boolean isUpgradeEnabledAndPowered(ItemStack stack, UpgradeType upgrade, @Nullable Level level) {
-        return isUpgradeEnabled(stack, upgrade) && isUpgradePowered(stack, upgrade, level);
     }
 
     default boolean isUpgradeAllowed(UpgradeType type) {

@@ -39,5 +39,6 @@ public class AAENetworkHandler extends NetworkHandler {
         registerPacket(QuantumArmorUpgradeStatePacket.class, QuantumArmorUpgradeStatePacket::new);
         registerPacket(QuantumArmorUpgradeValuePacket.class, QuantumArmorUpgradeValuePacket::new);
         registerPacket(QuantumArmorUpgradeTogglePacket.class, QuantumArmorUpgradeTogglePacket::new);
+        registerPacket(ItemTrackingPacket.class, ItemTrackingPacket::new);
     }
 }

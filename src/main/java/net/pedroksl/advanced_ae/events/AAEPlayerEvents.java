@@ -6,6 +6,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -17,6 +18,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAENbt;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
+import net.pedroksl.advanced_ae.network.packet.ItemTrackingPacket;
 import net.pedroksl.advanced_ae.network.packet.KeysPressedPacket;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.apoth.ApoEnchPlugin;
@@ -30,6 +32,7 @@ public class AAEPlayerEvents {
         MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::breakSpeed);
         MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::playerTickStart);
         MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::playerTickEnd);
+        MinecraftForge.EVENT_BUS.addListener(AAEPlayerEvents::onStartTracking);
     }
 
     @SuppressWarnings("deprecation")
@@ -71,54 +74,49 @@ public class AAEPlayerEvents {
             player.onUpdateAbilities();
         }
 
-        if (player instanceof ServerPlayer serverPlayer) {
-            var nv = serverPlayer.getEffect(MobEffects.NIGHT_VISION);
+        var nv = player.getEffect(MobEffects.NIGHT_VISION);
+        ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
+        if (!stack.isEmpty()) {
+            if (stack.getItem() instanceof QuantumHelmet helmet) {
+                if (helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.NIGHT_VISION)) {
+                    if (nv == null || nv.getDuration() < 210) {
+                        stack.getOrCreateTag().putBoolean(AAENbt.NIGHT_VISION_ACTIVATED, true);
+                        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 210, 0, false, false, false));
+                        helmet.consumeEnergy(player, stack, UpgradeType.NIGHT_VISION);
+                    }
+                }
+            }
+            if (stack.getOrCreateTag().getBoolean(AAENbt.NIGHT_VISION_ACTIVATED)) {
+                if (nv != null && nv.getDuration() < 210) {
+                    player.removeEffect(MobEffects.NIGHT_VISION);
+                    stack.removeTagKey(AAENbt.NIGHT_VISION_ACTIVATED);
+                }
+            }
+        }
 
-            ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
-            if (!stack.isEmpty()) {
-                if (stack.getItem() instanceof QuantumHelmet helmet) {
-                    if (helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.NIGHT_VISION, serverPlayer.level())) {
-                        if (nv == null || nv.getDuration() < 210) {
-                            stack.getOrCreateTag().putBoolean(AAENbt.NIGHT_VISION_ACTIVATED, true);
-                            serverPlayer.addEffect(
-                                    new MobEffectInstance(MobEffects.NIGHT_VISION, 210, 0, false, false, false));
-                            helmet.consumeEnergy(player, stack, UpgradeType.NIGHT_VISION);
-                        }
-                    }
-                }
-                if (stack.getOrCreateTag().getBoolean(AAENbt.NIGHT_VISION_ACTIVATED)) {
-                    if (nv != null && nv.getDuration() < 210) {
-                        serverPlayer.removeEffect(MobEffects.NIGHT_VISION);
-                        stack.removeTagKey(AAENbt.NIGHT_VISION_ACTIVATED);
+        ItemStack bootStack = player.getItemBySlot(EquipmentSlot.FEET);
+        if (bootStack.getItem() instanceof QuantumBoots boots) {
+            var upgrade = UpgradeType.FLIGHT_DRIFT;
+            if (player.getAbilities().flying && boots.isUpgradeEnabledAndPowered(bootStack, upgrade)) {
+                if (player.getPersistentData().getBoolean(NO_KEY_DATA)) {
+                    var motion = player.getDeltaMovement();
+                    if (motion.x != 0 || motion.z != 0) {
+                        var value = boots.getUpgradeValue(bootStack, upgrade, 100) / 100f;
+                        player.setDeltaMovement(motion.x * value, motion.y, motion.z * value);
                     }
                 }
             }
-        } else {
-            ItemStack bootStack = player.getItemBySlot(EquipmentSlot.FEET);
-            if (bootStack.getItem() instanceof QuantumBoots boots) {
-                var upgrade = UpgradeType.FLIGHT_DRIFT;
-                if (player.getAbilities().flying && boots.isUpgradeEnabledAndPowered(bootStack, upgrade)) {
-                    if (player.getPersistentData().getBoolean(NO_KEY_DATA)) {
-                        var motion = player.getDeltaMovement();
-                        if (motion.x != 0 || motion.z != 0) {
-                            var value = boots.getUpgradeValue(bootStack, upgrade, 100) / 100f;
-                            player.setDeltaMovement(motion.x * value, motion.y, motion.z * value);
-                        }
-                    }
-                }
-            }
-            var upKey = player.getPersistentData().getBoolean(UP_KEY_DATA);
-            var downKey = player.getPersistentData().getBoolean(DOWN_KEY_DATA);
-            if (upKey != downKey) {
-                ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-                if (chestStack.getItem() instanceof QuantumChestplate chest) {
-                    var upgrade = UpgradeType.FLIGHT;
-                    if (player.getAbilities().flying && chest.isUpgradeEnabledAndPowered(chestStack, upgrade)) {
-                        var value =
-                                upgrade.getSettings().multiplier * chest.getUpgradeValue(chestStack, upgrade, 0) / 35f;
-                        var direction = upKey ? 1 : -1;
-                        player.moveRelative(value, new Vec3(0, direction, 0));
-                    }
+        }
+        var upKey = player.getPersistentData().getBoolean(UP_KEY_DATA);
+        var downKey = player.getPersistentData().getBoolean(DOWN_KEY_DATA);
+        if (upKey != downKey) {
+            ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+            if (chestStack.getItem() instanceof QuantumChestplate chest) {
+                var upgrade = UpgradeType.FLIGHT;
+                if (player.getAbilities().flying && chest.isUpgradeEnabledAndPowered(chestStack, upgrade)) {
+                    var value = upgrade.getSettings().multiplier * chest.getUpgradeValue(chestStack, upgrade, 0) / 35f;
+                    var direction = upKey ? 1 : -1;
+                    player.moveRelative(value, new Vec3(0, direction, 0));
                 }
             }
         }
@@ -162,6 +160,14 @@ public class AAEPlayerEvents {
                     player.getPersistentData().putBoolean(UP_KEY_DATA, upKey);
                 }
             }
+        }
+    }
+
+    public static void onStartTracking(PlayerEvent.StartTracking event) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer
+                && event.getTarget() instanceof ItemEntity item
+                && ((ItemEntity) event.getTarget()).thrower != null) {
+            AAENetworkHandler.INSTANCE.sendTo(new ItemTrackingPacket(item), serverPlayer);
         }
     }
 }

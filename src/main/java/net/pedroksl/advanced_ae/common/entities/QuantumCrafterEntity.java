@@ -1307,11 +1307,12 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         public ItemStack findMatchingOutput(GenericStack input) {
             if (!(input.what() instanceof AEItemKey inKey)) return ItemStack.EMPTY;
             ItemStack inStack = inKey.toStack();
+            var inTags = inStack.getOrCreateTag();
 
             for (var output : pattern.getOutputs()) {
                 ItemStack outStack = ((AEItemKey) output.what()).toStack((int) output.amount());
 
-                if (inStack.getOrCreateTag().equals(outStack.getOrCreateTag()) || inStack.is(outStack.getItem())) {
+                if (inStack.is(outStack.getItem())) {
                     return outStack;
                 }
             }

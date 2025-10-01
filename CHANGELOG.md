@@ -1,2 +1,3 @@
-- Increased the throughput monitor precision for slowly changing items
-- Fixed an issue in the translated guides
+- Fixed recursive patterns not working correctly in the quantum crafter
+- Fixed desync issues with recharging and the magnet
+- Increased display precision of the Throughput Monitor when displayed value is under 10
