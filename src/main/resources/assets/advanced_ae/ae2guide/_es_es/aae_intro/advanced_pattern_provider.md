@@ -23,7 +23,7 @@ item_ids:
 </Row>
 
 El <ItemLink id="advanced_ae:adv_pattern_provider" /> es un nuevo tipo de <ItemLink id="ae2:pattern_provider" /> que mejora
-una versión estándar o un <ItemLink id="extendedae:ex_pattern_provider" /> con la capacidad de configurar la cara a
+una versión estándar o un <ItemLink id="expatternprovider:ex_pattern_provider" /> con la capacidad de configurar la cara a
 la que se empujará cualquier objeto individual en un patrón. Esta poderosa adición permite la automatización de máquinas que
 requieren lados específicos para entradas específicas con un solo bloque y sin tuberías.
 
