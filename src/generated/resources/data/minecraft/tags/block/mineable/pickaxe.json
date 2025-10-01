@@ -1,20 +1,20 @@
 {
-    "values": [
-        "advanced_ae:quantum_alloy_block",
-        "advanced_ae:quantum_alloy_stairs",
-        "advanced_ae:quantum_alloy_wall",
-        "advanced_ae:quantum_alloy_slab",
-        "advanced_ae:quantum_unit",
-        "advanced_ae:quantum_core",
-        "advanced_ae:quantum_storage_128",
-        "advanced_ae:quantum_storage_256",
-        "advanced_ae:data_entangler",
-        "advanced_ae:quantum_accelerator",
-        "advanced_ae:quantum_multi_threader",
-        "advanced_ae:quantum_structure",
-        "advanced_ae:adv_pattern_provider",
-        "advanced_ae:small_adv_pattern_provider",
-        "advanced_ae:reaction_chamber",
-        "advanced_ae:quantum_crafter"
-    ]
+  "values": [
+    "advanced_ae:quantum_alloy_block",
+    "advanced_ae:quantum_alloy_stairs",
+    "advanced_ae:quantum_alloy_wall",
+    "advanced_ae:quantum_alloy_slab",
+    "advanced_ae:quantum_unit",
+    "advanced_ae:quantum_core",
+    "advanced_ae:quantum_storage_128",
+    "advanced_ae:quantum_storage_256",
+    "advanced_ae:data_entangler",
+    "advanced_ae:quantum_accelerator",
+    "advanced_ae:quantum_multi_threader",
+    "advanced_ae:quantum_structure",
+    "advanced_ae:adv_pattern_provider",
+    "advanced_ae:small_adv_pattern_provider",
+    "advanced_ae:reaction_chamber",
+    "advanced_ae:quantum_crafter"
+  ]
 }

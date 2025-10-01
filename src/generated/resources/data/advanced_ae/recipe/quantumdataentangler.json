@@ -1,36 +1,32 @@
 {
-    "neoforge:conditions": [
-        {
-            "type": "neoforge:not",
-            "value": {
-                "type": "neoforge:mod_loaded",
-                "modid": "extendedae"
-            }
-        }
-    ],
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "C": {
-            "item": "advanced_ae:quantum_core"
-        },
-        "Q": {
-            "item": "advanced_ae:quantum_storage_256"
-        },
-        "S": {
-            "item": "advanced_ae:shattered_singularity"
-        },
-        "U": {
-            "item": "advanced_ae:quantum_unit"
-        }
-    },
-    "pattern": [
-        "QQQ",
-        "SUS",
-        "SCS"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:data_entangler"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:mod_loaded",
+        "modid": "extendedae"
+      }
     }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_core"
+    },
+    "Q": {
+      "item": "advanced_ae:quantum_storage_256"
+    },
+    "S": {
+      "item": "advanced_ae:shattered_singularity"
+    },
+    "U": {
+      "item": "advanced_ae:quantum_unit"
+    }
+  },
+  "pattern": ["QQQ", "SUS", "SCS"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:data_entangler"
+  }
 }

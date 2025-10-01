@@ -1,27 +1,23 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "C": {
-            "item": "advanced_ae:quantum_upgrade_base"
-        },
-        "L": {
-            "item": "minecraft:lodestone"
-        },
-        "Q": {
-            "item": "advanced_ae:quantum_processor"
-        },
-        "R": {
-            "item": "minecraft:recovery_compass"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
     },
-    "pattern": [
-        " R ",
-        "QCQ",
-        " L "
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:flight_drift_card"
+    "L": {
+      "item": "minecraft:lodestone"
+    },
+    "Q": {
+      "item": "advanced_ae:quantum_processor"
+    },
+    "R": {
+      "item": "minecraft:recovery_compass"
     }
+  },
+  "pattern": [" R ", "QCQ", " L "],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:flight_drift_card"
+  }
 }

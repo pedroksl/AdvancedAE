@@ -1,27 +1,23 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "C": {
-            "item": "advanced_ae:quantum_upgrade_base"
-        },
-        "E": {
-            "item": "minecraft:end_rod"
-        },
-        "O": {
-            "item": "minecraft:lightning_rod"
-        },
-        "S": {
-            "item": "minecraft:echo_shard"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
     },
-    "pattern": [
-        "E E",
-        "OCO",
-        "S S"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:reach_card"
+    "E": {
+      "item": "minecraft:end_rod"
+    },
+    "O": {
+      "item": "minecraft:lightning_rod"
+    },
+    "S": {
+      "item": "minecraft:echo_shard"
     }
+  },
+  "pattern": ["E E", "OCO", "S S"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:reach_card"
+  }
 }

@@ -1,21 +1,17 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "I": {
-            "item": "minecraft:iron_ingot"
-        },
-        "S": {
-            "item": "ae2:speed_card"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
     },
-    "pattern": [
-        "  S",
-        " I ",
-        "I  "
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:throughput_monitor_configurator"
+    "S": {
+      "item": "ae2:speed_card"
     }
+  },
+  "pattern": ["  S", " I ", "I  "],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:throughput_monitor_configurator"
+  }
 }

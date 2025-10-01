@@ -1,37 +1,37 @@
 {
-    "neoforge:conditions": [
-        {
-            "type": "neoforge:mod_loaded",
-            "modid": "extendedae"
-        }
-    ],
-    "type": "extendedae:crystal_assembler",
-    "input_items": [
-        {
-            "ingredient": {
-                "item": "advanced_ae:quantum_unit"
-            }
-        },
-        {
-            "ingredient": {
-                "item": "advanced_ae:quantum_core"
-            }
-        },
-        {
-            "amount": 8,
-            "ingredient": {
-                "item": "advanced_ae:shattered_singularity"
-            }
-        },
-        {
-            "amount": 3,
-            "ingredient": {
-                "item": "advanced_ae:quantum_storage_256"
-            }
-        }
-    ],
-    "output": {
-        "count": 1,
-        "id": "advanced_ae:data_entangler"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
     }
+  ],
+  "type": "extendedae:crystal_assembler",
+  "input_items": [
+    {
+      "ingredient": {
+        "item": "advanced_ae:quantum_unit"
+      }
+    },
+    {
+      "ingredient": {
+        "item": "advanced_ae:quantum_core"
+      }
+    },
+    {
+      "amount": 8,
+      "ingredient": {
+        "item": "advanced_ae:shattered_singularity"
+      }
+    },
+    {
+      "amount": 3,
+      "ingredient": {
+        "item": "advanced_ae:quantum_storage_256"
+      }
+    }
+  ],
+  "output": {
+    "count": 1,
+    "id": "advanced_ae:data_entangler"
+  }
 }

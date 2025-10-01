@@ -1,41 +1,41 @@
 {
-    "neoforge:conditions": [
-        {
-            "type": "neoforge:mod_loaded",
-            "modid": "megacells"
-        }
-    ],
-    "type": "advanced_ae:reaction",
-    "input_energy": 200000,
-    "input_fluid": {
-        "amount": 500,
-        "ingredient": {
-            "fluid": "minecraft:lava"
-        }
-    },
-    "input_items": [
-        {
-            "amount": 16,
-            "ingredient": {
-                "item": "ae2:charged_certus_quartz_crystal"
-            }
-        },
-        {
-            "amount": 16,
-            "ingredient": {
-                "item": "minecraft:copper_ingot"
-            }
-        },
-        {
-            "amount": 16,
-            "ingredient": {
-                "item": "ae2:sky_stone_block"
-            }
-        }
-    ],
-    "output": {
-        "#": 64,
-        "#t": "ae2:i",
-        "id": "megacells:sky_bronze_ingot"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "megacells"
     }
+  ],
+  "type": "advanced_ae:reaction",
+  "input_energy": 200000,
+  "input_fluid": {
+    "amount": 500,
+    "ingredient": {
+      "fluid": "minecraft:lava"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 16,
+      "ingredient": {
+        "item": "ae2:charged_certus_quartz_crystal"
+      }
+    },
+    {
+      "amount": 16,
+      "ingredient": {
+        "item": "minecraft:copper_ingot"
+      }
+    },
+    {
+      "amount": 16,
+      "ingredient": {
+        "item": "ae2:sky_stone_block"
+      }
+    }
+  ],
+  "output": {
+    "#": 64,
+    "#t": "ae2:i",
+    "id": "megacells:sky_bronze_ingot"
+  }
 }

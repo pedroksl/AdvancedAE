@@ -1,26 +1,23 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "E": {
-            "item": "minecraft:ender_pearl"
-        },
-        "I": {
-            "tag": "c:ingots"
-        },
-        "L": {
-            "item": "ae2:logic_processor"
-        },
-        "R": {
-            "item": "minecraft:redstone"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:ender_pearl"
     },
-    "pattern": [
-        "IR",
-        "EL"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:adv_pattern_provider_upgrade"
+    "I": {
+      "tag": "c:ingots"
+    },
+    "L": {
+      "item": "ae2:logic_processor"
+    },
+    "R": {
+      "item": "minecraft:redstone"
     }
+  },
+  "pattern": ["IR", "EL"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:adv_pattern_provider_upgrade"
+  }
 }

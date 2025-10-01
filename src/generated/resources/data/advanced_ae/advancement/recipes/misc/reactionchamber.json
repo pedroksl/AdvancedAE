@@ -1,32 +1,25 @@
 {
-    "parent": "minecraft:recipes/root",
-    "criteria": {
-        "hasItem": {
-            "conditions": {
-                "items": [
-                    {
-                        "items": "ae2:vibration_chamber"
-                    }
-                ]
-            },
-            "trigger": "minecraft:inventory_changed"
-        },
-        "has_the_recipe": {
-            "conditions": {
-                "recipe": "advanced_ae:reactionchamber"
-            },
-            "trigger": "minecraft:recipe_unlocked"
-        }
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "hasItem": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ae2:vibration_chamber"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     },
-    "requirements": [
-        [
-            "has_the_recipe",
-            "hasItem"
-        ]
-    ],
-    "rewards": {
-        "recipes": [
-            "advanced_ae:reactionchamber"
-        ]
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "advanced_ae:reactionchamber"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
+  },
+  "requirements": [["has_the_recipe", "hasItem"]],
+  "rewards": {
+    "recipes": ["advanced_ae:reactionchamber"]
+  }
 }

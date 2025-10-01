@@ -1,50 +1,50 @@
 {
-    "neoforge:conditions": [
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
         {
-            "type": "neoforge:and",
-            "values": [
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "megacells"
-                },
-                {
-                    "type": "neoforge:mod_loaded",
-                    "modid": "mekanism"
-                }
-            ]
-        }
-    ],
-    "type": "advanced_ae:reaction",
-    "input_energy": 200000,
-    "input_fluid": {
-        "amount": 500,
-        "ingredient": {
-            "fluid": "minecraft:lava"
-        }
-    },
-    "input_items": [
-        {
-            "amount": 16,
-            "ingredient": {
-                "item": "ae2:charged_certus_quartz_crystal"
-            }
+          "type": "neoforge:mod_loaded",
+          "modid": "megacells"
         },
         {
-            "amount": 16,
-            "ingredient": {
-                "tag": "c:ingots/osmium"
-            }
-        },
-        {
-            "amount": 16,
-            "ingredient": {
-                "item": "ae2:sky_stone_block"
-            }
+          "type": "neoforge:mod_loaded",
+          "modid": "mekanism"
         }
-    ],
-    "output": {
-        "#": 64,
-        "#t": "ae2:i",
-        "id": "megacells:sky_osmium_ingot"
+      ]
     }
+  ],
+  "type": "advanced_ae:reaction",
+  "input_energy": 200000,
+  "input_fluid": {
+    "amount": 500,
+    "ingredient": {
+      "fluid": "minecraft:lava"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 16,
+      "ingredient": {
+        "item": "ae2:charged_certus_quartz_crystal"
+      }
+    },
+    {
+      "amount": 16,
+      "ingredient": {
+        "tag": "c:ingots/osmium"
+      }
+    },
+    {
+      "amount": 16,
+      "ingredient": {
+        "item": "ae2:sky_stone_block"
+      }
+    }
+  ],
+  "output": {
+    "#": 64,
+    "#t": "ae2:i",
+    "id": "megacells:sky_osmium_ingot"
+  }
 }

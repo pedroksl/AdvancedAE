@@ -1,32 +1,29 @@
 {
-    "neoforge:conditions": [
-        {
-            "type": "neoforge:mod_loaded",
-            "modid": "extendedae"
-        }
-    ],
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "E": {
-            "item": "minecraft:ender_pearl"
-        },
-        "L": {
-            "item": "ae2:logic_processor"
-        },
-        "P": {
-            "item": "extendedae:ex_pattern_provider"
-        },
-        "R": {
-            "item": "minecraft:redstone"
-        }
-    },
-    "pattern": [
-        "PR",
-        "EL"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:adv_pattern_provider"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
     }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "L": {
+      "item": "ae2:logic_processor"
+    },
+    "P": {
+      "item": "extendedae:ex_pattern_provider"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": ["PR", "EL"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:adv_pattern_provider"
+  }
 }

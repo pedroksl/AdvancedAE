@@ -1,21 +1,17 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "C": {
-            "item": "advanced_ae:quantum_upgrade_base"
-        },
-        "S": {
-            "item": "advanced_ae:quantum_alloy_stairs"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
     },
-    "pattern": [
-        " S ",
-        "SCS",
-        " S "
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:step_assist_card"
+    "S": {
+      "item": "advanced_ae:quantum_alloy_stairs"
     }
+  },
+  "pattern": [" S ", "SCS", " S "],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:step_assist_card"
+  }
 }
