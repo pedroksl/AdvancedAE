@@ -46,7 +46,7 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
     private static final int LD = 2;
     private static final int RD = 4;
 
-    private Function<AAECraftingUnitBlock, Boolean> connectCondition;
+    private final Function<AAECraftingUnitBlock, Boolean> connectCondition;
 
     private final TextureAtlasSprite face;
     private final TextureAtlasSprite sides;
@@ -54,6 +54,9 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
     private HashMap<Direction, TextureAtlasSprite> faceAnimations;
 
     private boolean renderOppositeSide = false;
+
+    private RenderType faceRenderType;
+    private RenderType sideRenderType;
 
     private boolean isFaceEmissive = false;
     private boolean isSideEmissive = false;
@@ -65,7 +68,30 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
             TextureAtlasSprite sides,
             TextureAtlasSprite poweredSides,
             Function<AAECraftingUnitBlock, Boolean> connectCondition) {
-        this.RENDER_TYPES = ChunkRenderTypeSet.of(renderType);
+        this(ChunkRenderTypeSet.of(renderType), face, sides, poweredSides, connectCondition);
+        this.faceRenderType = renderType;
+        this.sideRenderType = renderType;
+    }
+
+    QuantumComputerBaseBakedModel(
+            RenderType faceRenderType,
+            RenderType sideRenderType,
+            TextureAtlasSprite face,
+            TextureAtlasSprite sides,
+            TextureAtlasSprite poweredSides,
+            Function<AAECraftingUnitBlock, Boolean> connectCondition) {
+        this(ChunkRenderTypeSet.of(faceRenderType, sideRenderType), face, sides, poweredSides, connectCondition);
+        this.faceRenderType = faceRenderType;
+        this.sideRenderType = sideRenderType;
+    }
+
+    private QuantumComputerBaseBakedModel(
+            ChunkRenderTypeSet renderTypes,
+            TextureAtlasSprite face,
+            TextureAtlasSprite sides,
+            TextureAtlasSprite poweredSides,
+            Function<AAECraftingUnitBlock, Boolean> connectCondition) {
+        this.RENDER_TYPES = renderTypes;
         this.face = face;
         this.sides = sides;
         this.poweredSides = poweredSides;
@@ -130,14 +156,19 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
             return Collections.emptyList();
         }
 
-        var powered = blockState.getValue(AAEAbstractCraftingUnitBlock.POWERED);
+        var powered = blockState != null && blockState.getValue(AAEAbstractCraftingUnitBlock.POWERED);
         List<BakedQuad> quads = new ArrayList<>();
-        this.addQuad(quads, side, connect.getFace(side), powered);
-        if (this.sides != null) {
-            addSides(quads, connect, side, powered);
+        if (renderType == null || RENDER_TYPES.contains(renderType)) {
+            if (renderType == this.faceRenderType) {
+                this.addQuad(quads, side, connect.getFace(side), powered);
+            }
 
-            if (this.renderOppositeSide) {
-                addSides(quads, connect, side.getOpposite(), powered, true);
+            if (this.sides != null && renderType == this.sideRenderType) {
+                addSides(quads, connect, side, powered);
+
+                if (this.renderOppositeSide) {
+                    addSides(quads, connect, side.getOpposite(), powered, true);
+                }
             }
         }
         return quads;
@@ -217,6 +248,7 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
         var texture = powered ? this.poweredSides : this.sides;
         builder.setSprite(texture);
         builder.setDirection(side);
+        builder.setShade(true);
         var normal = side.getNormal();
         var c1 = renderOpposite ? cons.get(3) : cons.get(0);
         var c2 = renderOpposite ? cons.get(2) : cons.get(1);
@@ -225,7 +257,7 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
         if (renderOpposite) {
             // Render the face a fraction of a pixel inwards to avoid z-fighting
             var normalF = new Vector3f(
-                    getNormalStep(normal.getX()), getNormalStep(normal.getY()), getNormalStep(normal.getZ()));
+                    getNormalStep(normal.getX(), 2), getNormalStep(normal.getY(), 2), getNormalStep(normal.getZ(), 2));
             c1 = new Vector3f(c1).sub(normalF);
             c2 = new Vector3f(c2).sub(normalF);
             c3 = new Vector3f(c3).sub(normalF);
@@ -492,7 +524,11 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
     }
 
     private float getNormalStep(int step) {
-        return step > 0 ? 0.0001f : step < 0 ? -0.0001f : 0;
+        return getNormalStep(step, 1);
+    }
+
+    private float getNormalStep(int step, float multiplier) {
+        return multiplier * (step > 0 ? 0.001f : step < 0 ? -0.001f : 0);
     }
 
     private record FaceCorner(Direction face, int corner) {}

@@ -7,7 +7,13 @@ import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 public class QuantumComputerStructureBakedModel extends QuantumComputerBaseBakedModel {
     public QuantumComputerStructureBakedModel(
             TextureAtlasSprite face, TextureAtlasSprite sides, TextureAtlasSprite poweredSides) {
-        super(RenderType.TRANSLUCENT, face, sides, poweredSides, block -> block.type == AAECraftingUnitType.STRUCTURE);
+        super(
+                RenderType.TRANSLUCENT,
+                RenderType.CUTOUT,
+                face,
+                sides,
+                poweredSides,
+                block -> block.type == AAECraftingUnitType.STRUCTURE);
 
         setSideEmissive(true);
         setRenderOppositeSide(true);
