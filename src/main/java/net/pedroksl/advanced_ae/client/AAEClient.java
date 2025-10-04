@@ -25,6 +25,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.gui.AdvancedIOBusMenu;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterWirelessTermMenu;
 
@@ -34,6 +35,7 @@ import appeng.client.render.StaticItemColor;
 import appeng.client.render.crafting.CraftingCubeModel;
 import appeng.hooks.BuiltInModelHooks;
 import appeng.init.client.InitScreens;
+import net.pedroksl.advanced_ae.gui.StockExportBusMenu;
 
 @SuppressWarnings("unused")
 @Mod(value = AdvancedAE.MOD_ID, dist = Dist.CLIENT)
@@ -103,10 +105,12 @@ public class AAEClient extends AdvancedAE {
                 QuantumCrafterWirelessTermScreen::new,
                 "/screens/wireless_quantum_crafter_terminal.json");
 
-        InitScreens.register(
+        InitScreens.<StockExportBusMenu, StockExportBusScreen<StockExportBusMenu>>register(
                 event, AAEMenus.STOCK_EXPORT_BUS.get(), StockExportBusScreen::new, "/screens/stock_export_bus.json");
         InitScreens.register(
                 event, AAEMenus.IMPORT_EXPORT_BUS.get(), ImportExportBusScreen::new, "/screens/import_export_bus.json");
+        InitScreens.<AdvancedIOBusMenu, StockExportBusScreen<AdvancedIOBusMenu>>register(
+                event, AAEMenus.ADVANCED_IO_BUS.get(), AdvancedIOBusScreen::new, "/screens/advanced_io_bus.json");
 
         InitScreens.register(
                 event, AAEMenus.OUTPUT_DIRECTION.get(), OutputDirectionScreen::new, "/screens/output_direction.json");

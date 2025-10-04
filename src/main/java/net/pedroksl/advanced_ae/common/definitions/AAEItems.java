@@ -63,6 +63,8 @@ public class AAEItems {
             part("ME Stock Export Bus", "stock_export_bus_part", StockExportBusPart.class, StockExportBusPart::new);
     public static final ItemDefinition<PartItem<ImportExportBusPart>> IMPORT_EXPORT_BUS =
             part("ME Import Export Bus", "import_export_bus_part", ImportExportBusPart.class, ImportExportBusPart::new);
+    public static final ItemDefinition<PartItem<AdvancedIOBusPart>> ADVANCED_IO_BUS =
+            part("ME Advanced IO Bus", "advanced_io_bus_part", AdvancedIOBusPart.class, AdvancedIOBusPart::new);
     public static final ItemDefinition<PartItem<ThroughputMonitorPart>> THROUGHPUT_MONITOR = part(
             "ME Throughput Monitor", "throughput_monitor", ThroughputMonitorPart.class, ThroughputMonitorPart::new);
     public static final ItemDefinition<PartItem<QuantumCrafterTerminalPart>> QUANTUM_CRAFTER_TERMINAL = part(

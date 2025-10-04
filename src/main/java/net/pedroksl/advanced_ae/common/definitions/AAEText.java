@@ -35,6 +35,7 @@ public enum AAEText implements LocalizationEnum {
 
     StockExportBus("ME Stock Export Bus", Type.GUI),
     ImportExportBus("ME Import Export Bus", Type.GUI),
+    AdvancedIOBus("ME Advanced IO Bus", Type.GUI),
     EmiReactionChamber("Reaction Chamber", Type.EMI_CATEGORY),
     AnyButton("Target the face adjacent to the adv. pattern provider", Type.TOOLTIP),
     NorthButton("Target the NORTH face of the machine.", Type.TOOLTIP),
