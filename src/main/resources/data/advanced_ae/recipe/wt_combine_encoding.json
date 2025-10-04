@@ -1,0 +1,11 @@
+{
+  "type": "ae2wtlib:combine",
+  "terminalA": {
+    "item": "ae2wtlib:wireless_pattern_encoding_terminal"
+  },
+  "terminalB": {
+    "item": "advanced_ae:wireless_quantum_crafter_terminal"
+  },
+  "terminalAName": "pattern_encoding",
+  "terminalBName": "quantum_crafter"
+}
