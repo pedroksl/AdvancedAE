@@ -1,7 +1,5 @@
 package net.pedroksl.advanced_ae.common.parts;
 
-import javax.annotation.Nullable;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,7 +18,6 @@ import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.logic.ThroughputCache;
-import net.pedroksl.advanced_ae.mixins.MixinAbstractMonitorPartAccessor;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IGridNodeListener;
@@ -30,7 +27,6 @@ import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.orientation.BlockOrientation;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.IPartModel;
-import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AmountFormat;
 import appeng.api.util.AEColor;
 import appeng.client.render.BlockEntityRenderHelper;
@@ -186,13 +182,9 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         getMainNode().ifPresent((grid, node) -> grid.getTickManager().alertDevice(node));
     }
 
-    private @Nullable AEKey getConfiguredItem() {
-        return ((MixinAbstractMonitorPartAccessor) this).getConfiguredItem();
-    }
-
     @Override
     protected void configureWatchers() {
-        if (getConfiguredItem() != null) {
+        if (getDisplayed() != null) {
             updateState(getAmount(), TickHandler.instance().getCurrentTick());
             getMainNode().ifPresent((grid, node) -> grid.getTickManager().wakeDevice(node));
         } else {
@@ -211,7 +203,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
             int combinedLightIn,
             int combinedOverlayIn) {
         if (this.isActive()) {
-            if (getConfiguredItem() != null) {
+            if (getDisplayed() != null) {
                 poseStack.pushPose();
                 BlockOrientation orientation = BlockOrientation.get(this.getSide(), this.getSpin());
                 poseStack.translate(0.5, 0.5, 0.5);
@@ -220,9 +212,9 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
                 BlockEntityRenderHelper.renderItem2dWithAmount(
                         poseStack,
                         buffers,
-                        this.getDisplayed(),
-                        ((MixinAbstractMonitorPartAccessor) this).getAmount(),
-                        ((MixinAbstractMonitorPartAccessor) this).getCanCraft(),
+                        getDisplayed(),
+                        ThroughputMonitorPart.super.getAmount(),
+                        ThroughputMonitorPart.super.canCraft(),
                         0.3F,
                         -0.15F,
                         this.getColor().contrastTextColor,
@@ -267,12 +259,12 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
 
     @Override
     public TickingRequest getTickingRequest(IGridNode iGridNode) {
-        return new TickingRequest(20, 100, !isActive() || getConfiguredItem() == null);
+        return new TickingRequest(20, 100, !isActive() || getDisplayed() == null);
     }
 
     @Override
     public TickRateModulation tickingRequest(IGridNode iGridNode, int i) {
-        if (!this.getMainNode().isActive() || getConfiguredItem() == null) {
+        if (!this.getMainNode().isActive() || getDisplayed() == null) {
             resetState();
             return TickRateModulation.SLEEP;
         }
@@ -293,7 +285,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
             this.lastReportedValue = amountPerTick * this.workRoutine.ticks;
             if (this.lastReportedValue > 10 || this.lastReportedValue == 0) {
                 this.lastHumanReadableValue =
-                        getConfiguredItem().formatAmount(Math.round(Math.abs(lastReportedValue)), AmountFormat.SLOT);
+                        getDisplayed().formatAmount(Math.round(Math.abs(lastReportedValue)), AmountFormat.SLOT);
             } else {
                 this.lastHumanReadableValue = String.format("%.2f", Math.abs(this.lastReportedValue));
             }

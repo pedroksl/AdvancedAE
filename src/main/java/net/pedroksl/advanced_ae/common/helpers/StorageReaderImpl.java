@@ -1,27 +1,24 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
-import java.util.Set;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 import appeng.api.AECapabilities;
-import appeng.api.config.Actionable;
-import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEKey;
 import appeng.api.storage.MEStorage;
 import appeng.parts.automation.HandlerStrategy;
 
-public class SimulatedStorageImportStrategy<T, S> {
+public class StorageReaderImpl<T, S> implements StorageReader {
 
     private final BlockCapabilityCache<T, Direction> cache;
     private final BlockCapabilityCache<MEStorage, Direction> meCache;
     private final HandlerStrategy<T, S> conversion;
 
-    public SimulatedStorageImportStrategy(
+    public StorageReaderImpl(
             BlockCapability<T, Direction> capability,
             HandlerStrategy<T, S> conversion,
             ServerLevel level,
@@ -32,7 +29,7 @@ public class SimulatedStorageImportStrategy<T, S> {
         this.conversion = conversion;
     }
 
-    public long simulateTransfer(AEKey what, long toImport, IActionSource src) {
+    public long getCurrentStock(AEKey what) {
         if (what.getType() != conversion.getKeyType()) {
             return 0;
         }
@@ -52,14 +49,16 @@ public class SimulatedStorageImportStrategy<T, S> {
         }
 
         var adjacentStorage = conversion.getFacade(adjacentHandler);
-        var amount = adjacentStorage.extract(what, toImport, Actionable.SIMULATE, src);
-
-        // Check if slots are locked for extraction
-        if (amount == 0 && adjacentStorage.containsAnyFuzzy(Set.of(what))) {
-            var stacks = adjacentStorage.getAvailableStacks();
-            amount = stacks.get(what);
-        }
-
+        var amount = adjacentStorage.getAvailableStacks().get(what);
         return Math.max(0, amount);
+    }
+
+    public static StorageReader item(ServerLevel level, BlockPos fromPos, Direction fromSide) {
+        return new StorageReaderImpl<>(Capabilities.ItemHandler.BLOCK, HandlerStrategy.ITEMS, level, fromPos, fromSide);
+    }
+
+    public static StorageReader fluid(ServerLevel level, BlockPos fromPos, Direction fromSide) {
+        return new StorageReaderImpl<>(
+                Capabilities.FluidHandler.BLOCK, HandlerStrategy.FLUIDS, level, fromPos, fromSide);
     }
 }

@@ -6,9 +6,9 @@
   "refmap": "mixins.aae.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "MixinAbstractMonitorPartAccessor",
     "MixinContainerPatternModifier",
     "MixinEncodedPatternItem",
+    "MixinIOBusPartInvoker",
     "MixinLivingEntity",
     "MixinPatternEncodingLogic",
     "MixinPatternEncodingTermMenu",

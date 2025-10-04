@@ -28,6 +28,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.gui.AdvancedIOBusMenu;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterWirelessTermMenu;
+import net.pedroksl.advanced_ae.gui.StockExportBusMenu;
 
 import appeng.api.util.AEColor;
 import appeng.client.gui.me.common.PinnedKeys;
@@ -35,7 +36,6 @@ import appeng.client.render.StaticItemColor;
 import appeng.client.render.crafting.CraftingCubeModel;
 import appeng.hooks.BuiltInModelHooks;
 import appeng.init.client.InitScreens;
-import net.pedroksl.advanced_ae.gui.StockExportBusMenu;
 
 @SuppressWarnings("unused")
 @Mod(value = AdvancedAE.MOD_ID, dist = Dist.CLIENT)

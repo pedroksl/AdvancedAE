@@ -144,6 +144,7 @@ dependencies {
 
     implementation "curse.maven:mega-cells-622112:${mega_file_id}"
     implementation "curse.maven:mekanism-268560:${mekanism_file_id}"
+    implementation "curse.maven:applied-mekanistics-574300:${appmek_file_id}"
     implementation "curse.maven:curios-309927:${curios_file_id}"
 
     runtimeOnly "curse.maven:cucumber-272335:${cucumber_file_id}"
