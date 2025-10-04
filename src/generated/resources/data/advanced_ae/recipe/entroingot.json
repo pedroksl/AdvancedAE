@@ -1,41 +1,41 @@
 {
-    "neoforge:conditions": [
-        {
-            "type": "neoforge:mod_loaded",
-            "modid": "extendedae"
-        }
-    ],
-    "type": "advanced_ae:reaction",
-    "input_energy": 500000,
-    "input_fluid": {
-        "amount": 500,
-        "ingredient": {
-            "fluid": "minecraft:water"
-        }
-    },
-    "input_items": [
-        {
-            "amount": 32,
-            "ingredient": {
-                "item": "extendedae:entro_dust"
-            }
-        },
-        {
-            "amount": 32,
-            "ingredient": {
-                "item": "minecraft:gold_ingot"
-            }
-        },
-        {
-            "amount": 32,
-            "ingredient": {
-                "item": "minecraft:lapis_lazuli"
-            }
-        }
-    ],
-    "output": {
-        "#": 64,
-        "#t": "ae2:i",
-        "id": "extendedae:entro_ingot"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
     }
+  ],
+  "type": "advanced_ae:reaction",
+  "input_energy": 500000,
+  "input_fluid": {
+    "amount": 500,
+    "ingredient": {
+      "fluid": "minecraft:water"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 32,
+      "ingredient": {
+        "item": "extendedae:entro_dust"
+      }
+    },
+    {
+      "amount": 32,
+      "ingredient": {
+        "item": "minecraft:gold_ingot"
+      }
+    },
+    {
+      "amount": 32,
+      "ingredient": {
+        "item": "minecraft:lapis_lazuli"
+      }
+    }
+  ],
+  "output": {
+    "#": 64,
+    "#t": "ae2:i",
+    "id": "extendedae:entro_ingot"
+  }
 }

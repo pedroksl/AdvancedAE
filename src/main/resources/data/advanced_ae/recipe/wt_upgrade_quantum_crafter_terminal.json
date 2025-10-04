@@ -1,0 +1,7 @@
+{
+  "type": "ae2wtlib:upgrade",
+  "terminal": {
+    "item": "advanced_ae:wireless_quantum_crafter_terminal"
+  },
+  "terminalName": "quantum_crafter"
+}

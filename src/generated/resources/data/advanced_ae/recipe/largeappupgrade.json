@@ -1,39 +1,35 @@
 {
-    "neoforge:conditions": [
-        {
-            "type": "neoforge:not",
-            "value": {
-                "type": "neoforge:mod_loaded",
-                "modid": "extendedae"
-            }
-        }
-    ],
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "C": {
-            "item": "ae2:capacity_card"
-        },
-        "G": {
-            "tag": "ae2:glass_cable"
-        },
-        "I": {
-            "tag": "c:ingots"
-        },
-        "S": {
-            "item": "advanced_ae:shattered_singularity"
-        },
-        "T": {
-            "item": "minecraft:crafting_table"
-        }
-    },
-    "pattern": [
-        "STS",
-        "GIG",
-        "CCC"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:adv_pattern_provider_capacity_upgrade"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:mod_loaded",
+        "modid": "extendedae"
+      }
     }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "ae2:capacity_card"
+    },
+    "G": {
+      "tag": "ae2:glass_cable"
+    },
+    "I": {
+      "tag": "c:ingots"
+    },
+    "S": {
+      "item": "advanced_ae:shattered_singularity"
+    },
+    "T": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "pattern": ["STS", "GIG", "CCC"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:adv_pattern_provider_capacity_upgrade"
+  }
 }

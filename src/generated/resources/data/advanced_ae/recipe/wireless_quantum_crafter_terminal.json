@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "ae2:dense_energy_cell"
+    },
+    "T": {
+      "item": "advanced_ae:quantum_crafter_terminal"
+    },
+    "W": {
+      "item": "ae2:wireless_receiver"
+    }
+  },
+  "pattern": [" W ", " T ", " C "],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:wireless_quantum_crafter_terminal"
+  }
+}

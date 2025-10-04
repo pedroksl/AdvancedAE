@@ -1,22 +1,22 @@
 {
-    "type": "advanced_ae:reaction",
-    "input_energy": 20000,
-    "input_fluid": {
-        "amount": 4000,
-        "ingredient": {
-            "fluid": "minecraft:water"
-        }
-    },
-    "input_items": [
-        {
-            "ingredient": {
-                "item": "advanced_ae:quantum_infused_dust"
-            }
-        }
-    ],
-    "output": {
-        "#": 1000,
-        "#t": "ae2:f",
-        "id": "advanced_ae:quantum_infusion_source"
+  "type": "advanced_ae:reaction",
+  "input_energy": 20000,
+  "input_fluid": {
+    "amount": 4000,
+    "ingredient": {
+      "fluid": "minecraft:water"
     }
+  },
+  "input_items": [
+    {
+      "ingredient": {
+        "item": "advanced_ae:quantum_infused_dust"
+      }
+    }
+  ],
+  "output": {
+    "#": 1000,
+    "#t": "ae2:f",
+    "id": "advanced_ae:quantum_infusion_source"
+  }
 }

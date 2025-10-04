@@ -1,27 +1,23 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "A": {
-            "item": "advanced_ae:quantum_accelerator"
-        },
-        "K": {
-            "item": "ae2:cell_component_64k"
-        },
-        "S": {
-            "item": "advanced_ae:shattered_singularity"
-        },
-        "U": {
-            "item": "advanced_ae:quantum_unit"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "advanced_ae:quantum_accelerator"
     },
-    "pattern": [
-        "SAS",
-        "KUK",
-        "SAS"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:quantum_crafter"
+    "K": {
+      "item": "ae2:cell_component_64k"
+    },
+    "S": {
+      "item": "advanced_ae:shattered_singularity"
+    },
+    "U": {
+      "item": "advanced_ae:quantum_unit"
     }
+  },
+  "pattern": ["SAS", "KUK", "SAS"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:quantum_crafter"
+  }
 }

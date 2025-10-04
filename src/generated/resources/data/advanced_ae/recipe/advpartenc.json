@@ -1,24 +1,20 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "E": {
-            "item": "ae2:engineering_processor"
-        },
-        "Q": {
-            "item": "ae2:charged_certus_quartz_crystal"
-        },
-        "R": {
-            "item": "minecraft:redstone"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "ae2:engineering_processor"
     },
-    "pattern": [
-        "QRQ",
-        "RER",
-        "QRQ"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:adv_pattern_encoder"
+    "Q": {
+      "item": "ae2:charged_certus_quartz_crystal"
+    },
+    "R": {
+      "item": "minecraft:redstone"
     }
+  },
+  "pattern": ["QRQ", "RER", "QRQ"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:adv_pattern_encoder"
+  }
 }

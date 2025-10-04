@@ -1,2 +1,3 @@
-- Fixed desync issues with recharging and the magnet
-- Increased display precision of the Throughput Monitor when displayed value is under 10
+# New Features:
+- Completely reworked Quantum Computer multiblock render/textures!
+- Added the Quantum Crafter Terminal alongside the companion wireless version

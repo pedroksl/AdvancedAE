@@ -1,29 +1,29 @@
 {
-    "neoforge:conditions": [
-        {
-            "type": "neoforge:mod_loaded",
-            "modid": "appflux"
-        }
-    ],
-    "type": "advanced_ae:reaction",
-    "input_energy": 1300000,
-    "input_fluid": {
-        "amount": 1000,
-        "ingredient": {
-            "fluid": "minecraft:water"
-        }
-    },
-    "input_items": [
-        {
-            "amount": 64,
-            "ingredient": {
-                "item": "appflux:redstone_crystal"
-            }
-        }
-    ],
-    "output": {
-        "#": 64,
-        "#t": "ae2:i",
-        "id": "appflux:charged_redstone"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "appflux"
     }
+  ],
+  "type": "advanced_ae:reaction",
+  "input_energy": 1300000,
+  "input_fluid": {
+    "amount": 1000,
+    "ingredient": {
+      "fluid": "minecraft:water"
+    }
+  },
+  "input_items": [
+    {
+      "amount": 64,
+      "ingredient": {
+        "item": "appflux:redstone_crystal"
+      }
+    }
+  ],
+  "output": {
+    "#": 64,
+    "#t": "ae2:i",
+    "id": "appflux:charged_redstone"
+  }
 }

@@ -1,24 +1,20 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "A": {
-            "item": "advanced_ae:quantum_alloy"
-        },
-        "C": {
-            "item": "advanced_ae:quantum_upgrade_base"
-        },
-        "I": {
-            "item": "minecraft:iron_ingot"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "advanced_ae:quantum_alloy"
     },
-    "pattern": [
-        "IIA",
-        "IC ",
-        "IIA"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:magnet_card"
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
     }
+  },
+  "pattern": ["IIA", "IC ", "IIA"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:magnet_card"
+  }
 }

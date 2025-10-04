@@ -204,6 +204,20 @@ public class AAERecipeProvider extends RecipeProvider {
                 .requires(AEParts.STORAGE_MONITOR)
                 .unlockedBy("hasItem", has(AEParts.STORAGE_MONITOR))
                 .save(c, AdvancedAE.makeId("throughput_monitor"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.QUANTUM_CRAFTER_TERMINAL)
+                .requires(AEParts.PATTERN_ACCESS_TERMINAL)
+                .requires(AAEItems.QUANTUM_PROCESSOR)
+                .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_CRAFTER))
+                .save(c, AdvancedAE.makeId("quantum_crafter_terminal"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL)
+                .pattern(" W ")
+                .pattern(" T ")
+                .pattern(" C ")
+                .define('W', AEItems.WIRELESS_RECEIVER)
+                .define('T', AAEItems.QUANTUM_CRAFTER_TERMINAL)
+                .define('C', AEBlocks.DENSE_ENERGY_CELL)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_CRAFTER_TERMINAL))
+                .save(c, AdvancedAE.makeId("wireless_quantum_crafter_terminal"));
         InscriberRecipeBuilder.inscribe(AAEItems.SHATTERED_SINGULARITY, AAEItems.QUANTUM_PROCESSOR_PRESS, 1)
                 .setTop(Ingredient.of(AEItems.ENGINEERING_PROCESSOR_PRESS))
                 .setBottom(Ingredient.of(AEItems.LOGIC_PROCESSOR_PRESS))

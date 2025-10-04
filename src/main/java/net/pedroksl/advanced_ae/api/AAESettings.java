@@ -13,6 +13,10 @@ public final class AAESettings {
     private static final Map<String, Setting<?>> SETTINGS = new HashMap<>();
     public static final Setting<YesNo> ME_EXPORT = register("me_export", YesNo.YES, YesNo.NO);
     public static final Setting<YesNo> FILTERED_IMPORT = register("filtered_import", YesNo.YES, YesNo.NO);
+    public static final Setting<YesNo> QUANTUM_CRAFTER_TERMINAL =
+            register("quantum_crafter_terminal", YesNo.YES, YesNo.NO);
+    public static final Setting<ShowQuantumCrafters> TERMINAL_SHOW_QUANTUM_CRAFTERS =
+            register("show_quantum_crafters", ShowQuantumCrafters.class);
 
     private AAESettings() {}
 

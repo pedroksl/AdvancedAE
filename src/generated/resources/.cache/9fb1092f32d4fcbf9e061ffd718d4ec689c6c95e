@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-20T23:13:00.8256997	Recipes
+// 1.21.1	2025-10-04T01:41:40.0688573	Recipes
 740aa82f7b3882c24a73e3f3ba26cf4ce1392d20 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 609d17bb0993426b96e5ba02d2c15b8e953f79da data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 d748a0301b12c5843ef25624c07cfb9e0f5f26fb data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -43,6 +43,7 @@ d18a26072585f93cdaea9ac03d1bbcc350adb58c data/advanced_ae/advancement/recipes/mi
 264b14ef838016094a34c990314be944866db4f2 data/advanced_ae/advancement/recipes/misc/quantum_boots_item_reset.json
 f017e14fefb70112e7a9f343bbb29036988d2e69 data/advanced_ae/advancement/recipes/misc/quantum_chest.json
 5658450b69d174c693c77b38a3ba115a5acd0715 data/advanced_ae/advancement/recipes/misc/quantum_chestplate_item_reset.json
+e5ddf52723d6de26c451f99eb89cbe2b1de471c4 data/advanced_ae/advancement/recipes/misc/quantum_crafter_terminal.json
 66186bd3b6cf95ff6b05671d6c860978bee2260d data/advanced_ae/advancement/recipes/misc/quantum_helmet.json
 d8bef2f7e4bab869845fb8e43632bd48c57afdf4 data/advanced_ae/advancement/recipes/misc/quantum_helmet_item_reset.json
 2858ba88866721f31c4a432a8885fff15ff7a3e2 data/advanced_ae/advancement/recipes/misc/quantum_leggings.json
@@ -65,6 +66,7 @@ ab91d0ee994a169490241069f544985de92c6aaf data/advanced_ae/advancement/recipes/mi
 1c3d66d2002b9292fd6110d1874178ed7e51ac9b data/advanced_ae/advancement/recipes/misc/throughput_monitor_configurator.json
 2dba6ce9fab2c9ecefe6fad140486d105e059b04 data/advanced_ae/advancement/recipes/misc/walk_speed_card.json
 24400ef725f1ac4e928c3247a3fd4e3670027af2 data/advanced_ae/advancement/recipes/misc/water_breathing_card.json
+4cac2a86e7c3edfcc2092726af01172748e0e399 data/advanced_ae/advancement/recipes/misc/wireless_quantum_crafter_terminal.json
 087257cf13f1655213ce67491c078d84c051d75d data/advanced_ae/recipe/advpartenc.json
 6a4e67d5da560ae650318b8bbecab9bee2625d3c data/advanced_ae/recipe/advpatpro2.json
 ec737d05706fb0feafebe7913ff563888a9f44aa data/advanced_ae/recipe/advpatpropart.json
@@ -123,6 +125,7 @@ e4b7b2d9e6352f604112de8a9c41963eeb3975c0 data/advanced_ae/recipe/quantum_alloy_w
 438a57c424d66474aae86e02f253e25bf8558378 data/advanced_ae/recipe/quantum_boots_item_reset.json
 6b8689d99135416ca637070ff8ee12e3f4f91859 data/advanced_ae/recipe/quantum_chest.json
 b0d2fb4afe9def71c5e498042b805984669d407c data/advanced_ae/recipe/quantum_chestplate_item_reset.json
+46df2cae0e96a85200ba49836b731e56d3298c4c data/advanced_ae/recipe/quantum_crafter_terminal.json
 42a6eb358123504cc564f113b02796082e81b5fc data/advanced_ae/recipe/quantum_helmet.json
 698db63bfaef4cdda304bb306b931c86bc447976 data/advanced_ae/recipe/quantum_helmet_item_reset.json
 21a6b83cdc7e289656858fff4468de992bed8367 data/advanced_ae/recipe/quantum_infused_dust.json
@@ -161,3 +164,4 @@ b7b99ff75761eb344d847f8c259366a5692b1175 data/advanced_ae/recipe/throughput_moni
 96e7cbdf41045d70f8b88efe0df53e2cabc3bfad data/advanced_ae/recipe/throughput_monitor_configurator.json
 1917fee128e897712c680fe93ab1b14a5ad46ed4 data/advanced_ae/recipe/walk_speed_card.json
 cdfcc98fb41bc7d82827a81a5e839360f6a6554b data/advanced_ae/recipe/water_breathing_card.json
+11b39fcc010ee24978008fc3f8acfe20a35f4352 data/advanced_ae/recipe/wireless_quantum_crafter_terminal.json

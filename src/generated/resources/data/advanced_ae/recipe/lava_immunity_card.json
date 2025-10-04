@@ -1,27 +1,23 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "C": {
-            "item": "advanced_ae:quantum_upgrade_base"
-        },
-        "L": {
-            "item": "minecraft:lava_bucket"
-        },
-        "Q": {
-            "item": "ae2:quartz_glass"
-        },
-        "T": {
-            "item": "minecraft:totem_of_undying"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
     },
-    "pattern": [
-        " T ",
-        " C ",
-        "QLQ"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:lava_immunity_card"
+    "L": {
+      "item": "minecraft:lava_bucket"
+    },
+    "Q": {
+      "item": "ae2:quartz_glass"
+    },
+    "T": {
+      "item": "minecraft:totem_of_undying"
     }
+  },
+  "pattern": [" T ", " C ", "QLQ"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:lava_immunity_card"
+  }
 }

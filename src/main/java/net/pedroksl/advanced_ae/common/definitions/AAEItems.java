@@ -11,11 +11,13 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderCapacityUpgradeItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderUpgradeItem;
+import net.pedroksl.advanced_ae.common.items.QuantumCrafterWirelessTerminalItem;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.common.parts.*;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
+import net.pedroksl.advanced_ae.xmod.wtlib.AE2wtlibPlugin;
 
 import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.parts.IPart;
@@ -65,9 +67,11 @@ public class AAEItems {
             "ME Throughput Monitor", "throughput_monitor", ThroughputMonitorPart.class, ThroughputMonitorPart::new);
     public static final ItemDefinition<PartItem<QuantumCrafterTerminalPart>> QUANTUM_CRAFTER_TERMINAL = part(
             "Quantum Crafter Terminal",
-            "quantum_crafter_terminal_part",
+            "quantum_crafter_terminal",
             QuantumCrafterTerminalPart.class,
             QuantumCrafterTerminalPart::new);
+    public static final ItemDefinition<QuantumCrafterWirelessTerminalItem> QUANTUM_CRAFTER_WIRELESS_TERMINAL = item(
+            "Wireless Quantum Crafter Terminal", "wireless_quantum_crafter_terminal", p -> AE2wtlibPlugin.TERMINAL);
 
     public static final ItemDefinition<Item> ADV_PROCESSING_PATTERN = item(
             "Advanced Processing Pattern",

@@ -217,7 +217,6 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
         var texture = powered ? this.poweredSides : this.sides;
         builder.setSprite(texture);
         builder.setDirection(side);
-        builder.setShade(true);
         var normal = side.getNormal();
         var c1 = renderOpposite ? cons.get(3) : cons.get(0);
         var c2 = renderOpposite ? cons.get(2) : cons.get(1);
@@ -493,7 +492,7 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
     }
 
     private float getNormalStep(int step) {
-        return step > 0 ? 0.001f : step < 0 ? -0.001f : 0;
+        return step > 0 ? 0.0001f : step < 0 ? -0.0001f : 0;
     }
 
     private record FaceCorner(Direction face, int corner) {}

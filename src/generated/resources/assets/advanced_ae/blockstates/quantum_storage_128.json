@@ -1,10 +1,10 @@
 {
-    "variants": {
-        "formed=false": {
-            "model": "advanced_ae:block/crafting/quantum_storage_128"
-        },
-        "formed=true": {
-            "model": "advanced_ae:block/crafting/quantum_storage_128_formed"
-        }
+  "variants": {
+    "formed=false": {
+      "model": "advanced_ae:block/crafting/quantum_storage_128"
+    },
+    "formed=true": {
+      "model": "advanced_ae:block/crafting/quantum_storage_128_formed"
     }
+  }
 }

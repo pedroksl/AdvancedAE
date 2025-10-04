@@ -9,10 +9,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
+import net.pedroksl.advanced_ae.common.helpers.AutoCraftingContainer;
 import net.pedroksl.advanced_ae.network.packet.PatternConfigServerUpdatePacket;
 
 import appeng.api.stacks.AEKey;
+import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
@@ -21,19 +22,20 @@ import appeng.menu.locator.MenuHostLocator;
 public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubMenu {
 
     private int index;
-    private final QuantumCrafterEntity host;
+    private final ISubMenuHost host;
+    private AutoCraftingContainer crafter;
 
     private final String SET_MAX_CRAFTED = "set_max_crafted";
 
     public LinkedHashMap<AEKey, Long> inputs = new LinkedHashMap<>();
     public Pair<AEKey, Long> output;
 
-    public QuantumCrafterConfigPatternMenu(int id, Inventory ip, QuantumCrafterEntity host) {
+    public QuantumCrafterConfigPatternMenu(int id, Inventory ip, ISubMenuHost host) {
         this(AAEMenus.CRAFTER_PATTERN_CONFIG.get(), id, ip, host);
     }
 
     protected QuantumCrafterConfigPatternMenu(
-            MenuType<? extends QuantumCrafterConfigPatternMenu> type, int id, Inventory ip, QuantumCrafterEntity host) {
+            MenuType<? extends QuantumCrafterConfigPatternMenu> type, int id, Inventory ip, ISubMenuHost host) {
         super(type, id, ip, host);
         this.host = host;
 
@@ -41,23 +43,29 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
     }
 
     @Override
-    public QuantumCrafterEntity getHost() {
+    public ISubMenuHost getHost() {
         return host;
     }
 
     public static void open(
             ServerPlayer player,
             MenuHostLocator locator,
+            AutoCraftingContainer crafter,
             int index,
             LinkedHashMap<AEKey, Long> inputs,
             Pair<AEKey, Long> output) {
         MenuOpener.open(AAEMenus.CRAFTER_PATTERN_CONFIG.get(), player, locator);
 
         if (player.containerMenu instanceof QuantumCrafterConfigPatternMenu cca) {
+            cca.setCrafter(crafter);
             cca.setIndex(index);
             cca.setInputsAndOutput(inputs, output);
             cca.broadcastChanges();
         }
+    }
+
+    private void setCrafter(AutoCraftingContainer crafter) {
+        this.crafter = crafter;
     }
 
     private void setIndex(int index) {
@@ -78,9 +86,8 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
     }
 
     public void setStockAmount(int inputIndex, long amount) {
-        getHost().setStockAmount(this.index, inputIndex, amount);
-        setInputsAndOutput(
-                getHost().getPatternConfigInputs(this.index), getHost().getPatternConfigOutput(this.index));
+        crafter.setStockAmount(this.index, inputIndex, amount);
+        setInputsAndOutput(crafter.getPatternConfigInputs(this.index), crafter.getPatternConfigOutput(this.index));
     }
 
     public void setMaxCrafted(long amount) {
@@ -89,8 +96,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
             return;
         }
 
-        getHost().setMaxCrafted(this.index, amount);
-        setInputsAndOutput(
-                getHost().getPatternConfigInputs(this.index), getHost().getPatternConfigOutput(this.index));
+        crafter.setMaxCrafted(this.index, amount);
+        setInputsAndOutput(crafter.getPatternConfigInputs(this.index), crafter.getPatternConfigOutput(this.index));
     }
 }

@@ -38,6 +38,7 @@ import appeng.menu.SlotSemantics;
 public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> {
 
     private final SettingToggleButton<RedstoneMode> redstoneMode;
+    private final AAEServerSettingToggleButton<YesNo> showOnTerminal;
     private final AAEServerSettingToggleButton<YesNo> meExportBtn;
     private final AAEToolbarActionButton outputConfigure;
 
@@ -54,6 +55,9 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         this.redstoneMode = new ServerSettingToggleButton<>(Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
         addToLeftToolbar(this.redstoneMode);
 
+        this.showOnTerminal = new AAEServerSettingToggleButton<>(AAESettings.QUANTUM_CRAFTER_TERMINAL, YesNo.YES);
+        this.addToLeftToolbar(this.showOnTerminal);
+
         this.meExportBtn = new AAEServerSettingToggleButton<>(AAESettings.ME_EXPORT, YesNo.NO);
         this.addToLeftToolbar(this.meExportBtn);
 
@@ -65,16 +69,13 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         var patternSlots = menu.getSlots(SlotSemantics.MACHINE_INPUT);
         invalidPatternSlots = new ArrayList<>(Collections.nCopies(patternSlots.size(), Boolean.FALSE));
         for (int i = 0; i < patternSlots.size(); i++) {
-            var cfgButton = new QuantumCrafterScreen.ConfigButton(btn -> {
-                var idx = configButtons.indexOf(btn);
-                menu.configPattern(idx);
-            });
-            cfgButton.setDisableBackground(true);
-            cfgButton.setMessage(AAEText.ConfigurePatternButton.text());
+            var index = i;
+            var cfgButton = new QuantumCrafterScreen.ConfigButton(b -> menu.configPattern(index));
             widgets.add("cfgButton" + (1 + i), cfgButton);
             configButtons.add(cfgButton);
 
-            var enableButton = widgets.addCheckbox("enableButton" + (1 + i), Component.empty(), new onEnableToggle(i));
+            var enableButton = widgets.addCheckbox(
+                    "enableButton" + (1 + i), Component.empty(), () -> menu.toggleEnablePattern(index));
             enableButton.setRadio(true);
             enableButton.setTooltip(Tooltip.create(AAEText.EnablePatternButton.text()));
             enableButtons.add(enableButton);
@@ -95,6 +96,7 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
 
         this.redstoneMode.set(this.menu.getRedStoneMode());
         this.redstoneMode.setVisibility(menu.hasUpgrade(AEItems.REDSTONE_CARD));
+        this.showOnTerminal.set(getMenu().getShowOnTerminal());
         this.meExportBtn.set(getMenu().getMeExport());
         this.outputConfigure.setVisibility(getMenu().getMeExport() == YesNo.NO);
         this.invalidPatternAlert.visible = this.invalidPatternSlots.contains(true);
@@ -107,7 +109,7 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         for (var x = 0; x < this.invalidPatternSlots.size(); x++) {
             if (this.invalidPatternSlots.get(x)) {
                 Slot slot = menu.getSlots(SlotSemantics.MACHINE_INPUT).get(x);
-                AEBaseScreen.renderSlotHighlight(guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, 0x78fa0a0a);
+                AEBaseScreen.renderSlotHighlight(guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, 0x7fff0000);
             }
         }
     }
@@ -131,6 +133,9 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
     static class ConfigButton extends IconButton {
         public ConfigButton(OnPress onPress) {
             super(onPress);
+
+            setDisableBackground(true);
+            setMessage(AAEText.ConfigurePatternButton.text());
         }
 
         @Override
@@ -139,26 +144,13 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         }
     }
 
-    private class onEnableToggle implements Runnable {
-        private final int index;
-
-        onEnableToggle(int index) {
-            this.index = index;
-        }
-
-        @Override
-        public void run() {
-            menu.toggleEnablePattern(this.index);
-        }
-    }
-
     private static class InvalidPatternAlert extends AbstractWidget {
 
         private final Blitter invalidPatternAlert;
 
-        public InvalidPatternAlert(Blitter powerAlert) {
+        public InvalidPatternAlert(Blitter alert) {
             super(0, 0, 18, 18, Component.empty());
-            this.invalidPatternAlert = powerAlert;
+            this.invalidPatternAlert = alert;
         }
 
         @Override

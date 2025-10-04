@@ -1,19 +1,19 @@
 {
-    "type": "ae2:inscriber",
-    "ingredients": {
-        "bottom": {
-            "item": "ae2:printed_silicon"
-        },
-        "middle": {
-            "tag": "c:dusts/redstone"
-        },
-        "top": {
-            "item": "advanced_ae:printed_quantum_processor"
-        }
+  "type": "ae2:inscriber",
+  "ingredients": {
+    "bottom": {
+      "item": "ae2:printed_silicon"
     },
-    "mode": "press",
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:quantum_processor"
+    "middle": {
+      "tag": "c:dusts/redstone"
+    },
+    "top": {
+      "item": "advanced_ae:printed_quantum_processor"
     }
+  },
+  "mode": "press",
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:quantum_processor"
+  }
 }

@@ -27,6 +27,9 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
     @GuiSync(2)
     public YesNo meExport = YesNo.YES;
 
+    @GuiSync(3)
+    public YesNo showOnTerminal = YesNo.YES;
+
     public List<Boolean> invalidPatterns = new ArrayList<>();
     public List<Boolean> enabledPatterns = new ArrayList<>();
 
@@ -60,8 +63,13 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
     }
 
     protected void loadSettingsFromHost(IConfigManager cm) {
+        this.showOnTerminal = this.getHost().getConfigManager().getSetting(AAESettings.QUANTUM_CRAFTER_TERMINAL);
         this.meExport = this.getHost().getConfigManager().getSetting(AAESettings.ME_EXPORT);
         this.setRedStoneMode(this.getHost().getConfigManager().getSetting(Settings.REDSTONE_CONTROLLED));
+    }
+
+    public YesNo getShowOnTerminal() {
+        return showOnTerminal;
     }
 
     public YesNo getMeExport() {
@@ -126,7 +134,7 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
             if (inputs == null || output == null) return;
 
             QuantumCrafterConfigPatternMenu.open(
-                    ((ServerPlayer) this.getPlayer()), getLocator(), index, inputs, output);
+                    ((ServerPlayer) this.getPlayer()), getLocator(), getHost(), index, inputs, output);
         }
     }
 

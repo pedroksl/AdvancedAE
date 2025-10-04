@@ -1,24 +1,20 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "category": "misc",
-    "key": {
-        "A": {
-            "item": "ae2:speed_card"
-        },
-        "C": {
-            "item": "advanced_ae:quantum_upgrade_base"
-        },
-        "R": {
-            "tag": "c:dusts/redstone"
-        }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "ae2:speed_card"
     },
-    "pattern": [
-        "ARA",
-        "RCR",
-        "ARA"
-    ],
-    "result": {
-        "count": 1,
-        "id": "advanced_ae:sprint_speed_card"
+    "C": {
+      "item": "advanced_ae:quantum_upgrade_base"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
     }
+  },
+  "pattern": ["ARA", "RCR", "ARA"],
+  "result": {
+    "count": 1,
+    "id": "advanced_ae:sprint_speed_card"
+  }
 }

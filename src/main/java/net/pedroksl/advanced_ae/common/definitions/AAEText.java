@@ -22,7 +22,17 @@ public enum AAEText implements LocalizationEnum {
             "Created by upgrading an Advanced Pattern Provider with a capacity upgrade", Type.EMI_TEXT),
     AdvPatternEncoder("Advanced Pattern Encoder", Type.GUI),
     ReactionChamber("Reaction Chamber", Type.GUI),
+
     QuantumCrafter("Quantum Crafter", Type.GUI),
+    QuantumCrafterTerminalShort("Quantum Crafter T.", Type.GUI),
+    ShowCraftersCategory("Display Mode", Type.TOOLTIP),
+    ShowAllCrafters("Show all Quantum Crafters", Type.TOOLTIP),
+    ShowNonFullCrafters("Show visible Quantum Crafters with empty slots", Type.TOOLTIP),
+    ShowVisibleCrafters("Show visible Quantum Crafters", Type.TOOLTIP),
+    CrafterTerminalSetting("Quantum Crafter Terminal", Type.TOOLTIP),
+    ShowOnCrafterTerminal("Show on Quantum Crafter Terminal", Type.TOOLTIP),
+    HideOnCrafterTerminal("Hide on Quantum Crafter Terminal", Type.TOOLTIP),
+
     StockExportBus("ME Stock Export Bus", Type.GUI),
     ImportExportBus("ME Import Export Bus", Type.GUI),
     EmiReactionChamber("Reaction Chamber", Type.EMI_CATEGORY),

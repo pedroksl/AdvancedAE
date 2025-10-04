@@ -1,5 +1,3 @@
 {
-    "values": [
-        "advanced_ae:throughput_monitor_configurator"
-    ]
+  "values": ["advanced_ae:throughput_monitor_configurator"]
 }
