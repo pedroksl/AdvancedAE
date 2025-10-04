@@ -42,6 +42,10 @@ public class AAENetworkHandler extends NetworkHandler {
         serverbound(this.registrar, QuantumArmorMagnetPacket.TYPE, QuantumArmorMagnetPacket.STREAM_CODEC);
         serverbound(this.registrar, FluidTankItemUsePacket.TYPE, FluidTankItemUsePacket.STREAM_CODEC);
         serverbound(this.registrar, KeysPressedPacket.TYPE, KeysPressedPacket.STREAM_CODEC);
+        serverbound(
+                this.registrar,
+                QuantumCrafterTerminalClientAction.TYPE,
+                QuantumCrafterTerminalClientAction.STREAM_CODEC);
 
         clientbound(this.registrar, PatternConfigServerUpdatePacket.TYPE, PatternConfigServerUpdatePacket.STREAM_CODEC);
         clientbound(this.registrar, PatternsUpdatePacket.TYPE, PatternsUpdatePacket.STREAM_CODEC);
@@ -50,6 +54,9 @@ public class AAENetworkHandler extends NetworkHandler {
         clientbound(this.registrar, FluidTankClientAudioPacket.TYPE, FluidTankClientAudioPacket.STREAM_CODEC);
         clientbound(this.registrar, MenuSelectionPacket.TYPE, MenuSelectionPacket.STREAM_CODEC);
         clientbound(this.registrar, ItemTrackingPacket.TYPE, ItemTrackingPacket.STREAM_CODEC);
+        clientbound(this.registrar, QuantumCrafterTerminalPacket.TYPE, QuantumCrafterTerminalPacket.STREAM_CODEC);
+        clientbound(
+                this.registrar, ClearQuantumCrafterTerminalPacket.TYPE, ClearQuantumCrafterTerminalPacket.STREAM_CODEC);
     }
 
     private static <T extends ClientboundPacket> void clientbound(

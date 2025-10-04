@@ -1,4 +1,4 @@
-// 1.21.1	2025-10-01T01:30:49.0117957	Block States / Models
+// 1.21.1	2025-10-03T23:57:55.2321037	Block States / Models
 f3d87a02dfae65fcf894b47e01745ed10d937139 assets/advanced_ae/blockstates/adv_pattern_provider.json
 6114895d7c99885522ce6dd817e7bd97adfdce9d assets/advanced_ae/blockstates/data_entangler.json
 2735d4e9864fa34725433e6c5182d7da05cdc561 assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -97,6 +97,7 @@ fbab1cca46902190a78bbf5dbd23a36abc25f6af assets/advanced_ae/models/item/step_ass
 08b38aa06688e6e1d526fa6a9016abc6b9d5f126 assets/advanced_ae/models/item/throughput_monitor_configurator.json
 16b589e6f8682ff069483bbdfd8188a89f3fcc7e assets/advanced_ae/models/item/walk_speed_card.json
 aa742937097787cc36a3cdec59b8524301898351 assets/advanced_ae/models/item/water_breathing_card.json
+1e95d202ae3b566ee103b951923e220bb9a1f0a6 assets/advanced_ae/models/item/wireless_quantum_crafter_terminal.json
 778b383b2a7516d68f11e4343c80debea5e148d3 assets/advanced_ae/models/part/adv_pattern_provider_part.json
 9952d3907406082661e8364e76b6b2b36e2335c9 assets/advanced_ae/models/part/import_export_bus_part.json
 8997334025f88b2f04481c6afa3f6b93161f4385 assets/advanced_ae/models/part/small_adv_pattern_provider_part.json

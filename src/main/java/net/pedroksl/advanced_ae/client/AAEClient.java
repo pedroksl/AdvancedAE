@@ -25,6 +25,8 @@ import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
+import net.pedroksl.advanced_ae.gui.QuantumCrafterWirelessTermMenu;
 
 import appeng.api.util.AEColor;
 import appeng.client.gui.me.common.PinnedKeys;
@@ -90,6 +92,16 @@ public class AAEClient extends AdvancedAE {
                 event, AAEMenus.REACTION_CHAMBER.get(), ReactionChamberScreen::new, "/screens/reaction_chamber.json");
         InitScreens.register(
                 event, AAEMenus.QUANTUM_CRAFTER.get(), QuantumCrafterScreen::new, "/screens/quantum_crafter.json");
+        InitScreens.<QuantumCrafterTermMenu, QuantumCrafterTermScreen<QuantumCrafterTermMenu>>register(
+                event,
+                AAEMenus.QUANTUM_CRAFTER_TERMINAL.get(),
+                QuantumCrafterTermScreen::new,
+                "/screens/quantum_crafter_terminal.json");
+        InitScreens.<QuantumCrafterWirelessTermMenu, QuantumCrafterWirelessTermScreen>register(
+                event,
+                AAEMenus.QUANTUM_CRAFTER_WIRELESS_TERMINAL.get(),
+                QuantumCrafterWirelessTermScreen::new,
+                "/screens/wireless_quantum_crafter_terminal.json");
 
         InitScreens.register(
                 event, AAEMenus.STOCK_EXPORT_BUS.get(), StockExportBusScreen::new, "/screens/stock_export_bus.json");

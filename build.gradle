@@ -123,43 +123,52 @@ repositories {
 }
 
 dependencies {
-    implementation "curse.maven:glodium-957920:5821676"
-    implementation "curse.maven:guideme-1173950:6812025"
-    implementation "org.appliedenergistics:appliedenergistics2:19.2.16"
-    implementation "curse.maven:ex-pattern-provider-892005:6863556"
-    implementation "de.mari_023:ae2wtlib_api:19.2.5"
+    implementation "curse.maven:glodium-957920:${glodium_file_id}"
+    implementation "org.appliedenergistics:guideme:${guide_me_version}"
+    api "org.appliedenergistics:appliedenergistics2:${ae2_version}"
+    implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
+    jarJar implementation("de.mari_023:ae2wtlib_api:${ae2wtlib_version}") {
+        transitive = false
+    }
+    runtimeOnly("de.mari_023:ae2wtlib:${ae2wtlib_version}") {
+        transitive = false
+    }
+
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    compileOnly "curse.maven:emi-580555:6420931"
-    implementation "curse.maven:applied-flux-965012:6649565"
-    implementation "curse.maven:jade-324717:6853386"
-    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.799"
-    implementation "curse.maven:mega-cells-622112:6853076"
-    implementation "curse.maven:mekanism-268560:6895130"
-    implementation "curse.maven:curios-309927:6529130"
-    compileOnly "curse.maven:jei-238222:6829086"
+    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
+    implementation "curse.maven:applied-flux-965012:${applied_flux_file_id}"
 
-    runtimeOnly "curse.maven:cucumber-272335:5663120"
-    runtimeOnly "curse.maven:mystical-agriculture-246640:5938110"
+    implementation "curse.maven:jade-324717:${jade_file_id}"
+    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+    compileOnly "curse.maven:jei-238222:${jei_version}"
 
-    runtimeOnly "curse.maven:placebo-283644:6751290"
-    runtimeOnly "curse.maven:apothic-attributes-898963:6751650"
-    implementation "curse.maven:apothic-enchanting-1063926:6751658"
+    implementation "curse.maven:mega-cells-622112:${mega_file_id}"
+    implementation "curse.maven:mekanism-268560:${mekanism_file_id}"
+    implementation "curse.maven:curios-309927:${curios_file_id}"
 
-    runtimeOnly "curse.maven:sodium-394468:6382651"
-    implementation "curse.maven:irisshaders-455508:6661598"
+    runtimeOnly "curse.maven:cucumber-272335:${cucumber_file_id}"
+    runtimeOnly "curse.maven:mystical-agriculture-246640:${ma_file_id}"
+
+    runtimeOnly "curse.maven:placebo-283644:${placebo_file_id}"
+    runtimeOnly "curse.maven:apothic-attributes-898963:${apothic_att_file_id}"
+    implementation "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
+
+    runtimeOnly "curse.maven:sodium-394468:${sodium_file_id}"
+    implementation "curse.maven:irisshaders-455508:${iris_file_id}"
     // setup Xei
     switch (use_Xei) {
         case "emi":
-            runtimeOnly "curse.maven:emi-580555:6420931"
+            runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
             break
         case "rei":
-            runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:16.0.799"
+            runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
             runtimeOnly "dev.architectury:architectury-neoforge:15.0.8"
             runtimeOnly "curse.maven:cloth-config-348521:5729127"
             break
         case "jei":
             runtimeOnly "curse.maven:jei-238222:6829086"
             runtimeOnly "dev.architectury:architectury-neoforge:13.0.8"
+            break
     }
 }
 
@@ -170,6 +179,7 @@ tasks.withType(ProcessResources).configureEach {
             loader_version_range: loader_version_range,
             mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
             mod_authors         : mod_authors, mod_description: mod_description, geckolib_version: geckolib_version,
+            ae2wtlib_version    : ae2wtlib_version
     ]
     inputs.properties replaceProperties
 

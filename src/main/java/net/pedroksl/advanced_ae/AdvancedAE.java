@@ -102,6 +102,9 @@ public class AdvancedAE {
         GridLinkables.register(AAEItems.QUANTUM_CHESTPLATE, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_LEGGINGS, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_BOOTS, IGridLinkedItem.LINKABLE_HANDLER);
+        GridLinkables.register(
+                AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL,
+                appeng.items.tools.powered.WirelessTerminalItem.LINKABLE_HANDLER);
     }
 
     private static void initUpgrades(FMLCommonSetupEvent event) {

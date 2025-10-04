@@ -30,6 +30,7 @@ import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.helpers.AutoCraftingContainer;
 
 import appeng.api.config.*;
 import appeng.api.crafting.IPatternDetails;
@@ -39,6 +40,7 @@ import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.inventories.ItemTransfer;
 import appeng.api.networking.GridFlags;
+import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IGridNodeListener;
 import appeng.api.networking.energy.IEnergyService;
@@ -68,6 +70,7 @@ import appeng.crafting.pattern.AECraftingPattern;
 import appeng.me.helpers.MachineSource;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 import appeng.util.SettingsFrom;
 import appeng.util.inv.AppEngInternalInventory;
@@ -77,7 +80,11 @@ import appeng.util.inv.PlayerInternalInventory;
 import appeng.util.inv.filter.AEItemFilters;
 
 public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
-        implements IGridTickable, IUpgradeableObject, IConfigurableObject, IDirectionalOutputHost {
+        implements IGridTickable,
+                IUpgradeableObject,
+                IConfigurableObject,
+                IDirectionalOutputHost,
+                AutoCraftingContainer {
     private static final int PATTERN_SLOTS = 9;
     private static final int MAX_POWER_STORAGE = 8000;
     private static final int MAX_CRAFT_AMOUNT = 1024;
@@ -88,7 +95,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     private final IUpgradeInventory upgrades;
     private final IConfigManager configManager;
 
-    private final AppEngInternalInventory patternInv = new AppEngInternalInventory(this, 9, 1);
+    private final AppEngInternalInventory patternInv = new AppEngInternalInventory(this, PATTERN_SLOTS, 1);
     private final AppEngInternalInventory outputInv = new AppEngInternalInventory(this, 18, MAX_OUTPUT_INV_SIZE);
     private final InternalInventory inv = new CombinedInternalInventory(this.patternInv, this.outputInv);
 
@@ -125,12 +132,13 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
         this.configManager = IConfigManager.builder(this::onConfigChanged)
                 .registerSetting(AAESettings.ME_EXPORT, YesNo.YES)
+                .registerSetting(AAESettings.QUANTUM_CRAFTER_TERMINAL, YesNo.YES)
                 .registerSetting(Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE)
                 .build();
 
         this.setPowerSides(getGridConnectableSides(getOrientation()));
 
-        this.mySrc = new MachineSource(this);
+        this.mySrc = new MachineSource(this.getMainNode()::getNode);
         this.lastRedstoneState = YesNo.UNDECIDED;
 
         Collections.fill(invalidPatternSlots, false);
@@ -1040,8 +1048,36 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     @Override
+    public @Nullable IGrid getGrid() {
+        return getMainNode().getGrid();
+    }
+
+    @Override
+    public @Nullable MenuHostLocator getLocator() {
+        return MenuLocators.forBlockEntity(this);
+    }
+
+    @Override
+    public boolean isVisibleInTerminal() {
+        return this.configManager.getSetting(AAESettings.QUANTUM_CRAFTER_TERMINAL) == YesNo.YES;
+    }
+
+    @Override
+    public InternalInventory getTerminalPatternInventory() {
+        return this.patternInv;
+    }
+
+    @Override
+    public long getTerminalSortOrder() {
+        final BlockEntity te = this.getBlockEntity();
+        return (long) te.getBlockPos().getZ() << 24
+                ^ (long) te.getBlockPos().getX() << 8
+                ^ te.getBlockPos().getY();
+    }
+
+    @Override
     public void returnToMainMenu(Player player, ISubMenu iSubMenu) {
-        MenuOpener.returnTo(AAEMenus.QUANTUM_CRAFTER.get(), player, MenuLocators.forBlockEntity(this));
+        MenuOpener.returnTo(AAEMenus.QUANTUM_CRAFTER.get(), player, iSubMenu.getLocator());
     }
 
     @Override
@@ -1049,6 +1085,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         return new ItemStack(AAEBlocks.QUANTUM_CRAFTER.asItem());
     }
 
+    @Override
     public List<Boolean> getInvalidPatternSlots() {
         return invalidPatternSlots;
     }
@@ -1061,6 +1098,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         return enabledPatternSlots;
     }
 
+    @Override
     public void toggleEnablePattern(int index) {
         if (index >= 0 && index < enabledPatternSlots.size()) {
             enabledPatternSlots.set(index, !enabledPatternSlots.get(index));
@@ -1069,6 +1107,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         saveChanges();
     }
 
+    @Override
     public LinkedHashMap<AEKey, Long> getPatternConfigInputs(int index) {
         LinkedHashMap<AEKey, Long> inputs = new LinkedHashMap<>();
         try {
@@ -1085,6 +1124,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
     }
 
+    @Override
     public Pair<AEKey, Long> getPatternConfigOutput(int index) {
         try {
             var job = craftingJobs.get(index);
@@ -1096,6 +1136,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
     }
 
+    @Override
     public void setStockAmount(int index, int inputIndex, long amount) {
         try {
             var job = craftingJobs.get(index);
@@ -1105,6 +1146,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         }
     }
 
+    @Override
     public void setMaxCrafted(int index, long amount) {
         try {
             var job = craftingJobs.get(index);
