@@ -182,7 +182,7 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
                 storageService, energyService, this.source, getOperationsPerTick(), DefaultPriorityList.INSTANCE);
     }
 
-    private long getCurrentStock(AEKey what) {
+    protected long getCurrentStock(AEKey what) {
         var strategies = getSimStrategies();
 
         var total = 0L;

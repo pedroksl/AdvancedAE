@@ -17,6 +17,7 @@ public final class AAESettings {
             register("quantum_crafter_terminal", YesNo.YES, YesNo.NO);
     public static final Setting<ShowQuantumCrafters> TERMINAL_SHOW_QUANTUM_CRAFTERS =
             register("show_quantum_crafters", ShowQuantumCrafters.class);
+    public static final Setting<YesNo> REGULATE_STOCK = register("regulate_stock", YesNo.YES, YesNo.NO);
 
     private AAESettings() {}
 

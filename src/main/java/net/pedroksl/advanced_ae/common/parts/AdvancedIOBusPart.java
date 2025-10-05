@@ -1,5 +1,12 @@
 package net.pedroksl.advanced_ae.common.parts;
 
+import appeng.api.config.Settings;
+import appeng.api.config.YesNo;
+import appeng.api.stacks.AEKey;
+import appeng.api.stacks.GenericStack;
+import appeng.api.util.IConfigManagerBuilder;
+import appeng.util.prioritylist.IPartitionList;
+import net.pedroksl.advanced_ae.api.AAESettings;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
@@ -61,6 +68,12 @@ public class AdvancedIOBusPart extends StockExportBusPart {
                 StackWorldBehaviors.hasImportStrategyTypeFilter());
     }
 
+    @Override
+    protected void registerSettings(IConfigManagerBuilder builder) {
+        super.registerSettings(builder);
+        builder.registerSetting(AAESettings.REGULATE_STOCK, YesNo.YES);
+    }
+
     public StackImportStrategy getImportStrategy() {
         if (this.importStrategy == null) {
             var self = this.getHost().getBlockEntity();
@@ -81,15 +94,58 @@ public class AdvancedIOBusPart extends StockExportBusPart {
 
         var strategy = getImportStrategy();
 
-        var context = new FilteredImportStackTransferContext(
-                grid.getStorageService(), grid.getEnergyService(), this.source, getOperationsPerTick(), getFilter());
+        var importWork = false;
+        var operationsLeft = getOperationsPerTick();
+        var regulate = getConfigManager().getSetting(AAESettings.REGULATE_STOCK) == YesNo.YES;
+        if (regulate) {
+            var schedulingMode = this.getConfigManager().getSetting(Settings.SCHEDULING_MODE);
+            int x;
+            for (x = 0; x < this.availableSlots() && operationsLeft > 0; x++) {
+                final int slotToExport = this.getStartingSlot(schedulingMode, x);
+                GenericStack stack = this.getConfig().getStack(slotToExport);
+                if (stack == null || stack.what() == null) {
+                    continue;
+                }
 
-        context.setInverted(this.isUpgradedWith(AEItems.INVERTER_CARD));
-        strategy.transfer(context);
+                AEKey what = stack.what();
+                int amount = (int) stack.amount();
+                var stock = (int) getCurrentStock(what);
 
-        var importWork = context.hasDoneWork();
+                if (stock > amount) {
+                    var transferFactor = what.getAmountPerOperation();
+                    int maxAmount = operationsLeft * transferFactor;
+                    maxAmount = Math.min(maxAmount, stock - amount);
+                    int op = maxAmount * transferFactor;
+
+                    var context = new FilteredImportStackTransferContext(storageService, grid.getEnergyService(), this.source, (int) op, makeFilter(what));
+
+                    strategy.transfer(context);
+                    operationsLeft -= op - context.getOperationsRemaining();
+                    importWork |= context.hasDoneWork();
+                }
+            }
+        }
+
+        if (operationsLeft > 0) {
+            var context = new FilteredImportStackTransferContext(
+                    grid.getStorageService(), grid.getEnergyService(), this.source, getOperationsPerTick(), getFilter());
+
+            context.setInverted(this.isUpgradedWith(AEItems.INVERTER_CARD));
+            strategy.transfer(context);
+
+            importWork |= context.hasDoneWork();
+        }
 
         return exportWork || importWork;
+    }
+
+    private IPartitionList makeFilter(AEKey what) {
+        var builder = IPartitionList.builder();
+        builder.add(what);
+        if (isUpgradedWith(AEItems.FUZZY_CARD)) {
+            builder.fuzzyMode(this.getConfigManager().getSetting(Settings.FUZZY_MODE));
+        }
+        return builder.build();
     }
 
     @Override

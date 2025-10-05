@@ -102,6 +102,18 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
                     YesNo.NO,
                     AAEText.CrafterTerminalSetting,
                     AAEText.HideOnCrafterTerminal);
+            registerApp(
+                    AAEIcon.HIDE_ON_CRAFTER_TERMINAL,
+                    AAESettings.REGULATE_STOCK,
+                    YesNo.YES,
+                    AAEText.CrafterTerminalSetting,
+                    AAEText.HideOnCrafterTerminal);
+            registerApp(
+                    AAEIcon.HIDE_ON_CRAFTER_TERMINAL,
+                    AAESettings.REGULATE_STOCK,
+                    YesNo.NO,
+                    AAEText.CrafterTerminalSetting,
+                    AAEText.ShowOnCrafterTerminal);
         }
     }
 
