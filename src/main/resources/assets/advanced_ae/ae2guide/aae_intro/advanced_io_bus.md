@@ -11,6 +11,10 @@ item_ids:
 
 # Advanced IO Bus
 
+<GameScene zoom="8" background="transparent">
+  <ImportStructure src="../structure/cable_advanced_io_bus.snbt"></ImportStructure>
+</GameScene>
+
 The Advanced IO Bus is a very powerful tool to interact with external inventories. It's created by fusing together an
 <ItemLink id="advanced_ae:import_export_bus_part"/> and a <ItemLink id="advanced_ae:stock_export_bus_part"/>. It inherits
 the functions of both of its parents. Additionally, the base speed of the Advanced IO Bus is 8 times higher than the base
