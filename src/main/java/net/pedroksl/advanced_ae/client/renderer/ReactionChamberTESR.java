@@ -5,6 +5,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import org.joml.Quaternionf;
 
 import net.minecraft.client.Minecraft;
@@ -40,6 +41,10 @@ public class ReactionChamberTESR implements BlockEntityRenderer<ReactionChamberE
     @Override
     public void render(
             ReactionChamberEntity be, float v, PoseStack poseStack, MultiBufferSource buffers, int light, int overlay) {
+        if (!AAEConfig.instance().getEnableEffects()) {
+            return;
+        }
+
         var fluidStack = be.getFluidStack();
         if (fluidStack == null || fluidStack.isEmpty()) {
             return;
