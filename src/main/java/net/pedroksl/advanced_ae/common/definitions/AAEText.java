@@ -32,6 +32,9 @@ public enum AAEText implements LocalizationEnum {
     CrafterTerminalSetting("Quantum Crafter Terminal", Type.TOOLTIP),
     ShowOnCrafterTerminal("Show on Quantum Crafter Terminal", Type.TOOLTIP),
     HideOnCrafterTerminal("Hide on Quantum Crafter Terminal", Type.TOOLTIP),
+    RegulateCategory("Regulate", Type.TOOLTIP),
+    RegulateOn("Attempt to import what exceeds the filters", Type.TOOLTIP),
+    RegulateOff("Keep exported items even if over the filters", Type.TOOLTIP),
 
     StockExportBus("ME Stock Export Bus", Type.GUI),
     ImportExportBus("ME Import Export Bus", Type.GUI),

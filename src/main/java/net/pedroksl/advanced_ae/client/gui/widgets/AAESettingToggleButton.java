@@ -103,13 +103,13 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AAEIconButton {
                     AAEText.CrafterTerminalSetting,
                     AAEText.HideOnCrafterTerminal);
             registerApp(
-                    AAEIcon.HIDE_ON_CRAFTER_TERMINAL,
+                    AAEIcon.REGULATE_ON,
                     AAESettings.REGULATE_STOCK,
                     YesNo.YES,
                     AAEText.CrafterTerminalSetting,
                     AAEText.HideOnCrafterTerminal);
             registerApp(
-                    AAEIcon.HIDE_ON_CRAFTER_TERMINAL,
+                    AAEIcon.REGULATE_OFF,
                     AAESettings.REGULATE_STOCK,
                     YesNo.NO,
                     AAEText.CrafterTerminalSetting,
