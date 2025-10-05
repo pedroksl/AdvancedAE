@@ -1,4 +1,5 @@
-// 1.21.1	2025-10-04T01:41:40.0688573	Recipes
+// 1.21.1	2025-10-04T23:20:02.3881234	Recipes
+2d349f91c6036ab7bf88f769dd0f88aa22c4e2c5 data/advanced_ae/advancement/recipes/misc/advanced_io_bus.json
 740aa82f7b3882c24a73e3f3ba26cf4ce1392d20 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 609d17bb0993426b96e5ba02d2c15b8e953f79da data/advanced_ae/advancement/recipes/misc/advpatpro2.json
 d748a0301b12c5843ef25624c07cfb9e0f5f26fb data/advanced_ae/advancement/recipes/misc/advpatpropart.json
@@ -67,6 +68,7 @@ ab91d0ee994a169490241069f544985de92c6aaf data/advanced_ae/advancement/recipes/mi
 2dba6ce9fab2c9ecefe6fad140486d105e059b04 data/advanced_ae/advancement/recipes/misc/walk_speed_card.json
 24400ef725f1ac4e928c3247a3fd4e3670027af2 data/advanced_ae/advancement/recipes/misc/water_breathing_card.json
 4cac2a86e7c3edfcc2092726af01172748e0e399 data/advanced_ae/advancement/recipes/misc/wireless_quantum_crafter_terminal.json
+c8c7f696f9f5599168b0604675edaaa9ee6bcdc2 data/advanced_ae/recipe/advanced_io_bus.json
 087257cf13f1655213ce67491c078d84c051d75d data/advanced_ae/recipe/advpartenc.json
 6a4e67d5da560ae650318b8bbecab9bee2625d3c data/advanced_ae/recipe/advpatpro2.json
 ec737d05706fb0feafebe7913ff563888a9f44aa data/advanced_ae/recipe/advpatpropart.json

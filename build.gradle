@@ -1,3 +1,4 @@
+import com.diffplug.spotless.LineEnding
 import com.hypherionmc.modpublisher.properties.ModLoader
 
 plugins {
@@ -310,6 +311,7 @@ spotless {
         palantirJavaFormat()
         importOrderFile(file("aae.importorder"))
         toggleOffOn()
+        setLineEndings(LineEnding.UNIX)
 
         bumpThisNumberIfACustomStepChanges(1)
     }
@@ -319,5 +321,6 @@ spotless {
         biome()
         indentWithSpaces(2)
         endWithNewline()
+        setLineEndings(LineEnding.UNIX)
     }
 }

@@ -138,6 +138,16 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('E', AEParts.EXPORT_BUS)
                 .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
                 .save(c, AdvancedAE.makeId("import_export_bus"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADVANCED_IO_BUS)
+                .pattern("AQA")
+                .pattern("IQS")
+                .pattern("AQA")
+                .define('I', AAEItems.IMPORT_EXPORT_BUS)
+                .define('A', AEItems.SPEED_CARD)
+                .define('Q', AAEItems.QUANTUM_PROCESSOR)
+                .define('S', AAEItems.STOCK_EXPORT_BUS)
+                .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
+                .save(c, AdvancedAE.makeId("advanced_io_bus"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_ENCODER)
                 .pattern("QRQ")
                 .pattern("RER")

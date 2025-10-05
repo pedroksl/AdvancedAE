@@ -3,6 +3,8 @@ package net.pedroksl.advanced_ae.common.definitions;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.pedroksl.advanced_ae.AdvancedAE;
 
 public class AAEConfig {
@@ -15,6 +17,10 @@ public class AAEConfig {
     AAEConfig(ModContainer container) {
         container.registerConfig(ModConfig.Type.CLIENT, client.spec);
         container.registerConfig(ModConfig.Type.COMMON, common.spec);
+    }
+
+    public boolean getEnableEffects() {
+        return client.enableEffects.get();
     }
 
     public int getQuantumComputerMaxSize() {
@@ -124,9 +130,13 @@ public class AAEConfig {
     private static class ClientConfig {
         private final ModConfigSpec spec;
 
+        public final BooleanValue enableEffects;
+
         public ClientConfig() {
             var builder = new ModConfigSpec.Builder();
 
+            builder.push("quantum computer");
+            enableEffects = define(builder, "enableEffects", true);
             this.spec = builder.build();
         }
     }
@@ -134,30 +144,30 @@ public class AAEConfig {
     private static class CommonConfig {
         private final ModConfigSpec spec;
 
-        public final ModConfigSpec.IntValue quantumComputerMaxSize;
-        public final ModConfigSpec.IntValue quantumComputerAcceleratorThreads;
-        public final ModConfigSpec.IntValue quantumComputerMaxMultiThreaders;
-        public final ModConfigSpec.IntValue quantumComputerMaxDataEntanglers;
-        public final ModConfigSpec.IntValue quantumComputerMultiThreaderMultiplication;
-        public final ModConfigSpec.IntValue quantumComputerDataEntanglerMultiplication;
+        public final IntValue quantumComputerMaxSize;
+        public final IntValue quantumComputerAcceleratorThreads;
+        public final IntValue quantumComputerMaxMultiThreaders;
+        public final IntValue quantumComputerMaxDataEntanglers;
+        public final IntValue quantumComputerMultiThreaderMultiplication;
+        public final IntValue quantumComputerDataEntanglerMultiplication;
 
-        public final ModConfigSpec.IntValue maxWalkSpeed;
-        public final ModConfigSpec.IntValue maxSprintSpeed;
-        public final ModConfigSpec.IntValue maxStepHeight;
-        public final ModConfigSpec.IntValue maxJumpHeight;
-        public final ModConfigSpec.IntValue hpBufferHearts;
-        public final ModConfigSpec.IntValue maxFlightSpeed;
-        public final ModConfigSpec.IntValue evasionChance;
-        public final ModConfigSpec.IntValue maxMagnetRange;
-        public final ModConfigSpec.IntValue strengthBoost;
-        public final ModConfigSpec.IntValue attackSpeedBoost;
-        public final ModConfigSpec.IntValue luckBoost;
-        public final ModConfigSpec.IntValue maxReachBoost;
-        public final ModConfigSpec.IntValue swimSpeedBoost;
-        public final ModConfigSpec.IntValue regenerationPerTick;
-        public final ModConfigSpec.IntValue percentageDamageAbsorption;
+        public final IntValue maxWalkSpeed;
+        public final IntValue maxSprintSpeed;
+        public final IntValue maxStepHeight;
+        public final IntValue maxJumpHeight;
+        public final IntValue hpBufferHearts;
+        public final IntValue maxFlightSpeed;
+        public final IntValue evasionChance;
+        public final IntValue maxMagnetRange;
+        public final IntValue strengthBoost;
+        public final IntValue attackSpeedBoost;
+        public final IntValue luckBoost;
+        public final IntValue maxReachBoost;
+        public final IntValue swimSpeedBoost;
+        public final IntValue regenerationPerTick;
+        public final IntValue percentageDamageAbsorption;
 
-        public final ModConfigSpec.IntValue throughputMonitorCacheSize;
+        public final IntValue throughputMonitorCacheSize;
 
         public CommonConfig() {
             var builder = new ModConfigSpec.Builder();
@@ -302,26 +312,28 @@ public class AAEConfig {
 
             this.spec = builder.build();
         }
+    }
 
-        private static ModConfigSpec.IntValue define(
-                ModConfigSpec.Builder builder, String name, int defaultValue, String comment) {
-            builder.comment(comment);
-            return define(builder, name, defaultValue);
-        }
+    private static IntValue define(ModConfigSpec.Builder builder, String name, int defaultValue, String comment) {
+        builder.comment(comment);
+        return define(builder, name, defaultValue);
+    }
 
-        private static ModConfigSpec.IntValue define(
-                ModConfigSpec.Builder builder, String name, int defaultValue, int min, int max, String comment) {
-            builder.comment(comment);
-            return define(builder, name, defaultValue, min, max);
-        }
+    private static IntValue define(
+            ModConfigSpec.Builder builder, String name, int defaultValue, int min, int max, String comment) {
+        builder.comment(comment);
+        return define(builder, name, defaultValue, min, max);
+    }
 
-        private static ModConfigSpec.IntValue define(
-                ModConfigSpec.Builder builder, String name, int defaultValue, int min, int max) {
-            return builder.defineInRange(name, defaultValue, min, max);
-        }
+    private static IntValue define(ModConfigSpec.Builder builder, String name, int defaultValue, int min, int max) {
+        return builder.defineInRange(name, defaultValue, min, max);
+    }
 
-        private static ModConfigSpec.IntValue define(ModConfigSpec.Builder builder, String name, int defaultValue) {
-            return define(builder, name, defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        }
+    private static IntValue define(ModConfigSpec.Builder builder, String name, int defaultValue) {
+        return define(builder, name, defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private static BooleanValue define(ModConfigSpec.Builder builder, String name, boolean defaultValue) {
+        return builder.define(name, defaultValue);
     }
 }

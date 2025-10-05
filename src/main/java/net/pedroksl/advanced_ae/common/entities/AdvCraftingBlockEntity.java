@@ -274,6 +274,13 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
         return this.getMainNode().isActive();
     }
 
+    public boolean isMultiblocked() {
+        if (isClientSide()) {
+            return this.level.getBlockState(this.worldPosition).getValue(AAEAbstractCraftingUnitBlock.MULTIBLOCKED);
+        }
+        return this.getCluster().numBlockEntities() > 1;
+    }
+
     @Override
     public boolean isActive() {
         if (!isClientSide()) {

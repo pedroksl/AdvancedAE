@@ -92,7 +92,7 @@ for no additional benefits;
 
 ## Server Configs
 
-Several values can be tweak by server configs. Such as:
+Several values can be tweaked by server configs. Such as:
 - Maximum multiblock size;
 - Co-processors in each Quantum Accelerator;
 - Maximum amount of Quantum Multi-Threaders;

@@ -1,7 +1,5 @@
 package net.pedroksl.advanced_ae.gui;
 
-import appeng.api.config.YesNo;
-import appeng.menu.guisync.GuiSync;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -9,7 +7,9 @@ import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
 
+import appeng.api.config.YesNo;
 import appeng.menu.MenuOpener;
+import appeng.menu.guisync.GuiSync;
 
 public class AdvancedIOBusMenu extends StockExportBusMenu {
 

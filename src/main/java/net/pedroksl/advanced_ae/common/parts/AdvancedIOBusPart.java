@@ -1,12 +1,5 @@
 package net.pedroksl.advanced_ae.common.parts;
 
-import appeng.api.config.Settings;
-import appeng.api.config.YesNo;
-import appeng.api.stacks.AEKey;
-import appeng.api.stacks.GenericStack;
-import appeng.api.util.IConfigManagerBuilder;
-import appeng.util.prioritylist.IPartitionList;
-import net.pedroksl.advanced_ae.api.AAESettings;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
@@ -14,15 +7,21 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.helpers.FilteredImportStackTransferContext;
 
 import appeng.api.behaviors.StackImportStrategy;
+import appeng.api.config.Settings;
+import appeng.api.config.YesNo;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingService;
 import appeng.api.networking.storage.IStorageService;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.IPartModel;
+import appeng.api.stacks.AEKey;
+import appeng.api.stacks.GenericStack;
+import appeng.api.util.IConfigManagerBuilder;
 import appeng.api.util.KeyTypeSelection;
 import appeng.core.AppEng;
 import appeng.core.definitions.AEItems;
@@ -32,6 +31,7 @@ import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
 import appeng.parts.PartModel;
 import appeng.parts.automation.StackWorldBehaviors;
+import appeng.util.prioritylist.IPartitionList;
 
 @SuppressWarnings("UnstableApiUsage")
 public class AdvancedIOBusPart extends StockExportBusPart {
@@ -122,7 +122,8 @@ public class AdvancedIOBusPart extends StockExportBusPart {
                     maxAmount = Math.min(maxAmount, stock - amount);
                     int op = maxAmount * transferFactor;
 
-                    var context = new FilteredImportStackTransferContext(storageService, grid.getEnergyService(), this.source, (int) op, makeFilter(what));
+                    var context = new FilteredImportStackTransferContext(
+                            storageService, grid.getEnergyService(), this.source, (int) op, makeFilter(what));
 
                     strategy.transfer(context);
                     operationsLeft -= op - context.getOperationsRemaining();
@@ -133,7 +134,11 @@ public class AdvancedIOBusPart extends StockExportBusPart {
 
         if (operationsLeft > 0) {
             var context = new FilteredImportStackTransferContext(
-                    grid.getStorageService(), grid.getEnergyService(), this.source, getOperationsPerTick(), getFilter());
+                    grid.getStorageService(),
+                    grid.getEnergyService(),
+                    this.source,
+                    getOperationsPerTick(),
+                    getFilter());
 
             context.setInverted(this.isUpgradedWith(AEItems.INVERTER_CARD));
             strategy.transfer(context);
