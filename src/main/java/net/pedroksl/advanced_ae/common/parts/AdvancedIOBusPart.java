@@ -69,6 +69,11 @@ public class AdvancedIOBusPart extends StockExportBusPart {
     }
 
     @Override
+    protected int getUpgradeSlots() {
+        return 8;
+    }
+
+    @Override
     protected void registerSettings(IConfigManagerBuilder builder) {
         super.registerSettings(builder);
         builder.registerSetting(AAESettings.REGULATE_STOCK, YesNo.YES);

@@ -67,6 +67,11 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
     }
 
     @Override
+    protected int getUpgradeSlots() {
+        return 6;
+    }
+
+    @Override
     public void readFromNBT(CompoundTag extra, HolderLookup.Provider registries) {
         super.readFromNBT(extra, registries);
         this.config.readFromChildTag(extra, "extraConfig", registries);
