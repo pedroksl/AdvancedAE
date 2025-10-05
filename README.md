@@ -20,7 +20,7 @@ Quantum Computer is a special type of Crafting Unit. It is capable of running an
 Furthermore, all of these concurrent tasks are able to share all co-processors present in the Quantum Computer Multiblock!
 The Quantum Core can be used as a standalone crafting unit with 256M storage and 8 co-processors. By creating a multiblock with one of them, you can extend those capabilities by a large amount.
 Specially when using two special block types: The Quantum Data Entangler and the Quantum Multi-Threader, which multiply storage and co-processors present in the multiblock by 4, respectively.
-The multiblock can be scaled up to a 5x5x5, and consumes a single channel for all of this computing power!
+The multiblock can be scaled up to a 7x7x7 (can be changed in the configs), and consumes a single channel for all of this computing power!
 
 ![ape_pattern](images/quantum_computer.png)
 
@@ -50,13 +50,16 @@ night vision, magnet, auto feeding directly from ME Storage, immunity to various
 The reaction chamber is a machine that uses a ton of power to provide very efficient ways of processing materials. It is
 used in the creation of various items needed to progress in AdvancedAE as well as offering efficient recipes for other mods.
 
-### Stock Export Bus
+### IO Buses
 
 ![img.png](images/stock_export_bus.png)
 
-An Export bus that reads the contents of the target inventory and regulates an exact amount to be kept in it at all times,
-provided that the ME system has them available. It accepts a crafting card, enabling the export bus to craft the items
-needed.
+Advanced AE adds 3 different flavors of export buses. The Stock Export bus is able to export items up to a limit, without
+filling the target with a single item. The Import Export bus, on the other hand, imports anything not being exported, meaning
+it can fill up machines at the same time as it gathers the outputs. Finally, there's the Advanced IO Bus. It's the fusion of
+the other two versions. Capable of keeping stock, importing the outputs and, additionally, regulating the exports. This means
+if items are over the set amount to be exported, they will be imported until the set amount is left. The Advanced IO Bus is
+also 8 times faster than all the other buses. Combining that with 4 Speed Cards will make them blazingly fast!
 
 ### ME Throughput Monitor
 
