@@ -71,7 +71,6 @@ multiplicando su potencia de coprocesamiento por 4. Solo se puede colocar uno de
 
 <Row gap="20">
 <BlockImage id="advanced_ae:quantum_structure" scale="4"></BlockImage>
-<BlockImage id="advanced_ae:quantum_structure" p:formed="true" scale="4"></BlockImage>
 <BlockImage id="advanced_ae:quantum_structure" p:formed="true" p:powered="true" scale="4"></BlockImage>
 </Row>
 
@@ -92,7 +91,7 @@ sin beneficios adicionales;
 
 ## Configs del servidor
 
-Varios valores pueden ajustarse mediante la config del servidor. Tales como:
+Varios valores se pueden ajustar mediante configs del servidor. Tales como:
 - Tamaño máximo del multibloque;
 - Los coprocesadores en cada acelerador cuántico;
 - Cantidad máxima de multihilos cuánticos;
