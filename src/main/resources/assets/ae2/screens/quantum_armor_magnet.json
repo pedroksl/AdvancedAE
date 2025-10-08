@@ -16,8 +16,8 @@
         "translate": "gui.advanced_ae.MagnetRangeSlider"
       },
       "position": {
-        "left": 100,
-        "top": 30
+        "left": 99,
+        "top": 28
       }
     }
   },
@@ -46,8 +46,8 @@
       "height": 16
     },
     "slider": {
-      "left": 100,
-      "top": 44,
+      "left": 97,
+      "top": 38,
       "width": 70,
       "height": 20
     }
