@@ -196,6 +196,16 @@ public class AAESlider implements ICompositeWidget {
     }
 
     @Override
+    public boolean onMouseWheel(Point mousePos, double delta) {
+        if (delta > 0) {
+            setValue(Math.min(this.maxValue, getValue() + this.stepSize));
+        } else {
+            setValue(Math.max(this.minValue, getValue() - this.stepSize));
+        }
+        return true;
+    }
+
+    @Override
     public boolean wantsAllMouseUpEvents() {
         return true;
     }
