@@ -528,7 +528,7 @@ abstract class QuantumComputerBaseBakedModel implements IDynamicBakedModel {
     }
 
     private float getNormalStep(int step, float multiplier) {
-        return multiplier * (step > 0 ? 0.001f : step < 0 ? -0.001f : 0);
+        return multiplier * (step > 0 ? 0.01f : step < 0 ? -0.01f : 0);
     }
 
     private record FaceCorner(Direction face, int corner) {}
