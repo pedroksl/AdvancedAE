@@ -104,6 +104,7 @@ public class AAETagProvider {
                             AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
 
             tag(AAEConventionTags.ENCODER_CURIO).add(AAEItems.ADV_PATTERN_ENCODER.asItem());
+            tag(ConventionTags.CURIOS).add(AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL.asItem());
 
             tag(ConventionTags.WRENCH).add(AAEItems.MONITOR_CONFIGURATOR.asItem());
 
