@@ -1,61 +1,43 @@
 package net.pedroksl.advanced_ae.network.packet;
 
-import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import com.glodblock.github.glodium.network.packet.IMessage;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.AdvancedAE;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.pedroksl.advanced_ae.client.gui.OutputDirectionScreen;
 
 import appeng.api.orientation.RelativeSide;
+import appeng.core.network.ClientboundPacket;
+import appeng.core.network.CustomAppEngPayload;
 
-public class OutputDirectionClientUpdatePacket implements IMessage {
-    private final Set<RelativeSide> sides;
+public record OutputDirectionClientUpdatePacket(Set<RelativeSide> sides) implements ClientboundPacket {
 
-    public OutputDirectionClientUpdatePacket(EnumSet<RelativeSide> sides) {
-        this.sides = sides;
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, OutputDirectionClientUpdatePacket> STREAM_CODEC =
+            StreamCodec.composite(
+                    NeoForgeStreamCodecs.enumCodec(RelativeSide.class)
+                            .apply(ByteBufCodecs.list())
+                            .map(Set::copyOf, List::copyOf),
+                    OutputDirectionClientUpdatePacket::sides,
+                    OutputDirectionClientUpdatePacket::new);
 
-    public OutputDirectionClientUpdatePacket() {
-        this.sides = new HashSet<>();
+    public static final Type<OutputDirectionClientUpdatePacket> TYPE =
+            CustomAppEngPayload.createType("output_direction_update_client");
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     @Override
-    public void toBytes(RegistryFriendlyByteBuf buf) {
-        buf.writeInt(this.sides.size());
-        for (var side : this.sides) {
-            buf.writeEnum(side);
-        }
-    }
-
-    @Override
-    public void fromBytes(RegistryFriendlyByteBuf buf) {
-        var size = buf.readInt();
-        for (var x = 0; x < size; x++) {
-            this.sides.add(buf.readEnum(RelativeSide.class));
-        }
-    }
-
-    @Override
-    public void onMessage(Player player) {
+    public void handleOnClient(Player player) {
         if (Minecraft.getInstance().screen instanceof OutputDirectionScreen screen) {
             screen.update(this.sides);
         }
-    }
-
-    @Override
-    public boolean isClient() {
-        return true;
-    }
-
-    @Override
-    public ResourceLocation id() {
-        return AdvancedAE.makeId("output_direction_update_client");
     }
 }

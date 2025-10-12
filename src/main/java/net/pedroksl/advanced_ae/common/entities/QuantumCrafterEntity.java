@@ -115,7 +115,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
     private final List<CraftingJob> craftingJobs = Arrays.asList(new CraftingJob[PATTERN_SLOTS]);
 
-    private EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
+    private EnumSet<RelativeSide> allowedOutputs = EnumSet.noneOf(RelativeSide.class);
     private final List<Boolean> invalidPatternSlots = Arrays.asList(new Boolean[PATTERN_SLOTS]);
     private final List<Boolean> enabledPatternSlots = Arrays.asList(new Boolean[PATTERN_SLOTS]);
 

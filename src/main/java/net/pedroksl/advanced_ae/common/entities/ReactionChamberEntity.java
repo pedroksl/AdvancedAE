@@ -97,7 +97,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     private ReactionChamberRecipe cachedTask = null;
 
-    private EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
+    private EnumSet<RelativeSide> allowedOutputs = EnumSet.noneOf(RelativeSide.class);
 
     @SuppressWarnings("UnstableApiUsage")
     private final HashMap<Direction, Map<AEKeyType, ExternalStorageStrategy>> exportStrategies = new HashMap<>();

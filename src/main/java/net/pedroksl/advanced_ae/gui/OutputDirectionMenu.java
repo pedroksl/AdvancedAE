@@ -10,9 +10,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.OutputDirectionClientUpdatePacket;
 import net.pedroksl.advanced_ae.network.packet.UpdateSideStatusPacket;
 
@@ -83,8 +83,8 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
         super.broadcastChanges();
 
         if (isServerSide()) {
-            AAENetworkHandler.INSTANCE.sendTo(
-                    new OutputDirectionClientUpdatePacket(this.allowedOutputs), ((ServerPlayer) getPlayer()));
+            PacketDistributor.sendToPlayer(
+                    (ServerPlayer) getPlayer(), new OutputDirectionClientUpdatePacket(this.allowedOutputs));
         }
     }
 
@@ -108,7 +108,7 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
 
     public void updateSideStatus(RelativeSide side) {
         if (isClientSide()) {
-            AAENetworkHandler.INSTANCE.sendToServer(new UpdateSideStatusPacket(side));
+            PacketDistributor.sendToServer(new UpdateSideStatusPacket(side));
             return;
         }
 
@@ -119,7 +119,7 @@ public class OutputDirectionMenu extends AEBaseMenu implements ISubMenu {
         }
 
         this.getHost().updateOutputSides(allowedOutputs);
-        AAENetworkHandler.INSTANCE.sendTo(
-                new OutputDirectionClientUpdatePacket(this.allowedOutputs), ((ServerPlayer) getPlayer()));
+        PacketDistributor.sendToPlayer(
+                (ServerPlayer) getPlayer(), new OutputDirectionClientUpdatePacket(this.allowedOutputs));
     }
 }

@@ -4,32 +4,31 @@ import static appeng.api.stacks.AEKey.writeKey;
 
 import java.util.LinkedHashMap;
 
-import com.glodblock.github.glodium.network.packet.IMessage;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.AdvPatternEncoderScreen;
 
 import appeng.api.stacks.AEKey;
+import appeng.core.network.ClientboundPacket;
+import appeng.core.network.CustomAppEngPayload;
 
-public class AdvPatternEncoderPacket implements IMessage {
+public record AdvPatternEncoderPacket(LinkedHashMap<AEKey, Direction> dirMap) implements ClientboundPacket {
 
-    private LinkedHashMap<AEKey, Direction> dirMap;
+    public static final StreamCodec<RegistryFriendlyByteBuf, AdvPatternEncoderPacket> STREAM_CODEC =
+            StreamCodec.ofMember(AdvPatternEncoderPacket::write, AdvPatternEncoderPacket::decode);
 
-    public AdvPatternEncoderPacket() {
-        this.dirMap = new LinkedHashMap<>();
-    }
-
-    public AdvPatternEncoderPacket(LinkedHashMap<AEKey, Direction> dirMap) {
-        this.dirMap = dirMap;
-    }
+    public static final Type<AdvPatternEncoderPacket> TYPE = CustomAppEngPayload.createType("pattern_encoder_update");
 
     @Override
-    public void toBytes(RegistryFriendlyByteBuf buf) {
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
+
+    public void write(RegistryFriendlyByteBuf buf) {
         buf.writeInt(dirMap.size());
         for (var entry : dirMap.entrySet()) {
             writeKey(buf, entry.getKey());
@@ -43,9 +42,8 @@ public class AdvPatternEncoderPacket implements IMessage {
         }
     }
 
-    @Override
-    public void fromBytes(RegistryFriendlyByteBuf buf) {
-        dirMap = new LinkedHashMap<>();
+    public static AdvPatternEncoderPacket decode(RegistryFriendlyByteBuf buf) {
+        var dirMap = new LinkedHashMap<AEKey, Direction>();
 
         int size = buf.readInt();
         for (var x = 0; x < size; x++) {
@@ -53,22 +51,14 @@ public class AdvPatternEncoderPacket implements IMessage {
             Direction dir = buf.readBoolean() ? buf.readEnum(Direction.class) : null;
             dirMap.put(key, dir);
         }
+
+        return new AdvPatternEncoderPacket(dirMap);
     }
 
     @Override
-    public void onMessage(Player player) {
+    public void handleOnClient(Player player) {
         if (Minecraft.getInstance().screen instanceof AdvPatternEncoderScreen encoderGui) {
             encoderGui.update(this.dirMap);
         }
-    }
-
-    @Override
-    public ResourceLocation id() {
-        return AdvancedAE.makeId("pattern_encoder_update");
-    }
-
-    @Override
-    public boolean isClient() {
-        return true;
     }
 }

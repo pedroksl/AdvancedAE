@@ -1,49 +1,35 @@
 package net.pedroksl.advanced_ae.network.packet;
 
-import com.glodblock.github.glodium.network.packet.IMessage;
-
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.AdvancedAE;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.pedroksl.advanced_ae.gui.OutputDirectionMenu;
 
 import appeng.api.orientation.RelativeSide;
+import appeng.core.network.CustomAppEngPayload;
+import appeng.core.network.ServerboundPacket;
 
-public class UpdateSideStatusPacket implements IMessage {
+public record UpdateSideStatusPacket(RelativeSide side) implements ServerboundPacket {
 
-    private RelativeSide side;
+    public static final StreamCodec<RegistryFriendlyByteBuf, UpdateSideStatusPacket> STREAM_CODEC =
+            StreamCodec.composite(
+                    NeoForgeStreamCodecs.enumCodec(RelativeSide.class),
+                    UpdateSideStatusPacket::side,
+                    UpdateSideStatusPacket::new);
 
-    public UpdateSideStatusPacket(RelativeSide side) {
-        this.side = side;
-    }
-
-    public UpdateSideStatusPacket() {}
-
-    @Override
-    public void toBytes(RegistryFriendlyByteBuf buf) {
-        buf.writeEnum(side);
-    }
+    public static final Type<UpdateSideStatusPacket> TYPE = CustomAppEngPayload.createType("update_side_status");
 
     @Override
-    public void fromBytes(RegistryFriendlyByteBuf buf) {
-        this.side = buf.readEnum(RelativeSide.class);
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     @Override
-    public void onMessage(Player player) {
+    public void handleOnServer(ServerPlayer player) {
         if (player.containerMenu instanceof OutputDirectionMenu menu) {
             menu.updateSideStatus(side);
         }
-    }
-
-    @Override
-    public boolean isClient() {
-        return false;
-    }
-
-    @Override
-    public ResourceLocation id() {
-        return AdvancedAE.makeId("update_side_status");
     }
 }

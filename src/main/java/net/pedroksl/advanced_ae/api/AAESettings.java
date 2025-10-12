@@ -1,16 +1,12 @@
 package net.pedroksl.advanced_ae.api;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.google.common.base.Preconditions;
+import net.pedroksl.ae2addonlib.api.AddonSettings;
 
 import appeng.api.config.Setting;
 import appeng.api.config.YesNo;
 
-public final class AAESettings {
-    private static final Map<String, Setting<?>> SETTINGS = new HashMap<>();
+public final class AAESettings extends AddonSettings {
+
     public static final Setting<YesNo> ME_EXPORT = register("me_export", YesNo.YES, YesNo.NO);
     public static final Setting<YesNo> FILTERED_IMPORT = register("filtered_import", YesNo.YES, YesNo.NO);
     public static final Setting<YesNo> QUANTUM_CRAFTER_TERMINAL =
@@ -18,29 +14,4 @@ public final class AAESettings {
     public static final Setting<ShowQuantumCrafters> TERMINAL_SHOW_QUANTUM_CRAFTERS =
             register("show_quantum_crafters", ShowQuantumCrafters.class);
     public static final Setting<YesNo> REGULATE_STOCK = register("regulate_stock", YesNo.YES, YesNo.NO);
-
-    private AAESettings() {}
-
-    private static synchronized <T extends Enum<T>> Setting<T> register(String name, Class<T> enumClass) {
-        Preconditions.checkState(!SETTINGS.containsKey(name));
-        Setting<T> setting = new Setting<>(name, enumClass);
-        SETTINGS.put(name, setting);
-        return setting;
-    }
-
-    @SafeVarargs
-    private static synchronized <T extends Enum<T>> Setting<T> register(String name, T firstOption, T... moreOptions) {
-        Preconditions.checkState(!SETTINGS.containsKey(name));
-        Setting<T> setting = new Setting<>(name, firstOption.getDeclaringClass(), EnumSet.of(firstOption, moreOptions));
-        SETTINGS.put(name, setting);
-        return setting;
-    }
-
-    public static Setting<?> getOrThrow(String name) {
-        var setting = SETTINGS.get(name);
-        if (setting == null) {
-            throw new IllegalArgumentException("Unknown setting '" + name + "'");
-        }
-        return setting;
-    }
 }

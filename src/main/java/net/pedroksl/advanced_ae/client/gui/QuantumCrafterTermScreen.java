@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import java.awt.*;
 import java.util.*;
 
 import it.unimi.dsi.fastutil.ints.Int2BooleanMap;
@@ -22,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.api.ShowQuantumCrafters;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEServerSettingToggleButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAESettingToggleButton;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
 
@@ -109,7 +108,7 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
 
     private int visibleRows = 0;
 
-    private final AAEServerSettingToggleButton<ShowQuantumCrafters> showQuantumCrafters;
+    private final AAESettingToggleButton<ShowQuantumCrafters> showQuantumCrafters;
 
     public QuantumCrafterTermScreen(C menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
@@ -121,8 +120,8 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
         this.addToLeftToolbar(
                 new SettingToggleButton<>(Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
 
-        showQuantumCrafters = new AAEServerSettingToggleButton<>(
-                AAESettings.TERMINAL_SHOW_QUANTUM_CRAFTERS, ShowQuantumCrafters.VISIBLE);
+        showQuantumCrafters =
+                new AAESettingToggleButton<>(AAESettings.TERMINAL_SHOW_QUANTUM_CRAFTERS, ShowQuantumCrafters.VISIBLE);
 
         this.addToLeftToolbar(showQuantumCrafters);
 

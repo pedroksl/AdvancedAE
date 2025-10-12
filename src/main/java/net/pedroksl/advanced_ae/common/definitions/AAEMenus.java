@@ -2,9 +2,7 @@ package net.pedroksl.advanced_ae.common.definitions;
 
 import java.util.function.Supplier;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.api.IQuantumCrafterTermMenuHost;
@@ -22,13 +20,17 @@ import net.pedroksl.advanced_ae.gui.*;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.quantumcomputer.QuantumComputerMenu;
+import net.pedroksl.ae2addonlib.registry.AddonMenus;
 
 import appeng.api.storage.ISubMenuHost;
-import appeng.menu.AEBaseMenu;
-import appeng.menu.implementations.MenuTypeBuilder;
 
-public class AAEMenus {
-    public static final DeferredRegister<MenuType<?>> DR = DeferredRegister.create(Registries.MENU, AdvancedAE.MOD_ID);
+public class AAEMenus extends AddonMenus {
+
+    public static final AAEMenus INSTANCE = new AAEMenus();
+
+    AAEMenus() {
+        super(AdvancedAE.MOD_ID);
+    }
 
     public static final Supplier<MenuType<QuantumComputerMenu>> QUANTUM_COMPUTER =
             create("quantum_computer", QuantumComputerMenu::new, AdvCraftingBlockEntity.class);
@@ -74,13 +76,4 @@ public class AAEMenus {
             create("quantum_armor_style_config", QuantumArmorStyleConfigMenu::new, QuantumArmorMenuHost.class);
     public static final Supplier<MenuType<PortableWorkbenchMenu>> PORTABLE_WORKBENCH =
             create("portable_workbench", PortableWorkbenchMenu::new, PortableCellWorkbenchMenuHost.class);
-
-    private static <M extends AEBaseMenu, H> Supplier<MenuType<M>> create(
-            String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {
-        return DR.register(id, () -> MenuTypeBuilder.create(factory, host).build(AdvancedAE.makeId(id)));
-    }
-
-    private static <T extends AEBaseMenu> Supplier<MenuType<T>> create(String id, Supplier<MenuType<T>> supplier) {
-        return DR.register(id, supplier);
-    }
 }

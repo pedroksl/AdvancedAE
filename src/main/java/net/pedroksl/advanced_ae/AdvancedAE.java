@@ -53,21 +53,19 @@ public class AdvancedAE {
 
         AAEConfig.register(container);
 
-        AAEBlocks.DR.register(eventBus);
-        AAEItems.DR.register(eventBus);
-        AAEBlockEntities.DR.register(eventBus);
-        AAEFluids.init(eventBus);
-        AAEMenus.DR.register(eventBus);
-        AAEComponents.DR.register(eventBus);
-        AAEMaterials.DR.register(eventBus);
-        AAECreativeTab.DR.register(eventBus);
-
-        AAEComponents.init();
+        AAEItems.INSTANCE.register(eventBus);
+        AAEBlocks.INSTANCE.register(eventBus);
+        AAEBlockEntities.INSTANCE.register(eventBus);
+        AAEFluids.INSTANCE.register(eventBus);
+        AAEMenus.INSTANCE.register(eventBus);
+        AAEComponents.INSTANCE.register(eventBus);
+        AAEMaterials.INSTANCE.register(eventBus);
+        AAECreativeTab.INSTANCE.register(eventBus);
 
         eventBus.addListener(AdvancedAE::initUpgrades);
         eventBus.addListener(AdvancedAE::initCapabilities);
 
-        eventBus.addListener(AAENetworkHandler.INSTANCE::onRegister);
+        eventBus.addListener(AAENetworkHandler.INSTANCE::register);
         eventBus.addListener((RegisterEvent event) -> {
             if (event.getRegistryKey() == Registries.RECIPE_TYPE) {
                 InitRecipeTypes.init(event.getRegistry(Registries.RECIPE_TYPE));
@@ -135,9 +133,9 @@ public class AdvancedAE {
 
     @SuppressWarnings("UnstableApiUsage")
     private static void initCapabilities(RegisterCapabilitiesEvent event) {
-        for (var type : AAEBlockEntities.DR.getEntries()) {
+        for (var type : AAEBlockEntities.getImplementorsOf(IInWorldGridNodeHost.class)) {
             event.registerBlockEntity(
-                    AECapabilities.IN_WORLD_GRID_NODE_HOST, type.get(), (be, context) -> (IInWorldGridNodeHost) be);
+                    AECapabilities.IN_WORLD_GRID_NODE_HOST, type, (be, context) -> (IInWorldGridNodeHost) be);
         }
         for (var type : AAEItems.getItems()) {
             if (type.get() instanceof IAEItemPowerStorage powerStorage) {

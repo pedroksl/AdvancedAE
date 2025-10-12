@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEServerSettingToggleButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.AAESettingToggleButton;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEToolbarActionButton;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterMenu;
@@ -38,8 +38,8 @@ import appeng.menu.SlotSemantics;
 public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> {
 
     private final SettingToggleButton<RedstoneMode> redstoneMode;
-    private final AAEServerSettingToggleButton<YesNo> showOnTerminal;
-    private final AAEServerSettingToggleButton<YesNo> meExportBtn;
+    private final AAESettingToggleButton<YesNo> showOnTerminal;
+    private final AAESettingToggleButton<YesNo> meExportBtn;
     private final AAEToolbarActionButton outputConfigure;
 
     private final List<Button> configButtons = new ArrayList<>();
@@ -55,10 +55,10 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         this.redstoneMode = new ServerSettingToggleButton<>(Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
         addToLeftToolbar(this.redstoneMode);
 
-        this.showOnTerminal = new AAEServerSettingToggleButton<>(AAESettings.QUANTUM_CRAFTER_TERMINAL, YesNo.YES);
+        this.showOnTerminal = new AAESettingToggleButton<>(AAESettings.QUANTUM_CRAFTER_TERMINAL, YesNo.YES);
         this.addToLeftToolbar(this.showOnTerminal);
 
-        this.meExportBtn = new AAEServerSettingToggleButton<>(AAESettings.ME_EXPORT, YesNo.NO);
+        this.meExportBtn = new AAESettingToggleButton<>(AAESettings.ME_EXPORT, YesNo.NO);
         this.addToLeftToolbar(this.meExportBtn);
 
         this.outputConfigure =

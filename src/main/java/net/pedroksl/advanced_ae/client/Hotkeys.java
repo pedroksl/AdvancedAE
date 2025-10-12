@@ -51,24 +51,11 @@ public class Hotkeys {
     }
 
     public record AAEHotkey(String name, KeyMapping mapping) {
-        public AAEHotkey(String name, KeyMapping mapping) {
-            this.name = name;
-            this.mapping = mapping;
-        }
-
         public void check() {
             while (this.mapping().consumeClick()) {
                 ServerboundPacket message = new AAEHotkeyPacket(this);
                 PacketDistributor.sendToServer(message);
             }
-        }
-
-        public String name() {
-            return this.name;
-        }
-
-        public KeyMapping mapping() {
-            return this.mapping;
         }
     }
 

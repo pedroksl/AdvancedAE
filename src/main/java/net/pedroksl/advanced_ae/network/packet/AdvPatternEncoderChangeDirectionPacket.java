@@ -2,33 +2,32 @@ package net.pedroksl.advanced_ae.network.packet;
 
 import static appeng.api.stacks.AEKey.writeKey;
 
-import javax.annotation.Nullable;
-
-import com.glodblock.github.glodium.network.packet.IMessage;
-
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.AdvancedAE;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
 import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
 
 import appeng.api.stacks.AEKey;
+import appeng.core.network.CustomAppEngPayload;
+import appeng.core.network.ServerboundPacket;
 
-public class AdvPatternEncoderChangeDirectionPacket implements IMessage {
+public record AdvPatternEncoderChangeDirectionPacket(AEKey key, Direction dir) implements ServerboundPacket {
 
-    private AEKey key;
-    private Direction dir;
+    public static final StreamCodec<RegistryFriendlyByteBuf, AdvPatternEncoderChangeDirectionPacket> STREAM_CODEC =
+            StreamCodec.ofMember(
+                    AdvPatternEncoderChangeDirectionPacket::write, AdvPatternEncoderChangeDirectionPacket::decode);
 
-    public AdvPatternEncoderChangeDirectionPacket() {}
-
-    public AdvPatternEncoderChangeDirectionPacket(AEKey key, @Nullable Direction dir) {
-        this.key = key;
-        this.dir = dir;
-    }
+    public static final Type<AdvPatternEncoderChangeDirectionPacket> TYPE =
+            CustomAppEngPayload.createType("encoder_change_direction_update");
 
     @Override
-    public void toBytes(RegistryFriendlyByteBuf buf) {
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
+
+    public void write(RegistryFriendlyByteBuf buf) {
         writeKey(buf, this.key);
         if (this.dir == null) {
             buf.writeBoolean(false);
@@ -38,26 +37,17 @@ public class AdvPatternEncoderChangeDirectionPacket implements IMessage {
         }
     }
 
-    @Override
-    public void fromBytes(RegistryFriendlyByteBuf buf) {
-        this.key = AEKey.readKey(buf);
-        this.dir = buf.readBoolean() ? buf.readEnum(Direction.class) : null;
+    public static AdvPatternEncoderChangeDirectionPacket decode(RegistryFriendlyByteBuf buf) {
+        var key = AEKey.readKey(buf);
+        var dir = buf.readBoolean() ? buf.readEnum(Direction.class) : null;
+
+        return new AdvPatternEncoderChangeDirectionPacket(key, dir);
     }
 
     @Override
-    public void onMessage(Player player) {
+    public void handleOnServer(ServerPlayer player) {
         if (player.containerMenu instanceof AdvPatternEncoderMenu encoderContainer) {
             encoderContainer.update(this.key, this.dir);
         }
-    }
-
-    @Override
-    public ResourceLocation id() {
-        return AdvancedAE.makeId("encoder_change_direction_update");
-    }
-
-    @Override
-    public boolean isClient() {
-        return false;
     }
 }

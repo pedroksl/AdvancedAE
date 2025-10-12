@@ -38,7 +38,7 @@ public class FluidTankSlot extends AbstractWidget {
     private FluidStack content = FluidStack.EMPTY;
     private final int maxLevel;
     private boolean disableRender = false;
-    private final int index;
+    public final int index;
 
     public FluidTankSlot(
             AbstractContainerScreen<?> screen,

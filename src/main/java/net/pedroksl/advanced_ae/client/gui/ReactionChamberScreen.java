@@ -111,9 +111,13 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
         this.powerAlert.visible = this.getMenu().getShowWarning();
     }
 
-    public void updateFluidTankContents(FluidStack inputFluid, FluidStack outputFluid) {
-        this.inputSlot.setFluidStack(inputFluid);
-        this.outputSlot.setFluidStack(outputFluid);
+    @Override
+    public void updateFluidTankContents(int index, FluidStack stack) {
+        if (index == 1) {
+            this.inputSlot.setFluidStack(stack);
+        } else {
+            this.outputSlot.setFluidStack(stack);
+        }
     }
 
     @Override

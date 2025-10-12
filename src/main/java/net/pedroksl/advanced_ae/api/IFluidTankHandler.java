@@ -2,7 +2,9 @@ package net.pedroksl.advanced_ae.api;
 
 import org.lwjgl.glfw.GLFW;
 
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -36,7 +38,9 @@ public interface IFluidTankHandler {
                 var tank = getTank();
                 if (tank == null) return;
 
-                if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+                boolean isBucket = stack.getItem() instanceof BucketItem;
+                if ((!isBucket && button == GLFW.GLFW_MOUSE_BUTTON_LEFT)
+                        || (isBucket && ((BucketItem) stack.getItem()).content == Fluids.EMPTY)) {
                     if (!canExtractFromTank(index)) return;
 
                     var genStack = tank.getStack(index);

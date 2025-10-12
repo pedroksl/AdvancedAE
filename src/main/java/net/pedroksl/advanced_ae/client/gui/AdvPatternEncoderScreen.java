@@ -15,14 +15,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.Hotkeys;
 import net.pedroksl.advanced_ae.client.gui.widgets.DirectionInputButton;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
-import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionPacket;
-import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderUpdateRequestPacket;
 
 import appeng.api.stacks.AEKey;
 import appeng.client.gui.AEBaseScreen;
@@ -57,8 +56,6 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
             AdvPatternEncoderMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
         this.scrollbar = widgets.addScrollBar("scrollbar", Scrollbar.SMALL);
-
-        AAENetworkHandler.INSTANCE.sendToServer(new AdvPatternEncoderUpdateRequestPacket());
     }
 
     @Override
@@ -149,6 +146,8 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
     public void init() {
         super.init();
         this.refreshList();
+
+        this.getMenu().onUpdateRequested();
     }
 
     public void update(LinkedHashMap<AEKey, Direction> inputList) {
@@ -193,7 +192,7 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
 
     private void directionButtonPressed(Button b) {
         DirectionInputButton button = ((DirectionInputButton) b);
-        AAENetworkHandler.INSTANCE.sendToServer(
+        PacketDistributor.sendToServer(
                 new AdvPatternEncoderChangeDirectionPacket(button.getKey(), button.getDirection()));
     }
 

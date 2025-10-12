@@ -160,7 +160,7 @@ public class AAETagProvider {
         protected void addTags(HolderLookup.Provider registries) {
 
             Map<DataComponentType<?>, ResourceKey<DataComponentType<?>>> componentKeys = new IdentityHashMap<>();
-            for (var entry : AAEComponents.DR.getEntries()) {
+            for (var entry : AAEComponents.getEntries()) {
                 componentKeys.put(entry.get(), entry.getKey());
             }
 

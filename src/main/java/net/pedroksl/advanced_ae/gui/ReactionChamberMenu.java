@@ -84,14 +84,14 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
             if (genInput != null && genInput.what() != null) {
                 inputFluid = ((AEFluidKey) genInput.what()).toStack(((int) genInput.amount()));
             }
+            sendPacketToClient(new FluidTankStackUpdatePacket(1, inputFluid));
 
             var genOutput = this.getHost().getTank().getStack(0);
             FluidStack outputFluid = FluidStack.EMPTY;
             if (genOutput != null && genOutput.what() != null) {
                 outputFluid = ((AEFluidKey) genOutput.what()).toStack(((int) genOutput.amount()));
             }
-
-            sendPacketToClient(new FluidTankStackUpdatePacket(inputFluid, outputFluid));
+            sendPacketToClient(new FluidTankStackUpdatePacket(0, outputFluid));
         }
         super.standardDetectAndSendChanges();
     }
