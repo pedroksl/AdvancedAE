@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
 import java.util.List;
+import java.util.function.Function;
 
 import net.minecraft.world.item.Item;
 import net.pedroksl.advanced_ae.AdvancedAE;
@@ -14,14 +15,16 @@ import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.common.parts.*;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
 import net.pedroksl.advanced_ae.xmod.wtlib.AE2wtlibPlugin;
-import net.pedroksl.ae2addonlib.registry.AddonItems;
+import net.pedroksl.ae2addonlib.registry.ItemRegistry;
 
 import appeng.api.crafting.PatternDetailsHelper;
+import appeng.api.parts.IPart;
+import appeng.api.parts.IPartItem;
 import appeng.core.definitions.ItemDefinition;
 import appeng.items.materials.MaterialItem;
 import appeng.items.parts.PartItem;
 
-public class AAEItems extends AddonItems {
+public class AAEItems extends ItemRegistry {
 
     public static final AAEItems INSTANCE = new AAEItems();
 
@@ -30,13 +33,13 @@ public class AAEItems extends AddonItems {
     }
 
     public static List<ItemDefinition<?>> getQuantumArmor() {
-        return getItems().stream()
+        return INSTANCE.getItems().stream()
                 .filter(item -> item.stack().getItem() instanceof QuantumArmorBase)
                 .toList();
     }
 
     public static List<ItemDefinition<?>> getQuantumCards() {
-        return getItems().stream()
+        return INSTANCE.getItems().stream()
                 .filter(item -> item.stack().getItem() instanceof QuantumUpgradeBaseItem)
                 .toList();
     }
@@ -166,4 +169,14 @@ public class AAEItems extends AddonItems {
             item("Pick Craft Card", "pick_craft_card", p -> new QuantumUpgradeBaseItem(UpgradeType.PICK_CRAFT, p));
     //    public static final ItemDefinition<QuantumUpgradeBaseItem> HUD_CARD =
     //            item("HUD Card", "hud_card", p -> new QuantumUpgradeBaseItem(UpgradeType.HUD, p));
+
+    protected static <T extends Item> ItemDefinition<T> item(
+            String englishName, String id, Function<Item.Properties, T> factory) {
+        return item(AdvancedAE.MOD_ID, englishName, id, factory);
+    }
+
+    protected static <T extends IPart> ItemDefinition<PartItem<T>> part(
+            String englishName, String id, Class<T> partClass, Function<IPartItem<T>, T> factory) {
+        return part(AdvancedAE.MOD_ID, englishName, id, partClass, factory);
+    }
 }

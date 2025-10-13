@@ -86,7 +86,7 @@ public enum AAEText implements LocalizationEnum {
     FilteredImportOn("Input must match crafting outputs while crafting jobs are active", Type.TOOLTIP),
     FilteredImportOff("Input is unrestricted", Type.TOOLTIP),
     DirectionalOutput("Directional Output", Type.TOOLTIP),
-    DirectionOutputHint("Configure which directions are allowed for output auto-export", Type.TOOLTIP),
+    DirectionalOutputHint("Configure which directions are allowed for output auto-export", Type.TOOLTIP),
 
     NumberTextFieldInputHint("Confirm the input using the %s key.", Type.TOOLTIP),
     NumberTextFieldOutputHint(

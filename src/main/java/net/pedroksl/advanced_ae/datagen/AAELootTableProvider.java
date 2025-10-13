@@ -45,7 +45,7 @@ public class AAELootTableProvider extends LootTableProvider {
 
         @Override
         public void generate() {
-            for (var block : AAEBlocks.getBlocks()) {
+            for (var block : AAEBlocks.INSTANCE.getBlocks()) {
                 add(
                         block.block(),
                         LootTable.lootTable()

@@ -1,9 +1,9 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.ae2addonlib.registry.AddonCreativeTab;
+import net.pedroksl.ae2addonlib.registry.CreativeTabRegistry;
 
-public final class AAECreativeTab extends AddonCreativeTab {
+public final class AAECreativeTab extends CreativeTabRegistry {
 
     public static final AAECreativeTab INSTANCE = new AAECreativeTab();
 

@@ -244,7 +244,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
     }
 
     private void fluidBlocks() {
-        for (var fluids : AAEFluids.getFluids()) {
+        for (var fluids : AAEFluids.INSTANCE.getFluids()) {
             simpleBlock(
                     fluids.block(),
                     models().getBuilder(fluids.blockId().getId().getPath())
@@ -253,7 +253,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
     }
 
     public void buckets() {
-        for (var fluids : AAEFluids.getFluids()) {
+        for (var fluids : AAEFluids.INSTANCE.getFluids()) {
             itemModels()
                     .withExistingParent(
                             fluids.bucketItemId().id().getPath(),

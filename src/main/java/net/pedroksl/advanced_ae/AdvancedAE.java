@@ -133,11 +133,11 @@ public class AdvancedAE {
 
     @SuppressWarnings("UnstableApiUsage")
     private static void initCapabilities(RegisterCapabilitiesEvent event) {
-        for (var type : AAEBlockEntities.getImplementorsOf(IInWorldGridNodeHost.class)) {
+        for (var type : AAEBlockEntities.INSTANCE.getImplementorsOf(IInWorldGridNodeHost.class)) {
             event.registerBlockEntity(
                     AECapabilities.IN_WORLD_GRID_NODE_HOST, type, (be, context) -> (IInWorldGridNodeHost) be);
         }
-        for (var type : AAEItems.getItems()) {
+        for (var type : AAEItems.INSTANCE.getItems()) {
             if (type.get() instanceof IAEItemPowerStorage powerStorage) {
                 event.registerItem(
                         Capabilities.EnergyStorage.ITEM,

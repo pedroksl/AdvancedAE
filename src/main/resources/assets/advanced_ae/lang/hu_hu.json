@@ -63,7 +63,7 @@
   "gui.tooltips.advanced_ae.CoreTooltip": "256M barkácsoló tárolót és %d co-processzor szálat biztosít.",
   "gui.tooltips.advanced_ae.CrafterTerminalSetting": "Quantum Crafter Terminal",
   "gui.tooltips.advanced_ae.DataEntanglerMultiplication": "Megszorozza a kvantumszámítógép multiblock tárolóját %d mértékben. Korlátozott %d multiblokkonként.",
-  "gui.tooltips.advanced_ae.DirectionOutputHint": "Konfigurálja, hogy mely irányok engedélyezettek a kimeneti auto-exporthoz",
+  "gui.tooltips.advanced_ae.DirectionalOutputHint": "Konfigurálja, hogy mely irányok engedélyezettek a kimeneti auto-exporthoz",
   "gui.tooltips.advanced_ae.DirectionalOutput": "Irányított kimenet",
   "gui.tooltips.advanced_ae.DownButton": "Célozz a gép alsó oldalára.",
   "gui.tooltips.advanced_ae.EastButton": "Célozz a gép keleti oldalára.",

@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import com.mojang.serialization.Codec;
 
@@ -10,11 +11,11 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.common.patterns.EncodedAdvProcessingPattern;
-import net.pedroksl.ae2addonlib.registry.AddonComponents;
+import net.pedroksl.ae2addonlib.registry.ComponentRegistry;
 
 import appeng.api.stacks.GenericStack;
 
-public final class AAEComponents extends AddonComponents {
+public final class AAEComponents extends ComponentRegistry {
 
     public static final AAEComponents INSTANCE = new AAEComponents();
 
@@ -68,5 +69,9 @@ public final class AAEComponents extends AddonComponents {
                 UPGRADE_EXTRA.put(upgrade, extra);
             }
         }
+    }
+
+    protected static <T> DataComponentType<T> register(String name, Consumer<DataComponentType.Builder<T>> customizer) {
+        return register(AdvancedAE.MOD_ID, name, customizer);
     }
 }

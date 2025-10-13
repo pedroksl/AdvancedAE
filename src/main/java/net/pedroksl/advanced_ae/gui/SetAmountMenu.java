@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.pedroksl.advanced_ae.api.ISetAmountMenuHost;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.ae2addonlib.api.ISetAmountMenuHost;
 
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;

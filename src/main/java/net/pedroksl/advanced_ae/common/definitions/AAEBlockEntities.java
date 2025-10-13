@@ -5,10 +5,14 @@ import java.util.function.Supplier;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.entities.*;
-import net.pedroksl.ae2addonlib.registry.AddonBlockEntities;
+import net.pedroksl.ae2addonlib.registry.BlockEntityRegistry;
+
+import appeng.block.AEBaseEntityBlock;
+import appeng.blockentity.AEBaseBlockEntity;
+import appeng.core.definitions.BlockDefinition;
 
 @SuppressWarnings("unused")
-public final class AAEBlockEntities extends AddonBlockEntities {
+public final class AAEBlockEntities extends BlockEntityRegistry {
 
     public static final AAEBlockEntities INSTANCE = new AAEBlockEntities();
 
@@ -45,4 +49,12 @@ public final class AAEBlockEntities extends AddonBlockEntities {
 
     public static final Supplier<BlockEntityType<QuantumCrafterEntity>> QUANTUM_CRAFTER =
             create("quantum_craft", QuantumCrafterEntity.class, QuantumCrafterEntity::new, AAEBlocks.QUANTUM_CRAFTER);
+
+    protected static <T extends AEBaseBlockEntity> Supplier<BlockEntityType<T>> create(
+            String id,
+            Class<T> entityClass,
+            BlockEntityFactory<T> factory,
+            BlockDefinition<? extends AEBaseEntityBlock<?>>... blockDefs) {
+        return create(AdvancedAE.MOD_ID, id, entityClass, factory, blockDefs);
+    }
 }

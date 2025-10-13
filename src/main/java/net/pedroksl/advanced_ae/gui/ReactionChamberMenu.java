@@ -8,12 +8,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.pedroksl.advanced_ae.api.IFluidTankHandler;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
-import net.pedroksl.advanced_ae.network.packet.FluidTankClientAudioPacket;
-import net.pedroksl.advanced_ae.network.packet.FluidTankStackUpdatePacket;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
+import net.pedroksl.ae2addonlib.api.IFluidTankHandler;
+import net.pedroksl.ae2addonlib.gui.OutputDirectionMenu;
+import net.pedroksl.ae2addonlib.network.clientPacket.FluidTankClientAudioPacket;
+import net.pedroksl.ae2addonlib.network.clientPacket.FluidTankStackUpdatePacket;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;

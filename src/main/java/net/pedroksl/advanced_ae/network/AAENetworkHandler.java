@@ -17,7 +17,6 @@ public class AAENetworkHandler extends AddonNetworkHandler {
     @Override
     public void onRegister(PayloadRegistrar registrar) {
         // spotless:off
-        serverbound(registrar, UpdateSideStatusPacket.TYPE, UpdateSideStatusPacket.STREAM_CODEC);
         serverbound(registrar, AdvPatternEncoderChangeDirectionPacket.TYPE, AdvPatternEncoderChangeDirectionPacket.STREAM_CODEC);
         serverbound(registrar, AAEConfigButtonPacket.TYPE, AAEConfigButtonPacket.STREAM_CODEC);
         serverbound(registrar, SetStockAmountPacket.TYPE, SetStockAmountPacket.STREAM_CODEC);
@@ -27,17 +26,13 @@ public class AAENetworkHandler extends AddonNetworkHandler {
         serverbound(registrar, QuantumArmorUpgradeFilterPacket.TYPE, QuantumArmorUpgradeFilterPacket.STREAM_CODEC);
         serverbound(registrar, QuantumArmorStylePacket.TYPE, QuantumArmorStylePacket.STREAM_CODEC);
         serverbound(registrar, QuantumArmorMagnetPacket.TYPE, QuantumArmorMagnetPacket.STREAM_CODEC);
-        serverbound(registrar, FluidTankItemUsePacket.TYPE, FluidTankItemUsePacket.STREAM_CODEC);
         serverbound(registrar, KeysPressedPacket.TYPE, KeysPressedPacket.STREAM_CODEC);
         serverbound(registrar, QuantumCrafterTerminalClientAction.TYPE, QuantumCrafterTerminalClientAction.STREAM_CODEC);
 
-        clientbound(registrar, OutputDirectionClientUpdatePacket.TYPE, OutputDirectionClientUpdatePacket.STREAM_CODEC);
         clientbound(registrar, AdvPatternEncoderPacket.TYPE, AdvPatternEncoderPacket.STREAM_CODEC);
         clientbound(registrar, PatternConfigServerUpdatePacket.TYPE, PatternConfigServerUpdatePacket.STREAM_CODEC);
         clientbound(registrar, PatternsUpdatePacket.TYPE, PatternsUpdatePacket.STREAM_CODEC);
         clientbound(registrar, QuantumArmorUpgradeStatePacket.TYPE, QuantumArmorUpgradeStatePacket.STREAM_CODEC);
-        clientbound(registrar, FluidTankStackUpdatePacket.TYPE, FluidTankStackUpdatePacket.STREAM_CODEC);
-        clientbound(registrar, FluidTankClientAudioPacket.TYPE, FluidTankClientAudioPacket.STREAM_CODEC);
         clientbound(registrar, MenuSelectionPacket.TYPE, MenuSelectionPacket.STREAM_CODEC);
         clientbound(registrar, ItemTrackingPacket.TYPE, ItemTrackingPacket.STREAM_CODEC);
         clientbound(registrar, QuantumCrafterTerminalPacket.TYPE, QuantumCrafterTerminalPacket.STREAM_CODEC);

@@ -3,20 +3,27 @@ package net.pedroksl.advanced_ae.common.definitions;
 import static appeng.block.AEBaseBlock.metalProps;
 import static appeng.block.AEBaseBlock.stoneProps;
 
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.blocks.*;
 import net.pedroksl.advanced_ae.common.items.AAECraftingBlockItem;
-import net.pedroksl.ae2addonlib.registry.AddonBlocks;
+import net.pedroksl.ae2addonlib.registry.BlockRegistry;
 
 import appeng.block.AEBaseBlockItem;
 import appeng.core.definitions.BlockDefinition;
 import appeng.decorative.AEDecorativeBlock;
 
-public final class AAEBlocks extends AddonBlocks {
+public final class AAEBlocks extends BlockRegistry {
 
     public static final AAEBlocks INSTANCE = new AAEBlocks();
 
@@ -95,4 +102,17 @@ public final class AAEBlocks extends AddonBlocks {
             block("Reaction Chamber", "reaction_chamber", ReactionChamberBlock::new, AEBaseBlockItem::new);
     public static final BlockDefinition<QuantumCrafterBlock> QUANTUM_CRAFTER =
             block("Quantum Crafter", "quantum_crafter", QuantumCrafterBlock::new, AEBaseBlockItem::new);
+
+    protected static <T extends Block> BlockDefinition<T> block(
+            String englishName, String id, Supplier<T> blockSupplier) {
+        return block(AdvancedAE.MOD_ID, englishName, id, blockSupplier, null);
+    }
+
+    protected static <T extends Block> BlockDefinition<T> block(
+            String englishName,
+            String id,
+            Supplier<T> blockSupplier,
+            @Nullable BiFunction<Block, Item.Properties, BlockItem> itemFactory) {
+        return block(AdvancedAE.MOD_ID, englishName, id, blockSupplier, itemFactory);
+    }
 }

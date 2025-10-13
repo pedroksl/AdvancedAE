@@ -17,7 +17,6 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.common.NeoForge;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.*;
-import net.pedroksl.advanced_ae.client.gui.OutputDirectionScreen;
 import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
 import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
@@ -113,8 +112,6 @@ public class AAEClient extends AdvancedAE {
                 event, AAEMenus.ADVANCED_IO_BUS.get(), AdvancedIOBusScreen::new, "/screens/advanced_io_bus.json");
 
         InitScreens.register(
-                event, AAEMenus.OUTPUT_DIRECTION.get(), OutputDirectionScreen::new, "/screens/output_direction.json");
-        InitScreens.register(
                 event,
                 AAEMenus.CRAFTER_PATTERN_CONFIG.get(),
                 QuantumCrafterConfigPatternScreen::new,
@@ -183,7 +180,7 @@ public class AAEClient extends AdvancedAE {
         event.register(
                 makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.QUANTUM_CRAFTER_TERMINAL.asItem());
 
-        for (var bucket : AAEFluids.getFluids()) {
+        for (var bucket : AAEFluids.INSTANCE.getFluids()) {
             event.getItemColors()
                     .register(
                             (stack, index) -> {

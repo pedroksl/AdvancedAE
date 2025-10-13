@@ -21,15 +21,15 @@ public class AAELanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        for (var item : AAEItems.getItems()) {
+        for (var item : AAEItems.INSTANCE.getItems()) {
             add(item.asItem(), item.getEnglishName());
         }
 
-        for (var block : AAEBlocks.getBlocks()) {
+        for (var block : AAEBlocks.INSTANCE.getBlocks()) {
             add(block.block(), block.getEnglishName());
         }
 
-        for (var fluid : AAEFluids.getFluids()) {
+        for (var fluid : AAEFluids.INSTANCE.getFluids()) {
             add(fluid.fluidType(), fluid.getEnglishName());
             add(fluid.flowing(), fluid.getEnglishName());
             add(fluid.source(), fluid.getEnglishName());
@@ -41,7 +41,7 @@ public class AAELanguageProvider extends LanguageProvider {
             add(translation.getTranslationKey(), translation.getEnglishText());
         }
 
-        for (var material : AAEMaterials.getMaterials()) {
+        for (var material : AAEMaterials.INSTANCE.getMaterials()) {
             add(material.get(), material.getEnglishName());
         }
 

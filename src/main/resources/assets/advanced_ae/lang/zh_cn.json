@@ -63,7 +63,7 @@
   "gui.tooltips.advanced_ae.CoreTooltip": "提供 256M 合成存储空间和 %d 并行处理线程。",
   "gui.tooltips.advanced_ae.CrafterTerminalSetting": "量子合成器终端",
   "gui.tooltips.advanced_ae.DataEntanglerMultiplication": "量子计算机的合成存储容量变为 %d 倍。每个量子计算机中最多放置 %d 个。",
-  "gui.tooltips.advanced_ae.DirectionOutputHint": "配置允许自动输出的方向",
+  "gui.tooltips.advanced_ae.DirectionalOutputHint": "配置允许自动输出的方向",
   "gui.tooltips.advanced_ae.DirectionalOutput": "输出方向",
   "gui.tooltips.advanced_ae.DownButton": "以机器的底面为目标",
   "gui.tooltips.advanced_ae.EastButton": "以机器的东面为目标",

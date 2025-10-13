@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.inventory.MenuType;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.api.IQuantumCrafterTermMenuHost;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
@@ -20,11 +19,13 @@ import net.pedroksl.advanced_ae.gui.*;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.quantumcomputer.QuantumComputerMenu;
-import net.pedroksl.ae2addonlib.registry.AddonMenus;
+import net.pedroksl.ae2addonlib.registry.MenuRegistry;
 
 import appeng.api.storage.ISubMenuHost;
+import appeng.menu.AEBaseMenu;
+import appeng.menu.implementations.MenuTypeBuilder;
 
-public class AAEMenus extends AddonMenus {
+public class AAEMenus extends MenuRegistry {
 
     public static final AAEMenus INSTANCE = new AAEMenus();
 
@@ -57,8 +58,6 @@ public class AAEMenus extends AddonMenus {
     public static final Supplier<MenuType<AdvancedIOBusMenu>> ADVANCED_IO_BUS =
             create("advanced_io_bus", AdvancedIOBusMenu::new, AdvancedIOBusPart.class);
 
-    public static final Supplier<MenuType<OutputDirectionMenu>> OUTPUT_DIRECTION =
-            create("output_direction", OutputDirectionMenu::new, IDirectionalOutputHost.class);
     public static final Supplier<MenuType<QuantumCrafterConfigPatternMenu>> CRAFTER_PATTERN_CONFIG =
             create("quantum_crafter_pattern_config", QuantumCrafterConfigPatternMenu::new, ISubMenuHost.class);
     public static final Supplier<MenuType<SetAmountMenu>> SET_AMOUNT =
@@ -76,4 +75,13 @@ public class AAEMenus extends AddonMenus {
             create("quantum_armor_style_config", QuantumArmorStyleConfigMenu::new, QuantumArmorMenuHost.class);
     public static final Supplier<MenuType<PortableWorkbenchMenu>> PORTABLE_WORKBENCH =
             create("portable_workbench", PortableWorkbenchMenu::new, PortableCellWorkbenchMenuHost.class);
+
+    private static <M extends AEBaseMenu, H> Supplier<MenuType<M>> create(
+            String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {
+        return create(AdvancedAE.MOD_ID, id, factory, host);
+    }
+
+    private static <T extends AEBaseMenu> Supplier<MenuType<T>> create(String id, Supplier<MenuType<T>> supplier) {
+        return create(AdvancedAE.MOD_ID, id, supplier);
+    }
 }

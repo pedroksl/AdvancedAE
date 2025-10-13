@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.blocks.ReactionChamberBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
@@ -29,6 +28,7 @@ import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
+import net.pedroksl.ae2addonlib.api.IDirectionalOutputHost;
 
 import appeng.api.behaviors.ExternalStorageStrategy;
 import appeng.api.config.*;
