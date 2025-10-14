@@ -1283,7 +1283,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
             }
 
             ItemStack remainingItem = findMatchingRemainingItem(input);
-            if (input.amount() < remainingItem.getCount()) {
+            if (input.amount() <= remainingItem.getCount()) {
                 return multiplier;
             }
 
