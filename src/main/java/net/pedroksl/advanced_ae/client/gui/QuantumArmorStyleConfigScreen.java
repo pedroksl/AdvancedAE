@@ -13,12 +13,12 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
 import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
-import net.pedroksl.advanced_ae.common.helpers.AAEColor;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.gui.QuantumArmorStyleConfigMenu;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorStylePacket;
 import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 import net.pedroksl.ae2addonlib.client.widgets.ColorPicker;
+import net.pedroksl.ae2addonlib.util.Colors;
 
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.implementations.AESubScreen;
@@ -132,12 +132,12 @@ public class QuantumArmorStyleConfigScreen extends AEBaseScreen<QuantumArmorStyl
         if (this.applyToAll) {
             for (var slot : this.menu.getSlots(AAESlotSemantics.ARMOR)) {
                 AEBaseScreen.renderSlotHighlight(
-                        guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, AAEColor.LIGHT_PURPLE.argb());
+                        guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, Colors.LIGHT_PURPLE.argb());
             }
         } else if (selectedIndex != -1 && selectedIndex < this.menu.slots.size()) {
             var slot = this.menu.getSlot(selectedIndex);
             AEBaseScreen.renderSlotHighlight(
-                    guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, AAEColor.LIGHT_PURPLE.argb());
+                    guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, Colors.LIGHT_PURPLE.argb());
         }
     }
 

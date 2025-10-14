@@ -15,6 +15,7 @@ public enum Addons {
     MEKANISM("Mekanism"),
     IRIS("Iris"),
     CURIOS("Curios"),
+    ADVANCED_AE("Advanced AE"),
     APOTHIC_ENCHANTING("Apothic Enchanting");
 
     private final String modName;

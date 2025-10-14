@@ -11,6 +11,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.ae2addonlib.api.IGridLinkedItem;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;

@@ -28,11 +28,11 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.Hotkeys;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.*;
-import net.pedroksl.advanced_ae.common.helpers.AAEColor;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.apoth.ApoEnchPlugin;
+import net.pedroksl.ae2addonlib.util.Colors;
 
 import appeng.api.implementations.menuobjects.IMenuItem;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
@@ -55,7 +55,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem, IUpgradeableItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    protected static final int DEFAULT_TINT_COLOR = AAEColor.PURPLE.argb();
+    protected static final int DEFAULT_TINT_COLOR = Colors.PURPLE.argb();
 
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
 

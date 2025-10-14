@@ -13,7 +13,6 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
-import net.pedroksl.advanced_ae.common.items.armors.IGridLinkedItem;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.events.AAELivingEntityEvents;
@@ -24,6 +23,7 @@ import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 import net.pedroksl.advanced_ae.xmod.mekansim.MekanismPlugin;
+import net.pedroksl.ae2addonlib.api.IGridLinkedItem;
 
 import appeng.api.AECapabilities;
 import appeng.api.features.GridLinkables;
