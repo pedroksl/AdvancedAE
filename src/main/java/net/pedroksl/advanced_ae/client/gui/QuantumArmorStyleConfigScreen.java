@@ -11,13 +11,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEIconButton;
 import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.helpers.AAEColor;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.gui.QuantumArmorStyleConfigMenu;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorStylePacket;
+import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 import net.pedroksl.ae2addonlib.client.widgets.ColorPicker;
 
 import appeng.client.gui.AEBaseScreen;
@@ -141,7 +141,7 @@ public class QuantumArmorStyleConfigScreen extends AEBaseScreen<QuantumArmorStyl
         }
     }
 
-    static class ConfirmButton extends AAEIconButton {
+    static class ConfirmButton extends AddonIconButton {
         public ConfirmButton(OnPress onPress) {
             super(onPress);
         }

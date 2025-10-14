@@ -79,13 +79,13 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AddonSettingToggl
                 AAEIcon.REGULATE_ON,
                 AAESettings.REGULATE_STOCK,
                 YesNo.YES,
-                AAEText.CrafterTerminalSetting,
-                AAEText.HideOnCrafterTerminal);
+                AAEText.RegulateCategory,
+                AAEText.RegulateOn);
         registerApp(
                 AAEIcon.REGULATE_OFF,
                 AAESettings.REGULATE_STOCK,
                 YesNo.NO,
-                AAEText.CrafterTerminalSetting,
-                AAEText.ShowOnCrafterTerminal);
+                AAEText.RegulateCategory,
+                AAEText.RegulateOff);
     }
 }

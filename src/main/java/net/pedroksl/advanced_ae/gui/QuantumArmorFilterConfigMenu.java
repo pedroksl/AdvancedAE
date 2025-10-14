@@ -15,6 +15,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.ae2addonlib.api.ISetAmountMenuHost;
+import net.pedroksl.ae2addonlib.gui.SetAmountMenu;
 
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;

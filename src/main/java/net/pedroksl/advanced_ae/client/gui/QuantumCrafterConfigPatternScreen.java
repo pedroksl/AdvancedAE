@@ -14,10 +14,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEIconButton;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterConfigPatternMenu;
 import net.pedroksl.advanced_ae.network.packet.SetStockAmountPacket;
+import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 import net.pedroksl.ae2addonlib.client.widgets.NumberTextField;
 
 import appeng.api.stacks.AEKey;
@@ -221,7 +221,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
         return numberField;
     }
 
-    static class ValidButton extends AAEIconButton {
+    static class ValidButton extends AddonIconButton {
 
         private boolean isValid = false;
 

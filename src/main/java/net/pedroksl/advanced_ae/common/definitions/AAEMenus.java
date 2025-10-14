@@ -60,8 +60,6 @@ public class AAEMenus extends MenuRegistry {
 
     public static final Supplier<MenuType<QuantumCrafterConfigPatternMenu>> CRAFTER_PATTERN_CONFIG =
             create("quantum_crafter_pattern_config", QuantumCrafterConfigPatternMenu::new, ISubMenuHost.class);
-    public static final Supplier<MenuType<SetAmountMenu>> SET_AMOUNT =
-            create("set_amount", SetAmountMenu::new, ISubMenuHost.class);
 
     public static final Supplier<MenuType<QuantumArmorConfigMenu>> QUANTUM_ARMOR_CONFIG =
             create("quantum_armor_config", QuantumArmorConfigMenu::new, QuantumArmorMenuHost.class);

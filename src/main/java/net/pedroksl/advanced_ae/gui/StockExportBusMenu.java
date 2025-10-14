@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.Slot;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.parts.StockExportBusPart;
 import net.pedroksl.ae2addonlib.api.ISetAmountMenuHost;
+import net.pedroksl.ae2addonlib.gui.SetAmountMenu;
 
 import appeng.api.stacks.GenericStack;
 import appeng.core.definitions.AEItems;
