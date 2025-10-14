@@ -1,4 +1,2 @@
-- Increased plane distance while rendering qc layers to avoid z-fighting in some packs
-- Added the wireless quantum crafter terminal to the curios tag
-- Added the ability to use the mouse scroll wheel to change the value of the mod's sliders
-- Fixed Quantum Armor magnet slider widget positioning
+- New translations
+- Fixed Regulate Button tooltip
