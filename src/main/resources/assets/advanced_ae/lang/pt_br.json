@@ -26,7 +26,7 @@
   "fluid_type.advanced_ae.quantum_infusion_type": "Infusão Quântica",
   "gui.advanced_ae.AdvPatternEncoder": "Codificador de Padrões Avançado",
   "gui.advanced_ae.AdvPatternProvider": "Provedor de Padrões Avançado ME",
-  "gui.advanced_ae.AdvancedIOBus": "Barramento de E/S Avançado ME",
+  "gui.advanced_ae.AdvancedIOBus": "Ponto de E/S Avançado ME",
   "gui.advanced_ae.ApplyToAll": "Aplicar a todos",
   "gui.advanced_ae.ImportExportBus": "Ponto de Importação e Exportação ME",
   "gui.advanced_ae.ItemNotCraftable": "Nenhum padrão disponível para Fabricação por Seleção do alvo atual.",
