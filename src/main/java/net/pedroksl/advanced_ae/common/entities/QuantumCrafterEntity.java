@@ -1320,8 +1320,11 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         }
 
         public boolean isInputConsumed(GenericStack input) {
-            ItemStack in = findMatchingOutput(input);
-            return !(!in.isEmpty() && !this.hasDataChange);
+            ItemStack in = findMatchingRemainingItem(input);
+            if (in.getCount() >= input.amount()) return false;
+
+            ItemStack out = findMatchingOutput(input);
+            return !(!out.isEmpty() && !this.hasDataChange);
         }
 
         public ItemStack findMatchingRemainingItem(GenericStack input) {
