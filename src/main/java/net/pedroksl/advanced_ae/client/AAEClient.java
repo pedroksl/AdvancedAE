@@ -27,6 +27,8 @@ import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterWirelessTermMenu;
 import net.pedroksl.advanced_ae.gui.StockExportBusMenu;
 import net.pedroksl.ae2addonlib.registry.FluidRegistry;
+import net.pedroksl.ae2addonlib.registry.helpers.LibComponents;
+import net.pedroksl.ae2addonlib.util.Colors;
 
 import appeng.api.util.AEColor;
 import appeng.client.render.StaticItemColor;
@@ -163,6 +165,13 @@ public class AAEClient extends AdvancedAE {
         event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
         event.register(
                 makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.QUANTUM_CRAFTER_TERMINAL.asItem());
+        for (var item : AAEItems.getQuantumArmor()) {
+            event.register(
+                    (stack, index) -> index == 1
+                            ? (int) stack.getOrDefault(LibComponents.TINT_COLOR_TAG, Colors.PURPLE)
+                            : Colors.WHITE.argb(),
+                    item);
+        }
 
         for (var bucket : AAEFluids.INSTANCE.getFluids()) {
             event.getItemColors().register(FluidRegistry::getFluidColor, bucket.bucketItem());

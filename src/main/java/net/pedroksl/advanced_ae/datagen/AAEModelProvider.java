@@ -22,6 +22,7 @@ import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
+import net.pedroksl.ae2addonlib.AE2AddonLib;
 
 import appeng.api.orientation.BlockOrientation;
 import appeng.block.crafting.PatternProviderBlock;
@@ -52,10 +53,10 @@ public class AAEModelProvider extends AE2BlockStateProvider {
         basicItem(AAEItems.MONITOR_CONFIGURATOR);
         basicItem(AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL);
 
-        basicItem(AAEItems.QUANTUM_HELMET);
-        basicItem(AAEItems.QUANTUM_CHESTPLATE);
-        basicItem(AAEItems.QUANTUM_LEGGINGS);
-        basicItem(AAEItems.QUANTUM_BOOTS);
+        coloredItem(AAEItems.QUANTUM_HELMET);
+        coloredItem(AAEItems.QUANTUM_CHESTPLATE);
+        coloredItem(AAEItems.QUANTUM_LEGGINGS);
+        coloredItem(AAEItems.QUANTUM_BOOTS);
 
         stairsBlock(AAEBlocks.QUANTUM_ALLOY_STAIRS, AAEBlocks.QUANTUM_ALLOY_BLOCK);
         slabBlock(AAEBlocks.QUANTUM_ALLOY_SLAB, AAEBlocks.QUANTUM_ALLOY_BLOCK);
@@ -112,6 +113,13 @@ public class AAEModelProvider extends AE2BlockStateProvider {
                     .singleTexture(
                             id, mcLoc("item/generated"), "layer0", AdvancedAE.makeId("item/" + texturePath + "/" + id));
         }
+    }
+
+    private void coloredItem(ItemDefinition<?> item) {
+        String id = item.id().getPath();
+        itemModels()
+                .singleTexture(id, mcLoc("item/generated"), "layer0", AdvancedAE.makeId("item/" + id + "_base"))
+                .texture("layer1", AdvancedAE.makeId("item/" + id + "_tint"));
     }
 
     private void basicBlock(BlockDefinition<?> block) {
@@ -248,7 +256,7 @@ public class AAEModelProvider extends AE2BlockStateProvider {
             simpleBlock(
                     fluids.block(),
                     models().getBuilder(fluids.blockId().getId().getPath())
-                            .texture("particle", AdvancedAE.makeId(ModelProvider.BLOCK_FOLDER + "/" + "water_still")));
+                            .texture("particle", AE2AddonLib.makeId(ModelProvider.BLOCK_FOLDER + "/" + "water_still")));
         }
     }
 
