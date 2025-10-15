@@ -45,7 +45,7 @@ public class AAELanguageProvider extends LanguageProvider {
             add(material.get(), material.getEnglishName());
         }
 
-        for (var key : AAEHotkeys.Keys.values()) {
+        for (var key : AAEHotkeysRegistry.Keys.values()) {
             add("key." + AdvancedAE.MOD_ID + "." + key.getId(), key.getEnglishTranslation());
         }
 

@@ -5,10 +5,10 @@ import java.util.function.BiConsumer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
-import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeysRegistry;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
+import net.pedroksl.ae2addonlib.registry.helpers.LibComponents;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.storage.ISubMenuHost;
@@ -41,7 +41,7 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
         super(item, player, locator);
         this.returnToMainMenu = returnToMainMenu;
 
-        var itemTag = this.getItemStack().get(AAEComponents.STACK_TAG);
+        var itemTag = this.getItemStack().get(LibComponents.NBT_TAG);
         var registry = player.registryAccess();
         if (itemTag != null) {
             this.input.readFromNBT(itemTag, "input", registry);
@@ -123,24 +123,24 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
         this.input.writeToNBT(itemTag, "input", registry);
 
         if (!itemTag.isEmpty()) {
-            this.getItemStack().set(AAEComponents.STACK_TAG, itemTag);
+            this.getItemStack().set(LibComponents.NBT_TAG, itemTag);
         } else {
-            this.getItemStack().remove(AAEComponents.STACK_TAG);
+            this.getItemStack().remove(LibComponents.NBT_TAG);
         }
     }
 
     @Override
     public void onChangeInventory(AppEngInternalInventory inv, int slot) {
-        var itemTag = this.getItemStack().getOrDefault(AAEComponents.STACK_TAG, new CompoundTag());
+        var itemTag = this.getItemStack().getOrDefault(LibComponents.NBT_TAG, new CompoundTag());
         var registry = this.getPlayer().registryAccess();
         if (this.input == inv) {
             this.input.writeToNBT(itemTag, "input", registry);
         }
 
         if (!itemTag.isEmpty()) {
-            this.getItemStack().set(AAEComponents.STACK_TAG, itemTag);
+            this.getItemStack().set(LibComponents.NBT_TAG, itemTag);
         } else {
-            this.getItemStack().remove(AAEComponents.STACK_TAG);
+            this.getItemStack().remove(LibComponents.NBT_TAG);
         }
 
         if (invChangeHandler != null) {
@@ -174,7 +174,7 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     }
 
     public String getCloseHotkey() {
-        return AAEHotkeys.Keys.ARMOR_CONFIG.getId();
+        return AAEHotkeysRegistry.Keys.ARMOR_CONFIG.getId();
     }
 
     @FunctionalInterface

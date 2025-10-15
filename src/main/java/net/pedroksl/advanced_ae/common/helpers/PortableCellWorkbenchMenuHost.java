@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
-import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeysRegistry;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumHelmet;
 
 import appeng.api.config.CopyMode;
@@ -205,6 +205,6 @@ public class PortableCellWorkbenchMenuHost extends ItemMenuHost<QuantumHelmet>
     }
 
     public String getCloseHotkey() {
-        return AAEHotkeys.Keys.PATTERN_ENCODER_HOTKEY.getId();
+        return AAEHotkeysRegistry.Keys.PATTERN_ENCODER_HOTKEY.getId();
     }
 }

@@ -20,7 +20,6 @@ public class AAENetworkHandler extends AddonNetworkHandler {
         serverbound(registrar, AdvPatternEncoderChangeDirectionPacket.TYPE, AdvPatternEncoderChangeDirectionPacket.STREAM_CODEC);
         serverbound(registrar, AAEConfigButtonPacket.TYPE, AAEConfigButtonPacket.STREAM_CODEC);
         serverbound(registrar, SetStockAmountPacket.TYPE, SetStockAmountPacket.STREAM_CODEC);
-        serverbound(registrar, AAEHotkeyPacket.TYPE, AAEHotkeyPacket.STREAM_CODEC);
         serverbound(registrar, QuantumArmorUpgradeTogglePacket.TYPE, QuantumArmorUpgradeTogglePacket.STREAM_CODEC);
         serverbound(registrar, QuantumArmorUpgradeValuePacket.TYPE, QuantumArmorUpgradeValuePacket.STREAM_CODEC);
         serverbound(registrar, QuantumArmorUpgradeFilterPacket.TYPE, QuantumArmorUpgradeFilterPacket.STREAM_CODEC);

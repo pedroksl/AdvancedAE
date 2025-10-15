@@ -75,7 +75,7 @@ public class AdvancedAE {
         });
 
         eventBus.addListener(this::commonSetup);
-        AAEHotkeys.init();
+        AAEHotkeysRegistry.INSTANCE.init();
     }
 
     public static AdvancedAE instance() {

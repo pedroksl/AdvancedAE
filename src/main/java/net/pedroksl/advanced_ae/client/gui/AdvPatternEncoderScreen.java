@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.client.Hotkeys;
+import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.client.gui.widgets.DirectionInputButton;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
@@ -71,7 +71,7 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
     private boolean isCloseHotkey(int keyCode, int scanCode) {
         var hotkeyId = getMenu().getHost().getCloseHotkey();
         if (hotkeyId != null) {
-            var hotkey = Hotkeys.getHotkeyMapping(hotkeyId);
+            var hotkey = AAEHotkeys.INSTANCE.getHotkeyMapping(hotkeyId);
             if (hotkey != null) {
                 return hotkey.mapping().matches(keyCode, scanCode);
             }
