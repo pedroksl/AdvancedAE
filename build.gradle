@@ -163,6 +163,7 @@ dependencies {
     localRuntime "curse.maven:cucumber-272335:${cucumber_file_id}"
     localRuntime "curse.maven:mystical-agriculture-246640:${ma_file_id}"
 
+    localRuntime "curse.maven:dark-mode-everywhere-574123:6470153"
     localRuntime "curse.maven:placebo-283644:${placebo_file_id}"
     localRuntime "curse.maven:apothic-attributes-898963:${apothic_att_file_id}"
     localRuntime "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"

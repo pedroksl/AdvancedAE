@@ -7,7 +7,7 @@ import net.pedroksl.advanced_ae.xmod.Addons;
 
 public class DMEPlugin {
 
-    private static List<String> BLACKLIST = List.of("net.pedroksl.advanced_ae.client.gui.QuantumCrafterTermScreen");
+    private static List<String> BLACKLIST = List.of("net.pedroksl.advanced_ae.client.gui.");
 
     public static void sendBlacklistIMC() {
         for (var gui : BLACKLIST) {
