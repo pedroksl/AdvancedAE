@@ -10,7 +10,8 @@ public enum Addons implements AddonEnum {
     MEKANISM("Mekanism"),
     IRIS("Iris"),
     CURIOS("Curios"),
-    ADVANCED_AE("Advanced AE"),
+    INVTWEAKS("Inventory Tweaks"),
+    DARKMODEEVERYWHERE("Dark Mode Everywhere"),
     APOTHIC_ENCHANTING("Apothic Enchanting");
 
     private final String modName;

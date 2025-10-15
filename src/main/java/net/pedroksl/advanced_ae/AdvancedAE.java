@@ -4,10 +4,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -22,6 +24,7 @@ import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
 import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
+import net.pedroksl.advanced_ae.xmod.dme.DMEPlugin;
 import net.pedroksl.advanced_ae.xmod.mekansim.MekanismPlugin;
 import net.pedroksl.ae2addonlib.api.IGridLinkedItem;
 
@@ -183,6 +186,16 @@ public class AdvancedAE {
 
         if (Addons.MEKANISM.isLoaded()) {
             MekanismPlugin.initCap(event);
+        }
+    }
+
+    public static void imc(InterModEnqueueEvent event) {
+        if (Addons.INVTWEAKS.isLoaded()) {
+            InterModComms.sendTo(
+                    Addons.INVTWEAKS.getModId(), "blacklist-screen", () -> "net.pedroksl.advanced_ae.client.gui.*");
+        }
+        if (Addons.DARKMODEEVERYWHERE.isLoaded()) {
+            DMEPlugin.sendBlacklistIMC();
         }
     }
 
