@@ -135,7 +135,8 @@ dependencies {
     implementation "org.appliedenergistics:guideme:${guide_me_version}"
     api "org.appliedenergistics:appliedenergistics2:${ae2_version}"
     implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
-    implementation "net.pedroksl.ae2addonlib:AE2AddonLib:1.0.0"
+    jarJar implementation("curse.maven:ae2addonlib-1366135:7112066")
+    //implementation "net.pedroksl.ae2addonlib:AE2AddonLib:1.0.0"
     jarJar implementation("de.mari_023:ae2wtlib_api:${ae2wtlib_version}") {
         transitive = false
     }
@@ -249,7 +250,7 @@ publisher {
 
     // Type of release. beta, alpha or release
     // You can also use VersionType.BETA, VersionType.ALPHA or VersionType.RELEASE
-    setVersionType("RELEASE")
+    setVersionType(${project.version_type})
 
     // Changelog. This can be a file, string, OR, gist/github url
     // For example: markdown.md, or "This is my changelog"

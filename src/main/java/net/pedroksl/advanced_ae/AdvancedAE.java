@@ -67,6 +67,7 @@ public class AdvancedAE {
 
         eventBus.addListener(AdvancedAE::initUpgrades);
         eventBus.addListener(AdvancedAE::initCapabilities);
+        eventBus.addListener(AdvancedAE::imc);
 
         eventBus.addListener(AAENetworkHandler.INSTANCE::register);
         eventBus.addListener((RegisterEvent event) -> {
