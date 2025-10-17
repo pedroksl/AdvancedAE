@@ -250,7 +250,7 @@ publisher {
 
     // Type of release. beta, alpha or release
     // You can also use VersionType.BETA, VersionType.ALPHA or VersionType.RELEASE
-    setVersionType(${project.version_type})
+    setVersionType("${project.version_type}")
 
     // Changelog. This can be a file, string, OR, gist/github url
     // For example: markdown.md, or "This is my changelog"
