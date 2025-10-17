@@ -6,7 +6,7 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '1.0.17'
     id 'com.diffplug.spotless'
-    id "com.hypherionmc.modutils.modpublisher" version '2.1.6'
+    id "com.hypherionmc.modutils.modpublisher" version '2.1.8'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -49,6 +49,10 @@ neoForge {
     runs {
         client {
             client()
+
+            systemProperties = [
+                    'guideme.ae2.guide.sources': file('src/main/resources/assets/advanced_ae/ae2guide/aae_intro/').absolutePath
+            ]
         }
 
         server {
@@ -135,7 +139,7 @@ dependencies {
     implementation "org.appliedenergistics:guideme:${guide_me_version}"
     api "org.appliedenergistics:appliedenergistics2:${ae2_version}"
     implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
-    jarJar implementation("curse.maven:ae2addonlib-1366135:7112066")
+    jarJar implementation("curse.maven:ae2addonlib-1366135:${ae2addonlib_file_id}")
     //implementation "net.pedroksl.ae2addonlib:AE2AddonLib:1.0.0"
     jarJar implementation("de.mari_023:ae2wtlib_api:${ae2wtlib_version}") {
         transitive = false

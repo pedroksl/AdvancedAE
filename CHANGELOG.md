@@ -1,4 +1,3 @@
-- Reworked the mod to move a ton of boilerplate code into a new library mod (AE2AddonLib).
-  - The library mod is bundled together with this mod, so no extra dependencies were added
-- Added blacklists to DarkModeEverywhere and InventoryTweaks.
-- Quantum Armor items now also change color!
+- Fixed a crash that happened with non-tinted quantum armors after the last update
+- Fixed the quantum helmet texture border
+- Updated Quantum Armor set guide page to remove the energy bar
