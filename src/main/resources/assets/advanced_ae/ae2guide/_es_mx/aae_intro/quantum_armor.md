@@ -39,16 +39,18 @@ item_ids:
 # Conjunto de armadura cuántica
 
 <Row gap="10">
-<ItemImage id="advanced_ae:quantum_helmet" scale="4"></ItemImage>
-<ItemImage id="advanced_ae:quantum_chestplate" scale="4"></ItemImage>
-<ItemImage id="advanced_ae:quantum_leggings" scale="4"></ItemImage>
-<ItemImage id="advanced_ae:quantum_boots" scale="4"></ItemImage>
+<ItemImage id="advanced_ae:quantum_helmet" components="ae2:stored_energy=2.0E8d" scale="4"></ItemImage>
+<ItemImage id="advanced_ae:quantum_chestplate" components="ae2:stored_energy=3.0E8d" scale="4"></ItemImage>
+<ItemImage id="advanced_ae:quantum_leggings" components="ae2:stored_energy=2.5E8d" scale="4"></ItemImage>
+<ItemImage id="advanced_ae:quantum_boots" components="ae2:stored_energy=2.0E8d" scale="4"></ItemImage>
 </Row>
 
-* <ItemLink id="advanced_ae:quantum_helmet" />
-* <ItemLink id="advanced_ae:quantum_chestplate" />
-* <ItemLink id="advanced_ae:quantum_leggings" />
-* <ItemLink id="advanced_ae:quantum_boots" />
+<ItemGrid>
+<ItemIcon id="advanced_ae:quantum_helmet" components="ae2:stored_energy=2.0E8d"></ItemIcon>
+<ItemIcon id="advanced_ae:quantum_chestplate" components="ae2:stored_energy=3.0E8d"></ItemIcon>
+<ItemIcon id="advanced_ae:quantum_leggings" components="ae2:stored_energy=2.5E8d"></ItemIcon>
+<ItemIcon id="advanced_ae:quantum_boots" components="ae2:stored_energy=2.0E8d"></ItemIcon>
+</ItemGrid>
 
 ¿Alguna vez te has preguntado cómo sería llevar puesto tu sistema AE? Bueno, ya no tienes que preguntártelo más. ¡El conjunto
 de armadura cuántica es una prenda sigilosa y altamente tecnológica que se conecta al sistema AE2 para proporcionar un acceso
