@@ -1,11 +1,9 @@
 package net.pedroksl.advanced_ae.client;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.FastColor;
-import net.minecraft.world.item.BucketItem;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -17,7 +15,6 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.common.NeoForge;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.*;
-import net.pedroksl.advanced_ae.client.gui.OutputDirectionScreen;
 import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
 import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
@@ -29,9 +26,11 @@ import net.pedroksl.advanced_ae.gui.AdvancedIOBusMenu;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterWirelessTermMenu;
 import net.pedroksl.advanced_ae.gui.StockExportBusMenu;
+import net.pedroksl.ae2addonlib.registry.FluidRegistry;
+import net.pedroksl.ae2addonlib.registry.helpers.LibComponents;
+import net.pedroksl.ae2addonlib.util.Colors;
 
 import appeng.api.util.AEColor;
-import appeng.client.gui.me.common.PinnedKeys;
 import appeng.client.render.StaticItemColor;
 import appeng.client.render.crafting.CraftingCubeModel;
 import appeng.hooks.BuiltInModelHooks;
@@ -58,8 +57,7 @@ public class AAEClient extends AdvancedAE {
         INSTANCE = this;
 
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post e) -> {
-            tickPinnedKeys(Minecraft.getInstance());
-            Hotkeys.checkHotkeys();
+            AAEHotkeys.INSTANCE.checkHotkeys();
         });
     }
 
@@ -113,13 +111,10 @@ public class AAEClient extends AdvancedAE {
                 event, AAEMenus.ADVANCED_IO_BUS.get(), AdvancedIOBusScreen::new, "/screens/advanced_io_bus.json");
 
         InitScreens.register(
-                event, AAEMenus.OUTPUT_DIRECTION.get(), OutputDirectionScreen::new, "/screens/output_direction.json");
-        InitScreens.register(
                 event,
                 AAEMenus.CRAFTER_PATTERN_CONFIG.get(),
                 QuantumCrafterConfigPatternScreen::new,
                 "/screens/quantum_crafter_pattern_config.json");
-        InitScreens.register(event, AAEMenus.SET_AMOUNT.get(), SetAmountScreen::new, "/screens/aae_set_amount.json");
 
         InitScreens.register(
                 event,
@@ -161,20 +156,8 @@ public class AAEClient extends AdvancedAE {
         });
     }
 
-    private void tickPinnedKeys(Minecraft minecraft) {
-        // Only prune pinned keys when no screen is currently open
-        if (minecraft.screen == null) {
-            PinnedKeys.prune();
-        }
-    }
-
-    @Override
-    public void registerHotkey(String id) {
-        Hotkeys.registerHotkey(id);
-    }
-
     private void registerHotkeys(RegisterKeyMappingsEvent e) {
-        Hotkeys.finalizeRegistration(e::register);
+        AAEHotkeys.INSTANCE.finalizeRegistration(e::register);
     }
 
     @SuppressWarnings("deprecation")
@@ -182,18 +165,16 @@ public class AAEClient extends AdvancedAE {
         event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
         event.register(
                 makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.QUANTUM_CRAFTER_TERMINAL.asItem());
+        for (var item : AAEItems.getQuantumArmor()) {
+            event.register(
+                    (stack, index) -> index == 1
+                            ? (int) stack.getOrDefault(LibComponents.TINT_COLOR_TAG, Colors.PURPLE)
+                            : Colors.WHITE.argb(),
+                    item);
+        }
 
-        for (var bucket : AAEFluids.getFluids()) {
-            event.getItemColors()
-                    .register(
-                            (stack, index) -> {
-                                if (index == 1 && stack.getItem() instanceof BucketItem bucketItem) {
-                                    return IClientFluidTypeExtensions.of(bucketItem.content)
-                                            .getTintColor();
-                                }
-                                return 0xFFFFFFFF;
-                            },
-                            bucket.bucketItem());
+        for (var bucket : AAEFluids.INSTANCE.getFluids()) {
+            event.getItemColors().register(FluidRegistry::getFluidColor, bucket.bucketItem());
         }
     }
 

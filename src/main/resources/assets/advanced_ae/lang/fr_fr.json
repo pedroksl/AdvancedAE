@@ -63,7 +63,7 @@
   "gui.tooltips.advanced_ae.CoreTooltip": "Provides 256M crafting storage and %d co-processing threads.",
   "gui.tooltips.advanced_ae.CrafterTerminalSetting": "Quantum Crafter Terminal",
   "gui.tooltips.advanced_ae.DataEntanglerMultiplication": "Multiplies the total storage in the Quantum Computer Multiblock by %d. Limited to %d per multiblock.",
-  "gui.tooltips.advanced_ae.DirectionOutputHint": "Configure which directions are allowed for output auto-export",
+  "gui.tooltips.advanced_ae.DirectionalOutputHint": "Configure which directions are allowed for output auto-export",
   "gui.tooltips.advanced_ae.DirectionalOutput": "Directional Output",
   "gui.tooltips.advanced_ae.DownButton": "Target the DOWN face of the machine.",
   "gui.tooltips.advanced_ae.EastButton": "Target the EAST face of the machine.",

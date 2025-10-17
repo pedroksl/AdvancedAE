@@ -10,15 +10,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEColorPicker;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEIconButton;
 import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
-import net.pedroksl.advanced_ae.common.helpers.AAEColor;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.gui.QuantumArmorStyleConfigMenu;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorStylePacket;
+import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
+import net.pedroksl.ae2addonlib.client.widgets.ColorPicker;
+import net.pedroksl.ae2addonlib.util.Colors;
 
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.implementations.AESubScreen;
@@ -30,7 +30,7 @@ public class QuantumArmorStyleConfigScreen extends AEBaseScreen<QuantumArmorStyl
     private int selectedIndex = -1;
     private boolean applyToAll = true;
 
-    private final AAEColorPicker colorPicker;
+    private final ColorPicker colorPicker;
     private final AECheckbox checkBox;
     private final ConfirmButton confirmButton;
 
@@ -40,7 +40,7 @@ public class QuantumArmorStyleConfigScreen extends AEBaseScreen<QuantumArmorStyl
 
         AESubScreen.addBackButton(menu, "back", widgets);
 
-        this.colorPicker = new AAEColorPicker(this.widgets::add, 0, style, "colorPicker");
+        this.colorPicker = new ColorPicker(this.widgets::add, 0, style, "colorPicker");
         this.checkBox = this.widgets.addCheckbox("checkBox", AAEText.ApplyToAll.text(), this::toggleApplyToAll);
         this.confirmButton = new ConfirmButton(value -> this.confirm());
         this.widgets.add("confirmButton", this.confirmButton);
@@ -132,16 +132,16 @@ public class QuantumArmorStyleConfigScreen extends AEBaseScreen<QuantumArmorStyl
         if (this.applyToAll) {
             for (var slot : this.menu.getSlots(AAESlotSemantics.ARMOR)) {
                 AEBaseScreen.renderSlotHighlight(
-                        guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, AAEColor.LIGHT_PURPLE.argb());
+                        guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, Colors.LIGHT_PURPLE.argb());
             }
         } else if (selectedIndex != -1 && selectedIndex < this.menu.slots.size()) {
             var slot = this.menu.getSlot(selectedIndex);
             AEBaseScreen.renderSlotHighlight(
-                    guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, AAEColor.LIGHT_PURPLE.argb());
+                    guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, Colors.LIGHT_PURPLE.argb());
         }
     }
 
-    static class ConfirmButton extends AAEIconButton {
+    static class ConfirmButton extends AddonIconButton {
         public ConfirmButton(OnPress onPress) {
             super(onPress);
         }

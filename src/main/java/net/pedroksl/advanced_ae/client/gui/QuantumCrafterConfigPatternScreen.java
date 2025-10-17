@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.client.gui;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.Minecraft;
@@ -13,10 +14,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEIconButton;
-import net.pedroksl.advanced_ae.client.gui.widgets.NumberTextField;
+import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterConfigPatternMenu;
 import net.pedroksl.advanced_ae.network.packet.SetStockAmountPacket;
+import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
+import net.pedroksl.ae2addonlib.client.widgets.NumberTextField;
 
 import appeng.api.stacks.AEKey;
 import appeng.client.gui.AEBaseScreen;
@@ -195,21 +197,31 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
     public record InputRow(AEKey key, NumberTextField textField, Component label, ValidButton button) {}
 
     private NumberTextField addNewNumberField(long value, int index) {
-        NumberTextField numberField = new NumberTextField(this.style, 0, 0, 0, 0, amount -> {
-            if (index >= 0) {
-                PacketDistributor.sendToServer(new SetStockAmountPacket(index, amount));
-            } else {
-                menu.setMaxCrafted(amount);
-            }
-        });
+        var key = InputConstants.getKey("key.keyboard" + ".enter").getDisplayName();
+        var tooltip =
+                index == -1 ? AAEText.NumberTextFieldOutputHint.text(key) : AAEText.NumberTextFieldInputHint.text(key);
+
+        NumberTextField numberField = new NumberTextField(
+                this.style,
+                0,
+                0,
+                0,
+                0,
+                amount -> {
+                    if (index >= 0) {
+                        PacketDistributor.sendToServer(new SetStockAmountPacket(index, amount));
+                    } else {
+                        menu.setMaxCrafted(amount);
+                    }
+                },
+                tooltip);
+
         numberField.setLongValue(value);
-        if (index == -1) {
-            numberField.setAsOutput();
-        }
+
         return numberField;
     }
 
-    static class ValidButton extends AAEIconButton {
+    static class ValidButton extends AddonIconButton {
 
         private boolean isValid = false;
 

@@ -1,2 +1,4 @@
-- New translations
-- Fixed Regulate Button tooltip
+- Reworked the mod to move a ton of boilerplate code into a new library mod (AE2AddonLib).
+  - The library mod is bundled together with this mod, so no extra dependencies were added
+- Added blacklists to DarkModeEverywhere and InventoryTweaks.
+- Quantum Armor items now also change color!

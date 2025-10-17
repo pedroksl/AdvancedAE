@@ -347,16 +347,14 @@ public class UpgradeCards {
                         rechargeItem(player, player.getOffhandItem(), grid, rate, energy);
                     }
 
-                    if (Addons.CURIOS.isLoaded()) {
-                        var optionalInv = CuriosPlugin.getCuriosInventory(player);
-                        if (optionalInv.isPresent()) {
-                            var curiosInventory = optionalInv.get();
-                            var handler = curiosInventory.getEquippedCurios();
-                            for (var i = 0; i < handler.getSlots(); i++) {
-                                var item = handler.getStackInSlot(i);
-                                if (item.isEmpty()) continue;
-                                rechargeItem(player, item, grid, rate, energy);
-                            }
+                    var optionalInv = CuriosPlugin.getCuriosInventory(player);
+                    if (optionalInv.isPresent()) {
+                        var curiosInventory = optionalInv.get();
+                        var handler = curiosInventory.getEquippedCurios();
+                        for (var i = 0; i < handler.getSlots(); i++) {
+                            var item = handler.getStackInSlot(i);
+                            if (item.isEmpty()) continue;
+                            rechargeItem(player, item, grid, rate, energy);
                         }
                     }
                 }

@@ -4,8 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.items.armors.IGridLinkedItem;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.ae2addonlib.api.IGridLinkedItem;
 
 import appeng.api.config.Actionable;
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;

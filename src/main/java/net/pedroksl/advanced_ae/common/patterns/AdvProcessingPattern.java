@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
-import net.pedroksl.advanced_ae.common.helpers.NullableDirection;
+import net.pedroksl.ae2addonlib.util.NullableDirection;
 
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.crafting.PatternDetailsHelper;

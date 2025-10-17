@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.helpers.AAEColor;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.ae2addonlib.util.Colors;
 
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
@@ -47,7 +47,7 @@ public class QuantumArmorRenderer extends GeoArmorRenderer<QuantumArmorBase> {
     private static class QuantumArmorTintLayer extends AutoGlowingGeoLayer<QuantumArmorBase> {
 
         private final ResourceLocation TINT_TEXTURE = AdvancedAE.makeId("textures/item/quantum_armor_tint.png");
-        private int tintColor = AAEColor.PURPLE.argb();
+        private int tintColor = Colors.PURPLE.argb();
 
         public QuantumArmorTintLayer(GeoArmorRenderer<QuantumArmorBase> armorRenderer) {
             super(armorRenderer);

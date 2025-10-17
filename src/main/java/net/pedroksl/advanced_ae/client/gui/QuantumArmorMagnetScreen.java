@@ -3,17 +3,17 @@ package net.pedroksl.advanced_ae.client.gui;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAESlider;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEToggleButton;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.gui.QuantumArmorMagnetMenu;
+import net.pedroksl.ae2addonlib.client.widgets.AddonSlider;
+import net.pedroksl.ae2addonlib.client.widgets.AddonToggleButton;
 
 import appeng.client.gui.style.ScreenStyle;
 
 public class QuantumArmorMagnetScreen extends QuantumArmorFilterScreen<QuantumArmorMagnetMenu> {
 
-    private final AAEToggleButton toggleButton;
-    private final AAESlider slider;
+    private final AddonToggleButton toggleButton;
+    private final AddonSlider slider;
     private boolean sliderInitialized = false;
 
     public QuantumArmorMagnetScreen(
@@ -21,7 +21,7 @@ public class QuantumArmorMagnetScreen extends QuantumArmorFilterScreen<QuantumAr
         super(menu, playerInventory, title, style);
 
         var settings = UpgradeType.MAGNET.getSettings();
-        this.slider = new AAESlider(
+        this.slider = new AddonSlider(
                 settings.minValue,
                 settings.maxValue,
                 0,
@@ -29,7 +29,7 @@ public class QuantumArmorMagnetScreen extends QuantumArmorFilterScreen<QuantumAr
                 value -> this.menu.setCurrentValue((int) Math.round(value / settings.multiplier)));
         this.widgets.add("slider", this.slider);
 
-        this.toggleButton = new AAEToggleButton(AAEIcon.BLACKLIST, AAEIcon.WHITELIST, this.menu::setBlacklist);
+        this.toggleButton = new AddonToggleButton(AAEIcon.BLACKLIST, AAEIcon.WHITELIST, this.menu::setBlacklist);
         this.widgets.add("blacklist", this.toggleButton);
     }
 

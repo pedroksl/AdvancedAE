@@ -63,7 +63,7 @@
   "gui.tooltips.advanced_ae.CoreTooltip": "Обеспечивает 256M памяти для крафтинга %d потоков совместной обработки",
   "gui.tooltips.advanced_ae.CrafterTerminalSetting": "Quantum Crafter Terminal",
   "gui.tooltips.advanced_ae.DataEntanglerMultiplication": "Умножает общее количество памяти в мультиблоке квантового компьютера на %d. Ограничено %d на мультиблок.",
-  "gui.tooltips.advanced_ae.DirectionOutputHint": "Настройте, какие направления разрешены для автоэкспорта вывода",
+  "gui.tooltips.advanced_ae.DirectionalOutputHint": "Настройте, какие направления разрешены для автоэкспорта вывода",
   "gui.tooltips.advanced_ae.DirectionalOutput": "Направленный выход",
   "gui.tooltips.advanced_ae.DownButton": "Ориентируйтесь на нижнюю поверхность машины.",
   "gui.tooltips.advanced_ae.EastButton": "Ориентируйтесь на восточную сторону машины.",

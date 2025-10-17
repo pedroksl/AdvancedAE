@@ -52,7 +52,7 @@ public class AAETagProvider {
             }
             var defaultTags = List.of(BlockTags.MINEABLE_WITH_PICKAXE);
 
-            for (var block : AAEBlocks.getBlocks()) {
+            for (var block : AAEBlocks.INSTANCE.getBlocks()) {
                 for (var desiredTag : specialTags.getOrDefault(block, defaultTags)) {
                     tag(desiredTag).add(block.block());
                 }
@@ -160,7 +160,7 @@ public class AAETagProvider {
         protected void addTags(HolderLookup.Provider registries) {
 
             Map<DataComponentType<?>, ResourceKey<DataComponentType<?>>> componentKeys = new IdentityHashMap<>();
-            for (var entry : AAEComponents.DR.getEntries()) {
+            for (var entry : AAEComponents.INSTANCE.getEntries()) {
                 componentKeys.put(entry.get(), entry.getKey());
             }
 

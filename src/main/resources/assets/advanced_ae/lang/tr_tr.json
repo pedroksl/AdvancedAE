@@ -63,7 +63,7 @@
   "gui.tooltips.advanced_ae.CoreTooltip": "256M üretim depolaması ve %d eş işlemci iş parçacığı sağlar.",
   "gui.tooltips.advanced_ae.CrafterTerminalSetting": "Quantum Crafter Terminal",
   "gui.tooltips.advanced_ae.DataEntanglerMultiplication": "Kuantum Bilgisayar Çoklu Bloğundaki toplam depolamayı %d ile çarpar. Çoklu blok başına %d ile sınırlıdır.",
-  "gui.tooltips.advanced_ae.DirectionOutputHint": "Otomatik dışa aktarma çıkışı için hangi yönlere izin verildiğini yapılandırın",
+  "gui.tooltips.advanced_ae.DirectionalOutputHint": "Otomatik dışa aktarma çıkışı için hangi yönlere izin verildiğini yapılandırın",
   "gui.tooltips.advanced_ae.DirectionalOutput": "Yönlü Çıkış",
   "gui.tooltips.advanced_ae.DownButton": "Makinenin AŞAĞI yüzünü hedefle.",
   "gui.tooltips.advanced_ae.EastButton": "Makinenin DOĞU yüzünü hedefle.",

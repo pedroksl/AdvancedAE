@@ -8,12 +8,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.pedroksl.advanced_ae.api.IFluidTankHandler;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
-import net.pedroksl.advanced_ae.network.packet.FluidTankClientAudioPacket;
-import net.pedroksl.advanced_ae.network.packet.FluidTankStackUpdatePacket;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
+import net.pedroksl.ae2addonlib.api.IFluidTankHandler;
+import net.pedroksl.ae2addonlib.gui.OutputDirectionMenu;
+import net.pedroksl.ae2addonlib.network.clientPacket.FluidTankClientAudioPacket;
+import net.pedroksl.ae2addonlib.network.clientPacket.FluidTankStackUpdatePacket;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
@@ -84,14 +85,14 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
             if (genInput != null && genInput.what() != null) {
                 inputFluid = ((AEFluidKey) genInput.what()).toStack(((int) genInput.amount()));
             }
+            sendPacketToClient(new FluidTankStackUpdatePacket(1, inputFluid));
 
             var genOutput = this.getHost().getTank().getStack(0);
             FluidStack outputFluid = FluidStack.EMPTY;
             if (genOutput != null && genOutput.what() != null) {
                 outputFluid = ((AEFluidKey) genOutput.what()).toStack(((int) genOutput.amount()));
             }
-
-            sendPacketToClient(new FluidTankStackUpdatePacket(inputFluid, outputFluid));
+            sendPacketToClient(new FluidTankStackUpdatePacket(0, outputFluid));
         }
         super.standardDetectAndSendChanges();
     }

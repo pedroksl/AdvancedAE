@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.common.SoundActions;
+import net.pedroksl.ae2addonlib.util.WaterBasedFluidType;
 
 public class QuantumInfusionFluidType extends WaterBasedFluidType {
     public QuantumInfusionFluidType() {

@@ -1,13 +1,8 @@
 package net.pedroksl.advanced_ae.xmod;
 
-import net.minecraft.data.recipes.RecipeOutput;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.loading.LoadingModList;
-import net.neoforged.fml.loading.moddiscovery.ModInfo;
-import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
-import net.neoforged.neoforge.common.conditions.NotCondition;
+import net.pedroksl.ae2addonlib.util.AddonEnum;
 
-public enum Addons {
+public enum Addons implements AddonEnum {
     EXTENDEDAE("Extended AE"),
     APPMEK("Applied Mekanistics"),
     APPFLUX("Applied Flux"),
@@ -15,6 +10,8 @@ public enum Addons {
     MEKANISM("Mekanism"),
     IRIS("Iris"),
     CURIOS("Curios"),
+    INVTWEAKS("Inventory Tweaks"),
+    DARKMODEEVERYWHERE("Dark Mode Everywhere"),
     APOTHIC_ENCHANTING("Apothic Enchanting");
 
     private final String modName;
@@ -23,25 +20,13 @@ public enum Addons {
         this.modName = modName;
     }
 
+    @Override
     public String getModId() {
         return name().toLowerCase();
     }
 
+    @Override
     public String getModName() {
         return this.modName;
-    }
-
-    public boolean isLoaded() {
-        return ModList.get() != null
-                ? ModList.get().isLoaded(getModId())
-                : LoadingModList.get().getMods().stream().map(ModInfo::getModId).anyMatch(getModId()::equals);
-    }
-
-    public RecipeOutput conditionalRecipe(RecipeOutput output) {
-        return output.withConditions(new ModLoadedCondition(getModId()));
-    }
-
-    public RecipeOutput notConditionalRecipe(RecipeOutput output) {
-        return output.withConditions(new NotCondition(new ModLoadedCondition(getModId())));
     }
 }

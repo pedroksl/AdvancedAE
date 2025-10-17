@@ -2,10 +2,10 @@ package net.pedroksl.advanced_ae.common.inventory;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
-import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeysRegistry;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
+import net.pedroksl.ae2addonlib.registry.helpers.LibComponents;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.menu.locator.ItemMenuHostLocator;
@@ -20,7 +20,7 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
     public AdvPatternEncoderHost(AdvPatternEncoderItem item, Player player, ItemMenuHostLocator locator) {
         super(item, player, locator);
 
-        var itemTag = this.getItemStack().get(AAEComponents.STACK_TAG);
+        var itemTag = this.getItemStack().get(LibComponents.NBT_TAG);
         var registry = player.registryAccess();
         if (itemTag != null) {
             this.inOutInventory.readFromNBT(itemTag, "inOutInventory", registry);
@@ -34,24 +34,24 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
         this.inOutInventory.writeToNBT(itemTag, "inOutInventory", registry);
 
         if (!itemTag.isEmpty()) {
-            this.getItemStack().set(AAEComponents.STACK_TAG, itemTag);
+            this.getItemStack().set(LibComponents.NBT_TAG, itemTag);
         } else {
-            this.getItemStack().remove(AAEComponents.STACK_TAG);
+            this.getItemStack().remove(LibComponents.NBT_TAG);
         }
     }
 
     @Override
     public void onChangeInventory(AppEngInternalInventory inv, int slot) {
-        var itemTag = this.getItemStack().getOrDefault(AAEComponents.STACK_TAG, new CompoundTag());
+        var itemTag = this.getItemStack().getOrDefault(LibComponents.NBT_TAG, new CompoundTag());
         var registry = this.getPlayer().registryAccess();
         if (this.inOutInventory == inv) {
             this.inOutInventory.writeToNBT(itemTag, "inOutInventory", registry);
         }
 
         if (!itemTag.isEmpty()) {
-            this.getItemStack().set(AAEComponents.STACK_TAG, itemTag);
+            this.getItemStack().set(LibComponents.NBT_TAG, itemTag);
         } else {
-            this.getItemStack().remove(AAEComponents.STACK_TAG);
+            this.getItemStack().remove(LibComponents.NBT_TAG);
         }
 
         if (invChangeHandler != null) {
@@ -60,7 +60,7 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
     }
 
     public String getCloseHotkey() {
-        return AAEHotkeys.Keys.PATTERN_ENCODER_HOTKEY.getId();
+        return AAEHotkeysRegistry.Keys.PATTERN_ENCODER_HOTKEY.getId();
     }
 
     public AppEngInternalInventory getInventory() {

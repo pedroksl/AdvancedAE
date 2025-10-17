@@ -63,7 +63,7 @@
   "gui.tooltips.advanced_ae.CoreTooltip": "Fornece 256M de armazenamento de fabricação e %d threads de coprocessamento.",
   "gui.tooltips.advanced_ae.CrafterTerminalSetting": "Terminal do Fabricador Quântico",
   "gui.tooltips.advanced_ae.DataEntanglerMultiplication": "Multiplica o armazenamento total no Multibloco do Computador Quântico por %d. Limitado a %d por multibloco.",
-  "gui.tooltips.advanced_ae.DirectionOutputHint": "Configurar quais direções são permitidas para a autoexportação de saída",
+  "gui.tooltips.advanced_ae.DirectionalOutputHint": "Configurar quais direções são permitidas para a autoexportação de saída",
   "gui.tooltips.advanced_ae.DirectionalOutput": "Saída Direcional",
   "gui.tooltips.advanced_ae.DownButton": "Mire na face INFERIOR da máquina.",
   "gui.tooltips.advanced_ae.EastButton": "Mire na face LESTE da máquina.",

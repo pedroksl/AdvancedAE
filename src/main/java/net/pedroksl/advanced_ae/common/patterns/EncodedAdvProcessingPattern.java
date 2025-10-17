@@ -10,7 +10,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.pedroksl.advanced_ae.common.helpers.NullableDirection;
+import net.pedroksl.ae2addonlib.util.NullableDirection;
 
 import appeng.api.stacks.GenericStack;
 import appeng.core.definitions.AEItems;

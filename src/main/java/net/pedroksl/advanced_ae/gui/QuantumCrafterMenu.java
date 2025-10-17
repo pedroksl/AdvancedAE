@@ -11,6 +11,7 @@ import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
 import net.pedroksl.advanced_ae.network.packet.PatternsUpdatePacket;
+import net.pedroksl.ae2addonlib.gui.OutputDirectionMenu;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
