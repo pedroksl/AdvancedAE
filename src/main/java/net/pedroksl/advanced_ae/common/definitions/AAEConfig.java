@@ -6,8 +6,9 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.ae2addonlib.registry.ConfigRegistry;
 
-public class AAEConfig {
+public class AAEConfig extends ConfigRegistry {
 
     private final AAEConfig.ClientConfig client = new AAEConfig.ClientConfig();
     private final AAEConfig.CommonConfig common = new AAEConfig.CommonConfig();
@@ -312,28 +313,5 @@ public class AAEConfig {
 
             this.spec = builder.build();
         }
-    }
-
-    private static IntValue define(ModConfigSpec.Builder builder, String name, int defaultValue, String comment) {
-        builder.comment(comment);
-        return define(builder, name, defaultValue);
-    }
-
-    private static IntValue define(
-            ModConfigSpec.Builder builder, String name, int defaultValue, int min, int max, String comment) {
-        builder.comment(comment);
-        return define(builder, name, defaultValue, min, max);
-    }
-
-    private static IntValue define(ModConfigSpec.Builder builder, String name, int defaultValue, int min, int max) {
-        return builder.defineInRange(name, defaultValue, min, max);
-    }
-
-    private static IntValue define(ModConfigSpec.Builder builder, String name, int defaultValue) {
-        return define(builder, name, defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
-    }
-
-    private static BooleanValue define(ModConfigSpec.Builder builder, String name, boolean defaultValue) {
-        return builder.define(name, defaultValue);
     }
 }

@@ -6,7 +6,7 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '1.0.17'
     id 'com.diffplug.spotless'
-    id "com.hypherionmc.modutils.modpublisher" version '2.1.6'
+    id "com.hypherionmc.modutils.modpublisher" version '2.1.8'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -49,6 +49,10 @@ neoForge {
     runs {
         client {
             client()
+
+            systemProperties = [
+                    'guideme.ae2.guide.sources': file('src/main/resources/assets/advanced_ae/ae2guide/aae_intro/').absolutePath
+            ]
         }
 
         server {
@@ -64,7 +68,14 @@ neoForge {
 
         data {
             data()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath(), "--existing-mod", "ae2"
+            programArguments = [
+                    '--mod', project.mod_id,
+                    '--all',
+                    '--output', file('src/generated/resources/').getAbsolutePath(),
+                    '--existing', file('src/main/resources/').getAbsolutePath(),
+                    "--existing-mod", "ae2",
+                    "--existing-mod", "ae2addonlib"
+            ]
         }
 
         configureEach {
@@ -128,6 +139,8 @@ dependencies {
     implementation "org.appliedenergistics:guideme:${guide_me_version}"
     api "org.appliedenergistics:appliedenergistics2:${ae2_version}"
     implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
+    jarJar implementation("curse.maven:ae2addonlib-1366135:${ae2addonlib_file_id}")
+    //implementation "net.pedroksl.ae2addonlib:AE2AddonLib:1.0.0"
     jarJar implementation("de.mari_023:ae2wtlib_api:${ae2wtlib_version}") {
         transitive = false
     }
@@ -143,20 +156,26 @@ dependencies {
     compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
     compileOnly "curse.maven:jei-238222:${jei_version}"
 
+    // Compatibility
+    compileOnly "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
+    compileOnly "curse.maven:irisshaders-455508:${iris_file_id}"
     implementation "curse.maven:mega-cells-622112:${mega_file_id}"
     implementation "curse.maven:mekanism-268560:${mekanism_file_id}"
     implementation "curse.maven:applied-mekanistics-574300:${appmek_file_id}"
     implementation "curse.maven:curios-309927:${curios_file_id}"
 
-    runtimeOnly "curse.maven:cucumber-272335:${cucumber_file_id}"
-    runtimeOnly "curse.maven:mystical-agriculture-246640:${ma_file_id}"
+    // Runtime Tests
+    localRuntime "curse.maven:cucumber-272335:${cucumber_file_id}"
+    localRuntime "curse.maven:mystical-agriculture-246640:${ma_file_id}"
 
-    runtimeOnly "curse.maven:placebo-283644:${placebo_file_id}"
-    runtimeOnly "curse.maven:apothic-attributes-898963:${apothic_att_file_id}"
-    implementation "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
+    localRuntime "curse.maven:dark-mode-everywhere-574123:6470153"
+    localRuntime "curse.maven:placebo-283644:${placebo_file_id}"
+    localRuntime "curse.maven:apothic-attributes-898963:${apothic_att_file_id}"
+    localRuntime "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
 
-    runtimeOnly "curse.maven:sodium-394468:${sodium_file_id}"
-    implementation "curse.maven:irisshaders-455508:${iris_file_id}"
+    localRuntime "curse.maven:sodium-394468:${sodium_file_id}"
+
+    localRuntime "curse.maven:irisshaders-455508:${iris_file_id}"
     // setup Xei
     switch (use_Xei) {
         case "emi":
@@ -235,7 +254,7 @@ publisher {
 
     // Type of release. beta, alpha or release
     // You can also use VersionType.BETA, VersionType.ALPHA or VersionType.RELEASE
-    setVersionType("RELEASE")
+    setVersionType("${project.version_type}")
 
     // Changelog. This can be a file, string, OR, gist/github url
     // For example: markdown.md, or "This is my changelog"

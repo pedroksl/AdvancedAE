@@ -2,11 +2,8 @@ package net.pedroksl.advanced_ae.common.definitions;
 
 import java.util.function.Supplier;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.api.IQuantumCrafterTermMenuHost;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
@@ -22,13 +19,19 @@ import net.pedroksl.advanced_ae.gui.*;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.SmallAdvPatternProviderMenu;
 import net.pedroksl.advanced_ae.gui.quantumcomputer.QuantumComputerMenu;
+import net.pedroksl.ae2addonlib.registry.MenuRegistry;
 
 import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.implementations.MenuTypeBuilder;
 
-public class AAEMenus {
-    public static final DeferredRegister<MenuType<?>> DR = DeferredRegister.create(Registries.MENU, AdvancedAE.MOD_ID);
+public class AAEMenus extends MenuRegistry {
+
+    public static final AAEMenus INSTANCE = new AAEMenus();
+
+    AAEMenus() {
+        super(AdvancedAE.MOD_ID);
+    }
 
     public static final Supplier<MenuType<QuantumComputerMenu>> QUANTUM_COMPUTER =
             create("quantum_computer", QuantumComputerMenu::new, AdvCraftingBlockEntity.class);
@@ -55,12 +58,8 @@ public class AAEMenus {
     public static final Supplier<MenuType<AdvancedIOBusMenu>> ADVANCED_IO_BUS =
             create("advanced_io_bus", AdvancedIOBusMenu::new, AdvancedIOBusPart.class);
 
-    public static final Supplier<MenuType<OutputDirectionMenu>> OUTPUT_DIRECTION =
-            create("output_direction", OutputDirectionMenu::new, IDirectionalOutputHost.class);
     public static final Supplier<MenuType<QuantumCrafterConfigPatternMenu>> CRAFTER_PATTERN_CONFIG =
             create("quantum_crafter_pattern_config", QuantumCrafterConfigPatternMenu::new, ISubMenuHost.class);
-    public static final Supplier<MenuType<SetAmountMenu>> SET_AMOUNT =
-            create("set_amount", SetAmountMenu::new, ISubMenuHost.class);
 
     public static final Supplier<MenuType<QuantumArmorConfigMenu>> QUANTUM_ARMOR_CONFIG =
             create("quantum_armor_config", QuantumArmorConfigMenu::new, QuantumArmorMenuHost.class);
@@ -77,10 +76,10 @@ public class AAEMenus {
 
     private static <M extends AEBaseMenu, H> Supplier<MenuType<M>> create(
             String id, MenuTypeBuilder.MenuFactory<M, H> factory, Class<H> host) {
-        return DR.register(id, () -> MenuTypeBuilder.create(factory, host).build(AdvancedAE.makeId(id)));
+        return create(AdvancedAE.MOD_ID, id, factory, host);
     }
 
     private static <T extends AEBaseMenu> Supplier<MenuType<T>> create(String id, Supplier<MenuType<T>> supplier) {
-        return DR.register(id, supplier);
+        return create(AdvancedAE.MOD_ID, id, supplier);
     }
 }

@@ -1,7 +1,8 @@
-// 1.21.1	2025-08-20T23:13:00.8246999	Tags (Item)
+// 1.21.1	2025-10-08T19:18:04.3801524	Tags (Item)
 112deed24f16ecbd7d0c8130021b3261beb79f92 data/advanced_ae/tags/item/adv_pattern_provider.json
 112deed24f16ecbd7d0c8130021b3261beb79f92 data/ae2/tags/item/pattern_provider.json
 1ce738861dfd97c67d705cc7adb619c249a040c3 data/curios/tags/item/adv_pattern_encoder.json
+561144101fec50ad568609e60e8e4770bf08aa1e data/curios/tags/item/curio.json
 19c58bec7e1120c69ddad2039781139b961993fb data/c/tags/item/armors.json
 6bd56c28f3201371bcec37e70ce1a1bef16fbfbe data/c/tags/item/buckets.json
 2f91f4448764e716e431d83fbc4571458ab5e2b1 data/c/tags/item/dusts.json

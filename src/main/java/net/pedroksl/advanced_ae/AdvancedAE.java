@@ -4,16 +4,17 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
-import net.pedroksl.advanced_ae.common.items.armors.IGridLinkedItem;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.events.AAELivingEntityEvents;
@@ -23,7 +24,9 @@ import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
 import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
+import net.pedroksl.advanced_ae.xmod.dme.DMEPlugin;
 import net.pedroksl.advanced_ae.xmod.mekansim.MekanismPlugin;
+import net.pedroksl.ae2addonlib.api.IGridLinkedItem;
 
 import appeng.api.AECapabilities;
 import appeng.api.features.GridLinkables;
@@ -53,21 +56,20 @@ public class AdvancedAE {
 
         AAEConfig.register(container);
 
-        AAEBlocks.DR.register(eventBus);
-        AAEItems.DR.register(eventBus);
-        AAEBlockEntities.DR.register(eventBus);
-        AAEFluids.init(eventBus);
-        AAEMenus.DR.register(eventBus);
-        AAEComponents.DR.register(eventBus);
-        AAEMaterials.DR.register(eventBus);
-        AAECreativeTab.DR.register(eventBus);
-
-        AAEComponents.init();
+        AAEItems.INSTANCE.register(eventBus);
+        AAEBlocks.INSTANCE.register(eventBus);
+        AAEBlockEntities.INSTANCE.register(eventBus);
+        AAEFluids.INSTANCE.register(eventBus);
+        AAEMenus.INSTANCE.register(eventBus);
+        AAEComponents.INSTANCE.register(eventBus);
+        AAEMaterials.INSTANCE.register(eventBus);
+        AAECreativeTab.INSTANCE.register(eventBus);
 
         eventBus.addListener(AdvancedAE::initUpgrades);
         eventBus.addListener(AdvancedAE::initCapabilities);
+        eventBus.addListener(AdvancedAE::imc);
 
-        eventBus.addListener(AAENetworkHandler.INSTANCE::onRegister);
+        eventBus.addListener(AAENetworkHandler.INSTANCE::register);
         eventBus.addListener((RegisterEvent event) -> {
             if (event.getRegistryKey() == Registries.RECIPE_TYPE) {
                 InitRecipeTypes.init(event.getRegistry(Registries.RECIPE_TYPE));
@@ -77,7 +79,7 @@ public class AdvancedAE {
         });
 
         eventBus.addListener(this::commonSetup);
-        AAEHotkeys.init();
+        AAEHotkeysRegistry.INSTANCE.init();
     }
 
     public static AdvancedAE instance() {
@@ -135,11 +137,11 @@ public class AdvancedAE {
 
     @SuppressWarnings("UnstableApiUsage")
     private static void initCapabilities(RegisterCapabilitiesEvent event) {
-        for (var type : AAEBlockEntities.DR.getEntries()) {
+        for (var type : AAEBlockEntities.INSTANCE.getImplementorsOf(IInWorldGridNodeHost.class)) {
             event.registerBlockEntity(
-                    AECapabilities.IN_WORLD_GRID_NODE_HOST, type.get(), (be, context) -> (IInWorldGridNodeHost) be);
+                    AECapabilities.IN_WORLD_GRID_NODE_HOST, type, (be, context) -> (IInWorldGridNodeHost) be);
         }
-        for (var type : AAEItems.getItems()) {
+        for (var type : AAEItems.INSTANCE.getItems()) {
             if (type.get() instanceof IAEItemPowerStorage powerStorage) {
                 event.registerItem(
                         Capabilities.EnergyStorage.ITEM,
@@ -185,6 +187,16 @@ public class AdvancedAE {
 
         if (Addons.MEKANISM.isLoaded()) {
             MekanismPlugin.initCap(event);
+        }
+    }
+
+    public static void imc(InterModEnqueueEvent event) {
+        if (Addons.INVTWEAKS.isLoaded()) {
+            InterModComms.sendTo(
+                    Addons.INVTWEAKS.getModId(), "blacklist-screen", () -> "net.pedroksl.advanced_ae.client.gui.*");
+        }
+        if (Addons.DARKMODEEVERYWHERE.isLoaded()) {
+            DMEPlugin.sendBlacklistIMC();
         }
     }
 

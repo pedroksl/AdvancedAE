@@ -6,11 +6,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternEncoderHost;
 import net.pedroksl.advanced_ae.common.patterns.AdvPatternDetailsEncoder;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
-import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderPacket;
 
 import appeng.api.crafting.IPatternDetails;
@@ -84,7 +84,7 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
         }
 
         if (this.getPlayer() instanceof ServerPlayer sp) {
-            AAENetworkHandler.INSTANCE.sendTo(new AdvPatternEncoderPacket(dirMap), sp);
+            PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(dirMap));
         }
     }
 
@@ -117,7 +117,7 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
 
     private void clearDecodedPattern() {
         if (this.getPlayer() instanceof ServerPlayer sp) {
-            AAENetworkHandler.INSTANCE.sendTo(new AdvPatternEncoderPacket(), sp);
+            PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(new LinkedHashMap<>()));
         }
     }
 
@@ -136,7 +136,7 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
             this.outputSlot.set(newPattern);
 
             if (this.getPlayer() instanceof ServerPlayer sp) {
-                AAENetworkHandler.INSTANCE.sendTo(new AdvPatternEncoderPacket(dirMap), sp);
+                PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(dirMap));
             }
         }
     }

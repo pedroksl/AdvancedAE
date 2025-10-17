@@ -1,11 +1,13 @@
 package net.pedroksl.advanced_ae.client.gui.widgets;
 
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.resources.ResourceLocation;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.ae2addonlib.client.widgets.IBlitterIcon;
 
 import appeng.client.gui.style.Blitter;
 
-public enum AAEIcon {
+public enum AAEIcon implements IBlitterIcon {
     ME_EXPORT_ON(0, 0),
     ME_EXPORT_OFF(16, 0),
     DIRECTION_OUTPUT(32, 0),
@@ -52,6 +54,21 @@ public enum AAEIcon {
         this.y = y;
         this.width = width;
         this.height = height;
+    }
+
+    @Override
+    public ResourceLocation getTexture() {
+        return TEXTURE;
+    }
+
+    @Override
+    public Size getTextureSize() {
+        return new Size(TEXTURE_WIDTH, TEXTURE_HEIGHT);
+    }
+
+    @Override
+    public Rect2i getRect() {
+        return new Rect2i(x, y, width, height);
     }
 
     public Blitter getBlitter() {

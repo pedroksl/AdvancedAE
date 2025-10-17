@@ -20,6 +20,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
+import net.pedroksl.ae2addonlib.util.BlockUpgradeItem;
 
 import appeng.blockentity.networking.CableBusBlockEntity;
 import appeng.parts.AEBasePart;

@@ -1,1 +1,3 @@
-- Fixes error in recipe to combine with crafting terminal
+- Fixed a crash that happened with non-tinted quantum armors after the last update
+- Fixed the quantum helmet texture border
+- Updated Quantum Armor set guide page to remove the energy bar

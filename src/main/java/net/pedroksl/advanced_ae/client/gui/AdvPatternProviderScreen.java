@@ -4,7 +4,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.api.AAESettings;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEServerSettingToggleButton;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAESettingToggleButton;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderLockReason;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderMenu;
@@ -48,7 +47,7 @@ public class AdvPatternProviderScreen extends AEBaseScreen<AdvPatternProviderMen
                 btn -> selectNextPatternProviderMode());
         this.addToLeftToolbar(this.showInPatternAccessTerminalButton);
 
-        this.filterInput = new AAEServerSettingToggleButton<>(AAESettings.FILTERED_IMPORT, YesNo.NO);
+        this.filterInput = new AAESettingToggleButton<>(AAESettings.FILTERED_IMPORT, YesNo.NO);
         this.addToLeftToolbar(this.filterInput);
 
         this.lockReason = new AdvPatternProviderLockReason(this);
