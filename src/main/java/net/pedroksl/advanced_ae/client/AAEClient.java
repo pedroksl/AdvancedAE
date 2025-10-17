@@ -168,7 +168,7 @@ public class AAEClient extends AdvancedAE {
         for (var item : AAEItems.getQuantumArmor()) {
             event.register(
                     (stack, index) -> index == 1
-                            ? (int) stack.getOrDefault(LibComponents.TINT_COLOR_TAG, Colors.PURPLE)
+                            ? stack.getOrDefault(LibComponents.TINT_COLOR_TAG, Colors.PURPLE.argb())
                             : Colors.WHITE.argb(),
                     item);
         }
