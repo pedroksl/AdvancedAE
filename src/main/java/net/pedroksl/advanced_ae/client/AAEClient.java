@@ -12,6 +12,8 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.*;
@@ -44,7 +46,8 @@ public class AAEClient extends AdvancedAE {
 
     public AAEClient(IEventBus eventBus, ModContainer container) {
         super(eventBus, container);
-
+        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        
         initBuiltInModels();
 
         eventBus.addListener(AAEClient::initScreens);
