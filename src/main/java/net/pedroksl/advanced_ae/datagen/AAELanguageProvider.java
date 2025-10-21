@@ -60,19 +60,19 @@ public class AAELanguageProvider extends LanguageProvider {
         add("key." + AdvancedAE.MOD_ID + ".category", "Advanced AE");
         add("key.ae2.wireless_quantum_crafter_terminal", "Open Wireless Quantum Crafter Terminal");
         add("curios.identifier.adv_pattern_encoder", "Pattern Encoder");
-        
+
         config("quantum computer", "Quantum Computer");
         config("quantum armor", "Quantum Armor");
         config("Miscellaneous", "Miscellaneous");
         config("enableEffects", "Enable Effects");
-        
+
         config("quantumComputerMaxSize", "Maximum Quantum Computer Size");
         config("quantumComputerAcceleratorThreads", "Quantum Computer Accelerator Threads");
         config("quantumComputerMaxMultiThreaders", "Maximum Multi-Threaders");
         config("quantumComputermaxDataEntanglers", "Maximum Data Entanglers");
         config("quantumComputerMultiThreaderMultiplication", "Multi-Threader Multiplication");
         config("quantumComputerDataEntanglerMultiplication", "Data Entangler Multiplication");
-        
+
         config("quantumArmorMaxWalkSpeed", "Maximum Walk Speed");
         config("quantumArmorMaxSprintSpeed", "Maximum Sprint Speed");
         config("quantumArmorMaxStepHeight", "Maximum Step Height");
@@ -88,10 +88,10 @@ public class AAELanguageProvider extends LanguageProvider {
         config("quantumArmorSwimSpeedBoost", "Swim Speed Boost");
         config("quantumArmorRegenerationPerTick", "Regeneration Per Tick");
         config("quantumArmorPercentageDamageAbsorption", "Percentage Damage Absorption");
-        
+
         config("throughputMonitorCacheSize", "Throughput Monitor Cache Size");
     }
-    
+
     private void config(String key, String englishName) {
         add(String.format("%s.configuration.%s", AdvancedAE.MOD_ID, key), englishName);
     }

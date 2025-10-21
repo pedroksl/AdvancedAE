@@ -47,7 +47,7 @@ public class AAEClient extends AdvancedAE {
     public AAEClient(IEventBus eventBus, ModContainer container) {
         super(eventBus, container);
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-        
+
         initBuiltInModels();
 
         eventBus.addListener(AAEClient::initScreens);
