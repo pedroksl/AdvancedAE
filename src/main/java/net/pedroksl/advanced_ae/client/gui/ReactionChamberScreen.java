@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
@@ -85,8 +84,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
                 this.topPos + TANKS_Y,
                 TANKS_WIDTH,
                 TANKS_HEIGHT,
-                this.menu.INPUT_FLUID_SIZE,
-                Component.empty()));
+                this.menu.INPUT_FLUID_SIZE));
         this.outputSlot = this.addRenderableWidget(new FluidTankSlot(
                 this,
                 0,
@@ -94,8 +92,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
                 this.topPos + TANKS_Y,
                 TANKS_WIDTH,
                 TANKS_HEIGHT,
-                this.menu.OUTPUT_FLUID_SIZE,
-                Component.empty()));
+                this.menu.OUTPUT_FLUID_SIZE));
 
         super.init();
     }
@@ -123,11 +120,6 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
         } else {
             this.outputSlot.setFluidStack(stack);
         }
-    }
-
-    @Override
-    public void playSoundFeedback(boolean isInsert) {
-        this.inputSlot.playDownSound(Minecraft.getInstance().getSoundManager(), isInsert);
     }
 
     private static class AlertWidget extends AbstractWidget {

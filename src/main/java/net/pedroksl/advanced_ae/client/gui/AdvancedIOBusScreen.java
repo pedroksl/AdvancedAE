@@ -16,7 +16,7 @@ public class AdvancedIOBusScreen extends StockExportBusScreen<AdvancedIOBusMenu>
     public AdvancedIOBusScreen(AdvancedIOBusMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
 
-        this.regulateButton = new AAESettingToggleButton<>(AAESettings.REGULATE_STOCK, YesNo.YES);
+        this.regulateButton = AAESettingToggleButton.serverButton(AAESettings.REGULATE_STOCK, YesNo.YES);
         this.addToLeftToolbar(this.regulateButton);
     }
 

@@ -55,10 +55,10 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         this.redstoneMode = new ServerSettingToggleButton<>(Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
         addToLeftToolbar(this.redstoneMode);
 
-        this.showOnTerminal = new AAESettingToggleButton<>(AAESettings.QUANTUM_CRAFTER_TERMINAL, YesNo.YES);
+        this.showOnTerminal = AAESettingToggleButton.serverButton(AAESettings.QUANTUM_CRAFTER_TERMINAL, YesNo.YES);
         this.addToLeftToolbar(this.showOnTerminal);
 
-        this.meExportBtn = new AAESettingToggleButton<>(AAESettings.ME_EXPORT, YesNo.NO);
+        this.meExportBtn = AAESettingToggleButton.serverButton(AAESettings.ME_EXPORT, YesNo.NO);
         this.addToLeftToolbar(this.meExportBtn);
 
         this.outputConfigure =

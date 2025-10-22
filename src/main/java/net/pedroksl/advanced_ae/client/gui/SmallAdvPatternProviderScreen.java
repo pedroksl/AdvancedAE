@@ -49,7 +49,7 @@ public class SmallAdvPatternProviderScreen extends AEBaseScreen<SmallAdvPatternP
                 btn -> selectNextPatternProviderMode());
         this.addToLeftToolbar(this.showInPatternAccessTerminalButton);
 
-        this.filterInput = new AAESettingToggleButton<>(AAESettings.FILTERED_IMPORT, YesNo.NO);
+        this.filterInput = AAESettingToggleButton.serverButton(AAESettings.FILTERED_IMPORT, YesNo.NO);
         this.addToLeftToolbar(this.filterInput);
 
         this.lockReason = new SmallAdvPatternProviderLockReason(this);

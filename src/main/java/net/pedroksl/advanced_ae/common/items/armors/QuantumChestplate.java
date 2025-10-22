@@ -46,7 +46,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
     private static final double MAX_POWER_STORAGE = 300000000;
 
     public QuantumChestplate(Properties properties) {
-        super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.CHESTPLATE, properties, () -> MAX_POWER_STORAGE);
+        super(AAEMaterials.QUANTUM_ALLOY.material(), Type.CHESTPLATE, properties, () -> MAX_POWER_STORAGE);
 
         registerUpgrades(
                 UpgradeType.FLIGHT,

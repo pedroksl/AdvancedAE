@@ -47,7 +47,7 @@ public class AdvPatternProviderScreen extends AEBaseScreen<AdvPatternProviderMen
                 btn -> selectNextPatternProviderMode());
         this.addToLeftToolbar(this.showInPatternAccessTerminalButton);
 
-        this.filterInput = new AAESettingToggleButton<>(AAESettings.FILTERED_IMPORT, YesNo.NO);
+        this.filterInput = AAESettingToggleButton.serverButton(AAESettings.FILTERED_IMPORT, YesNo.NO);
         this.addToLeftToolbar(this.filterInput);
 
         this.lockReason = new AdvPatternProviderLockReason(this);

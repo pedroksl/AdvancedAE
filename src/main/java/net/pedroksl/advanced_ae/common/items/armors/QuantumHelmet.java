@@ -31,7 +31,7 @@ public class QuantumHelmet extends QuantumArmorBase {
     private static final double MAX_POWER_STORAGE = 200000000;
 
     public QuantumHelmet(Properties properties) {
-        super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.HELMET, properties, () -> MAX_POWER_STORAGE);
+        super(AAEMaterials.QUANTUM_ALLOY.material(), Type.HELMET, properties, () -> MAX_POWER_STORAGE);
 
         registerUpgrades(
                 UpgradeType.WATER_BREATHING,

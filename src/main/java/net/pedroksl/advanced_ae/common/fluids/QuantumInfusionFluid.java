@@ -15,11 +15,11 @@ import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 @ParametersAreNonnullByDefault
 public abstract class QuantumInfusionFluid extends BaseFlowingFluid {
     public static final BaseFlowingFluid.Properties PROPERTIES = new BaseFlowingFluid.Properties(
-                    AAEFluids.QUANTUM_INFUSION.fluidTypeId(),
-                    AAEFluids.QUANTUM_INFUSION.flowingId(),
-                    AAEFluids.QUANTUM_INFUSION.sourceId())
+                    AAEFluids.QUANTUM_INFUSION.fluidTypeHolder(),
+                    AAEFluids.QUANTUM_INFUSION.flowingHolder(),
+                    AAEFluids.QUANTUM_INFUSION.sourceHolder())
             .bucket(AAEFluids.QUANTUM_INFUSION.bucketItemId())
-            .block(AAEFluids.QUANTUM_INFUSION.blockId());
+            .block(AAEFluids.QUANTUM_INFUSION.blockHolder());
 
     protected QuantumInfusionFluid(Properties properties) {
         super(properties);

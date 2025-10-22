@@ -3,15 +3,15 @@ package net.pedroksl.advanced_ae.common.items.upgrades;
 import java.util.List;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 
 import appeng.core.localization.Tooltips;
+import appeng.items.AEBaseItem;
 
-public class QuantumUpgradeBaseItem extends Item {
+public class QuantumUpgradeBaseItem extends AEBaseItem {
     private final UpgradeType type;
 
     public QuantumUpgradeBaseItem(Properties properties) {

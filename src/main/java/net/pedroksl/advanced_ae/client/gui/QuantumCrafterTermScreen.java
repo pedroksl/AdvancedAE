@@ -120,8 +120,8 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
         this.addToLeftToolbar(
                 new SettingToggleButton<>(Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
 
-        showQuantumCrafters =
-                new AAESettingToggleButton<>(AAESettings.TERMINAL_SHOW_QUANTUM_CRAFTERS, ShowQuantumCrafters.VISIBLE);
+        showQuantumCrafters = AAESettingToggleButton.serverButton(
+                AAESettings.TERMINAL_SHOW_QUANTUM_CRAFTERS, ShowQuantumCrafters.VISIBLE);
 
         this.addToLeftToolbar(showQuantumCrafters);
 

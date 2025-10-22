@@ -21,7 +21,7 @@ public class QuantumBoots extends QuantumArmorBase {
     private static final double MAX_POWER_STORAGE = 200000000;
 
     public QuantumBoots(Properties properties) {
-        super(AAEMaterials.QUANTUM_ALLOY.holder(), Type.BOOTS, properties, () -> MAX_POWER_STORAGE);
+        super(AAEMaterials.QUANTUM_ALLOY.material(), Type.BOOTS, properties, () -> MAX_POWER_STORAGE);
 
         registerUpgrades(
                 UpgradeType.STEP_ASSIST,

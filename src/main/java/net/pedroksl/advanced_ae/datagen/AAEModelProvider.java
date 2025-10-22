@@ -70,11 +70,11 @@ public class AAEModelProvider extends AE2AddonModelProvider {
             simpleBlockItem(craftingBlock, blockModel);
         }
 
-        interfaceOrProviderPart(AAEItems.ADV_PATTERN_PROVIDER);
-        interfaceOrProviderPart(AAEItems.SMALL_ADV_PATTERN_PROVIDER);
-        interfaceOrProviderPart(AAEItems.STOCK_EXPORT_BUS, true);
-        interfaceOrProviderPart(AAEItems.IMPORT_EXPORT_BUS, true);
-        interfaceOrProviderPart(AAEItems.ADVANCED_IO_BUS, true);
+        partItem(AAEItems.ADV_PATTERN_PROVIDER);
+        partItem(AAEItems.SMALL_ADV_PATTERN_PROVIDER);
+        partItem(AAEItems.STOCK_EXPORT_BUS, true);
+        partItem(AAEItems.IMPORT_EXPORT_BUS, true);
+        partItem(AAEItems.ADVANCED_IO_BUS, true);
 
         // PATTERN PROVIDER
         patternProvider(AAEBlocks.ADV_PATTERN_PROVIDER);
@@ -82,7 +82,7 @@ public class AAEModelProvider extends AE2AddonModelProvider {
 
         // Fluids
         for (var fluid : AAEFluids.INSTANCE.getFluids()) {
-            waterBaseFluid(fluid);
+            waterBasedFluid(fluid);
         }
     }
 
@@ -112,10 +112,5 @@ public class AAEModelProvider extends AE2AddonModelProvider {
                 }))
                 .with(createFacingSpinDispatch());
         simpleBlockItem(block, blockModelOn);
-    }
-
-    @Override
-    public String getName() {
-        return "Block States / Models";
     }
 }

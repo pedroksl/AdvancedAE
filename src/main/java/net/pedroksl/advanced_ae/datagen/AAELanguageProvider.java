@@ -30,10 +30,10 @@ public class AAELanguageProvider extends LanguageProvider {
         }
 
         for (var fluid : AAEFluids.INSTANCE.getFluids()) {
-            add(fluid.fluidType(), fluid.getEnglishName());
-            add(fluid.flowing(), fluid.getEnglishName());
-            add(fluid.source(), fluid.getEnglishName());
-            add(fluid.block(), fluid.getEnglishName());
+            add(fluid.fluidType(), fluid.englishName());
+            add(fluid.flowing(), fluid.englishName());
+            add(fluid.source(), fluid.englishName());
+            add(fluid.block(), fluid.englishName());
             add(fluid.bucketItem(), fluid.bucketItemId().getEnglishName());
         }
 
@@ -42,7 +42,7 @@ public class AAELanguageProvider extends LanguageProvider {
         }
 
         for (var material : AAEMaterials.INSTANCE.getMaterials()) {
-            add(material.get(), material.getEnglishName());
+            add(material.get(), material.englishName());
         }
 
         for (var key : AAEHotkeysRegistry.Keys.values()) {

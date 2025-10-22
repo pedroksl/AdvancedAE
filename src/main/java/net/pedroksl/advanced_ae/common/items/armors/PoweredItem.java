@@ -9,7 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.pedroksl.ae2addonlib.registry.helpers.CreativeTabItem;
+import net.pedroksl.ae2addonlib.registry.helpers.ICreativeTabItem;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -17,7 +17,7 @@ import appeng.api.ids.AEComponents;
 import appeng.api.implementations.items.IAEItemPowerStorage;
 import appeng.core.localization.Tooltips;
 
-public class PoweredItem extends ArmorItem implements IAEItemPowerStorage, CreativeTabItem {
+public class PoweredItem extends ArmorItem implements IAEItemPowerStorage, ICreativeTabItem {
 
     private static final double MIN_POWER = 0.0001;
     private final DoubleSupplier powerCapacity;

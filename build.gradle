@@ -139,8 +139,7 @@ dependencies {
     implementation "org.appliedenergistics:guideme:${guide_me_version}"
     api "org.appliedenergistics:appliedenergistics2:${ae2_version}"
     implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
-    jarJar implementation("curse.maven:ae2addonlib-1366135:${ae2addonlib_file_id}")
-    //implementation "net.pedroksl.ae2addonlib:AE2AddonLib:1.0.0"
+    jarJar implementation("io.github.pedroksl:ae2addonlib:${ae2addonlib_version}")
     jarJar implementation("de.mari_023:ae2wtlib_api:${ae2wtlib_version}") {
         transitive = false
     }
@@ -244,7 +243,7 @@ publisher {
     }
 
     // Enable Debug mode. When enabled, no files will actually be uploaded
-    setDebug(false)
+    setDebug(true)
 
     // Curseforge Project ID
     setCurseID("1084104")

@@ -13,7 +13,6 @@ import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 import net.pedroksl.ae2addonlib.api.IFluidTankHandler;
 import net.pedroksl.ae2addonlib.gui.OutputDirectionMenu;
-import net.pedroksl.ae2addonlib.network.clientPacket.FluidTankClientAudioPacket;
 import net.pedroksl.ae2addonlib.network.clientPacket.FluidTankStackUpdatePacket;
 
 import appeng.api.config.Settings;
@@ -157,6 +156,14 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     }
 
     @Override
+    public ServerPlayer getServerPlayer() {
+        if (isClientSide()) {
+            return null;
+        }
+        return ((ServerPlayer) getPlayer());
+    }
+
+    @Override
     public ItemStack getCarriedItem() {
         return getCarried();
     }
@@ -179,10 +186,5 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     @Override
     public boolean canInsertInto(int index) {
         return index == 1;
-    }
-
-    @Override
-    public void playAudioCues(FluidTankClientAudioPacket p) {
-        sendPacketToClient(p);
     }
 }

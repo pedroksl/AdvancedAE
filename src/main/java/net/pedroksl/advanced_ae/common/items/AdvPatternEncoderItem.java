@@ -44,6 +44,11 @@ public class AdvPatternEncoderItem extends AEBaseItem implements IMenuItem {
     }
 
     @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return super.isEnchantable(stack);
+    }
+
+    @Override
     public @NotNull InteractionResultHolder<ItemStack> use(
             @NotNull Level level, @NotNull Player p, @NotNull InteractionHand hand) {
         if (!level.isClientSide()) {
