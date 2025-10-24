@@ -1,16 +1,18 @@
 package net.pedroksl.advanced_ae.network.packet;
 
-import com.glodblock.github.glodium.network.packet.IMessage;
-
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterConfigPatternMenu;
+import net.pedroksl.ae2addonlib.network.AddonPacket;
 
-public class SetStockAmountPacket implements IMessage<SetStockAmountPacket> {
-    private int index;
-    private long amount;
+public class SetStockAmountPacket extends AddonPacket {
+    private final int index;
+    private final long amount;
 
-    public SetStockAmountPacket() {}
+    public SetStockAmountPacket(FriendlyByteBuf stream) {
+        index = stream.readInt();
+        amount = stream.readLong();
+    }
 
     public SetStockAmountPacket(int index, long amount) {
         this.index = index;
@@ -18,31 +20,15 @@ public class SetStockAmountPacket implements IMessage<SetStockAmountPacket> {
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf data) {
-        data.writeInt(this.index);
-        data.writeLong(this.amount);
+    public void write(FriendlyByteBuf stream) {
+        stream.writeInt(this.index);
+        stream.writeLong(this.amount);
     }
 
     @Override
-    public void fromBytes(FriendlyByteBuf stream) {
-        index = stream.readInt();
-        amount = stream.readLong();
-    }
-
-    @Override
-    public void onMessage(Player player) {
+    public void serverPacketData(ServerPlayer player) {
         if (player.containerMenu instanceof QuantumCrafterConfigPatternMenu menu) {
             menu.setStockAmount(this.index, this.amount);
         }
-    }
-
-    @Override
-    public Class<SetStockAmountPacket> getPacketClass() {
-        return SetStockAmountPacket.class;
-    }
-
-    @Override
-    public boolean isClient() {
-        return false;
     }
 }

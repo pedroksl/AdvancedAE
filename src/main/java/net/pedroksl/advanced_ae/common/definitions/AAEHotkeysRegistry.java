@@ -1,23 +1,21 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.world.level.ItemLike;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.common.helpers.ArmorHotkeyAction;
+import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.common.helpers.ToggleUpgradeCardAction;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.ae2addonlib.registry.HotkeyRegistry;
 
-import appeng.api.features.HotkeyAction;
-import appeng.hotkeys.InventoryHotkeyAction;
+public final class AAEHotkeysRegistry extends HotkeyRegistry {
 
-public final class AAEHotkeys {
-    public static final Map<String, List<HotkeyAction>> REGISTRY = new HashMap<>();
+    public static final AAEHotkeysRegistry INSTANCE = new AAEHotkeysRegistry();
+
+    AAEHotkeysRegistry() {
+        super(AdvancedAE.MOD_ID, id -> Keys.valueOf(id).getDefaultHotkey(), AAEHotkeys.INSTANCE::registerHotkey);
+    }
 
     public enum Keys {
         ARMOR_CONFIG("quantum_armor_config", "Open Quantum Armor Configuration", GLFW.GLFW_KEY_N),
@@ -55,7 +53,7 @@ public final class AAEHotkeys {
         }
     }
 
-    public static void init() {
+    public void init() {
         registerArmorAction(
                 AAEItems.QUANTUM_HELMET,
                 (player, slot, stack) -> AAEItems.QUANTUM_HELMET.get().openFromEquipmentSlot(player, slot, stack),
@@ -100,33 +98,7 @@ public final class AAEHotkeys {
                 Keys.PICK_CRAFT.id);
     }
 
-    public static void register(ItemLike item, InventoryHotkeyAction.Opener opener, String id) {
-        register(new InventoryHotkeyAction((stack) -> stack.is(item.asItem()), opener), id);
-        // register(new CuriosHotkeyAction(item, opener), id);
-    }
-
-    public static void registerArmorAction(ItemLike item, ArmorHotkeyAction.Opener opener, String id) {
-        register(new ArmorHotkeyAction(item, opener), id);
-    }
-
-    public static void registerToggleUpgradeAction(ItemLike item, ToggleUpgradeCardAction.Opener opener, String id) {
+    public void registerToggleUpgradeAction(ItemLike item, ToggleUpgradeCardAction.Opener opener, String id) {
         register(new ToggleUpgradeCardAction(item, opener), id);
-    }
-
-    public static synchronized void register(HotkeyAction hotkeyAction, String id) {
-        if (REGISTRY.containsKey(id)) {
-            REGISTRY.get(id).add(0, hotkeyAction);
-        } else {
-            REGISTRY.put(id, new ArrayList<>(List.of(hotkeyAction)));
-            AdvancedAE.instance().registerHotkey(id);
-        }
-    }
-
-    public static int getDefaultHotkey(String id) {
-        try {
-            return Keys.valueOf(id).getDefaultHotkey();
-        } catch (IllegalArgumentException ignored) {
-            return GLFW.GLFW_KEY_UNKNOWN;
-        }
     }
 }

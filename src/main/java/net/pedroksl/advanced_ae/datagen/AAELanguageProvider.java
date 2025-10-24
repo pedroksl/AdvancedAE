@@ -20,19 +20,19 @@ public class AAELanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        for (var item : AAEItems.getItems()) {
+        for (var item : AAEItems.INSTANCE.getItems()) {
             add(item.asItem(), item.getEnglishName());
         }
 
-        for (var block : AAEBlocks.getBlocks()) {
+        for (var block : AAEBlocks.INSTANCE.getBlocks()) {
             add(block.block(), block.getEnglishName());
         }
 
-        for (var fluid : AAEFluids.getFluids()) {
-            add(fluid.fluidType(), fluid.getEnglishName());
-            add(fluid.flowing(), fluid.getEnglishName());
-            add(fluid.source(), fluid.getEnglishName());
-            add(fluid.block(), fluid.getEnglishName());
+        for (var fluid : AAEFluids.INSTANCE.getFluids()) {
+            add(fluid.fluidType(), fluid.englishName());
+            add(fluid.flowing(), fluid.englishName());
+            add(fluid.source(), fluid.englishName());
+            add(fluid.block(), fluid.englishName());
             add(fluid.bucketItem(), fluid.bucketItemId().getEnglishName());
         }
 
@@ -40,7 +40,7 @@ public class AAELanguageProvider extends LanguageProvider {
             add(translation.getTranslationKey(), translation.getEnglishText());
         }
 
-        for (var key : AAEHotkeys.Keys.values()) {
+        for (var key : AAEHotkeysRegistry.Keys.values()) {
             add("key." + AdvancedAE.MOD_ID + "." + key.getId(), key.getEnglishTranslation());
         }
 

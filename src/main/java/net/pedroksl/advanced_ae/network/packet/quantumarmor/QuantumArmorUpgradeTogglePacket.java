@@ -1,18 +1,20 @@
 package net.pedroksl.advanced_ae.network.packet.quantumarmor;
 
-import com.glodblock.github.glodium.network.packet.IMessage;
-
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.gui.QuantumArmorConfigMenu;
+import net.pedroksl.ae2addonlib.network.AddonPacket;
 
-public class QuantumArmorUpgradeTogglePacket implements IMessage<QuantumArmorUpgradeTogglePacket> {
+public class QuantumArmorUpgradeTogglePacket extends AddonPacket {
 
-    private UpgradeType upgradeType;
-    private boolean state;
+    private final UpgradeType upgradeType;
+    private final boolean state;
 
-    public QuantumArmorUpgradeTogglePacket() {}
+    public QuantumArmorUpgradeTogglePacket(FriendlyByteBuf stream) {
+        upgradeType = stream.readEnum(UpgradeType.class);
+        state = stream.readBoolean();
+    }
 
     public QuantumArmorUpgradeTogglePacket(UpgradeType upgradeType, boolean state) {
         this.upgradeType = upgradeType;
@@ -20,31 +22,15 @@ public class QuantumArmorUpgradeTogglePacket implements IMessage<QuantumArmorUpg
     }
 
     @Override
-    public void fromBytes(FriendlyByteBuf buf) {
-        upgradeType = buf.readEnum(UpgradeType.class);
-        state = buf.readBoolean();
+    public void write(FriendlyByteBuf stream) {
+        stream.writeEnum(upgradeType);
+        stream.writeBoolean(state);
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeEnum(upgradeType);
-        buf.writeBoolean(state);
-    }
-
-    @Override
-    public void onMessage(Player serverPlayer) {
+    public void serverPacketData(ServerPlayer serverPlayer) {
         if (serverPlayer.containerMenu instanceof QuantumArmorConfigMenu menu) {
             menu.toggleUpgradeEnable(upgradeType, state);
         }
-    }
-
-    @Override
-    public Class<QuantumArmorUpgradeTogglePacket> getPacketClass() {
-        return QuantumArmorUpgradeTogglePacket.class;
-    }
-
-    @Override
-    public boolean isClient() {
-        return true;
     }
 }

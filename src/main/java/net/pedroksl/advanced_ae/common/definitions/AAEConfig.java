@@ -5,9 +5,10 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.ae2addonlib.registry.ConfigRegistry;
 
 @Mod.EventBusSubscriber(modid = AdvancedAE.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class AAEConfig {
+public class AAEConfig extends ConfigRegistry {
 
     private final ClientConfig client = new ClientConfig();
     private final CommonConfig common = new CommonConfig();
@@ -303,27 +304,6 @@ public class AAEConfig {
             builder.pop();
 
             this.spec = builder.build();
-        }
-
-        private static ForgeConfigSpec.IntValue define(
-                ForgeConfigSpec.Builder builder, String name, int defaultValue, String comment) {
-            builder.comment(comment);
-            return define(builder, name, defaultValue);
-        }
-
-        private static ForgeConfigSpec.IntValue define(
-                ForgeConfigSpec.Builder builder, String name, int defaultValue, int min, int max, String comment) {
-            builder.comment(comment);
-            return define(builder, name, defaultValue, min, max);
-        }
-
-        private static ForgeConfigSpec.IntValue define(
-                ForgeConfigSpec.Builder builder, String name, int defaultValue, int min, int max) {
-            return builder.defineInRange(name, defaultValue, min, max);
-        }
-
-        private static ForgeConfigSpec.IntValue define(ForgeConfigSpec.Builder builder, String name, int defaultValue) {
-            return define(builder, name, defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
         }
     }
 }

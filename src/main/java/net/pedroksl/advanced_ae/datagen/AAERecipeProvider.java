@@ -23,6 +23,8 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.*;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipeBuilder;
 import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.ae2addonlib.registry.helpers.LibBlockDefinition;
+import net.pedroksl.ae2addonlib.registry.helpers.LibItemDefinition;
 
 import appeng.core.definitions.*;
 import appeng.datagen.providers.tags.ConventionTags;
@@ -704,7 +706,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .save(c, AdvancedAE.makeId(block.id().getPath() + "_block_reset"));
     }
 
-    private void resetNbtRecipe(@NotNull Consumer<FinishedRecipe> c, AAEItemDefinition<?> item) {
+    private void resetNbtRecipe(@NotNull Consumer<FinishedRecipe> c, LibItemDefinition<?> item) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item)
                 .requires(item)
                 .unlockedBy("hasItem", has(item))
@@ -737,7 +739,7 @@ public class AAERecipeProvider extends RecipeProvider {
     }
 
     private void slabRecipe(
-            @NotNull Consumer<FinishedRecipe> consumer, AAEBlockDefinition<?> block, AAEBlockDefinition<?> slabs) {
+            @NotNull Consumer<FinishedRecipe> consumer, LibBlockDefinition<?> block, LibBlockDefinition<?> slabs) {
         Block inputBlock = block.block();
         Block outputBlock = slabs.block();
 
@@ -753,7 +755,7 @@ public class AAERecipeProvider extends RecipeProvider {
     }
 
     private void stairRecipe(
-            @NotNull Consumer<FinishedRecipe> consumer, AAEBlockDefinition<?> block, AAEBlockDefinition<?> stairs) {
+            @NotNull Consumer<FinishedRecipe> consumer, LibBlockDefinition<?> block, LibBlockDefinition<?> stairs) {
         Block inputBlock = block.block();
         Block outputBlock = stairs.block();
 
@@ -771,7 +773,7 @@ public class AAERecipeProvider extends RecipeProvider {
     }
 
     private void wallRecipe(
-            @NotNull Consumer<FinishedRecipe> consumer, AAEBlockDefinition<?> block, AAEBlockDefinition<?> wall) {
+            @NotNull Consumer<FinishedRecipe> consumer, LibBlockDefinition<?> block, LibBlockDefinition<?> wall) {
         Block inputBlock = block.block();
         Block outputBlock = wall.block();
 

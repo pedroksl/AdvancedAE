@@ -1,6 +1,5 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
@@ -8,13 +7,13 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fluids.FluidStack;
-import net.pedroksl.advanced_ae.api.IFluidTankScreen;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionButton;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEToolbarActionButton;
-import net.pedroksl.advanced_ae.client.gui.widgets.FluidTankSlot;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.ReactionChamberMenu;
+import net.pedroksl.ae2addonlib.api.IFluidTankScreen;
+import net.pedroksl.ae2addonlib.client.widgets.AddonActionButton;
+import net.pedroksl.ae2addonlib.client.widgets.AddonActionItems;
+import net.pedroksl.ae2addonlib.client.widgets.FluidTankSlot;
+import net.pedroksl.ae2addonlib.client.widgets.ToolbarActionButton;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
@@ -36,7 +35,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
 
     private final ProgressBar pb;
     private final SettingToggleButton<YesNo> autoExportBtn;
-    private final AAEToolbarActionButton outputConfigure;
+    private final ToolbarActionButton outputConfigure;
     private final AlertWidget powerAlert;
 
     private FluidTankSlot inputSlot;
@@ -53,16 +52,17 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
         this.addToLeftToolbar(autoExportBtn);
 
         this.outputConfigure =
-                new AAEToolbarActionButton(AAEActionItems.DIRECTIONAL_OUTPUT, btn -> menu.configureOutput());
+                new ToolbarActionButton(AddonActionItems.DIRECTIONAL_OUTPUT, btn -> menu.configureOutput());
         this.outputConfigure.setVisibility(getMenu().getAutoExport() == YesNo.YES);
         this.addToLeftToolbar(this.outputConfigure);
 
-        AAEActionButton clearBtn = new AAEActionButton(AAEActionItems.F_FLUSH, btn -> menu.clearFluid());
+        AddonActionButton clearBtn = new AddonActionButton(AddonActionItems.FLUID_FLUSH, btn -> menu.clearFluid());
         clearBtn.setHalfSize(true);
         clearBtn.setDisableBackground(true);
         widgets.add("clearFluid", clearBtn);
 
-        AAEActionButton clearOutBtn = new AAEActionButton(AAEActionItems.F_FLUSH, btn -> menu.clearFluidOut());
+        AddonActionButton clearOutBtn =
+                new AddonActionButton(AddonActionItems.FLUID_FLUSH, btn -> menu.clearFluidOut());
         clearOutBtn.setHalfSize(true);
         clearOutBtn.setDisableBackground(true);
         widgets.add("clearFluidOut", clearOutBtn);
@@ -85,8 +85,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
                 this.topPos + TANKS_Y,
                 TANKS_WIDTH,
                 TANKS_HEIGHT,
-                this.menu.INPUT_FLUID_SIZE,
-                Component.empty()));
+                this.menu.INPUT_FLUID_SIZE));
         this.outputSlot = this.addRenderableWidget(new FluidTankSlot(
                 this,
                 0,
@@ -94,8 +93,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
                 this.topPos + TANKS_Y,
                 TANKS_WIDTH,
                 TANKS_HEIGHT,
-                this.menu.OUTPUT_FLUID_SIZE,
-                Component.empty()));
+                this.menu.OUTPUT_FLUID_SIZE));
 
         super.init();
     }
@@ -116,14 +114,13 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
         this.powerAlert.visible = this.getMenu().getShowWarning();
     }
 
-    public void updateFluidTankContents(FluidStack inputFluid, FluidStack outputFluid) {
-        this.inputSlot.setFluidStack(inputFluid);
-        this.outputSlot.setFluidStack(outputFluid);
-    }
-
     @Override
-    public void playSoundFeedback(boolean isInsert) {
-        this.inputSlot.playDownSound(Minecraft.getInstance().getSoundManager(), isInsert);
+    public void updateFluidTankContents(int index, FluidStack stack) {
+        if (index == 1) {
+            this.inputSlot.setFluidStack(stack);
+        } else {
+            this.outputSlot.setFluidStack(stack);
+        }
     }
 
     private static class AlertWidget extends AbstractWidget {

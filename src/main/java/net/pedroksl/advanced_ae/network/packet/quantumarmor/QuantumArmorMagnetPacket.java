@@ -3,21 +3,31 @@ package net.pedroksl.advanced_ae.network.packet.quantumarmor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.glodblock.github.glodium.network.packet.IMessage;
-
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.pedroksl.advanced_ae.gui.QuantumArmorConfigMenu;
+import net.pedroksl.ae2addonlib.network.AddonPacket;
 
 import appeng.api.stacks.GenericStack;
 
-public class QuantumArmorMagnetPacket implements IMessage<QuantumArmorMagnetPacket> {
+public class QuantumArmorMagnetPacket extends AddonPacket {
 
-    private int currentValue;
-    private List<GenericStack> filter;
-    private boolean blacklist;
+    private final int currentValue;
+    private final List<GenericStack> filter;
+    private final boolean blacklist;
 
-    public QuantumArmorMagnetPacket() {}
+    public QuantumArmorMagnetPacket(FriendlyByteBuf stream) {
+        currentValue = stream.readInt();
+
+        var size = stream.readInt();
+        List<GenericStack> list = new ArrayList<>();
+        for (var i = 0; i < size; i++) {
+            list.add(GenericStack.readBuffer(stream));
+        }
+        filter = list;
+
+        blacklist = stream.readBoolean();
+    }
 
     public QuantumArmorMagnetPacket(int currentValue, List<GenericStack> filter, boolean blacklist) {
         this.currentValue = currentValue;
@@ -26,45 +36,21 @@ public class QuantumArmorMagnetPacket implements IMessage<QuantumArmorMagnetPack
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeInt(currentValue);
+    public void write(FriendlyByteBuf stream) {
+        stream.writeInt(currentValue);
 
-        buf.writeInt(filter.size());
+        stream.writeInt(filter.size());
         for (GenericStack genericStack : filter) {
-            GenericStack.writeBuffer(genericStack, buf);
+            GenericStack.writeBuffer(genericStack, stream);
         }
 
-        buf.writeBoolean(blacklist);
+        stream.writeBoolean(blacklist);
     }
 
     @Override
-    public void fromBytes(FriendlyByteBuf buf) {
-        currentValue = buf.readInt();
-
-        var size = buf.readInt();
-        List<GenericStack> list = new ArrayList<>();
-        for (var i = 0; i < size; i++) {
-            list.add(GenericStack.readBuffer(buf));
-        }
-        filter = list;
-
-        blacklist = buf.readBoolean();
-    }
-
-    @Override
-    public void onMessage(Player serverPlayer) {
+    public void serverPacketData(ServerPlayer serverPlayer) {
         if (serverPlayer.containerMenu instanceof QuantumArmorConfigMenu menu) {
             menu.openMagnetScreen(currentValue, filter, blacklist);
         }
-    }
-
-    @Override
-    public Class<QuantumArmorMagnetPacket> getPacketClass() {
-        return QuantumArmorMagnetPacket.class;
-    }
-
-    @Override
-    public boolean isClient() {
-        return false;
     }
 }

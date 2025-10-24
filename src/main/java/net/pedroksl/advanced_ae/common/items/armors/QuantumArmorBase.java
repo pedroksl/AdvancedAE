@@ -33,7 +33,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.pedroksl.advanced_ae.client.Hotkeys;
+import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.*;
 import net.pedroksl.advanced_ae.common.helpers.AAEColor;
@@ -42,6 +42,7 @@ import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.apoth.ApoEnchPlugin;
 import net.pedroksl.advanced_ae.xmod.mekansim.MekanismPlugin;
+import net.pedroksl.ae2addonlib.registry.helpers.ICreativeTabItem;
 
 import appeng.api.implementations.menuobjects.IMenuItem;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
@@ -60,7 +61,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem, IUpgradeableItem {
+public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem, IUpgradeableItem, ICreativeTabItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     protected static final int DEFAULT_TINT_COLOR = AAEColor.PURPLE.argb();
@@ -122,7 +123,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
             ItemStack stack, @NotNull Level context, List<Component> lines, TooltipFlag advancedTooltips) {
         super.appendHoverText(stack, context, lines, advancedTooltips);
 
-        var hotkey = Hotkeys.getHotkeyMapping(AAEHotkeys.Keys.ARMOR_CONFIG.getId());
+        var hotkey = AAEHotkeys.INSTANCE.getHotkeyMapping(AAEHotkeysRegistry.Keys.ARMOR_CONFIG.getId());
         if (hotkey != null) {
             lines.add(AAEText.QuantumArmorHotkeyTooltip.text(
                             hotkey.mapping().getTranslatedKeyMessage().copy().withStyle(ChatFormatting.GRAY))

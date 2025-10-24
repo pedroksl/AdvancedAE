@@ -1,7 +1,7 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
+import static appeng.block.crafting.PatternProviderBlock.PUSH_DIRECTION;
 import static net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock.CONNECTION_STATE;
-import static net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock.PUSH_DIRECTION;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;

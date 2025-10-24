@@ -1,4 +1,4 @@
-// 1.20.1	2025-01-10T19:11:27.666356	Block States / Models
+// 1.20.1	2025-10-23T03:47:34.5785245	Block States / Models
 95a299ecaf1f57e89c3507297d4be2fc99a2749c assets/advanced_ae/blockstates/adv_pattern_provider.json
 fef5598f6fe49cc3150d9233ce01bc5a7136fcf9 assets/advanced_ae/blockstates/data_entangler.json
 9f77870684c7b9108903c29765927a81ea7d4cfd assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -33,7 +33,7 @@ a25aa480b506da2f366237922c1bae4793b44340 assets/advanced_ae/models/block/quantum
 9f583b9af210900da0c5969f64a58955364dad4f assets/advanced_ae/models/block/quantum_alloy_wall_side_tall.json
 cef2f7bdc43f34c1b1d03ce0d09c1fe77659ec95 assets/advanced_ae/models/block/quantum_crafter.json
 d1690ca20d34d6315c89d0166243165dd27c4084 assets/advanced_ae/models/block/quantum_crafter_on.json
-a556588e8a4bd7659cdeffa5867b8ecd20c7d10d assets/advanced_ae/models/block/quantum_infusion_block.json
+19cf3a0aeaf7cc0f30384885dd3e02cba384f563 assets/advanced_ae/models/block/quantum_infusion_block.json
 35c7ca583bac51126ef636bbb860ef161e3da42a assets/advanced_ae/models/block/small_adv_pattern_provider.json
 e35a61f186f90f6dd0480f8de0e005464ac09ccf assets/advanced_ae/models/block/small_adv_pattern_provider_oriented.json
 789cc464b44be80dae6ead72f9827f28bf17475a assets/advanced_ae/models/item/adv_pattern_encoder.json

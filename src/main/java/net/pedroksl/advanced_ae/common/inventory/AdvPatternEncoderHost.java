@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeysRegistry;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderMenu;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
@@ -48,7 +48,7 @@ public class AdvPatternEncoderHost extends ItemMenuHost implements InternalInven
     }
 
     public String getCloseHotkey() {
-        return AAEHotkeys.Keys.PATTERN_ENCODER.getId();
+        return AAEHotkeysRegistry.Keys.PATTERN_ENCODER.getId();
     }
 
     public void setInventoryChangedHandler(AdvPatternEncoderMenu.inventoryChangedHandler handler) {

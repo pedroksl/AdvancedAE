@@ -39,12 +39,12 @@ public class AdvancedAE {
 
         AAEConfig.register(MOD_ID);
 
-        AAEBlocks.DR.register(eventBus);
-        AAEItems.DR.register(eventBus);
-        AAEBlockEntities.DR.register(eventBus);
-        AAEFluids.init(eventBus);
-        AAEMenus.DR.register(eventBus);
-        AAECreativeTab.DR.register(eventBus);
+        AAEItems.INSTANCE.register(eventBus);
+        AAEBlocks.INSTANCE.register(eventBus);
+        AAEBlockEntities.INSTANCE.register(eventBus);
+        AAEFluids.INSTANCE.register(eventBus);
+        AAEMenus.INSTANCE.register(eventBus);
+        AAECreativeTab.INSTANCE.register(eventBus);
 
         eventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
@@ -58,7 +58,7 @@ public class AdvancedAE {
             }
         });
 
-        AAEHotkeys.init();
+        AAEHotkeysRegistry.INSTANCE.init();
         AAENbt.init();
     }
 
@@ -101,8 +101,6 @@ public class AdvancedAE {
             }
         });
     }
-
-    public void registerHotkey(String id) {}
 
     public static ResourceLocation makeId(String id) {
         return new ResourceLocation(MOD_ID, id);

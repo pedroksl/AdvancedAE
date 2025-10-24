@@ -23,7 +23,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.blocks.ReactionChamberBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
@@ -32,6 +31,7 @@ import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
+import net.pedroksl.ae2addonlib.api.IDirectionalOutputHost;
 
 import appeng.api.behaviors.ExternalStorageStrategy;
 import appeng.api.config.*;

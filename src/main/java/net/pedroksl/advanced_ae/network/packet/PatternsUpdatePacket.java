@@ -3,26 +3,17 @@ package net.pedroksl.advanced_ae.network.packet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.glodblock.github.glodium.network.packet.IMessage;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.pedroksl.advanced_ae.client.gui.QuantumCrafterScreen;
+import net.pedroksl.ae2addonlib.network.AddonPacket;
 
-public class PatternsUpdatePacket implements IMessage<PatternsUpdatePacket> {
-    private List<Boolean> invalidPatterns;
-    private List<Boolean> enabledPatterns;
+public class PatternsUpdatePacket extends AddonPacket {
+    private final List<Boolean> invalidPatterns;
+    private final List<Boolean> enabledPatterns;
 
-    public PatternsUpdatePacket() {}
-
-    public PatternsUpdatePacket(List<Boolean> invalidPatterns, List<Boolean> enabledPatterns) {
-        this.invalidPatterns = invalidPatterns;
-        this.enabledPatterns = enabledPatterns;
-    }
-
-    @Override
-    public void fromBytes(FriendlyByteBuf stream) {
+    public PatternsUpdatePacket(FriendlyByteBuf stream) {
         List<Boolean> invalidList = new ArrayList<>();
         List<Boolean> enabledList = new ArrayList<>();
 
@@ -40,34 +31,29 @@ public class PatternsUpdatePacket implements IMessage<PatternsUpdatePacket> {
         this.enabledPatterns = enabledList;
     }
 
+    public PatternsUpdatePacket(List<Boolean> invalidPatterns, List<Boolean> enabledPatterns) {
+        this.invalidPatterns = invalidPatterns;
+        this.enabledPatterns = enabledPatterns;
+    }
+
     @Override
-    public void toBytes(FriendlyByteBuf data) {
-        data.writeInt(this.invalidPatterns.size());
+    public void write(FriendlyByteBuf stream) {
+        stream.writeInt(this.invalidPatterns.size());
         for (var entry : this.invalidPatterns) {
-            data.writeBoolean(entry);
+            stream.writeBoolean(entry);
         }
 
-        data.writeInt(this.enabledPatterns.size());
+        stream.writeInt(this.enabledPatterns.size());
         for (var entry : this.enabledPatterns) {
-            data.writeBoolean(entry);
+            stream.writeBoolean(entry);
         }
     }
 
     @Override
-    public void onMessage(Player player) {
+    public void clientPacketData(Player player) {
         if (Minecraft.getInstance().screen instanceof QuantumCrafterScreen screen) {
             screen.updateInvalidButtons(this.invalidPatterns);
             screen.updateEnabledButtons(this.enabledPatterns);
         }
-    }
-
-    @Override
-    public Class<PatternsUpdatePacket> getPacketClass() {
-        return PatternsUpdatePacket.class;
-    }
-
-    @Override
-    public boolean isClient() {
-        return true;
     }
 }

@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
-import net.pedroksl.advanced_ae.common.definitions.AAEItemDefinition;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
+import net.pedroksl.ae2addonlib.registry.helpers.LibItemDefinition;
 
 public enum UpgradeType {
     EMPTY("Empty", null, SettingType.NONE, 0, ApplicationType.PASSIVE, AAEItems.QUANTUM_UPGRADE_BASE),
@@ -129,7 +129,7 @@ public enum UpgradeType {
     private final SettingType settingType;
     private final int cost;
     public final ApplicationType applicationType;
-    private final AAEItemDefinition<? extends QuantumUpgradeBaseItem> item;
+    private final LibItemDefinition<? extends QuantumUpgradeBaseItem> item;
     private final ExtraSettings extra;
 
     UpgradeType(
@@ -138,7 +138,7 @@ public enum UpgradeType {
             SettingType settingType,
             int cost,
             ApplicationType applicationType,
-            AAEItemDefinition<? extends QuantumUpgradeBaseItem> item) {
+            LibItemDefinition<? extends QuantumUpgradeBaseItem> item) {
         this(name, ability, settingType, cost, applicationType, item, ExtraSettings.NONE);
     }
 
@@ -148,7 +148,7 @@ public enum UpgradeType {
             SettingType settingType,
             int cost,
             ApplicationType applicationType,
-            AAEItemDefinition<? extends QuantumUpgradeBaseItem> item,
+            LibItemDefinition<? extends QuantumUpgradeBaseItem> item,
             ExtraSettings extra) {
         this.name = name;
         this.ability = ability;
@@ -159,7 +159,7 @@ public enum UpgradeType {
         this.extra = extra;
     }
 
-    public AAEItemDefinition<? extends QuantumUpgradeBaseItem> item() {
+    public LibItemDefinition<? extends QuantumUpgradeBaseItem> item() {
         return this.item;
     }
 

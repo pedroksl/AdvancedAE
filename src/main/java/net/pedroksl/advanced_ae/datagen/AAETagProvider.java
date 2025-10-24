@@ -20,6 +20,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.*;
+import net.pedroksl.ae2addonlib.registry.helpers.LibBlockDefinition;
 
 import appeng.datagen.providers.tags.ConventionTags;
 
@@ -40,13 +41,13 @@ public class AAETagProvider {
 
         @Override
         protected void addTags(@NotNull HolderLookup.Provider provider) {
-            Map<AAEBlockDefinition<?>, List<TagKey<Block>>> specialTags = new HashMap<>();
+            Map<LibBlockDefinition<?>, List<TagKey<Block>>> specialTags = new HashMap<>();
             for (var skyStoneBlock : QUANTUM_ALLOY_BLOCKS) {
                 specialTags.put(skyStoneBlock, List.of(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.NEEDS_IRON_TOOL));
             }
             var defaultTags = List.of(BlockTags.MINEABLE_WITH_PICKAXE);
 
-            for (var block : AAEBlocks.getBlocks()) {
+            for (var block : AAEBlocks.INSTANCE.getBlocks()) {
                 for (var desiredTag : specialTags.getOrDefault(block, defaultTags)) {
                     tag(desiredTag).add(block.block());
                 }
@@ -59,7 +60,7 @@ public class AAETagProvider {
             tag(BlockTags.SLABS).add(AAEBlocks.QUANTUM_ALLOY_SLAB.block());
         }
 
-        private static final AAEBlockDefinition<?>[] QUANTUM_ALLOY_BLOCKS = {
+        private static final LibBlockDefinition<?>[] QUANTUM_ALLOY_BLOCKS = {
             AAEBlocks.QUANTUM_ALLOY_BLOCK,
             AAEBlocks.QUANTUM_ALLOY_SLAB,
             AAEBlocks.QUANTUM_ALLOY_WALL,

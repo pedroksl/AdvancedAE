@@ -12,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.client.Hotkeys;
+import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderMenu;
 import net.pedroksl.advanced_ae.gui.patternencoder.DirectionInputButton;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
@@ -137,7 +137,7 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
     private boolean isCloseHotkey(int keyCode, int scanCode) {
         var hotkeyId = getMenu().getHost().getCloseHotkey();
         if (hotkeyId != null) {
-            var hotkey = Hotkeys.getHotkeyMapping(hotkeyId);
+            var hotkey = AAEHotkeys.INSTANCE.getHotkeyMapping(hotkeyId);
             if (hotkey != null) {
                 return hotkey.mapping().matches(keyCode, scanCode);
             }

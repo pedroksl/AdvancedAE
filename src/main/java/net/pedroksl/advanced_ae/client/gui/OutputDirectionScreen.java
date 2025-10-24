@@ -8,10 +8,10 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionButton;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEActionItems;
-import net.pedroksl.advanced_ae.client.gui.widgets.OutputDirectionButton;
-import net.pedroksl.advanced_ae.gui.OutputDirectionMenu;
+import net.pedroksl.ae2addonlib.client.widgets.AddonActionButton;
+import net.pedroksl.ae2addonlib.client.widgets.AddonActionItems;
+import net.pedroksl.ae2addonlib.client.widgets.OutputDirectionButton;
+import net.pedroksl.ae2addonlib.gui.OutputDirectionMenu;
 
 import appeng.api.orientation.RelativeSide;
 import appeng.client.gui.AEBaseScreen;
@@ -44,7 +44,7 @@ public class OutputDirectionScreen extends AEBaseScreen<OutputDirectionMenu> {
 
         AESubScreen.addBackButton(menu, "back", widgets);
 
-        AAEActionButton clearBtn = new AAEActionButton(AAEActionItems.CLEAR, btn -> menu.clearSides());
+        AddonActionButton clearBtn = new AddonActionButton(AddonActionItems.CLEAR, btn -> menu.clearSides());
         clearBtn.setHalfSize(true);
         clearBtn.setDisableBackground(true);
         widgets.add("clearAll", clearBtn);

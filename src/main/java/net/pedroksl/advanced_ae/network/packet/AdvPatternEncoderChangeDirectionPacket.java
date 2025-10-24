@@ -4,21 +4,23 @@ import static appeng.api.stacks.AEKey.writeKey;
 
 import javax.annotation.Nullable;
 
-import com.glodblock.github.glodium.network.packet.IMessage;
-
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.pedroksl.advanced_ae.gui.patternencoder.AdvPatternEncoderMenu;
+import net.pedroksl.ae2addonlib.network.AddonPacket;
 
 import appeng.api.stacks.AEKey;
 
-public class AdvPatternEncoderChangeDirectionPacket implements IMessage<AdvPatternEncoderChangeDirectionPacket> {
+public class AdvPatternEncoderChangeDirectionPacket extends AddonPacket {
 
-    private AEKey key;
-    private Direction dir;
+    private final AEKey key;
+    private final Direction dir;
 
-    public AdvPatternEncoderChangeDirectionPacket() {}
+    public AdvPatternEncoderChangeDirectionPacket(FriendlyByteBuf stream) {
+        this.key = AEKey.readKey(stream);
+        this.dir = stream.readBoolean() ? stream.readEnum(Direction.class) : null;
+    }
 
     public AdvPatternEncoderChangeDirectionPacket(AEKey key, @Nullable Direction dir) {
         this.key = key;
@@ -26,36 +28,20 @@ public class AdvPatternEncoderChangeDirectionPacket implements IMessage<AdvPatte
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        writeKey(buf, this.key);
+    public void write(FriendlyByteBuf stream) {
+        writeKey(stream, this.key);
         if (this.dir == null) {
-            buf.writeBoolean(false);
+            stream.writeBoolean(false);
         } else {
-            buf.writeBoolean(true);
-            buf.writeEnum(this.dir);
+            stream.writeBoolean(true);
+            stream.writeEnum(this.dir);
         }
     }
 
     @Override
-    public void fromBytes(FriendlyByteBuf buf) {
-        this.key = AEKey.readKey(buf);
-        this.dir = buf.readBoolean() ? buf.readEnum(Direction.class) : null;
-    }
-
-    @Override
-    public void onMessage(Player player) {
+    public void serverPacketData(ServerPlayer player) {
         if (player.containerMenu instanceof AdvPatternEncoderMenu encoderContainer) {
             encoderContainer.update(this.key, this.dir);
         }
-    }
-
-    @Override
-    public Class<AdvPatternEncoderChangeDirectionPacket> getPacketClass() {
-        return AdvPatternEncoderChangeDirectionPacket.class;
-    }
-
-    @Override
-    public boolean isClient() {
-        return false;
     }
 }

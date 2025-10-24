@@ -60,7 +60,7 @@ logoFile="logo.png"
 [[dependencies.${mod_id}]]
     modId="ae2"
     mandatory=true
-    versionRange="[15.2.15,)"
+    versionRange="[15.4.9,)"
     ordering="AFTER"
     side="BOTH"
 [[dependencies.${mod_id}]]

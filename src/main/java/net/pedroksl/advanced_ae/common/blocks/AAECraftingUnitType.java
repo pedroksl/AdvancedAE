@@ -1,9 +1,9 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
 import net.minecraft.world.item.Item;
-import net.pedroksl.advanced_ae.common.definitions.AAEBlockDefinition;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
+import net.pedroksl.ae2addonlib.registry.helpers.LibBlockDefinition;
 
 import appeng.block.crafting.ICraftingUnitType;
 
@@ -50,7 +50,7 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
         return this.affix;
     }
 
-    public AAEBlockDefinition<?> getDefinition() {
+    public LibBlockDefinition<?> getDefinition() {
         return switch (this) {
             case QUANTUM_UNIT -> AAEBlocks.QUANTUM_UNIT;
             case QUANTUM_CORE -> AAEBlocks.QUANTUM_CORE;

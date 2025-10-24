@@ -17,9 +17,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.client.Hotkeys;
+import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEIconButton;
 import net.pedroksl.advanced_ae.client.widgets.QuantumUpgradeWidget;
 import net.pedroksl.advanced_ae.client.widgets.UpgradeState;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
@@ -29,6 +28,7 @@ import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorMagnetPacket;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeFilterPacket;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeValuePacket;
+import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.style.Color;
@@ -105,7 +105,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     private boolean isCloseHotkey(int keyCode, int scanCode) {
         var hotkeyId = getMenu().getHost().getCloseHotkey();
         if (hotkeyId != null) {
-            var hotkey = Hotkeys.getHotkeyMapping(hotkeyId);
+            var hotkey = AAEHotkeys.INSTANCE.getHotkeyMapping(hotkeyId);
             if (hotkey != null) {
                 return hotkey.mapping().matches(keyCode, scanCode);
             }
@@ -296,7 +296,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         }
     }
 
-    static class PaletteButton extends AAEIconButton {
+    static class PaletteButton extends AddonIconButton {
         public PaletteButton(OnPress onPress) {
             super(onPress);
         }

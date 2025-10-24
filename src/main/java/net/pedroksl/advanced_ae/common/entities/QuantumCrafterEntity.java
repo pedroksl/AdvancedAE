@@ -23,10 +23,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pedroksl.advanced_ae.api.AAESettings;
-import net.pedroksl.advanced_ae.api.IDirectionalOutputHost;
 import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.ae2addonlib.api.IDirectionalOutputHost;
 
 import appeng.api.config.*;
 import appeng.api.crafting.IPatternDetails;

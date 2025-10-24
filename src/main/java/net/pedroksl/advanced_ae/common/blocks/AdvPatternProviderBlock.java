@@ -1,5 +1,7 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
+import static appeng.block.crafting.PatternProviderBlock.PUSH_DIRECTION;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +18,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.AdvPatternProviderEntity;
@@ -32,8 +33,6 @@ import appeng.util.Platform;
 
 @SuppressWarnings("deprecation")
 public class AdvPatternProviderBlock extends AEBaseEntityBlock<AdvPatternProviderEntity> {
-    public static final EnumProperty<PushDirection> PUSH_DIRECTION =
-            EnumProperty.create("push_direction", PushDirection.class);
     public static final BooleanProperty CONNECTION_STATE = BooleanProperty.create("connection_state");
 
     public AdvPatternProviderBlock() {

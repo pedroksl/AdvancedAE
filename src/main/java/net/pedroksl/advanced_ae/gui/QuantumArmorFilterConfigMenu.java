@@ -9,10 +9,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.api.ISetAmountMenuHost;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.ae2addonlib.api.ISetAmountMenuHost;
+import net.pedroksl.ae2addonlib.gui.SetAmountMenu;
 
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;

@@ -11,10 +11,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.gui.QuantumArmorConfigScreen;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
-import net.pedroksl.advanced_ae.client.gui.widgets.AAEIconButton;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeTogglePacket;
+import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 
 import appeng.client.gui.Icon;
 import appeng.client.gui.style.ScreenStyle;
@@ -139,7 +139,7 @@ public class QuantumUpgradeWidget {
         }
     }
 
-    static class UninstallButton extends AAEIconButton {
+    static class UninstallButton extends AddonIconButton {
         public UninstallButton(int x, int y, OnPress onPress) {
             super(onPress);
             setX(x);

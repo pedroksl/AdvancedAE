@@ -8,13 +8,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.pedroksl.advanced_ae.api.IFluidTankHandler;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
-import net.pedroksl.advanced_ae.network.AAENetworkHandler;
-import net.pedroksl.advanced_ae.network.packet.FluidTankClientAudioPacket;
-import net.pedroksl.advanced_ae.network.packet.FluidTankStackUpdatePacket;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
+import net.pedroksl.ae2addonlib.api.IFluidTankHandler;
+import net.pedroksl.ae2addonlib.gui.OutputDirectionMenu;
+import net.pedroksl.ae2addonlib.network.LibNetworkHandler;
+import net.pedroksl.ae2addonlib.network.clientPacket.FluidTankStackUpdatePacket;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
@@ -76,6 +76,7 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     @Override
     protected void standardDetectAndSendChanges() {
         if (isServerSide()) {
+            ServerPlayer player = getServerPlayer();
             this.maxProcessingTime = getHost().getMaxProcessingTime();
             this.processingTime = getHost().getProcessingTime();
             this.showWarning = getHost().showWarning();
@@ -85,16 +86,14 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
             if (genInput != null && genInput.what() != null) {
                 inputFluid = ((AEFluidKey) genInput.what()).toStack(((int) genInput.amount()));
             }
+            LibNetworkHandler.INSTANCE.sendTo(new FluidTankStackUpdatePacket(1, inputFluid), player);
 
             var genOutput = this.getHost().getTank().getStack(0);
             FluidStack outputFluid = FluidStack.EMPTY;
             if (genOutput != null && genOutput.what() != null) {
                 outputFluid = ((AEFluidKey) genOutput.what()).toStack(((int) genOutput.amount()));
             }
-
-            if (getPlayer() instanceof ServerPlayer player) {
-                AAENetworkHandler.INSTANCE.sendTo(new FluidTankStackUpdatePacket(inputFluid, outputFluid), player);
-            }
+            LibNetworkHandler.INSTANCE.sendTo(new FluidTankStackUpdatePacket(0, outputFluid), player);
         }
         super.standardDetectAndSendChanges();
     }
@@ -159,6 +158,14 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     }
 
     @Override
+    public ServerPlayer getServerPlayer() {
+        if (isClientSide()) {
+            return null;
+        }
+        return ((ServerPlayer) getPlayer());
+    }
+
+    @Override
     public ItemStack getCarriedItem() {
         return getCarried();
     }
@@ -181,12 +188,5 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     @Override
     public boolean canInsertInto(int index) {
         return index == 1;
-    }
-
-    @Override
-    public void playAudioCues(FluidTankClientAudioPacket p) {
-        if (getPlayer() instanceof ServerPlayer player) {
-            AAENetworkHandler.INSTANCE.sendTo(p, player);
-        }
     }
 }

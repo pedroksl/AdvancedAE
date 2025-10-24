@@ -5,7 +5,7 @@ import java.util.function.BiConsumer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.definitions.AAEHotkeys;
+import net.pedroksl.advanced_ae.common.definitions.AAEHotkeysRegistry;
 import net.pedroksl.advanced_ae.common.definitions.AAENbt;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
@@ -169,7 +169,7 @@ public class QuantumArmorMenuHost extends ItemMenuHost implements InternalInvent
     }
 
     public String getCloseHotkey() {
-        return AAEHotkeys.Keys.ARMOR_CONFIG.getId();
+        return AAEHotkeysRegistry.Keys.ARMOR_CONFIG.getId();
     }
 
     @FunctionalInterface
