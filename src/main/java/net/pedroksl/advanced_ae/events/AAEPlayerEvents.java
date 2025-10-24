@@ -43,7 +43,7 @@ public class AAEPlayerEvents {
                     || !ApoEnchPlugin.checkForEnchant(player, ApoEnchPlugin.Enchantment.STABLE_FOOTING)) {
                 ItemStack armor = player.getItemBySlot(EquipmentSlot.CHEST);
                 if (armor.getItem() instanceof QuantumChestplate) {
-                    var newValue = Math.max(event.getOriginalSpeed(), event.getOriginalSpeed() * 5);
+                    var newValue = Math.min(Float.MAX_VALUE, event.getOriginalSpeed() * 5);
                     event.setNewSpeed(newValue);
                 }
             }
