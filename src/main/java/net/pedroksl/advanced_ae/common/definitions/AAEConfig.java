@@ -20,6 +20,10 @@ public class AAEConfig extends ConfigRegistry {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, common.spec);
     }
 
+    public boolean getEnableEffects() {
+        return client.enableEffects.get();
+    }
+
     public int getQuantumComputerMaxSize() {
         return common.quantumComputerMaxSize.get();
     }
@@ -127,9 +131,17 @@ public class AAEConfig extends ConfigRegistry {
     private static class ClientConfig {
         private final ForgeConfigSpec spec;
 
+        public final ForgeConfigSpec.BooleanValue enableEffects;
+
         public ClientConfig() {
             var builder = new ForgeConfigSpec.Builder();
 
+            builder.push("reaction chamber");
+            enableEffects = define(
+                    builder,
+                    "enableEffects",
+                    true,
+                    "Enable/disable reaction chamber's item rendering. Saves on performance if there are a considerable amount of them running at the same time.");
             this.spec = builder.build();
         }
     }

@@ -16,6 +16,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
 import appeng.api.stacks.GenericStack;
 

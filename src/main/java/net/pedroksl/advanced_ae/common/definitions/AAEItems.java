@@ -14,13 +14,16 @@ import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.common.parts.*;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPatternItem;
+import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.ae2addonlib.registry.ItemRegistry;
 import net.pedroksl.ae2addonlib.registry.helpers.LibItemDefinition;
+import net.pedroksl.ae2addonlib.util.AddonEnum;
 
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartItem;
 import appeng.items.materials.MaterialItem;
 import appeng.items.parts.PartItem;
+import appeng.items.tools.powered.WirelessTerminalItem;
 
 public class AAEItems extends ItemRegistry {
 
@@ -56,8 +59,20 @@ public class AAEItems extends ItemRegistry {
             part("ME Stock Export Bus", "stock_export_bus_part", StockExportBusPart.class, StockExportBusPart::new);
     public static final LibItemDefinition<PartItem<ImportExportBusPart>> IMPORT_EXPORT_BUS =
             part("ME Import Export Bus", "import_export_bus_part", ImportExportBusPart.class, ImportExportBusPart::new);
+    public static final LibItemDefinition<PartItem<AdvancedIOBusPart>> ADVANCED_IO_BUS =
+            part("ME Advanced IO Bus", "advanced_io_bus_part", AdvancedIOBusPart.class, AdvancedIOBusPart::new);
     public static final LibItemDefinition<PartItem<ThroughputMonitorPart>> THROUGHPUT_MONITOR = part(
             "ME Throughput Monitor", "throughput_monitor", ThroughputMonitorPart.class, ThroughputMonitorPart::new);
+    public static final LibItemDefinition<PartItem<QuantumCrafterTerminalPart>> QUANTUM_CRAFTER_TERMINAL = part(
+            "Quantum Crafter Terminal",
+            "quantum_crafter_terminal",
+            QuantumCrafterTerminalPart.class,
+            QuantumCrafterTerminalPart::new);
+    public static final LibItemDefinition<WirelessTerminalItem> QUANTUM_CRAFTER_WIRELESS_TERMINAL = conditionalItem(
+            Addons.AE2WTLIB,
+            "Wireless Quantum Crafter Terminal",
+            "wireless_quantum_crafter_terminal",
+            "net.pedroksl.advanced_ae.common.items.QuantumCrafterWirelessTerminalItem");
 
     public static final LibItemDefinition<AdvProcessingPatternItem> ADV_PROCESSING_PATTERN =
             item("Advanced Processing Pattern", "adv_processing_pattern", AdvProcessingPatternItem::new);
@@ -155,13 +170,27 @@ public class AAEItems extends ItemRegistry {
     //    public static final ItemDefinition<QuantumUpgradeBaseItem> HUD_CARD =
     //            item("HUD Card", "hud_card", p -> new QuantumUpgradeBaseItem(UpgradeType.HUD, p));
 
+    @SuppressWarnings("unchecked")
+    private static <T extends Item> LibItemDefinition<T> conditionalItem(
+            AddonEnum addon, String englishName, String id, String itemClass) {
+        if (addon.isLoaded()) {
+            try {
+                var instance =
+                        (T) Class.forName(itemClass).getDeclaredConstructor().newInstance();
+                return item(AdvancedAE.MOD_ID, englishName, id, p -> instance);
+            } catch (Exception ignored) {
+            }
+        }
+        return null;
+    }
+
     protected static <T extends Item> LibItemDefinition<T> item(
             String englishName, String id, Function<Item.Properties, T> factory) {
-        return INSTANCE.registerItem(englishName, id, factory);
+        return item(AdvancedAE.MOD_ID, englishName, id, factory);
     }
 
     protected static <T extends IPart> LibItemDefinition<PartItem<T>> part(
             String englishName, String id, Class<T> partClass, Function<IPartItem<T>, T> factory) {
-        return INSTANCE.registerPart(englishName, id, partClass, factory);
+        return part(AdvancedAE.MOD_ID, englishName, id, partClass, factory);
     }
 }

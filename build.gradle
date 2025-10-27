@@ -36,7 +36,6 @@ legacyForge {
         client {
             client()
 
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
@@ -59,6 +58,7 @@ legacyForge {
                     '--all',
                     '--output', file('src/generated/resources/').getAbsolutePath(),
                     '--existing', file('src/main/resources/').getAbsolutePath(),
+                    "--existing-mod", "ae2",
                     "--existing-mod", "ae2addonlib"
             ]
         }
@@ -71,6 +71,7 @@ legacyForge {
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.
             systemProperty 'forge.logging.markers', 'REGISTRIES'
+            systemProperty "guideme.ae2.guide.sources", file('src/main/resources/assets/advanced_ae/ae2guide/aae_intro/').absolutePath
 
             // Recommended logging level for the console
             // You can set various levels here.
@@ -126,19 +127,22 @@ repositories {
 dependencies {
     compileOnly 'org.jetbrains:annotations:24.1.0'
 
-    modImplementation "io.github.pedroksl:ae2addonlib:${ae2addonlib_version}-${minecraft_version}"
+    jarJar(modImplementation "io.github.pedroksl:ae2addonlib:${ae2addonlib_version}-${minecraft_version}")
     modImplementation "org.appliedenergistics:guideme:${guideme_version}"
-    modImplementation "curse.maven:glodium-957920:5226922"
+    modRuntimeOnly "curse.maven:glodium-957920:5226922"
     modImplementation "curse.maven:applied-flux-965012:6755986"
-    modImplementation "appeng:appliedenergistics2-forge:15.4.9"
+    modImplementation "appeng:appliedenergistics2-forge:${ae2_version}"
     modImplementation "curse.maven:ex-pattern-provider-892005:6870350"
-    modImplementation "curse.maven:applied-energistics-2-wireless-terminals-459929:5217955"
+
+    modImplementation "curse.maven:applied-energistics-2-wireless-terminals-459929:7014805"
+
     modCompileOnly "curse.maven:jei-238222:6600311"
     modImplementation "curse.maven:jade-324717:6855440"
     modCompileOnly "curse.maven:emi-580555:6420945"
     modImplementation "curse.maven:mega-cells-622112:6175008"
     modImplementation "curse.maven:mekanism-268560:6552911"
     modImplementation "curse.maven:geckolib-388172:6920925"
+    modImplementation "curse.maven:applied-mekanistics-574300:${appmek_file_id}"
 
     modImplementation "curse.maven:curios-309927:5843594"
     modCompileOnly "curse.maven:apotheosis-313970:5753183"
@@ -158,8 +162,7 @@ dependencies {
     modRuntimeOnly "curse.maven:emi-580555:6420945"
 
     // jei
-    //runtimeOnly "curse.maven:jei-238222:6600311"
-    //modImplementation "dev.architectury:architectury-forge:9.2.14"
+    modRuntimeOnly "curse.maven:jei-238222:6600311"
 }
 
 publisher {
@@ -243,11 +246,11 @@ publisher {
     }
 
     curseDepends {
-        required "applied-energistics-2", "glodium", "geckolib"
+        required "applied-energistics-2", "geckolib"
     }
 
     modrinthDepends {
-        required "ae2", "glodium", "geckolib"
+        required "ae2", "geckolib"
     }
 }
 

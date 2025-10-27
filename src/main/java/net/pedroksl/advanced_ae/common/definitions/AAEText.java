@@ -23,9 +23,23 @@ public enum AAEText implements LocalizationEnum {
             "Created by upgrading an Advanced Pattern Provider with a capacity upgrade", Type.EMI_TEXT),
     AdvPatternEncoder("Advanced Pattern Encoder", Type.GUI),
     ReactionChamber("Reaction Chamber", Type.GUI),
+
     QuantumCrafter("Quantum Crafter", Type.GUI),
+    QuantumCrafterTerminalShort("Quantum Crafter T.", Type.GUI),
+    ShowCraftersCategory("Display Mode", Type.TOOLTIP),
+    ShowAllCrafters("Show all Quantum Crafters", Type.TOOLTIP),
+    ShowNonFullCrafters("Show visible Quantum Crafters with empty slots", Type.TOOLTIP),
+    ShowVisibleCrafters("Show visible Quantum Crafters", Type.TOOLTIP),
+    CrafterTerminalSetting("Quantum Crafter Terminal", Type.TOOLTIP),
+    ShowOnCrafterTerminal("Show on Quantum Crafter Terminal", Type.TOOLTIP),
+    HideOnCrafterTerminal("Hide on Quantum Crafter Terminal", Type.TOOLTIP),
+    RegulateCategory("Regulate", Type.TOOLTIP),
+    RegulateOn("Attempt to import what exceeds the filters", Type.TOOLTIP),
+    RegulateOff("Keep exported items even if over the filters", Type.TOOLTIP),
+
     StockExportBus("ME Stock Export Bus", Type.GUI),
     ImportExportBus("ME Import Export Bus", Type.GUI),
+    AdvancedIOBus("ME Advanced IO Bus", Type.GUI),
     EmiReactionChamber("Reaction Chamber", Type.EMI_CATEGORY),
     AnyButton("Target the face adjacent to the adv. pattern provider", Type.TOOLTIP),
     NorthButton("Target the NORTH face of the machine.", Type.TOOLTIP),
@@ -73,7 +87,7 @@ public enum AAEText implements LocalizationEnum {
     FilteredImportOn("Input must match crafting outputs while crafting jobs are active", Type.TOOLTIP),
     FilteredImportOff("Input is unrestricted", Type.TOOLTIP),
     DirectionalOutput("Directional Output", Type.TOOLTIP),
-    DirectionOutputHint("Configure which directions are allowed for output auto-export", Type.TOOLTIP),
+    DirectionalOutputHint("Configure which directions are allowed for output auto-export", Type.TOOLTIP),
 
     NumberTextFieldInputHint("Confirm the input using the %s key.", Type.TOOLTIP),
     NumberTextFieldOutputHint(
@@ -83,7 +97,9 @@ public enum AAEText implements LocalizationEnum {
     EnablePatternButton("Enabled/Disable", Type.TOOLTIP),
 
     SetAmountButtonHint("Middle click to set the amount to keep in stock", Type.GUI),
-    SetAmount("Set Stock Amount", Type.GUI),
+    SetAmount("Set Amount", Type.GUI),
+    Enabled("Enabled", Type.TOOLTIP),
+    Disabled("Disabled", Type.TOOLTIP),
 
     ThroughputMonitorValue("%s" + "%s" + "/s", Type.GUI),
     OverdriveThroughputMonitorValue("%s" + "%s" + "/t", Type.GUI),

@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "advanced_ae:item/quantum_boots"
+    "layer0": "advanced_ae:item/quantum_boots_base",
+    "layer1": "advanced_ae:item/quantum_boots_tint"
   }
 }

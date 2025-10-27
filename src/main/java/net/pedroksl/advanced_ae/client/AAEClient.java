@@ -27,6 +27,12 @@ import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.events.AAEClientPlayerEvents;
+import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
+import net.pedroksl.advanced_ae.gui.StockExportBusMenu;
+import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.ae2wtlib.AE2WtLibPlugin;
+import net.pedroksl.ae2addonlib.registry.helpers.LibTags;
+import net.pedroksl.ae2addonlib.util.Colors;
 
 import appeng.api.util.AEColor;
 import appeng.client.render.StaticItemColor;
@@ -79,10 +85,11 @@ public class AAEClient extends AdvancedAE {
     }
 
     private static void initBuiltInModels() {
-        var type = AAECraftingUnitType.STRUCTURE;
-        BuiltInModelHooks.addBuiltInModel(
-                AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
-                new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
+        for (AAECraftingUnitType type : AAECraftingUnitType.values()) {
+            BuiltInModelHooks.addBuiltInModel(
+                    AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
+                    new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
+        }
     }
 
     private static void initScreens() {
@@ -100,18 +107,26 @@ public class AAEClient extends AdvancedAE {
                 AAEMenus.ADV_PATTERN_ENCODER.get(), AdvPatternEncoderScreen::new, "/screens/adv_pattern_encoder.json");
         InitScreens.register(
                 AAEMenus.REACTION_CHAMBER.get(), ReactionChamberScreen::new, "/screens/reaction_chamber.json");
-        InitScreens.register(
-                AAEMenus.QUANTUM_CRAFTER.get(), QuantumCrafterScreen::new, "/screens/quantum_crafter.json");
 
-        InitScreens.register(
+        InitScreens.<StockExportBusMenu, StockExportBusScreen<StockExportBusMenu>>register(
                 AAEMenus.STOCK_EXPORT_BUS.get(), StockExportBusScreen::new, "/screens/stock_export_bus.json");
         InitScreens.register(
                 AAEMenus.IMPORT_EXPORT_BUS.get(), ImportExportBusScreen::new, "/screens/import_export_bus.json");
+        InitScreens.register(AAEMenus.ADVANCED_IO_BUS.get(), AdvancedIOBusScreen::new, "/screens/advanced_io_bus.json");
 
+        InitScreens.register(
+                AAEMenus.QUANTUM_CRAFTER.get(), QuantumCrafterScreen::new, "/screens/quantum_crafter.json");
         InitScreens.register(
                 AAEMenus.CRAFTER_PATTERN_CONFIG.get(),
                 QuantumCrafterConfigPatternScreen::new,
                 "/screens/quantum_crafter_pattern_config.json");
+        InitScreens.<QuantumCrafterTermMenu, QuantumCrafterTermScreen<QuantumCrafterTermMenu>>register(
+                AAEMenus.QUANTUM_CRAFTER_TERMINAL.get(),
+                QuantumCrafterTermScreen::new,
+                "/screens/quantum_crafter_terminal.json");
+        if (Addons.AE2WTLIB.isLoaded()) {
+            AE2WtLibPlugin.initScreen();
+        }
 
         InitScreens.register(
                 AAEMenus.QUANTUM_ARMOR_CONFIG.get(),
@@ -152,6 +167,15 @@ public class AAEClient extends AdvancedAE {
     @SuppressWarnings("deprecation")
     private static void initItemColours(RegisterColorHandlersEvent.Item event) {
         event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
+        event.register(
+                makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.QUANTUM_CRAFTER_TERMINAL.asItem());
+        for (var item : AAEItems.getQuantumArmor()) {
+            event.register(
+                    (stack, index) -> index == 1
+                            ? LibTags.getIntOrDefault(stack, LibTags.TINT_COLOR_TAG, Colors.PURPLE.argb())
+                            : Colors.WHITE.argb(),
+                    item);
+        }
 
         for (var bucket : AAEFluids.INSTANCE.getFluids()) {
             event.getItemColors().register(AAEFluids::getFluidColor, bucket.bucketItem());

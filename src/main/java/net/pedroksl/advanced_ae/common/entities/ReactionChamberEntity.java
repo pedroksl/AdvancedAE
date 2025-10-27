@@ -26,12 +26,12 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.pedroksl.advanced_ae.common.blocks.ReactionChamberBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.recipes.IngredientStack;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 import net.pedroksl.ae2addonlib.api.IDirectionalOutputHost;
+import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
 import appeng.api.behaviors.ExternalStorageStrategy;
 import appeng.api.config.*;
@@ -105,7 +105,7 @@ public class ReactionChamberEntity extends AENetworkPowerBlockEntity
 
     private ReactionChamberRecipe cachedTask = null;
 
-    private EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
+    private EnumSet<RelativeSide> allowedOutputs = EnumSet.noneOf(RelativeSide.class);
 
     @SuppressWarnings("UnstableApiUsage")
     private final HashMap<Direction, Map<AEKeyType, ExternalStorageStrategy>> exportStrategies = new HashMap<>();

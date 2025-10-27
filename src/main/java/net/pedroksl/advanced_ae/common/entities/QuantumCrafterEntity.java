@@ -20,12 +20,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.helpers.AutoCraftingContainer;
 import net.pedroksl.ae2addonlib.api.IDirectionalOutputHost;
 
 import appeng.api.config.*;
@@ -35,6 +37,7 @@ import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.inventories.ItemTransfer;
 import appeng.api.networking.GridFlags;
+import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IGridNodeListener;
 import appeng.api.networking.energy.IEnergyService;
@@ -65,6 +68,7 @@ import appeng.me.helpers.MachineSource;
 import appeng.menu.AutoCraftingMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuLocator;
 import appeng.menu.locator.MenuLocators;
 import appeng.util.ConfigManager;
 import appeng.util.SettingsFrom;
@@ -76,7 +80,11 @@ import appeng.util.inv.filter.AEItemFilters;
 import appeng.util.inv.filter.IAEItemFilter;
 
 public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
-        implements IGridTickable, IUpgradeableObject, IConfigurableObject, IDirectionalOutputHost {
+        implements IGridTickable,
+                IUpgradeableObject,
+                IConfigurableObject,
+                IDirectionalOutputHost,
+                AutoCraftingContainer {
     private static final int PATTERN_SLOTS = 9;
     private static final int MAX_POWER_STORAGE = 8000;
     private static final int MAX_CRAFT_AMOUNT = 1024;
@@ -89,7 +97,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
     private final IUpgradeInventory upgrades;
     private final IConfigManager configManager = new ConfigManager(this::onConfigChanged);
 
-    private final AppEngInternalInventory patternInv = new AppEngInternalInventory(this, 9, 1);
+    private final AppEngInternalInventory patternInv = new AppEngInternalInventory(this, PATTERN_SLOTS, 1);
     private final AppEngInternalInventory outputInv = new AppEngInternalInventory(this, 18, MAX_OUTPUT_INV_SIZE);
     private final InternalInventory inv = new CombinedInternalInventory(this.patternInv, this.outputInv);
 
@@ -109,7 +117,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
 
     private final List<CraftingJob> craftingJobs = Arrays.asList(new CraftingJob[PATTERN_SLOTS]);
 
-    private EnumSet<RelativeSide> allowedOutputs = EnumSet.allOf(RelativeSide.class);
+    private EnumSet<RelativeSide> allowedOutputs = EnumSet.noneOf(RelativeSide.class);
     private final List<Boolean> invalidPatternSlots = Arrays.asList(new Boolean[PATTERN_SLOTS]);
     private final List<Boolean> enabledPatternSlots = Arrays.asList(new Boolean[PATTERN_SLOTS]);
 
@@ -125,11 +133,12 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         this.upgrades = UpgradeInventories.forMachine(AAEBlocks.QUANTUM_CRAFTER, 5, this::saveChanges);
 
         this.configManager.registerSetting(AAESettings.ME_EXPORT, YesNo.YES);
+        this.configManager.registerSetting(AAESettings.QUANTUM_CRAFTER_TERMINAL, YesNo.YES);
         this.configManager.registerSetting(Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
 
         this.setPowerSides(getGridConnectableSides(getOrientation()));
 
-        this.mySrc = new MachineSource(this);
+        this.mySrc = new MachineSource(this.getMainNode()::getNode);
         this.lastRedstoneState = YesNo.UNDECIDED;
 
         Collections.fill(invalidPatternSlots, false);
@@ -1035,6 +1044,34 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
     }
 
     @Override
+    public @Nullable IGrid getGrid() {
+        return getMainNode().getGrid();
+    }
+
+    @Override
+    public @Nullable MenuLocator getLocator() {
+        return MenuLocators.forBlockEntity(this);
+    }
+
+    @Override
+    public boolean isVisibleInTerminal() {
+        return this.configManager.getSetting(AAESettings.QUANTUM_CRAFTER_TERMINAL) == YesNo.YES;
+    }
+
+    @Override
+    public InternalInventory getTerminalPatternInventory() {
+        return this.patternInv;
+    }
+
+    @Override
+    public long getTerminalSortOrder() {
+        final BlockEntity te = this.getBlockEntity();
+        return (long) te.getBlockPos().getZ() << 24
+                ^ (long) te.getBlockPos().getX() << 8
+                ^ te.getBlockPos().getY();
+    }
+
+    @Override
     public void returnToMainMenu(Player player, ISubMenu iSubMenu) {
         MenuOpener.returnTo(AAEMenus.QUANTUM_CRAFTER.get(), player, MenuLocators.forBlockEntity(this));
     }
@@ -1044,6 +1081,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         return new ItemStack(AAEBlocks.QUANTUM_CRAFTER.asItem());
     }
 
+    @Override
     public List<Boolean> getInvalidPatternSlots() {
         return invalidPatternSlots;
     }
@@ -1056,6 +1094,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         return enabledPatternSlots;
     }
 
+    @Override
     public void toggleEnablePattern(int index) {
         if (index >= 0 && index < enabledPatternSlots.size()) {
             enabledPatternSlots.set(index, !enabledPatternSlots.get(index));
@@ -1064,6 +1103,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         saveChanges();
     }
 
+    @Override
     public LinkedHashMap<AEKey, Long> getPatternConfigInputs(int index) {
         LinkedHashMap<AEKey, Long> inputs = new LinkedHashMap<>();
         try {
@@ -1080,6 +1120,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         }
     }
 
+    @Override
     public Pair<AEKey, Long> getPatternConfigOutput(int index) {
         try {
             var job = craftingJobs.get(index);
@@ -1091,6 +1132,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         }
     }
 
+    @Override
     public void setStockAmount(int index, int inputIndex, long amount) {
         try {
             var job = craftingJobs.get(index);
@@ -1100,6 +1142,7 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         }
     }
 
+    @Override
     public void setMaxCrafted(int index, long amount) {
         try {
             var job = craftingJobs.get(index);

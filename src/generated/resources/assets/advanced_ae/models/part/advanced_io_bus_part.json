@@ -1,0 +1,10 @@
+{
+  "parent": "ae2:part/export_bus_base",
+  "textures": {
+    "back": "advanced_ae:part/advanced_io_bus_back",
+    "front": "advanced_ae:part/advanced_io_bus",
+    "particle": "advanced_ae:part/advanced_io_bus_back",
+    "sides": "advanced_ae:part/advanced_io_bus_sides",
+    "sidesStatus": "ae2:part/monitor_sides_status"
+  }
+}

@@ -1,8 +1,8 @@
 package net.pedroksl.advanced_ae.common.parts;
 
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 
-import com.glodblock.github.glodium.reflect.ReflectKit;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,13 +13,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
-import net.pedroksl.advanced_ae.common.helpers.SimulatedStorageImportStrategy;
+import net.pedroksl.advanced_ae.common.helpers.StorageReader;
+import net.pedroksl.advanced_ae.common.helpers.StorageReaderImpl;
+import net.pedroksl.advanced_ae.mixins.MixinIOBusPartInvoker;
+import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.appmek.AppMekPlugin;
 
 import appeng.api.behaviors.StackTransferContext;
 import appeng.api.config.Actionable;
@@ -42,10 +42,9 @@ import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
 import appeng.parts.PartModel;
 import appeng.parts.automation.ExportBusPart;
-import appeng.parts.automation.HandlerStrategy;
-import appeng.parts.automation.IOBusPart;
 import appeng.parts.automation.StackWorldBehaviors;
 import appeng.util.ConfigInventory;
+import appeng.util.prioritylist.DefaultPriorityList;
 
 @SuppressWarnings("UnstableApiUsage")
 public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
@@ -62,15 +61,16 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
     public static final IPartModel MODELS_HAS_CHANNEL =
             new PartModel(MODEL_BASE, AppEng.makeId("part/export_bus_has_channel"));
 
-    private static final Method createTransferContext;
-    private static final Method updateState;
     private ConfigInventory config;
-
-    private SimulatedStorageImportStrategy<IItemHandler, ItemStack> itemImportStrategy;
-    private SimulatedStorageImportStrategy<IFluidHandler, FluidStack> fluidImportStrategy;
+    private ArrayList<StorageReader> storageReaders;
 
     public StockExportBusPart(IPartItem<?> partItem) {
         super(partItem);
+    }
+
+    @Override
+    protected int getUpgradeSlots() {
+        return 6;
     }
 
     @Override
@@ -88,34 +88,32 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
     public ConfigInventory getConfig() {
         if (this.config == null) {
             this.config = ConfigInventory.configStacks(
-                    StackWorldBehaviors.hasExportStrategyFilter(), 63, () -> updatePartState(this), true);
+                    StackWorldBehaviors.hasExportStrategyFilter(),
+                    63,
+                    () -> ((MixinIOBusPartInvoker) this).callUpdateState(),
+                    true);
         }
 
         return this.config;
     }
 
-    private void getStrategies() {
+    private ArrayList<StorageReader> getSimStrategies() {
         BlockEntity self = this.getHost().getBlockEntity();
         BlockPos fromPos = self.getBlockPos().relative(this.getSide());
         Direction fromSide = this.getSide().getOpposite();
+        ServerLevel level = ((ServerLevel) this.getLevel());
 
-        if (this.itemImportStrategy == null) {
-            this.itemImportStrategy = new SimulatedStorageImportStrategy<>(
-                    ForgeCapabilities.ITEM_HANDLER,
-                    HandlerStrategy.ITEMS,
-                    (ServerLevel) this.getLevel(),
-                    fromPos,
-                    fromSide);
-        }
+        if (storageReaders == null) {
+            this.storageReaders = new ArrayList<>();
+            this.storageReaders.add(StorageReaderImpl.item(level, fromPos, fromSide));
+            this.storageReaders.add(StorageReaderImpl.fluid(level, fromPos, fromSide));
 
-        if (this.fluidImportStrategy == null) {
-            this.fluidImportStrategy = new SimulatedStorageImportStrategy<>(
-                    ForgeCapabilities.FLUID_HANDLER,
-                    HandlerStrategy.FLUIDS,
-                    (ServerLevel) this.getLevel(),
-                    fromPos,
-                    fromSide);
+            if (Addons.APPMEK.isLoaded()) {
+                this.storageReaders.add(
+                        AppMekPlugin.chemicalStorageReader(((ServerLevel) this.getLevel()), fromPos, fromSide));
+            }
         }
+        return storageReaders;
     }
 
     @Override
@@ -124,7 +122,7 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
         ICraftingService cg = grid.getCraftingService();
         var schedulingMode = this.getConfigManager().getSetting(Settings.SCHEDULING_MODE);
 
-        StackTransferContext context = getStackTransferContext(this, storageService, grid.getEnergyService());
+        StackTransferContext context = createTransferContext(storageService, grid.getEnergyService());
 
         int x;
         for (x = 0; x < this.availableSlots() && context.hasOperationsLeft(); x++) {
@@ -147,7 +145,7 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
             var transferFactor = what.getAmountPerOperation();
             var maxAmount = (long) context.getOperationsRemaining() * transferFactor;
 
-            var currentAmount = getCurrentStock(context, what, amount);
+            var currentAmount = getCurrentStock(what);
 
             maxAmount = Math.min(maxAmount, amount - currentAmount);
 
@@ -169,20 +167,12 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
         return context.hasDoneWork();
     }
 
-    private boolean craftOnly() {
-        return this.isCraftingEnabled() && this.getConfigManager().getSetting(Settings.CRAFT_ONLY) == YesNo.YES;
-    }
-
-    private boolean isCraftingEnabled() {
-        return this.isUpgradedWith(AEItems.CRAFTING_CARD);
-    }
-
     private void attemptCrafting(
             StackTransferContext context, ICraftingService cg, int slotToExport, AEKey what, long targetAmount) {
         // don't bother crafting / checking or result, if target cannot accept at least 1 of requested item
         var maxAmount = (long) context.getOperationsRemaining() * what.getAmountPerOperation();
 
-        var currentAmount = getCurrentStock(context, what, targetAmount);
+        var currentAmount = getCurrentStock(what);
 
         maxAmount = Math.min(maxAmount, targetAmount - currentAmount);
 
@@ -193,15 +183,28 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
         }
     }
 
-    private long getCurrentStock(StackTransferContext context, AEKey what, long targetAmount) {
-        getStrategies();
-
-        return this.itemImportStrategy.simulateTransfer(what, targetAmount, context.getActionSource())
-                + this.fluidImportStrategy.simulateTransfer(what, targetAmount, context.getActionSource());
+    @NotNull
+    private StackTransferContext createTransferContext(IStorageService storageService, IEnergyService energyService) {
+        return new StackTransferContextImpl(
+                storageService, energyService, this.source, getOperationsPerTick(), DefaultPriorityList.INSTANCE);
     }
 
-    public static void updatePartState(IOBusPart owner) {
-        ReflectKit.executeMethod(owner, updateState);
+    protected long getCurrentStock(AEKey what) {
+        var strategies = getSimStrategies();
+
+        var total = 0L;
+        for (var strategy : strategies) {
+            total += strategy.getCurrentStock(what);
+        }
+        return total;
+    }
+
+    private boolean craftOnly() {
+        return isCraftingEnabled() && this.getConfigManager().getSetting(Settings.CRAFT_ONLY) == YesNo.YES;
+    }
+
+    private boolean isCraftingEnabled() {
+        return isUpgradedWith(AEItems.CRAFTING_CARD);
     }
 
     protected MenuType<?> getMenuType() {
@@ -224,22 +227,6 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
             return MODELS_ON;
         } else {
             return MODELS_OFF;
-        }
-    }
-
-    @SuppressWarnings("experimental")
-    private static StackTransferContext getStackTransferContext(
-            ExportBusPart part, IStorageService storageService, IEnergyService energyService) {
-        return ReflectKit.executeMethod2(part, createTransferContext, new Object[] {storageService, energyService});
-    }
-
-    static {
-        try {
-            updateState = ReflectKit.reflectMethod(IOBusPart.class, "updateState");
-            createTransferContext = ReflectKit.reflectMethod(
-                    ExportBusPart.class, "createTransferContext", IStorageService.class, IEnergyService.class);
-        } catch (NoSuchMethodException e) {
-            throw new IllegalArgumentException("Reflection failed", e);
         }
     }
 }

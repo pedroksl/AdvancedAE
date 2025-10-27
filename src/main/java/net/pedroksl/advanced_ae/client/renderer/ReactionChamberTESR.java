@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 
 import appeng.api.orientation.RelativeSide;
@@ -40,6 +41,10 @@ public class ReactionChamberTESR implements BlockEntityRenderer<ReactionChamberE
     @Override
     public void render(
             ReactionChamberEntity be, float v, PoseStack poseStack, MultiBufferSource buffers, int light, int overlay) {
+        if (!AAEConfig.instance().getEnableEffects()) {
+            return;
+        }
+
         var fluidStack = be.getFluidStack();
         if (fluidStack == null || fluidStack.isEmpty()) {
             return;

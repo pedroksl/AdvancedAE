@@ -17,6 +17,7 @@ import net.pedroksl.advanced_ae.network.AAENetworkHandler;
 import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
 import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
 import net.pedroksl.advanced_ae.xmod.Addons;
+import net.pedroksl.advanced_ae.xmod.ae2wtlib.AE2WtLibPlugin;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 
 import appeng.api.crafting.PatternDetailsHelper;
@@ -55,6 +56,14 @@ public class AdvancedAE {
                 InitRecipeTypes.init(ForgeRegistries.RECIPE_TYPES);
             } else if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER) {
                 InitRecipeSerializers.init(ForgeRegistries.RECIPE_SERIALIZERS);
+            } else if (event.getRegistryKey() == Registries.ITEM) {
+                if (Addons.AE2WTLIB.isLoaded()) {
+                    AE2WtLibPlugin.commonInit();
+                }
+            } else if (event.getRegistryKey() == ForgeRegistries.MENU_TYPES) {
+                if (Addons.AE2WTLIB.isLoaded()) {
+                    AE2WtLibPlugin.initMenu();
+                }
             }
         });
 
@@ -67,6 +76,9 @@ public class AdvancedAE {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        if (Addons.AE2WTLIB.isLoaded()) {
+            // AE2WtLibPlugin.commonInit();
+        }
         AAENetworkHandler.INSTANCE.init();
         PatternDetailsHelper.registerDecoder(AdvPatternDetailsDecoder.INSTANCE);
         initGridLinkables();
@@ -79,6 +91,9 @@ public class AdvancedAE {
         GridLinkables.register(AAEItems.QUANTUM_CHESTPLATE, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_LEGGINGS, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_BOOTS, IGridLinkedItem.LINKABLE_HANDLER);
+        if (Addons.AE2WTLIB.isLoaded()) {
+            AE2WtLibPlugin.initGridLinkables();
+        }
     }
 
     private static void initUpgrades(FMLCommonSetupEvent event) {
@@ -90,14 +105,24 @@ public class AdvancedAE {
             Upgrades.add(AEItems.CAPACITY_CARD, AAEItems.STOCK_EXPORT_BUS, 5);
             Upgrades.add(AEItems.REDSTONE_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
             Upgrades.add(AEItems.CRAFTING_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
+            Upgrades.add(AEItems.FUZZY_CARD, AAEItems.STOCK_EXPORT_BUS, 1);
             Upgrades.add(AEItems.SPEED_CARD, AAEItems.IMPORT_EXPORT_BUS, 4);
             Upgrades.add(AEItems.CAPACITY_CARD, AAEItems.IMPORT_EXPORT_BUS, 5);
             Upgrades.add(AEItems.REDSTONE_CARD, AAEItems.IMPORT_EXPORT_BUS, 1);
             Upgrades.add(AEItems.CRAFTING_CARD, AAEItems.IMPORT_EXPORT_BUS, 1);
             Upgrades.add(AEItems.FUZZY_CARD, AAEItems.IMPORT_EXPORT_BUS, 1);
+            Upgrades.add(AEItems.SPEED_CARD, AAEItems.ADVANCED_IO_BUS, 4);
+            Upgrades.add(AEItems.CAPACITY_CARD, AAEItems.ADVANCED_IO_BUS, 5);
+            Upgrades.add(AEItems.REDSTONE_CARD, AAEItems.ADVANCED_IO_BUS, 1);
+            Upgrades.add(AEItems.CRAFTING_CARD, AAEItems.ADVANCED_IO_BUS, 1);
+            Upgrades.add(AEItems.FUZZY_CARD, AAEItems.ADVANCED_IO_BUS, 1);
 
             if (Addons.APPFLUX.isLoaded()) {
                 AppliedFluxPlugin.init();
+            }
+
+            if (Addons.AE2WTLIB.isLoaded()) {
+                AE2WtLibPlugin.initUpgrades();
             }
         });
     }

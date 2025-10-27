@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.api.AAESettings;
+import net.pedroksl.advanced_ae.api.ShowQuantumCrafters;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.ae2addonlib.client.widgets.AddonSettingToggleButton;
 
@@ -45,5 +46,47 @@ public class AAESettingToggleButton<T extends Enum<T>> extends AddonSettingToggl
                 YesNo.NO,
                 AAEText.FilteredImport,
                 AAEText.FilteredImportOff);
+        registerApp(
+                AAEIcon.CRAFTER_TERMINAL_VISIBLE,
+                AAESettings.TERMINAL_SHOW_QUANTUM_CRAFTERS,
+                ShowQuantumCrafters.VISIBLE,
+                AAEText.ShowCraftersCategory,
+                AAEText.ShowVisibleCrafters);
+        registerApp(
+                AAEIcon.CRAFTER_TERMINAL_ALL,
+                AAESettings.TERMINAL_SHOW_QUANTUM_CRAFTERS,
+                ShowQuantumCrafters.ALL,
+                AAEText.ShowCraftersCategory,
+                AAEText.ShowAllCrafters);
+        registerApp(
+                AAEIcon.CRAFTER_TERMINAL_NOT_FULL,
+                AAESettings.TERMINAL_SHOW_QUANTUM_CRAFTERS,
+                ShowQuantumCrafters.NOT_FULL,
+                AAEText.ShowCraftersCategory,
+                AAEText.ShowNonFullCrafters);
+        registerApp(
+                AAEIcon.SHOW_ON_CRAFTER_TERMINAL,
+                AAESettings.QUANTUM_CRAFTER_TERMINAL,
+                YesNo.YES,
+                AAEText.CrafterTerminalSetting,
+                AAEText.ShowOnCrafterTerminal);
+        registerApp(
+                AAEIcon.HIDE_ON_CRAFTER_TERMINAL,
+                AAESettings.QUANTUM_CRAFTER_TERMINAL,
+                YesNo.NO,
+                AAEText.CrafterTerminalSetting,
+                AAEText.HideOnCrafterTerminal);
+        registerApp(
+                AAEIcon.REGULATE_ON,
+                AAESettings.REGULATE_STOCK,
+                YesNo.YES,
+                AAEText.RegulateCategory,
+                AAEText.RegulateOn);
+        registerApp(
+                AAEIcon.REGULATE_OFF,
+                AAESettings.REGULATE_STOCK,
+                YesNo.NO,
+                AAEText.RegulateCategory,
+                AAEText.RegulateOff);
     }
 }

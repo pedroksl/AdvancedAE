@@ -29,7 +29,9 @@ requieren lados específicos para entradas específicas con un solo bloque y sin
 
 *Te estoy mirando a ti, Mekanism.*
 
-![AAEGui](../pic/app_gui.png)
-
 Para poder usar esta función, necesitarás insertar un <ItemLink id="advanced_ae:adv_processing_pattern" /> creado
 insertando un patrón codificado en un <ItemLink id="advanced_ae:adv_pattern_encoder" /> y sacando la versión avanzada.
+
+También hay una versión extendida, capaz de albergar hasta 36 patrones en un solo proveedor de patrones.
+
+![AAEGui](../pic/app_gui.png)

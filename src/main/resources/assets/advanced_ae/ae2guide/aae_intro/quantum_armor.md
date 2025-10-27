@@ -39,10 +39,10 @@ item_ids:
 # Quantum Armor Set
 
 <Row gap="10">
-<ItemImage id="advanced_ae:quantum_helmet" scale="4"></ItemImage>
-<ItemImage id="advanced_ae:quantum_chestplate" scale="4"></ItemImage>
-<ItemImage id="advanced_ae:quantum_leggings" scale="4"></ItemImage>
-<ItemImage id="advanced_ae:quantum_boots" scale="4"></ItemImage>
+<ItemImage id="advanced_ae:quantum_helmet" tag="{internalCurrentPower: 2.0E8d}" scale="4"></ItemImage>
+<ItemImage id="advanced_ae:quantum_chestplate" tag="{internalCurrentPower: 3.0E8d}" scale="4"></ItemImage>
+<ItemImage id="advanced_ae:quantum_leggings" tag="{internalCurrentPower: 2.5E8d}" scale="4"></ItemImage>
+<ItemImage id="advanced_ae:quantum_boots" tag="{internalCurrentPower: 2.0E8d}" scale="4"></ItemImage>
 </Row>
 
 * <ItemLink id="advanced_ae:quantum_helmet" />

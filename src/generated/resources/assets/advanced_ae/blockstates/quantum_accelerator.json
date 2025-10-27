@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "formed=false": {
       "model": "advanced_ae:block/crafting/quantum_accelerator"
+    },
+    "formed=true": {
+      "model": "advanced_ae:block/crafting/quantum_accelerator_formed"
     }
   }
 }

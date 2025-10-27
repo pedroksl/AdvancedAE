@@ -28,14 +28,13 @@ import appeng.core.definitions.AEItems;
 import appeng.core.localization.ButtonToolTips;
 import appeng.core.localization.Tooltips;
 
-public class StockExportBusScreen extends UpgradeableScreen<StockExportBusMenu> {
+public class StockExportBusScreen<M extends StockExportBusMenu> extends UpgradeableScreen<M> {
 
     private final SettingToggleButton<RedstoneMode> redstoneMode;
     private final SettingToggleButton<YesNo> craftMode;
     private final SettingToggleButton<SchedulingMode> schedulingMode;
 
-    public StockExportBusScreen(
-            StockExportBusMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
+    public StockExportBusScreen(M menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
 
         this.redstoneMode = new ServerSettingToggleButton<>(Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);

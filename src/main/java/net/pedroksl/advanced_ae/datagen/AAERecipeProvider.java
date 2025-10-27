@@ -136,6 +136,16 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('E', AEParts.EXPORT_BUS)
                 .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
                 .save(c, AdvancedAE.makeId("import_export_bus"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADVANCED_IO_BUS)
+                .pattern("AQA")
+                .pattern("IQS")
+                .pattern("AQA")
+                .define('I', AAEItems.IMPORT_EXPORT_BUS)
+                .define('A', AEItems.SPEED_CARD)
+                .define('Q', AAEItems.QUANTUM_PROCESSOR)
+                .define('S', AAEItems.STOCK_EXPORT_BUS)
+                .unlockedBy("hasItem", has(AEParts.EXPORT_BUS))
+                .save(c, AdvancedAE.makeId("advanced_io_bus"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_ENCODER)
                 .pattern("QRQ")
                 .pattern("RER")
@@ -193,6 +203,23 @@ public class AAERecipeProvider extends RecipeProvider {
                 .requires(AEParts.STORAGE_MONITOR)
                 .unlockedBy("hasItem", has(AEParts.STORAGE_MONITOR))
                 .save(c, AdvancedAE.makeId("throughput_monitor"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, AAEItems.QUANTUM_CRAFTER_TERMINAL)
+                .requires(AEParts.PATTERN_ACCESS_TERMINAL)
+                .requires(AAEItems.QUANTUM_PROCESSOR)
+                .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_CRAFTER))
+                .save(c, AdvancedAE.makeId("quantum_crafter_terminal"));
+        Addons.AE2WTLIB.conditionalRecipe(
+                c,
+                r -> ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL)
+                        .pattern(" W ")
+                        .pattern(" T ")
+                        .pattern(" C ")
+                        .define('W', AEItems.WIRELESS_RECEIVER)
+                        .define('T', AAEItems.QUANTUM_CRAFTER_TERMINAL)
+                        .define('C', AEBlocks.DENSE_ENERGY_CELL)
+                        .unlockedBy("hasItem", has(AAEItems.QUANTUM_CRAFTER_TERMINAL))
+                        .save(r, AdvancedAE.makeId("wireless_quantum_crafter_terminal")),
+                AdvancedAE.makeId("wireless_quantum_crafter_terminal"));
         InscriberRecipeBuilder.inscribe(AAEItems.SHATTERED_SINGULARITY, AAEItems.QUANTUM_PROCESSOR_PRESS, 1)
                 .setTop(Ingredient.of(AEItems.ENGINEERING_PROCESSOR_PRESS))
                 .setBottom(Ingredient.of(AEItems.LOGIC_PROCESSOR_PRESS))

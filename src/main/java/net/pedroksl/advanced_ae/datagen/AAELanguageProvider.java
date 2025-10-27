@@ -53,6 +53,7 @@ public class AAELanguageProvider extends LanguageProvider {
 
     private void generateLocalizations() {
         add("key." + AdvancedAE.MOD_ID + ".category", "Advanced AE");
+        add("key.ae2.wireless_quantum_crafter_terminal", "Open Wireless Quantum Crafter Terminal");
         add("curios.identifier.adv_pattern_encoder", "Pattern Encoder");
     }
 

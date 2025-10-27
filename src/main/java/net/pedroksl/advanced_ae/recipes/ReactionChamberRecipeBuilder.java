@@ -23,6 +23,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
 import appeng.api.stacks.GenericStack;
 

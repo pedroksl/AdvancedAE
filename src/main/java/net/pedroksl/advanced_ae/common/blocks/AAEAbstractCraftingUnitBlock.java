@@ -30,6 +30,7 @@ import appeng.menu.locator.MenuLocators;
 public abstract class AAEAbstractCraftingUnitBlock<T extends AEBaseBlockEntity> extends AEBaseEntityBlock<T> {
     public static final BooleanProperty FORMED = BooleanProperty.create("formed");
     public static final BooleanProperty POWERED = BooleanProperty.create("powered");
+    public static final BooleanProperty MULTIBLOCKED = BooleanProperty.create("multiblocked");
     public static final IntegerProperty LIGHT_LEVEL = IntegerProperty.create("light_level", 0, 15);
 
     public final ICraftingUnitType type;
@@ -40,6 +41,7 @@ public abstract class AAEAbstractCraftingUnitBlock<T extends AEBaseBlockEntity> 
         this.registerDefaultState(defaultBlockState()
                 .setValue(FORMED, false)
                 .setValue(POWERED, false)
+                .setValue(MULTIBLOCKED, false)
                 .setValue(LIGHT_LEVEL, 0));
     }
 
@@ -48,6 +50,7 @@ public abstract class AAEAbstractCraftingUnitBlock<T extends AEBaseBlockEntity> 
         super.createBlockStateDefinition(builder);
         builder.add(POWERED);
         builder.add(FORMED);
+        builder.add(MULTIBLOCKED);
         builder.add(LIGHT_LEVEL);
     }
 
