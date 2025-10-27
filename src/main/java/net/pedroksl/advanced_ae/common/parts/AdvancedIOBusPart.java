@@ -120,10 +120,10 @@ public class AdvancedIOBusPart extends StockExportBusPart {
                     var transferFactor = what.getAmountPerOperation();
                     int maxAmount = operationsLeft * transferFactor;
                     maxAmount = Math.min(maxAmount, stock - amount);
-                    int op = maxAmount * transferFactor;
+                    int op = maxAmount / transferFactor;
 
                     var context = new FilteredImportStackTransferContext(
-                            storageService, grid.getEnergyService(), this.source, (int) op, makeFilter(what));
+                            storageService, grid.getEnergyService(), this.source, op, makeFilter(what));
 
                     strategy.transfer(context);
                     operationsLeft -= op - context.getOperationsRemaining();

@@ -1,4 +1,1 @@
-- Updated AE2AddonLib version to 1.0.2
-- Fixe EMI plugin getting confused when reaction chamber's output is a fluid for the crafting tree
-- Added in-game config screen @Satherov (#226)
-- Fixed break speed event sometimes returning infinity (Fixes interaction bug between this mod and JDT instant break)
+- Fixed Advanced IO regulation being faster than intended
