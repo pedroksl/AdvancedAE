@@ -76,9 +76,6 @@ public class AdvancedAE {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        if (Addons.AE2WTLIB.isLoaded()) {
-            // AE2WtLibPlugin.commonInit();
-        }
         AAENetworkHandler.INSTANCE.init();
         PatternDetailsHelper.registerDecoder(AdvPatternDetailsDecoder.INSTANCE);
         initGridLinkables();

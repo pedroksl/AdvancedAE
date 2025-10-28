@@ -1,7 +1,7 @@
 package net.pedroksl.advanced_ae.network.packet;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.pedroksl.ae2addonlib.network.AddonPacket;
 
 public class MenuSelectionPacket extends AddonPacket {
@@ -26,7 +26,7 @@ public class MenuSelectionPacket extends AddonPacket {
     }
 
     @Override
-    public void serverPacketData(ServerPlayer player) {
+    public void clientPacketData(Player player) {
         if (menuType == -1) {
             player.getPersistentData().remove(data);
         } else {

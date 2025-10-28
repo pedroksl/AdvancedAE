@@ -41,7 +41,7 @@ legacyForge {
 
         server {
             server()
-            programArgument '--nogui'
+            //programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
