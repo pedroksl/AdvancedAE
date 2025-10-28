@@ -72,6 +72,7 @@ legacyForge {
             // "REGISTRYDUMP": For getting the contents of all registries.
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             systemProperty "guideme.ae2.guide.sources", file('src/main/resources/assets/advanced_ae/ae2guide/aae_intro/').absolutePath
+            //  property "mixin.debug.export", "true"
 
             // Recommended logging level for the console
             // You can set various levels here.
@@ -294,6 +295,14 @@ mixin {
     config "mixins.aae.json"
 }
 
+jar {
+    manifest {
+        attributes([
+                "MixinConfigs"          : "mixins.aae.json"
+        ])
+    }
+}
+
 // Example configuration to allow publishing using the maven-publish plugin
 publishing {
     publications {
@@ -306,10 +315,6 @@ publishing {
             url "file://${project.projectDir}/mcmodsrepo"
         }
     }
-}
-
-mixin {
-    add sourceSets.main, "mixins.aae.refmap.json"
 }
 
 tasks.withType(JavaCompile).configureEach {
