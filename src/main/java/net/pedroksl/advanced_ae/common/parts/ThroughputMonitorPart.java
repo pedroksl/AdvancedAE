@@ -283,7 +283,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         if (this.workRoutine == this.lastWorkRoutine) {
             var amountPerTick = cache.averagePerTick(this.workRoutine.timeLimit_s);
             this.lastReportedValue = amountPerTick * this.workRoutine.ticks;
-            if (this.lastReportedValue > 10 || this.lastReportedValue == 0) {
+            if (Math.abs(this.lastReportedValue) > 10 || this.lastReportedValue == 0) {
                 this.lastHumanReadableValue =
                         getDisplayed().formatAmount(Math.round(Math.abs(lastReportedValue)), AmountFormat.SLOT);
             } else {
