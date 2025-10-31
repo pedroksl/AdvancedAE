@@ -34,7 +34,7 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     private long consumeCardStartTick = -1;
 
     @GuiSync(10)
-    private int selectedItemSlot = -1;
+    public int selectedItemSlot = -1;
 
     public QuantumArmorMenuHost(
             T item, Player player, ItemMenuHostLocator locator, BiConsumer<Player, ISubMenu> returnToMainMenu) {
@@ -91,12 +91,12 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
     }
 
     public void setSelectedItemSlot(int slot) {
+        if (selectedItemSlot == slot) {
+            return;
+        }
+
         resetProgress();
         selectedItemSlot = slot;
-    }
-
-    public int getSelectedSlotIndex() {
-        return selectedItemSlot;
     }
 
     private void resetProgress() {

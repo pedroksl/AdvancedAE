@@ -7,8 +7,6 @@ import java.util.Map;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
@@ -16,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
@@ -31,7 +28,6 @@ import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeF
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeValuePacket;
 import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 
-import appeng.api.stacks.GenericStack;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.style.Color;
 import appeng.client.gui.style.PaletteColor;
@@ -74,7 +70,8 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     @Override
     protected void init() {
         super.init();
-        refreshList(true);
+
+        this.menu.updateClient();
     }
 
     @Override
@@ -87,7 +84,6 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
             if (this.isArmorSlot(slot)) {
                 this.selectedIndex = slot.index;
                 this.menu.setSelectedItemSlot(slot.getSlotIndex());
-                refreshList(true);
             }
         }
 
@@ -184,68 +180,23 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
         }
     }
 
-    public void refreshList(int selectedIndex, ItemStack stack) {
+    public void refreshList(int selectedIndex, List<UpgradeState> states) {
         this.selectedIndex = selectedIndex;
 
-        getPlayer().setItemSlot(((QuantumArmorBase) stack.getItem()).getEquipmentSlot(), stack);
-
-        this.refreshList(stack, false);
+        this.refreshList(states);
     }
 
-    public void refreshList(boolean removeWidgets) {
-        this.refreshList(ItemStack.EMPTY, removeWidgets);
-    }
+    public void refreshList(List<UpgradeState> states) {
+        this.upgradeList.forEach(w -> w.remove(this::removeWidget));
+        this.upgradeList.clear();
 
-    public void refreshList(@Nullable ItemStack stack, boolean removeWidgets) {
-        if (stack == null) {
-            this.menu.updateClient();
-            return;
-        }
-
-        if (removeWidgets) {
-            this.upgradeList.forEach(w -> w.children().forEach(this::removeWidget));
-            this.upgradeList.clear();
-        }
-
-        if (stack.isEmpty() && (this.selectedIndex == -1 || this.selectedIndex > this.menu.slots.size())) return;
-
-        int index = 0;
-        var armorStack = stack.isEmpty() ? this.menu.getSlot(this.selectedIndex).getItem() : stack;
-        if (armorStack.getItem() instanceof QuantumArmorBase item) {
-            for (var upgrade : item.getPossibleUpgrades()) {
-                if (item.hasUpgrade(armorStack, upgrade)) {
-                    var components = armorStack.getComponents();
-
-                    boolean enabled = Boolean.TRUE.equals(components.get(AAEComponents.UPGRADE_TOGGLE.get(upgrade)));
-                    int value = components.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 1);
-                    var filter = components.getOrDefault(
-                            AAEComponents.UPGRADE_FILTER.get(upgrade), new ArrayList<GenericStack>());
-                    UpgradeState state = new UpgradeState(upgrade, upgrade.getSettings(), enabled, value, filter);
-
-                    boolean found = false;
-                    for (var widget : this.upgradeList) {
-                        if (widget.getType() == upgrade) {
-                            widget.setState(state);
-                            found = true;
-                        }
-                    }
-                    if (!found) {
-                        var widget = new QuantumUpgradeWidget(
-                                this, index, LIST_ANCHOR_X, LIST_ANCHOR_Y + index * LIST_LINE_HEIGHT, style, state);
-                        widget.add();
-                        this.upgradeList.add(widget);
-                    }
-                    index++;
-                } else if (!removeWidgets) {
-                    for (var w : this.upgradeList) {
-                        if (w.getType() == upgrade) {
-                            w.children().forEach(this::removeWidget);
-                            this.upgradeList.remove(w);
-                            break;
-                        }
-                    }
-                }
-            }
+        var index = 0;
+        for (var state : states) {
+            var widget = new QuantumUpgradeWidget(
+                    this, index, LIST_ANCHOR_X, LIST_ANCHOR_Y + index * LIST_LINE_HEIGHT, style, state);
+            widget.add();
+            this.upgradeList.add(widget);
+            index++;
         }
         this.resetScrollbar();
     }

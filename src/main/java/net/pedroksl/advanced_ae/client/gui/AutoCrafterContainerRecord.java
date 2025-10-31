@@ -7,7 +7,7 @@ import net.pedroksl.advanced_ae.common.helpers.AutoCraftingContainer;
 import appeng.util.inv.AppEngInternalInventory;
 
 /**
- * This class is used on the client-side to represent a pattern provider and it's inventory as it is shown in the
+ * This class is used on the client-side to represent a quantum crafter and its inventory as it is shown in the
  * {@link QuantumCrafterTermScreen}'s table.
  */
 public class AutoCrafterContainerRecord implements Comparable<AutoCrafterContainerRecord> {

@@ -3,17 +3,17 @@ package net.pedroksl.advanced_ae.client.widgets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.gui.QuantumArmorConfigScreen;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
-import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeTogglePacket;
 import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 
 import appeng.client.gui.Icon;
@@ -80,6 +80,10 @@ public class QuantumUpgradeWidget {
         return children.values();
     }
 
+    public void remove(Consumer<GuiEventListener> removeWidget) {
+        children.forEach((i, c) -> removeWidget.accept(c));
+    }
+
     public String getName() {
         return state.type().name;
     }
@@ -117,7 +121,7 @@ public class QuantumUpgradeWidget {
     }
 
     private void toggleEnable() {
-        PacketDistributor.sendToServer(new QuantumArmorUpgradeTogglePacket(state.type(), enableButton.isSelected()));
+        host.getMenu().toggleUpgradeEnable(state.type(), enableButton.isSelected());
     }
 
     private void uninstallRequested(Button button) {

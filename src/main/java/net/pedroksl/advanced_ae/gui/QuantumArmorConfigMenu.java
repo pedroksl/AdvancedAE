@@ -7,14 +7,16 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
+import net.pedroksl.advanced_ae.common.items.armors.IUpgradeableItem;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeStatePacket;
+import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeTogglePacket;
 
 import appeng.api.inventories.InternalInventory;
 import appeng.api.stacks.GenericStack;
@@ -84,7 +86,6 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         } else {
             setSelectedItemSlot(indexOfFirstQuantum);
         }
-        updateClient();
     }
 
     public QuantumArmorMenuHost<?> getHost() {
@@ -129,19 +130,25 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         }
 
         this.host.setSelectedItemSlot(index);
+        this.markDirty = true;
     }
 
     public int getSelectedSlotIndex() {
-        return this.host.getSelectedSlotIndex();
+        return this.host.selectedItemSlot;
     }
 
     public void toggleUpgradeEnable(UpgradeType upgradeType, boolean state) {
-        var slotIndex = this.host.getSelectedSlotIndex();
+        if (isClientSide()) {
+            PacketDistributor.sendToServer(new QuantumArmorUpgradeTogglePacket(upgradeType, state));
+            return;
+        }
+
+        var slotIndex = this.host.selectedItemSlot;
         var stack = getPlayer().getInventory().getItem(slotIndex);
         if (stack.getItem() instanceof QuantumArmorBase item) {
             if (item.getPossibleUpgrades().contains(upgradeType)) {
                 if (item.hasUpgrade(stack, upgradeType)) {
-                    stack.set(AAEComponents.UPGRADE_TOGGLE.get(upgradeType), state);
+                    item.toggleUpgrade(stack, upgradeType);
                     this.markDirty = true;
                 }
             }
@@ -201,7 +208,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         }
 
         boolean upgradeRemoved = false;
-        var slotIndex = this.host.getSelectedSlotIndex();
+        var slotIndex = this.host.selectedItemSlot;
         var stack = getPlayer().getInventory().getItem(slotIndex);
         if (stack.getItem() instanceof QuantumArmorBase item) {
             if (item.getPossibleUpgrades().contains(upgradeType)) {
@@ -226,11 +233,12 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
             return;
         }
 
-        var slotIndex = this.host.getSelectedSlotIndex();
+        var slotIndex = this.host.selectedItemSlot;
         var stack = getPlayer().getInventory().getItem(slotIndex);
-        if (!stack.isEmpty()) {
+        if (!stack.isEmpty() && stack.getItem() instanceof IUpgradeableItem item) {
             var index = 4 - (slotIndex - Inventory.INVENTORY_SIZE) + Inventory.INVENTORY_SIZE;
-            sendPacketToClient(new QuantumArmorUpgradeStatePacket(index, stack));
+            var states = item.getAllUpgradeStates(stack);
+            sendPacketToClient(new QuantumArmorUpgradeStatePacket(index, states));
         }
     }
 
@@ -238,7 +246,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
     public void broadcastChanges() {
         super.broadcastChanges();
 
-        if (markDirty) {
+        if (isServerSide() && markDirty) {
             updateClient();
             markDirty = false;
         }

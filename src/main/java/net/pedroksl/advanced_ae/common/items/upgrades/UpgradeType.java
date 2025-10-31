@@ -97,7 +97,8 @@ public enum UpgradeType {
             ApplicationType.PASSIVE,
             AAEItems.RECHARGING_CARD),
     WORKBENCH("Portable Workbench", null, SettingType.NONE, 0, ApplicationType.PASSIVE_USE, AAEItems.WORKBENCH_CARD),
-    PICK_CRAFT("Pick-Craft", null, SettingType.NONE, 1000, ApplicationType.PASSIVE_USE, AAEItems.PICK_CRAFT_CARD);
+    PICK_CRAFT("Pick-Craft", null, SettingType.NONE, 1000, ApplicationType.PASSIVE_USE, AAEItems.PICK_CRAFT_CARD),
+    CAMO("Camo", null, SettingType.NONE, 0, ApplicationType.PASSIVE, AAEItems.CAMO_CARD);
     //    HUD("HUD", null, SettingType.BOOL_LIST, 10, ApplicationType.PASSIVE, AAEItems.HUD_CARD);
 
     public enum SettingType {
@@ -189,8 +190,9 @@ public enum UpgradeType {
                     NIGHT_VISION,
                     CHARGING,
                     WORKBENCH,
-                    PICK_CRAFT /*,
-                               HUD*/ -> new UpgradeSettings(1);
+                    PICK_CRAFT,
+                    CAMO
+            /*HUD*/ -> new UpgradeSettings(1);
             case WALK_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxWalkSpeed(), 0.1f);
             case SPRINT_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxSprintSpeed(), 0.1f);
             case STEP_ASSIST -> new UpgradeSettings(1, AAEConfig.instance().getMaxStepHeight());
@@ -237,6 +239,7 @@ public enum UpgradeType {
             case CHARGING -> AAEText.RechargingTooltip.text();
             case WORKBENCH -> AAEText.PortableWorkbenchTooltip.text();
             case PICK_CRAFT -> AAEText.PickCraftTooltip.text();
+            case CAMO -> AAEText.CamoTooltip.text();
                 //            case HUD -> AAEText.PortableWorkbenchTooltip.text();
         };
     }
