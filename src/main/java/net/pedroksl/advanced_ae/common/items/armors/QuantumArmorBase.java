@@ -22,6 +22,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -91,13 +92,44 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     public void setTintColor(Player player, ItemStack stack, int color) {
         stack.set(LibComponents.TINT_COLOR_TAG, color);
 
+        var renderer = getRenderer(player, stack);
+        if (renderer != null) {
+            renderer.setTintColor(color);
+        }
+    }
+
+    public boolean isVisible(ItemStack stack) {
+        return !stack.getOrDefault(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.CAMO), false);
+    }
+
+    private void updateVisibility(Player player, ItemStack stack) {
+        var visible = isVisible(stack);
+        var renderer = getRenderer(player, stack);
+        if (renderer != null && stack.getItem() instanceof QuantumArmorBase item) {
+            renderer.setVisible(item.getEquipmentSlot(), visible);
+        }
+    }
+
+    @Override
+    public final void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        if (entity instanceof Player player) {
+            updateVisibility(player, stack);
+        }
+
+        tick(stack, level, entity, slotId);
+    }
+
+    protected void tick(ItemStack stack, Level level, Entity entity, int slotId) {}
+
+    protected QuantumArmorRenderer getRenderer(Player player, ItemStack stack) {
         var renderProvider = getRenderProvider();
         if (renderProvider instanceof GeoRenderProvider provider) {
             var renderer = provider.getGeoArmorRenderer(player, stack, stack.getEquipmentSlot(), null);
             if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
-                quantumRenderer.setTintColor(color);
+                return quantumRenderer;
             }
         }
+        return null;
     }
 
     @Override
@@ -202,6 +234,11 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
                 if (this.renderer == null) this.renderer = new QuantumArmorRenderer();
 
                 this.renderer.setTintColor(getTintColor(itemStack));
+                var slot = itemStack.getEquipmentSlot();
+                if (slot != null) {
+                    this.renderer.setVisible(
+                            slot, !itemStack.getOrDefault(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.CAMO), true));
+                }
 
                 return this.renderer;
             }

@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.pedroksl.advanced_ae.client.widgets.UpgradeState;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
@@ -15,6 +16,7 @@ import net.pedroksl.ae2addonlib.api.IGridLinkedItem;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.stacks.GenericStack;
 import appeng.core.localization.Tooltips;
 
 public interface IUpgradeableItem extends IGridLinkedItem {
@@ -58,6 +60,33 @@ public interface IUpgradeableItem extends IGridLinkedItem {
 
     default boolean hasUpgrade(ItemStack stack, UpgradeType type) {
         return stack.has(AAEComponents.UPGRADE_TOGGLE.get(type));
+    }
+
+    default UpgradeState getUpgradeState(ItemStack stack, UpgradeType type) {
+        if (!hasUpgrade(stack, type)) {
+            return null;
+        }
+
+        boolean toggle = stack.getOrDefault(AAEComponents.UPGRADE_TOGGLE.get(type), true);
+        int value = stack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(type), 0);
+        List<GenericStack> filter = stack.get(AAEComponents.UPGRADE_FILTER.get(type));
+        if (type.getExtraSettings() != UpgradeType.ExtraSettings.NONE) {
+            boolean extra = stack.getOrDefault(AAEComponents.UPGRADE_EXTRA.get(type), true);
+            return new UpgradeState(type, toggle, value, extra, filter);
+        } else {
+            return new UpgradeState(type, toggle, value, true, filter);
+        }
+    }
+
+    default List<UpgradeState> getAllUpgradeStates(ItemStack stack) {
+        List<UpgradeState> states = new ArrayList<>();
+        for (var type : getAppliedUpgrades(stack)) {
+            var state = getUpgradeState(stack, type);
+            if (state != null) {
+                states.add(state);
+            }
+        }
+        return states;
     }
 
     default boolean applyUpgrade(ItemStack stack, UpgradeType type) {

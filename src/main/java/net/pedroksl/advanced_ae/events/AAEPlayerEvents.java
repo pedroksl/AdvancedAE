@@ -107,12 +107,12 @@ public class AAEPlayerEvents {
             var model = renderer.getModel();
 
             ItemStack helmetStack = player.getItemBySlot(EquipmentSlot.HEAD);
-            if (helmetStack.getItem() instanceof QuantumHelmet) {
+            if (helmetStack.getItem() instanceof QuantumHelmet item && item.isVisible(helmetStack)) {
                 model.hat.visible = false;
             }
 
             ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-            if (chestStack.getItem() instanceof QuantumChestplate) {
+            if (chestStack.getItem() instanceof QuantumChestplate item && item.isVisible(chestStack)) {
                 model.leftSleeve.visible = false;
                 model.rightSleeve.visible = false;
                 model.jacket.visible = false;
@@ -123,11 +123,11 @@ public class AAEPlayerEvents {
 
             ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
             ItemStack bootsStack = player.getItemBySlot(EquipmentSlot.FEET);
-            if (leggingsStack.getItem() instanceof QuantumLeggings) {
+            if (leggingsStack.getItem() instanceof QuantumLeggings item && item.isVisible(leggingsStack)) {
                 model.leftPants.visible = false;
                 model.rightPants.visible = false;
 
-                if (bootsStack.getItem() instanceof QuantumBoots) {
+                if (bootsStack.getItem() instanceof QuantumBoots item2 && item2.isVisible(bootsStack)) {
                     model.leftLeg.visible = false;
                     model.rightLeg.visible = false;
                 }

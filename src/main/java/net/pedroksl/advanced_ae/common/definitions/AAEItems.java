@@ -167,6 +167,8 @@ public class AAEItems extends ItemRegistry {
             p -> new QuantumUpgradeBaseItem(UpgradeType.WORKBENCH, p));
     public static final ItemDefinition<QuantumUpgradeBaseItem> PICK_CRAFT_CARD =
             item("Pick Craft Card", "pick_craft_card", p -> new QuantumUpgradeBaseItem(UpgradeType.PICK_CRAFT, p));
+    public static final ItemDefinition<QuantumUpgradeBaseItem> CAMO_CARD =
+            item("Camo Card", "camo_card", p -> new QuantumUpgradeBaseItem(UpgradeType.CAMO, p));
     //    public static final ItemDefinition<QuantumUpgradeBaseItem> HUD_CARD =
     //            item("HUD Card", "hud_card", p -> new QuantumUpgradeBaseItem(UpgradeType.HUD, p));
 

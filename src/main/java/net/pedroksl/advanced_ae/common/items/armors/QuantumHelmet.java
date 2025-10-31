@@ -41,18 +41,21 @@ public class QuantumHelmet extends QuantumArmorBase {
                 UpgradeType.LUCK,
                 UpgradeType.NIGHT_VISION,
                 UpgradeType.CHARGING,
-                UpgradeType.WORKBENCH);
+                UpgradeType.WORKBENCH,
+                UpgradeType.CAMO);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+    public void tick(ItemStack stack, Level level, Entity entity, int slotId) {
         if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex()) {
             if (entity instanceof Player player) {
                 if (!getPassiveUpgrades(stack).isEmpty()) {
                     tickUpgrades(level, player, stack);
                 }
 
-                toggleBoneVisibilities(stack, player);
+                if (isVisible(stack)) {
+                    toggleBoneVisibilities(stack, player);
+                }
             }
         }
     }

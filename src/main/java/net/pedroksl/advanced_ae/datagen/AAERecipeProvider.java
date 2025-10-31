@@ -719,6 +719,16 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('P', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("pick_craft_card"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.CAMO_CARD)
+                .pattern(" G ")
+                .pattern("FCF")
+                .pattern("NNN")
+                .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
+                .define('G', Items.GOLDEN_CARROT)
+                .define('F', Items.FERMENTED_SPIDER_EYE)
+                .define('N', Items.NETHER_WART)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
+                .save(c, AdvancedAE.makeId("camo_card"));
 
         resetNbtRecipe(c, AAEItems.QUANTUM_HELMET);
         resetNbtRecipe(c, AAEItems.QUANTUM_CHESTPLATE);

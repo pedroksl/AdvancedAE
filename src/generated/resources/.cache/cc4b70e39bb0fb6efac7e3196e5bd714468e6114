@@ -1,4 +1,4 @@
-// 1.21.1	2025-10-15T02:16:46.2287583	Block States / Models
+// 1.21.1	2025-10-28T21:43:31.498442	Block States / Models
 f3d87a02dfae65fcf894b47e01745ed10d937139 assets/advanced_ae/blockstates/adv_pattern_provider.json
 6114895d7c99885522ce6dd817e7bd97adfdce9d assets/advanced_ae/blockstates/data_entangler.json
 2735d4e9864fa34725433e6c5182d7da05cdc561 assets/advanced_ae/blockstates/quantum_accelerator.json
@@ -49,6 +49,7 @@ f81d60b7000a9f4dbf8050df5e19555b2fdd84ae assets/advanced_ae/models/item/adv_patt
 ece075a4e585992ed860a596f0eee1a15c53a037 assets/advanced_ae/models/item/attack_speed_card.json
 5823399dd73d5008bcc97688b8b41c1ac6aa6193 assets/advanced_ae/models/item/auto_feeding_card.json
 f53af74058f3f5df14a6517b5352ddfaea8c76db assets/advanced_ae/models/item/auto_stock_card.json
+7ae2385455b93b5abd5b6910b3124ef1114a14e9 assets/advanced_ae/models/item/camo_card.json
 42018df52c87fa421869ce03761be3bf2c8e6b05 assets/advanced_ae/models/item/data_entangler.json
 3e1dd1c7e75b91ed03702397dec7ae9e761b295e assets/advanced_ae/models/item/evasion_card.json
 d2388f5eee4b337a6a3a67e15acc6803fe6e392f assets/advanced_ae/models/item/flight_card.json

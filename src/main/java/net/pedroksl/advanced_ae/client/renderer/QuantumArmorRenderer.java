@@ -1,14 +1,19 @@
 package net.pedroksl.advanced_ae.client.renderer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.ae2addonlib.util.Colors;
@@ -24,13 +29,18 @@ public class QuantumArmorRenderer extends GeoArmorRenderer<QuantumArmorBase> {
     public static final String LEFT_BLADE_BONE = "blade_left";
     public static final String RIGHT_BLADE_BONE = "blade_right";
     public static final String FACE_SHIELD_BONE = "face_shield";
-    public static final String RIGHT_ARM = "armorRightArm";
-    public static final String LEFT_ARM = "armorLeftArm";
+
+    private final Map<EquipmentSlot, Boolean> visibilityMap = new HashMap<>();
 
     private final QuantumArmorTintLayer tintLayer;
 
     public QuantumArmorRenderer() {
         super(new DefaultedItemGeoModel<>(AdvancedAE.makeId("quantum_armor")));
+
+        visibilityMap.put(EquipmentSlot.HEAD, true);
+        visibilityMap.put(EquipmentSlot.CHEST, true);
+        visibilityMap.put(EquipmentSlot.LEGS, true);
+        visibilityMap.put(EquipmentSlot.FEET, true);
 
         this.tintLayer = new QuantumArmorTintLayer(this);
         addRenderLayer(this.tintLayer);
@@ -38,6 +48,37 @@ public class QuantumArmorRenderer extends GeoArmorRenderer<QuantumArmorBase> {
 
     public void setBoneVisible(String boneName, boolean visible) {
         this.getGeoModel().getBone(boneName).ifPresent(geoBone -> geoBone.setHidden(!visible));
+    }
+
+    public void setVisible(EquipmentSlot slot, boolean visible) {
+        visibilityMap.put(slot, visible);
+    }
+
+    @Override
+    protected void applyBoneVisibilityBySlot(EquipmentSlot currentSlot) {
+        setVisibleBySlot(currentSlot);
+
+        super.applyBoneVisibilityBySlot(currentSlot);
+    }
+
+    private void setVisibleBySlot(EquipmentSlot slot) {
+        HumanoidModel<?> model = this;
+
+        boolean visible = visibilityMap.get(slot);
+        switch (slot) {
+            case HEAD -> {
+                model.head.visible = visible;
+            }
+            case CHEST -> {
+                model.body.visible = visible;
+                model.rightArm.visible = visible;
+                model.leftArm.visible = visible;
+            }
+            case LEGS, FEET -> {
+                model.rightLeg.visible = visible;
+                model.leftLeg.visible = visible;
+            }
+        }
     }
 
     public void setTintColor(int color) {

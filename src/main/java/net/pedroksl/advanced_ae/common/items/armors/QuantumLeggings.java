@@ -21,11 +21,12 @@ public class QuantumLeggings extends QuantumArmorBase {
                 UpgradeType.SPRINT_SPEED,
                 UpgradeType.SWIM_SPEED,
                 UpgradeType.REACH,
-                UpgradeType.CHARGING);
+                UpgradeType.CHARGING,
+                UpgradeType.CAMO);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+    public void tick(ItemStack stack, Level level, Entity entity, int slotId) {
         if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.LEGS.getIndex()
                 && !getPassiveUpgrades(stack).isEmpty()
                 && entity instanceof Player player) {

@@ -39,7 +39,6 @@ import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.me.crafting.CraftAmountMenu;
 
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 
 public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISubMenuHost {
 
@@ -56,7 +55,8 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
                 UpgradeType.STRENGTH,
                 UpgradeType.ATTACK_SPEED,
                 UpgradeType.CHARGING,
-                UpgradeType.PICK_CRAFT);
+                UpgradeType.PICK_CRAFT,
+                UpgradeType.CAMO);
     }
 
     @Override
@@ -66,28 +66,26 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+    public void tick(ItemStack stack, Level level, Entity entity, int slotId) {
         if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.CHEST.getIndex()) {
             if (entity instanceof Player player) {
                 if (!getPassiveUpgrades(stack).isEmpty()) {
                     tickUpgrades(level, player, stack);
                 }
 
-                toggleBoneVisibilities(stack, player);
+                if (isVisible(stack)) {
+                    toggleBoneVisibilities(stack, player);
+                }
             }
         }
     }
 
     private void toggleBoneVisibilities(ItemStack stack, Player player) {
-        var item = (QuantumArmorBase) stack.getItem();
-        var renderProvider = item.getRenderProvider();
-        if (renderProvider instanceof GeoRenderProvider provider) {
-            var renderer = provider.getGeoArmorRenderer(player, stack, EquipmentSlot.CHEST, null);
-            if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
-                var visible = stack.has(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.STRENGTH));
-                quantumRenderer.setBoneVisible(QuantumArmorRenderer.LEFT_BLADE_BONE, visible);
-                quantumRenderer.setBoneVisible(QuantumArmorRenderer.RIGHT_BLADE_BONE, visible);
-            }
+        var renderer = getRenderer(player, stack);
+        if (renderer != null) {
+            var visible = stack.has(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.STRENGTH));
+            renderer.setBoneVisible(QuantumArmorRenderer.LEFT_BLADE_BONE, visible);
+            renderer.setBoneVisible(QuantumArmorRenderer.RIGHT_BLADE_BONE, visible);
         }
     }
 

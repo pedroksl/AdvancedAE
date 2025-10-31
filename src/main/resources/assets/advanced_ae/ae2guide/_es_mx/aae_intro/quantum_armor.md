@@ -201,12 +201,14 @@ solicitud de fabricación automática normal.
 <ItemImage id="advanced_ae:lava_immunity_card" scale="2"></ItemImage>
 <ItemImage id="advanced_ae:water_breathing_card" scale="2"></ItemImage>
 <ItemImage id="advanced_ae:magnet_card" scale="2"></ItemImage>
+<ItemImage id="advanced_ae:camo_card" scale="2"></ItemImage>
 </Row>
 
 * <ItemLink id="advanced_ae:night_vision_card" />
 * <ItemLink id="advanced_ae:lava_immunity_card" />
 * <ItemLink id="advanced_ae:water_breathing_card" />
 * <ItemLink id="advanced_ae:magnet_card" />
+* <ItemLink id="advanced_ae:camo_card" />
 
 Estas tarjetas proporcionan varias utilidades para el usuario del conjunto, brindando inmunidad a algunos tipos de daño y otorgando visión
 nocturna. La tarjeta de imán, en particular, tiene una pantalla de configuración donde puedes establecer filtros para lo que deseas recoger o no

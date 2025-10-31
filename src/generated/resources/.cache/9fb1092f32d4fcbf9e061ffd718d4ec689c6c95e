@@ -1,4 +1,4 @@
-// 1.21.1	2025-10-04T23:20:02.3881234	Recipes
+// 1.21.1	2025-10-31T00:34:25.8882349	Recipes
 2d349f91c6036ab7bf88f769dd0f88aa22c4e2c5 data/advanced_ae/advancement/recipes/misc/advanced_io_bus.json
 740aa82f7b3882c24a73e3f3ba26cf4ce1392d20 data/advanced_ae/advancement/recipes/misc/advpartenc.json
 609d17bb0993426b96e5ba02d2c15b8e953f79da data/advanced_ae/advancement/recipes/misc/advpatpro2.json
@@ -6,6 +6,7 @@ d748a0301b12c5843ef25624c07cfb9e0f5f26fb data/advanced_ae/advancement/recipes/mi
 c2b7109257e0da25760a316685c95011277a0fde data/advanced_ae/advancement/recipes/misc/attack_speed_card.json
 4488f5ae515a0e1a5d89893fa8bd67ffd7016155 data/advanced_ae/advancement/recipes/misc/auto_feed_card.json
 c11095b3a3086996654766b6fb82e9484fe72b1e data/advanced_ae/advancement/recipes/misc/auto_stock_card.json
+308d44e7e7d6ec0a90689b152678792646f073cb data/advanced_ae/advancement/recipes/misc/camo_card.json
 68ee9fa2cd7220129a4a796017af66bf052815ed data/advanced_ae/advancement/recipes/misc/eaeadvpatpro.json
 fd52bda2ddf3c560c10e46a54467d4dbb03305d8 data/advanced_ae/advancement/recipes/misc/eaequantumaccel.json
 8996d2d44335a3d73fb589c5487811c85df970ff data/advanced_ae/advancement/recipes/misc/eaequantumunit.json
@@ -75,6 +76,7 @@ ec737d05706fb0feafebe7913ff563888a9f44aa data/advanced_ae/recipe/advpatpropart.j
 208247a78fb8b35eb4a004292c98fc577bdfe165 data/advanced_ae/recipe/attack_speed_card.json
 ed7c47fb3bc327b6743028ce5cba741e2cc8442d data/advanced_ae/recipe/auto_feed_card.json
 b56e43acd439bec5c8d4f43a630be16a8f1aff9e data/advanced_ae/recipe/auto_stock_card.json
+a0a851f4b1d93b46eb9eb0a7532d214817d2c1a1 data/advanced_ae/recipe/camo_card.json
 6a16cd4c1986db323a10d034a05ce5fbf56f0820 data/advanced_ae/recipe/certuscharger.json
 21722c440ce68b9b770ccb6cd659e8e2d9830af2 data/advanced_ae/recipe/chargedredstone.json
 60d6fe8230c741170c720be96993daaba141c578 data/advanced_ae/recipe/chippedbudding.json

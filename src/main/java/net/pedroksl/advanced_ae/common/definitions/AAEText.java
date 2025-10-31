@@ -134,6 +134,7 @@ public enum AAEText implements LocalizationEnum {
     PickCraftTooltip(
             "Enables the ability to request craft of the targeted block if a pattern is available in the ME system.",
             Type.TOOLTIP),
+    CamoTooltip("Toggles the visibility of the upgraded armor piece.", Type.TOOLTIP),
     HudTooltip("Adds a HUD with configurable safety checks and information about the ME System.", Type.TOOLTIP),
 
     InsufficientPower("Insufficient Power", Type.TOOLTIP),
