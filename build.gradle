@@ -285,7 +285,7 @@ publisher {
     // setArtifact("build/libs/mymod.jar")
     // setArtifact(jar.getArchiveFile().get())
     // If this is a task, the task specified will be executed before publishing
-    setArtifact("build/libs/${project.mod_name.replace(" ", "")}-${project.version}.jar")
+    setArtifact(jar.getArchiveFile().get())
 
     // Disable the built in Fractureizer scanner
     setDisableMalwareScanner(true)
