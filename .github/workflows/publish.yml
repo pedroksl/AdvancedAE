@@ -51,9 +51,10 @@ jobs:
         with:
           args: clean runData spotlessApply build
 
-      - uses: GuillaumeFalourd/git-commit-push@v1.3
-          with:
-            commit_message: "bump version [ci]"
+      - name: Git Commit Push Action
+        uses: GuillaumeFalourd/git-commit-push@v1.3
+        with:
+          commit_message: "bump version [ci]"
 
       - name: Publish
         uses: gradle/actions/setup-gradle@v4
