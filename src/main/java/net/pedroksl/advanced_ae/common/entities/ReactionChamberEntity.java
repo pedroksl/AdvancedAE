@@ -327,11 +327,11 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
                 final int speedFactor =
                         switch (this.upgrades.getInstalledUpgrades(AEItems.SPEED_CARD)) {
-                            default -> 2; // 116 ticks
-                            case 1 -> 3; // 83 ticks
-                            case 2 -> 5; // 56 ticks
-                            case 3 -> 10; // 36 ticks
-                            case 4 -> 50; // 20 ticks
+                            default -> 2; // 100 ticks
+                            case 1 -> 3; // 66 ticks
+                            case 2 -> 5; // 40 ticks
+                            case 3 -> 10; // 20 ticks
+                            case 4 -> 50; // 4 ticks
                         };
 
                 final int progressReq = MAX_PROCESSING_STEPS - this.getProcessingTime();

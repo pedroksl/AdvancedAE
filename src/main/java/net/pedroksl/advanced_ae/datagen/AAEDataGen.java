@@ -6,8 +6,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
 
-@SuppressWarnings("unused")
-@EventBusSubscriber(modid = AdvancedAE.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = AdvancedAE.MOD_ID, value = Dist.CLIENT)
 public class AAEDataGen {
 
     @SubscribeEvent
@@ -28,6 +27,7 @@ public class AAEDataGen {
                 new AAETagProvider.AAEDataComponentTypeTagProvider(out, lookup, fileHelper, languageProvider);
         gen.addProvider(event.includeServer(), blockTags);
         gen.addProvider(event.includeServer(), itemTags);
+        gen.addProvider(event.includeServer(), componentTags);
 
         gen.addProvider(event.includeClient(), languageProvider);
     }

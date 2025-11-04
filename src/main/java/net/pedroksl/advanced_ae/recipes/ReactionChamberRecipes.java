@@ -27,7 +27,17 @@ public final class ReactionChamberRecipes {
         List<ItemStack> machineInputs = new ArrayList<>();
         for (var stack : inputs)
             if (!stack.isEmpty()) {
-                machineInputs.add(stack);
+                boolean newItem = true;
+                for (var input : machineInputs) {
+                    if (ItemStack.isSameItemSameComponents(input, stack)) {
+                        input.grow(stack.getCount());
+                        newItem = false;
+                        break;
+                    }
+                }
+                if (newItem) {
+                    machineInputs.add(stack.copy());
+                }
             }
 
         for (var holder : getRecipes(level)) {

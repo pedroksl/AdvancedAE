@@ -313,6 +313,7 @@ publisher {
 
     curseDepends {
         required "applied-energistics-2", "glodium", "geckolib"
+        embedded "ae2addonlib"
     }
 
     modrinthDepends {
