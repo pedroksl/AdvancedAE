@@ -47,6 +47,7 @@
   "emi.text.advanced_ae.AdvPatternProviderEmiDesc": "Создается при обновлении продвинутого поставщика шаблонов с помощью обновления емкости",
   "emi.text.advanced_ae.ReactionChamberEnergy": "Используемая энергия: %dk FE",
   "emi.text.advanced_ae.ShatteredSingularityDescription": "Этот элемент производится путем химической реакции в реакционной камере и имеет несколько применений в квантовых вычислениях.",
+  "exported_setting.advanced_ae.allowed_output_sides": "Allowed Sides",
   "fluid.advanced_ae.quantum_infusion_flowing": "Квантовая инфузия",
   "fluid.advanced_ae.quantum_infusion_source": "Квантовая инфузия",
   "fluid_type.advanced_ae.quantum_infusion_type": "Квантовая инфузия",
