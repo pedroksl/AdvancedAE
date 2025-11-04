@@ -47,6 +47,7 @@
   "emi.text.advanced_ae.AdvPatternProviderEmiDesc": "Fabricado ao melhorar um Provedor de Padrões Avançado com uma melhoria de capacidade",
   "emi.text.advanced_ae.ReactionChamberEnergy": "Energia Usada: %dk FE",
   "emi.text.advanced_ae.ShatteredSingularityDescription": "Este item é produzido por reação química na câmara de reação e tem várias aplicações em computação quântica.",
+  "exported_setting.advanced_ae.allowed_output_sides": "Allowed Sides",
   "fluid.advanced_ae.quantum_infusion_flowing": "Infusão Quântica",
   "fluid.advanced_ae.quantum_infusion_source": "Infusão Quântica",
   "fluid_type.advanced_ae.quantum_infusion_type": "Infusão Quântica",
