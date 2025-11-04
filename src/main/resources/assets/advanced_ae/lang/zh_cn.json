@@ -47,6 +47,7 @@
   "emi.text.advanced_ae.AdvPatternProviderEmiDesc": "将ME高级样板供应器进行容量升级后得到",
   "emi.text.advanced_ae.ReactionChamberEnergy": "消耗能量: %dk FE",
   "emi.text.advanced_ae.ShatteredSingularityDescription": "使用反应仓生产，应用于量子计算。",
+  "exported_setting.advanced_ae.allowed_output_sides": "Allowed Sides",
   "fluid.advanced_ae.quantum_infusion_flowing": "量子灌注液",
   "fluid.advanced_ae.quantum_infusion_source": "量子灌注液",
   "fluid_type.advanced_ae.quantum_infusion_type": "量子灌注液",
