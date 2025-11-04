@@ -38,6 +38,9 @@ jobs:
           output_file: ${{ github.output }}
           export: mod_version
 
+      - name: Make script executable
+        run: chmod +x ./.github/scripts/update_version.sh
+            
       - shell: bash
         env:
           VERSION: ${{ steps.properties.outputs.mod_version }}
