@@ -47,6 +47,7 @@
   "emi.text.advanced_ae.AdvPatternProviderEmiDesc": "Bir Gelişmiş Şablon Sağlayıcıyı kapasite yükseltmesiyle yükselterek oluşturuldu",
   "emi.text.advanced_ae.ReactionChamberEnergy": "Kullanılan Güç: %dk FE",
   "emi.text.advanced_ae.ShatteredSingularityDescription": "Bu eşya, reaksiyon odasındaki kimyasal reaksiyonla üretilir ve kuantum hesaplamada çeşitli uygulamaları vardır.",
+  "exported_setting.advanced_ae.allowed_output_sides": "Allowed Sides",
   "fluid.advanced_ae.quantum_infusion_flowing": "Kuantum İnfüzyonu",
   "fluid.advanced_ae.quantum_infusion_source": "Kuantum İnfüzyonu",
   "fluid_type.advanced_ae.quantum_infusion_type": "Kuantum İnfüzyonu",
