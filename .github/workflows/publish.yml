@@ -1,0 +1,61 @@
+name: Publish [GitHub, Curseforge, Modrinth]
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: "The release type. Options: alpha, beta, release."
+        required: true
+        type: string
+      update_type:
+        description: "The update size for versioning. Options: breaking, major, minor."
+        required: true
+        type: string
+
+permissions:
+  contents:
+    write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: guillermocalvo/gradle-properties@v3
+        id: properties
+        with:
+          output_file: ${{ github.output }}
+          export: mod_version
+
+      - shell: bash
+        env:
+          VERSION: ${{ steps.properties.outputs.mod_version }}
+          UPDATE_TYPE: ${{ inputs.update_type }}
+          RELEASE_TYPE: ${{ inputs.type }}
+        run: |
+          ./.github/scripts/update_version.sh
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          args: clean runData spotlessApply build
+
+      - uses: GuillaumeFalourd/git-commit-push@v1.3
+          with:
+            commit_message: "bump version [ci]"
+
+      - name: Publish
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          args: publishMod
