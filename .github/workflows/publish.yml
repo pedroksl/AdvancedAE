@@ -54,7 +54,7 @@ jobs:
         env:
           CURSE_TOKEN: ${{ secrets.CURSE_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Build with Gradle
         run: ./gradlew clean runData spotlessApply build
@@ -62,7 +62,7 @@ jobs:
       - name: Commit changes to data and version
         uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
-          commit_message: "bump version [ci]"
+          commit_message: "bump version [no ci]"
 
       - name: Publish the mod
         run: ./gradlew publishMod
