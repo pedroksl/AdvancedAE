@@ -51,15 +51,14 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-        with:
-          args: clean runData spotlessApply build
 
-      - name: Git Commit Push Action
+      - name: Build with Gradle
+        run: ./gradlew clean runData spotlessApply build
+
+      - name: Commit changes to data and version
         uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
           commit_message: "bump version [ci]"
 
-      - name: Publish
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          args: publishMod
+      - name: Publish the mod
+        run: ./gradlew publishMod
