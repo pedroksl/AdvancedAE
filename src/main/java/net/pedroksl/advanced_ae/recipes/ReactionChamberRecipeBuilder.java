@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.glodblock.github.glodium.recipe.stack.IngredientStack;
-
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.data.recipes.RecipeOutput;
@@ -19,6 +17,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
 import appeng.api.stacks.GenericStack;
 

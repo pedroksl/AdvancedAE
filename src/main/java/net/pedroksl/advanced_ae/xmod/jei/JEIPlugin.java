@@ -3,10 +3,9 @@ package net.pedroksl.advanced_ae.xmod.jei;
 import java.util.Arrays;
 import java.util.List;
 
-import com.glodblock.github.glodium.recipe.stack.IngredientStack;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -15,6 +14,7 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
+import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -62,7 +62,7 @@ public class JEIPlugin implements IModPlugin {
             return Ingredient.of(Arrays.stream(stack.getIngredient().getItems())
                     .map(oldStack -> oldStack.copyWithCount(stack.getAmount())));
         }
-        return IngredientStack.Item.EMPTY.getIngredient();
+        return Ingredient.of(ItemStack.EMPTY);
     }
 
     public static List<FluidStack> stackOf(IngredientStack.Fluid stack) {

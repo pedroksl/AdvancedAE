@@ -1,7 +1,5 @@
 package net.pedroksl.advanced_ae.xmod.rei;
 
-import com.glodblock.github.glodium.recipe.stack.IngredientStack;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
@@ -12,6 +10,7 @@ import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.xmod.rei.recipes.REIReactionChamberCategory;
 import net.pedroksl.advanced_ae.xmod.rei.recipes.REIReactionChamberDisplay;
+import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
 import appeng.integration.modules.itemlists.CompatLayerHelper;
 

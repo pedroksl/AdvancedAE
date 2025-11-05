@@ -36,12 +36,6 @@ versionRange="[19.2.16,)"
 ordering="AFTER"
 side="BOTH"
 [[dependencies.${mod_id}]]
-modId="glodium"
-type="required"
-versionRange="[1.21-2.0-neoforge,)"
-ordering="AFTER"
-side="BOTH"
-[[dependencies.${mod_id}]]
 modId="ae2addonlib"
 type="required"
 versionRange="[1.0.0,)"
