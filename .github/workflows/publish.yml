@@ -62,7 +62,7 @@ jobs:
       - name: Commit changes to data and version
         uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
-          commit_message: "bump version [no ci]"
+          commit_message: "bump version [ci]"
 
       - name: Publish the mod
         run: ./gradlew publishMod

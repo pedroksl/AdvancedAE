@@ -1,14 +1,16 @@
 modLoader="javafml" #mandatory
 loaderVersion="${loader_version_range}"
 license="${mod_license}"
+updateJSONURL="https://mod-manifest.jarva.dev/manifest/curseforge/1084104/neoforge?version=1.21.1"
+issueTrackerURL="https://github.com/pedroksl/AdvancedAE/issues"
+displayURL="https://github.com/pedroksl/AdvancedAE"
+
 [[mods]]
     modId="${mod_id}"
     version="${mod_version}"
     displayName="${mod_name}"
     authors="${mod_authors}"
     description='''${mod_description}'''
-    issueTrackerURL="https://github.com/pedroksl/AdvancedAE/issues"
-    displayURL="https://github.com/pedroksl/AdvancedAE"
     credits="Ridanisaurus Rid for texture style, Jm³ and Sea_Kerman for models"
     logoFile="logo.png"
 
