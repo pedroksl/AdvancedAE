@@ -6,6 +6,8 @@ import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.model.HumanoidModel;
@@ -61,6 +63,7 @@ public class QuantumArmorRenderer extends GeoArmorRenderer<QuantumArmorBase> {
         super.applyBoneVisibilityBySlot(currentSlot);
     }
 
+    @OnlyIn(Dist.CLIENT)
     private void setVisibleBySlot(EquipmentSlot slot) {
         HumanoidModel<?> model = this;
 
