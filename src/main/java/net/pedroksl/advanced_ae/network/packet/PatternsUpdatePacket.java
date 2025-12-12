@@ -7,6 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.gui.QuantumCrafterScreen;
 
 import appeng.core.network.ClientboundPacket;
@@ -60,6 +62,7 @@ public record PatternsUpdatePacket(List<Boolean> invalidPatterns, List<Boolean> 
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void handleOnClient(Player player) {
         if (Minecraft.getInstance().screen instanceof QuantumCrafterScreen screen) {
             screen.updateInvalidButtons(this.invalidPatterns);

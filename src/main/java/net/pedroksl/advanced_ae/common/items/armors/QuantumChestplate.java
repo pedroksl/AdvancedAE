@@ -17,6 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
@@ -73,13 +75,14 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
                     tickUpgrades(level, player, stack);
                 }
 
-                if (isVisible(stack)) {
+                if (player.level().isClientSide() && isVisible(stack)) {
                     toggleBoneVisibilities(stack, player);
                 }
             }
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     private void toggleBoneVisibilities(ItemStack stack, Player player) {
         var renderer = getRenderer(player, stack);
         if (renderer != null) {

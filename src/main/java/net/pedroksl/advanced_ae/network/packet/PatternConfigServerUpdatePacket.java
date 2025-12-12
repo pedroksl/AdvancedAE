@@ -11,6 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.gui.QuantumCrafterConfigPatternScreen;
 
 import appeng.api.stacks.AEKey;
@@ -64,6 +66,7 @@ public record PatternConfigServerUpdatePacket(LinkedHashMap<AEKey, Long> inputs,
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void handleOnClient(Player player) {
         if (Minecraft.getInstance().screen instanceof QuantumCrafterConfigPatternScreen screen) {
             screen.update(this.inputs, this.output);

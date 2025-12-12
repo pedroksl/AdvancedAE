@@ -7,6 +7,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.gui.QuantumArmorConfigScreen;
 import net.pedroksl.advanced_ae.client.widgets.UpgradeState;
 
@@ -31,6 +33,7 @@ public record QuantumArmorUpgradeStatePacket(int selectedIndex, List<UpgradeStat
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void handleOnClient(Player player) {
         if (Minecraft.getInstance().screen instanceof QuantumArmorConfigScreen screen) {
             screen.refreshList(selectedIndex, states);

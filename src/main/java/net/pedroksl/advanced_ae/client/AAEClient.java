@@ -16,6 +16,7 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.client.events.AAEPlayerClientEvents;
 import net.pedroksl.advanced_ae.client.gui.*;
 import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
 import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
@@ -58,6 +59,8 @@ public class AAEClient extends AdvancedAE {
         eventBus.addListener(this::registerHotkeys);
 
         INSTANCE = this;
+
+        NeoForge.EVENT_BUS.register(AAEPlayerClientEvents.class);
 
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post e) -> {
             AAEHotkeys.INSTANCE.checkHotkeys();

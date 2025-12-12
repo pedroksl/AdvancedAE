@@ -10,6 +10,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.gui.AdvPatternEncoderScreen;
 
 import appeng.api.stacks.AEKey;
@@ -56,6 +58,7 @@ public record AdvPatternEncoderPacket(LinkedHashMap<AEKey, Direction> dirMap) im
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void handleOnClient(Player player) {
         if (Minecraft.getInstance().screen instanceof AdvPatternEncoderScreen encoderGui) {
             encoderGui.update(this.dirMap);

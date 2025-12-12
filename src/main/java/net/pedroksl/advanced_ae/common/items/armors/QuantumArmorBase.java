@@ -92,9 +92,11 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     public void setTintColor(Player player, ItemStack stack, int color) {
         stack.set(LibComponents.TINT_COLOR_TAG, color);
 
-        var renderer = getRenderer(player, stack);
-        if (renderer != null) {
-            renderer.setTintColor(color);
+        if (player.level().isClientSide()) {
+            var renderer = getRenderer(player, stack);
+            if (renderer != null) {
+                renderer.setTintColor(color);
+            }
         }
     }
 
@@ -102,6 +104,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
         return !stack.getOrDefault(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.CAMO), false);
     }
 
+    @OnlyIn(Dist.CLIENT)
     private void updateVisibility(Player player, ItemStack stack) {
         var visible = isVisible(stack);
         var renderer = getRenderer(player, stack);
@@ -112,7 +115,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     @Override
     public final void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (entity instanceof Player player) {
+        if (level.isClientSide() && entity instanceof Player player) {
             updateVisibility(player, stack);
         }
 
@@ -121,6 +124,8 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     protected void tick(ItemStack stack, Level level, Entity entity, int slotId) {}
 
+    @OnlyIn(Dist.CLIENT)
+    @Nullable
     protected QuantumArmorRenderer getRenderer(Player player, ItemStack stack) {
         var renderProvider = getRenderProvider();
         if (renderProvider instanceof GeoRenderProvider provider) {
@@ -221,6 +226,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
             private QuantumArmorRenderer renderer;
