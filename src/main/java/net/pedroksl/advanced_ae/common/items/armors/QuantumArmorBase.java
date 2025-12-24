@@ -92,9 +92,11 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     public void setTintColor(Player player, ItemStack stack, int color) {
         stack.set(LibComponents.TINT_COLOR_TAG, color);
 
-        var renderer = getRenderer(player, stack);
-        if (renderer != null) {
-            renderer.setTintColor(color);
+        if (player.level().isClientSide()) {
+            var renderer = getRenderer(player, stack);
+            if (renderer != null) {
+                renderer.setTintColor(color);
+            }
         }
     }
 
@@ -112,7 +114,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     @Override
     public final void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (entity instanceof Player player) {
+        if (level.isClientSide() && entity instanceof Player player) {
             updateVisibility(player, stack);
         }
 

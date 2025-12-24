@@ -50,6 +50,8 @@ public class AAEClient extends AdvancedAE {
 
         initBuiltInModels();
 
+        NeoForge.EVENT_BUS.register(AAEClientPlayerEvents.class);
+
         eventBus.addListener(AAEClient::initScreens);
         eventBus.addListener(AAEClient::initItemBlockRenderTypes);
         eventBus.addListener(AAEClient::initItemColours);
