@@ -73,7 +73,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
                     tickUpgrades(level, player, stack);
                 }
 
-                if (isVisible(stack)) {
+                if (level.isClientSide() && isVisible(stack)) {
                     toggleBoneVisibilities(stack, player);
                 }
             }
