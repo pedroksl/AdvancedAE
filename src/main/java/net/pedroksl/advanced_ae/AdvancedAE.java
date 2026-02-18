@@ -60,10 +60,6 @@ public class AdvancedAE {
                 if (Addons.AE2WTLIB.isLoaded()) {
                     AE2WtLibPlugin.commonInit();
                 }
-            } else if (event.getRegistryKey() == ForgeRegistries.MENU_TYPES) {
-                if (Addons.AE2WTLIB.isLoaded()) {
-                    AE2WtLibPlugin.initMenu();
-                }
             }
         });
 

@@ -28,6 +28,8 @@ public class AE2WtLibPlugin {
                     QuantumCrafterWirelessTermMenu.TYPE,
                     (IUniversalWirelessTerminalItem) AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL.get(),
                     AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL.asItem().getDescriptionId());
+
+            initMenu();
         }
     }
 
