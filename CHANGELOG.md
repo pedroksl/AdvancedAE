@@ -1,1 +1,1 @@
-- Added extra client side checks for player events
+- Fixed auto stock menu not being able to change amounts of pre-existing items (#273)
