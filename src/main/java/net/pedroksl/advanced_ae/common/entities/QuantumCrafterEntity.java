@@ -495,6 +495,8 @@ public class QuantumCrafterEntity extends AENetworkPowerBlockEntity
         // Extract all the items from ME Storage
         for (var input : inputs) {
             for (var genInput : input.getPossibleInputs()) {
+                if (genInput == null) continue;
+
                 var inputAmount = input.getMultiplier() * genInput.amount();
 
                 var toExtract = job.requiredInputTotal(genInput, toCraft);
