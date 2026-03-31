@@ -1,3 +1,1 @@
-## Bug Fixes
-- Fixed wireless quantum crafter terminal screen not opening (#274)
-- Added a null-check to avoid crashes happening with null possibleInputs (#279)
+- Fixed quantum crafter using output space as an intermediate step to pushing to ME Storage (fixes some item voiding in high output setups) (Fixes #244)
