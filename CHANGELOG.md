@@ -1,1 +1,1 @@
-- Fixed auto stock menu not being able to change amounts of pre-existing items (#273)
+- Fixed quantum crafter using output space as an intermediate step to pushing to ME Storage (fixes some item voiding in high output setups) (Fixes #244)

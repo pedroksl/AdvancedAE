@@ -371,6 +371,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             var extracted = grid.getStorageService()
                     .getInventory()
                     .extract(output.what(), maxStock, Actionable.SIMULATE, this.mySrc);
+
             var amountInOutput = 0;
             for (int x = 0; x < this.outputInv.size(); x++) {
                 var stack = this.outputInv.getStackInSlot(x);
@@ -394,18 +395,23 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     private boolean hasAvailableOutputStorage(CraftingJob job) {
-        for (var output : job.pattern.getOutputs()) {
-            if (output.what() instanceof AEItemKey key) {
-                var stack = key.toStack((int) output.amount());
-                for (var x = 0; x < this.outputInv.size(); x++) {
-                    stack = this.outputInv.insertItem(x, stack, true);
-                    if (stack.isEmpty()) {
-                        break;
+        if (isExportToMe()) {
+            return this.sendList.stream()
+                    .noneMatch(p -> p.what().matches(job.pattern.getOutputs().getFirst()));
+        } else {
+            for (var output : job.pattern.getOutputs()) {
+                if (output.what() instanceof AEItemKey key) {
+                    var stack = key.toStack((int) output.amount());
+                    for (var x = 0; x < this.outputInv.size(); x++) {
+                        stack = this.outputInv.insertItem(x, stack, true);
+                        if (stack.isEmpty()) {
+                            break;
+                        }
                     }
-                }
 
-                if (!stack.isEmpty()) {
-                    return false;
+                    if (!stack.isEmpty()) {
+                        return false;
+                    }
                 }
             }
         }
@@ -526,10 +532,14 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 var stack = key.toStack();
                 stack.setCount((int) job.outputAmountPerCraft(output) * completeRecipes);
 
-                for (var x = 0; x < this.outputInv.size(); x++) {
-                    stack = this.outputInv.insertItem(x, stack, Actionable.MODULATE.isSimulate());
-                    if (stack.isEmpty()) {
-                        break;
+                if (isExportToMe()) {
+                    this.addToSendList(key, stack.getCount());
+                } else {
+                    for (var x = 0; x < this.outputInv.size(); x++) {
+                        stack = this.outputInv.insertItem(x, stack, Actionable.MODULATE.isSimulate());
+                        if (stack.isEmpty()) {
+                            break;
+                        }
                     }
                 }
             }
