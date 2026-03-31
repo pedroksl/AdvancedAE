@@ -11,7 +11,7 @@ plugins {
     id 'maven-publish'
     id "net.neoforged.moddev.legacyforge"
     id 'com.diffplug.spotless'
-    id "com.hypherionmc.modutils.modpublisher" version '2.1.6'
+    id "com.hypherionmc.modutils.modpublisher" version '2.2.0'
 }
 
 version = mod_version
@@ -242,6 +242,7 @@ publisher {
         draft = false
         updateRelease = true
         target = "forge/1.20.1"
+        setAsLatest = false
 
         displayName = "AdvancedAE-${project.version}"
     }
