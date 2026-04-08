@@ -1,8 +1,8 @@
 {
-  "advanced_ae.configuration.Miscellaneous": "Miscellaneous",
-  "advanced_ae.configuration.enableEffects": "Enable Effects",
-  "advanced_ae.configuration.quantum armor": "Quantum Armor",
-  "advanced_ae.configuration.quantum computer": "Quantum Computer",
+  "advanced_ae.configuration.Miscellaneous": "Egyéb",
+  "advanced_ae.configuration.enableEffects": "Hatások engedélyezése",
+  "advanced_ae.configuration.quantum armor": "Kvantumpáncél",
+  "advanced_ae.configuration.quantum computer": "Kvantumszámítógép",
   "advanced_ae.configuration.quantumArmorAttackSpeedBoost": "Attack Speed Boost",
   "advanced_ae.configuration.quantumArmorEvasionChance": "Evasion Chance",
   "advanced_ae.configuration.quantumArmorHpBufferHearts": "HP Buffer Hearts",
