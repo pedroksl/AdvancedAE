@@ -136,6 +136,7 @@ public enum AAEText implements LocalizationEnum {
             "Enables the ability to request craft of the targeted block if a pattern is available in the ME system.",
             Type.TOOLTIP),
     HudTooltip("Adds a HUD with configurable safety checks and information about the ME System.", Type.TOOLTIP),
+    AutoFluidTooltip("Configurable to import fluids from the ME System to compatible items.", Type.TOOLTIP),
 
     InsufficientPower("Insufficient Power", Type.TOOLTIP),
     InsufficientPowerDetails(

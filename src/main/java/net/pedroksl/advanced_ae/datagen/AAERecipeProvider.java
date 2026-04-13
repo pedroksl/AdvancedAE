@@ -529,6 +529,16 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('M', AEBlocks.CONTROLLER)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
                 .save(c, AdvancedAE.makeId("auto_stock_card"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.AUTO_FLUID_CARD)
+                .pattern(" W ")
+                .pattern("BCB")
+                .pattern(" M ")
+                .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
+                .define('W', AEBlocks.WIRELESS_ACCESS_POINT)
+                .define('B', Items.BUCKET)
+                .define('M', AEBlocks.CONTROLLER)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
+                .save(c, AdvancedAE.makeId("auto_fluid_card"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AAEItems.MAGNET_CARD)
                 .pattern("IIA")
                 .pattern("IC ")

@@ -24,7 +24,8 @@ public final class AAEHotkeysRegistry extends HotkeyRegistry {
         QUANTUM_AUTO_STOCK_UPGRADE("quantum_auto_stock_upgrade", "Toggle Quantum Armor Auto Stock", GLFW.GLFW_KEY_J),
         QUANTUM_NIGHT_VISION_UPGRADE("quantum_night_vision_upgrade", "Toggle Quantum Armor Night Vision"),
         PORTABLE_WORKBENCH("portable_workbench", "Open Portable Workbench", GLFW.GLFW_KEY_C),
-        PICK_CRAFT("pick_craft", "Attempt crafting targeted block", GLFW.GLFW_KEY_V);
+        PICK_CRAFT("pick_craft", "Attempt crafting targeted block", GLFW.GLFW_KEY_V),
+        QUANTUM_AUTO_FLUID_UPGRADE("quantum_auto_fluid_upgrade", "Toggle Quantum Armor Auto Fluid", GLFW.GLFW_KEY_Z);
 
         private final String id;
         private final String englishTranslation;
@@ -96,6 +97,10 @@ public final class AAEHotkeysRegistry extends HotkeyRegistry {
                 AAEItems.QUANTUM_CHESTPLATE,
                 (player, slot, stack) -> AAEItems.QUANTUM_CHESTPLATE.get().attemptCraftingTarget(player, slot, stack),
                 Keys.PICK_CRAFT.id);
+        registerToggleUpgradeAction(
+                AAEItems.QUANTUM_HELMET,
+                (player, stack) -> AAEItems.QUANTUM_HELMET.get().toggleUpgrade(stack, UpgradeType.AUTO_FLUID, player),
+                Keys.QUANTUM_AUTO_FLUID_UPGRADE.id);
     }
 
     public void registerToggleUpgradeAction(ItemLike item, ToggleUpgradeCardAction.Opener opener, String id) {
