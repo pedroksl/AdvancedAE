@@ -167,8 +167,10 @@ public class AAEItems extends ItemRegistry {
             p -> new QuantumUpgradeBaseItem(UpgradeType.WORKBENCH, p));
     public static final LibItemDefinition<QuantumUpgradeBaseItem> PICK_CRAFT_CARD =
             item("Pick Craft Card", "pick_craft_card", p -> new QuantumUpgradeBaseItem(UpgradeType.PICK_CRAFT, p));
-    //    public static final ItemDefinition<QuantumUpgradeBaseItem> HUD_CARD =
-    //            item("HUD Card", "hud_card", p -> new QuantumUpgradeBaseItem(UpgradeType.HUD, p));
+    public static final LibItemDefinition<QuantumUpgradeBaseItem> AUTO_FLUID_CARD =
+            item("Auto Fluid Card", "auto_fluid_card", p -> new QuantumUpgradeBaseItem(UpgradeType.AUTO_FLUID, p));
+    // public static final ItemDefinition<QuantumUpgradeBaseItem> HUD_CARD =
+    //         item("HUD Card", "hud_card", p -> new QuantumUpgradeBaseItem(UpgradeType.HUD, p));
 
     @SuppressWarnings("unchecked")
     private static <T extends Item> LibItemDefinition<T> conditionalItem(

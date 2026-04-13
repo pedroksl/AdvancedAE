@@ -1,11 +1,11 @@
-// 1.20.1	2025-02-17T21:51:12.4477985	Tags (Item)
+// 1.20.1	2026-04-13T17:43:45.39519591	Tags (Item)
 93c314f395bf189b2a44d6db9a54a13fba8818c4 data/advanced_ae/tags/items/adv_pattern_provider.json
 93c314f395bf189b2a44d6db9a54a13fba8818c4 data/ae2/tags/items/pattern_provider.json
-1fd89e4e2f19aa45e536dc325c5c34a0e332ef3e data/curios/tags/items/adv_pattern_encoder.json
 0c6fd83db60ae0551c5b8a9c87fbc7f8f0aea985 data/c/tags/items/dusts/shattered_singularity.json
 9576a9f7bd984969c0d57cac31918c3c872514dd data/c/tags/items/plates.json
 c1afe1ac88eb4e74f7b4f6322f197c4a172a7da4 data/c/tags/items/plates/quantum_alloy.json
 0cbbe2e860eea9b17f21adc62740a60318a0c11a data/c/tags/items/storage_blocks/quantum_alloy.json
+1fd89e4e2f19aa45e536dc325c5c34a0e332ef3e data/curios/tags/items/adv_pattern_encoder.json
 48bf4b15546f45aca3ebda8062e12836eecfa56e data/forge/tags/items/armors.json
 648269cab19570b7da5abbcec81bcc1efb1a7138 data/forge/tags/items/armors/boots.json
 3df8a19e360d724d833ce526d6f633b85626f8c2 data/forge/tags/items/armors/chestplates.json

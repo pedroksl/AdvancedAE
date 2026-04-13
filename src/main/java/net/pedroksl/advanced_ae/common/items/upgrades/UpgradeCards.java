@@ -1,7 +1,6 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.lang3.mutable.MutableObject;
 
@@ -17,6 +16,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.helpers.MagnetHelpers;
 import net.pedroksl.advanced_ae.common.items.armors.*;
@@ -30,8 +32,14 @@ import appeng.api.networking.IGrid;
 import appeng.api.networking.energy.IEnergyService;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEItemKey;
+import appeng.api.networking.storage.IStorageService;
+import appeng.api.stacks.AEFluidKey;
+import appeng.api.stacks.GenericStack;
+import appeng.api.storage.MEStorage;
+import appeng.api.storage.StorageHelper;
 
 public class UpgradeCards {
+
     public static boolean walkSpeed(Level level, Player player, ItemStack stack) {
         ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
         boolean canFly = chest.getItem() instanceof QuantumArmorBase armor
@@ -401,5 +409,76 @@ public class UpgradeCards {
                 }
             }
         });
+    }
+
+    public static boolean autoFluid(Level level, Player player, ItemStack stack) {
+        if (!(stack.getItem() instanceof QuantumHelmet helmet)
+                || !helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.AUTO_FLUID)
+                || helmet.getLinkedPosition(stack) == null) {
+            return false;
+        }
+
+        if (player.containerMenu != null && !player.containerMenu.getCarried().isEmpty()) {
+            return false;
+        }
+
+        IGrid grid = helmet.getLinkedGrid(stack, level, player);
+        if (grid == null) return false;
+
+        var storageService = grid.getStorageService();
+        var cachedInventory = storageService.getCachedInventory();
+
+        boolean didSomething = false;
+
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            var itemStack = player.getInventory().getItem(i);
+            if (itemStack.isEmpty()) continue;
+
+            var fluidHandlerCap = itemStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM, null);
+            if (!fluidHandlerCap.isPresent()) continue;
+
+            var fluidHandler = fluidHandlerCap.resolve().get();
+
+            int tankCount = fluidHandler.getTanks();
+            for (int tank = 0; tank < tankCount; tank++) {
+                var fluidInTank = fluidHandler.getFluidInTank(tank);
+                if (fluidInTank.isEmpty()) continue;
+
+                int capacity = fluidHandler.getTankCapacity(tank);
+                int space = capacity - (int) fluidInTank.getAmount();
+                if (space <= 0) continue;
+
+                var fluidKey = AEFluidKey.of(fluidInTank.getFluid());
+                if (fluidKey == null) continue;
+
+                var available = cachedInventory.get(fluidKey);
+                long toExtract = Math.min(available, space);
+                if (toExtract <= 0) continue;
+
+                var extracted = storageService.getInventory().extract(
+                        fluidKey,
+                        toExtract,
+                        Actionable.MODULATE,
+                        IActionSource.ofPlayer(player));
+
+                if (extracted > 0) {
+                    var fluidStack = fluidKey.toStack((int) extracted);
+                    int filled = fluidHandler.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                    if (filled > 0) {
+                        didSomething = true;
+
+                        if (extracted > filled) {
+                            storageService.getInventory().insert(
+                                    fluidKey,
+                                    extracted - filled,
+                                    Actionable.MODULATE,
+                                    IActionSource.ofPlayer(player));
+                        }
+                    }
+                }
+            }
+        }
+
+        return didSomething;
     }
 }
