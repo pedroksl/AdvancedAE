@@ -110,10 +110,12 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     public void setTintColor(Player player, ItemStack stack, int color) {
         stack.getOrCreateTag().putInt(AAENbt.TINT_COLOR_TAG, color);
 
-        var renderer =
-                IClientItemExtensions.of(stack).getHumanoidArmorModel(player, stack, stack.getEquipmentSlot(), null);
-        if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
-            quantumRenderer.setTintColor(color);
+        if (player.level().isClientSide()) {
+            var renderer = IClientItemExtensions.of(stack)
+                    .getHumanoidArmorModel(player, stack, stack.getEquipmentSlot(), null);
+            if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
+                quantumRenderer.setTintColor(color);
+            }
         }
     }
 

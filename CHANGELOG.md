@@ -1,1 +1,1 @@
-- Fixed quantum crafter using output space as an intermediate step to pushing to ME Storage (fixes some item voiding in high output setups) (Fixes #244)
+- Fixed crash that happened on changing quantum armor colors on a dedicated server
