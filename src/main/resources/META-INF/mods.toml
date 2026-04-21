@@ -9,8 +9,8 @@ displayName="${mod_name}" #mandatory
 authors="${mod_authors}" #optional
 
 description='''${mod_description}'''
-issueTrackerURL="https://github.com/pedroksl/AdvancedAE/issues"
-displayURL="https://github.com/pedroksl/AdvanceddAE"
+issueTrackerURL="https://github.com/Nobody1902/AdvancedAE/issues"
+displayURL="https://github.com/Nobody1902/AdvancedAE"
 credits="Sea_Kerman for models"
 logoFile="logo.png"
 

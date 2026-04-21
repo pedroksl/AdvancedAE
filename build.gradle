@@ -170,8 +170,6 @@ publisher {
     apiKeys {
         // Modrinth Token
         modrinth System.getenv("MODRINTH_TOKEN")
-        // Curseforge Token
-        curseforge System.getenv("CURSE_TOKEN")
         // GitHub Token
         github System.getenv("GITHUB_TOKEN")
     }
@@ -179,11 +177,8 @@ publisher {
     // Enable Debug mode. When enabled, no files will actually be uploaded
     setDebug(false)
 
-    // Curseforge Project ID
-    setCurseID("1084104")
-
     // Modrinth Project ID
-    setModrinthID("rxYaglEe")
+    setModrinthID("bPNoGSDK")
 
     // Type of release. beta, alpha or release
     // You can also use VersionType.BETA, VersionType.ALPHA or VersionType.RELEASE
@@ -193,27 +188,20 @@ publisher {
     // For example: markdown.md, or "This is my changelog"
     // Or: https://raw.githubusercontent.com/hypherionmc/changelogs/changelog.md
     // Or https://gist.githubusercontent.com/hypherionmc/92f825d3c9337964cc77c9c8c9bf65e6/raw/ceeaaee5b98c688a23398864fe480b84796a1651/test_gist.md
-    setChangelog("https://raw.githubusercontent.com/pedroksl/AdvancedAE/refs/heads/forge/1.20.1/CHANGELOG.md")
+    setChangelog("https://raw.githubusercontent.com/Nobody1902/AdvancedAE/refs/heads/forge/1.20.1/CHANGELOG.md")
 
     // Required for Modrinth/GitHub
     setProjectVersion("${project.version}")
 
     // Fancy display name for the upload.
     // Will default to the project version if not set
-    setDisplayName("AdvancedAE-${project.version}")
+    setDisplayName("AdvancedAE More Upgrades-${project.version}")
 
     // The supported game versions
     setGameVersions("${project.minecraft_version}")
 
     // The modloaders your upload supports.
-    // This can also be an Enum from ModLoader,
-    // like setLoaders(ModLoader.FABRIC, ModLoader.FORGE)
-    setLoaders(ModLoader.FORGE, ModLoader.NEOFORGE)
-
-    // The new Curseforge Environment tag. Optional
-    // Valid values are "server", "client" or "both"
-    // You can also use CurseEnvironment.BOTH, or CurseEnvironment.SERVER or CurseEnvironment.CLIENT
-    setCurseEnvironment("both")
+    setLoaders(ModLoader.FORGE)
 
     // The file to be uploaded. This can be a file, task, or string.
     // setArtifact("build/libs/mymod.jar")
@@ -233,7 +221,7 @@ publisher {
     setDisableEmptyJarCheck(true)
 
     github {
-        repo = "pedroksl/AdvancedAE"
+        repo = "Nobody1902/AdvancedAE"
 
         tag = "${project.version}-forge"
 
@@ -244,11 +232,7 @@ publisher {
         target = "forge/1.20.1"
         setAsLatest = false
 
-        displayName = "AdvancedAE-${project.version}"
-    }
-
-    curseDepends {
-        required "applied-energistics-2", "geckolib"
+        displayName = "AdvancedAE More Upgrades-${project.version}"
     }
 
     modrinthDepends {

@@ -251,7 +251,7 @@ public enum UpgradeType {
             case WORKBENCH -> AAEText.PortableWorkbenchTooltip.text();
             case PICK_CRAFT -> AAEText.PickCraftTooltip.text();
             case AUTO_FLUID -> AAEText.AutoFluidTooltip.text();
-            // case HUD -> AAEText.PortableWorkbenchTooltip.text();
+                // case HUD -> AAEText.PortableWorkbenchTooltip.text();
         };
     }
 
