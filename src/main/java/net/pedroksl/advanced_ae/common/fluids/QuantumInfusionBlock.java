@@ -7,15 +7,14 @@ import net.minecraft.world.level.material.PushReaction;
 import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 
 public class QuantumInfusionBlock extends LiquidBlock {
-    public QuantumInfusionBlock() {
+    public QuantumInfusionBlock(Properties p) {
         super(
                 (FlowingFluid) AAEFluids.QUANTUM_INFUSION.source(),
-                Properties.of()
-                        .liquid()
+                p.liquid()
                         .strength(20.0F)
                         .noLootTable()
                         .replaceable()
-                        .noCollission()
+                        .noCollision()
                         .pushReaction(PushReaction.DESTROY)
                         .mapColor(MapColor.COLOR_PURPLE));
     }

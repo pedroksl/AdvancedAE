@@ -1,19 +1,14 @@
 package net.pedroksl.advanced_ae.common.parts;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.pedroksl.advanced_ae.client.renderer.AAEBlockEntityRenderHelper;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
@@ -24,49 +19,21 @@ import appeng.api.networking.IGridNodeListener;
 import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
-import appeng.api.orientation.BlockOrientation;
 import appeng.api.parts.IPartItem;
-import appeng.api.parts.IPartModel;
 import appeng.api.stacks.AmountFormat;
 import appeng.api.util.AEColor;
-import appeng.client.render.BlockEntityRenderHelper;
-import appeng.core.AppEng;
 import appeng.hooks.ticking.TickHandler;
-import appeng.items.parts.PartModels;
-import appeng.parts.PartModel;
 import appeng.parts.reporting.AbstractMonitorPart;
 
 public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridTickable {
 
-    @PartModels
-    public static final ResourceLocation MODEL_OFF = AppEng.makeId("part/storage_monitor_off");
-
-    @PartModels
-    public static final ResourceLocation MODEL_ON = AppEng.makeId("part/storage_monitor_on");
-
-    @PartModels
-    public static final ResourceLocation MODEL_LOCKED_OFF = AppEng.makeId("part/storage_monitor_locked_off");
-
-    @PartModels
-    public static final ResourceLocation MODEL_LOCKED_ON = AppEng.makeId("part/storage_monitor_locked_on");
-
-    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, MODEL_OFF, MODEL_STATUS_OFF);
-    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_ON);
-    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_HAS_CHANNEL);
-
-    public static final IPartModel MODELS_LOCKED_OFF = new PartModel(MODEL_BASE, MODEL_LOCKED_OFF, MODEL_STATUS_OFF);
-    public static final IPartModel MODELS_LOCKED_ON = new PartModel(MODEL_BASE, MODEL_LOCKED_ON, MODEL_STATUS_ON);
-    public static final IPartModel MODELS_LOCKED_HAS_CHANNEL =
-            new PartModel(MODEL_BASE, MODEL_LOCKED_ON, MODEL_STATUS_HAS_CHANNEL);
-
     private final ThroughputCache cache = new ThroughputCache();
     protected double lastReportedValue = -1;
-    protected String lastHumanReadableValue = "";
     private WorkRoutine workRoutine = WorkRoutine.SECOND;
     private WorkRoutine lastWorkRoutine = WorkRoutine.SECOND;
 
-    private static final int positiveColor = AEColor.GREEN.mediumVariant;
-    private static final int negativeColor = AEColor.RED.mediumVariant;
+    public static final int positiveColor = AEColor.GREEN.mediumVariant;
+    public static final int negativeColor = AEColor.RED.mediumVariant;
 
     private enum WorkRoutine {
         TICK(1, 10),
@@ -107,25 +74,50 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         getMainNode().addService(IGridTickable.class, this);
     }
 
-    @Override
-    public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
-        super.writeToNBT(data, registries);
-        data.putString("throughput", this.lastHumanReadableValue);
-        data.putInt("routine", this.workRoutine.ordinal());
+    public MutableComponent getThroughputText() {
+        if (getDisplayed() == null) return Component.empty();
+
+        var sign = lastReportedValue > 0 ? "+" : lastReportedValue == 0 ? "" : "-";
+
+        String valueText;
+        if (Math.abs(lastReportedValue) > 10 || lastReportedValue == 0) {
+            valueText = getDisplayed().formatAmount(Math.round(Math.abs(lastReportedValue)), AmountFormat.SLOT);
+        } else {
+            valueText = String.format("%.2f", Math.abs(lastReportedValue));
+        }
+
+        return switch (this.workRoutine) {
+            case TICK -> AAEText.OverdriveThroughputMonitorValue.text(sign, valueText);
+            case SECOND -> AAEText.ThroughputMonitorValue.text(sign, valueText);
+            case MINUTE -> AAEText.SlowThroughputMonitorValue.text(sign, valueText);
+            case TEN_MINUTE -> AAEText.SlowerThroughputMonitorValue.text(sign, valueText);
+        };
+    }
+
+    public int getThroughputColor() {
+        return lastReportedValue > 0
+                ? positiveColor
+                : lastReportedValue == 0 ? this.getColor().contrastTextColor : negativeColor;
     }
 
     @Override
-    public void readFromNBT(CompoundTag data, HolderLookup.Provider registries) {
-        super.readFromNBT(data, registries);
-        this.lastHumanReadableValue = data.getString("throughput");
-        this.workRoutine = WorkRoutine.fromInt(data.getInt("routine"));
+    public void writeToNBT(ValueOutput output) {
+        super.writeToNBT(output);
+        output.putDouble("throughput", this.lastReportedValue);
+        output.putInt("routine", this.workRoutine.ordinal());
+    }
+
+    @Override
+    public void readFromNBT(ValueInput input) {
+        super.readFromNBT(input);
+        this.lastReportedValue = input.getDoubleOr("throughput", 0);
+        this.workRoutine = WorkRoutine.fromInt(input.getIntOr("routine", 0));
     }
 
     @Override
     public void writeToStream(RegistryFriendlyByteBuf data) {
         super.writeToStream(data);
         data.writeDouble(this.lastReportedValue);
-        data.writeUtf(this.lastHumanReadableValue);
         data.writeEnum(this.workRoutine);
     }
 
@@ -137,8 +129,6 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         needRedraw |= reportedValue != this.lastReportedValue;
         this.lastReportedValue = reportedValue;
 
-        this.lastHumanReadableValue = data.readUtf();
-
         var routine = data.readEnum(WorkRoutine.class);
         needRedraw |= this.workRoutine != routine;
         this.workRoutine = routine;
@@ -147,19 +137,17 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     }
 
     @Override
-    public void writeVisualStateToNBT(CompoundTag data) {
-        super.writeVisualStateToNBT(data);
-        data.putDouble("lastValue", this.lastReportedValue);
-        data.putString("throughput", this.lastHumanReadableValue);
-        data.putInt("routine", this.workRoutine.ordinal());
+    public void writeVisualStateToNBT(ValueOutput output) {
+        super.writeVisualStateToNBT(output);
+        output.putDouble("lastValue", this.lastReportedValue);
+        output.putInt("routine", this.workRoutine.ordinal());
     }
 
     @Override
-    public void readVisualStateFromNBT(CompoundTag data) {
-        super.readVisualStateFromNBT(data);
-        this.lastReportedValue = data.getLong("lastValue");
-        this.lastHumanReadableValue = data.getString("throughput");
-        this.workRoutine = WorkRoutine.fromInt(data.getInt("routine"));
+    public void readVisualStateFromNBT(ValueInput input) {
+        super.readVisualStateFromNBT(input);
+        this.lastReportedValue = input.getLongOr("lastValue", 0);
+        this.workRoutine = WorkRoutine.fromInt(input.getIntOr("routine", 0));
     }
 
     @Override
@@ -195,62 +183,6 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public void renderDynamic(
-            float partialTicks,
-            PoseStack poseStack,
-            MultiBufferSource buffers,
-            int combinedLightIn,
-            int combinedOverlayIn) {
-        if (this.isActive()) {
-            if (getDisplayed() != null) {
-                poseStack.pushPose();
-                BlockOrientation orientation = BlockOrientation.get(this.getSide(), this.getSpin());
-                poseStack.translate(0.5, 0.5, 0.5);
-                BlockEntityRenderHelper.rotateToFace(poseStack, orientation);
-                poseStack.translate(0, 0.1, 0.5);
-                BlockEntityRenderHelper.renderItem2dWithAmount(
-                        poseStack,
-                        buffers,
-                        getDisplayed(),
-                        ThroughputMonitorPart.super.getAmount(),
-                        ThroughputMonitorPart.super.canCraft(),
-                        0.3F,
-                        -0.15F,
-                        this.getColor().contrastTextColor,
-                        this.getLevel());
-
-                poseStack.translate(0, -0.23F, 0);
-                var sign = lastReportedValue > 0 ? "+" : lastReportedValue == 0 ? "" : "-";
-                var text =
-                        switch (this.workRoutine) {
-                            case TICK -> AAEText.OverdriveThroughputMonitorValue.text(sign, lastHumanReadableValue);
-                            case SECOND -> AAEText.ThroughputMonitorValue.text(sign, lastHumanReadableValue);
-                            case MINUTE -> AAEText.SlowThroughputMonitorValue.text(sign, lastHumanReadableValue);
-                            case TEN_MINUTE -> AAEText.SlowerThroughputMonitorValue.text(sign, lastHumanReadableValue);
-                        };
-
-                var color = lastReportedValue > 0
-                        ? positiveColor
-                        : lastReportedValue == 0 ? this.getColor().contrastTextColor : negativeColor;
-                AAEBlockEntityRenderHelper.renderString(poseStack, buffers, text, color);
-                poseStack.popPose();
-            }
-        }
-    }
-
-    @Override
-    public IPartModel getStaticModels() {
-        return this.selectModel(
-                MODELS_OFF,
-                MODELS_ON,
-                MODELS_HAS_CHANNEL,
-                MODELS_LOCKED_OFF,
-                MODELS_LOCKED_ON,
-                MODELS_LOCKED_HAS_CHANNEL);
-    }
-
-    @Override
     protected void onMainNodeStateChanged(IGridNodeListener.State reason) {
         getMainNode().ifPresent((grid, node) -> grid.getTickManager().wakeDevice(node));
 
@@ -275,7 +207,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         // Long time without updates, do a fast one
         if (cache.size() == 0) {
             updateState(currentAmount, currentTick);
-            this.lastHumanReadableValue = "-";
+            this.lastReportedValue = 0;
             return TickRateModulation.URGENT;
         }
 
@@ -283,15 +215,8 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         if (this.workRoutine == this.lastWorkRoutine) {
             var amountPerTick = cache.averagePerTick(this.workRoutine.timeLimit_s);
             this.lastReportedValue = amountPerTick * this.workRoutine.ticks;
-            if (Math.abs(this.lastReportedValue) > 10 || this.lastReportedValue == 0) {
-                this.lastHumanReadableValue =
-                        getDisplayed().formatAmount(Math.round(Math.abs(lastReportedValue)), AmountFormat.SLOT);
-            } else {
-                this.lastHumanReadableValue = String.format("%.2f", Math.abs(this.lastReportedValue));
-            }
-
         } else {
-            this.lastHumanReadableValue = "";
+            this.lastReportedValue = 0;
         }
 
         updateState(currentAmount, currentTick);
@@ -302,7 +227,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
 
     private void resetState() {
         cache.clear();
-        this.lastHumanReadableValue = "";
+        this.lastReportedValue = 0;
     }
 
     private void updateState(long amount, long tick) {

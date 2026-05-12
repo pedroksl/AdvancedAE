@@ -1,9 +1,9 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import appeng.api.config.CopyMode;
 import appeng.api.config.Settings;
@@ -47,19 +47,19 @@ public class PortableCellWorkbench implements InternalInventoryHost {
         return null;
     }
 
-    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
-        this.cell.writeToNBT(data, "cell", registries);
-        this.host.getConfig().writeToChildTag(data, "config", registries);
-        this.manager.writeToNBT(data, registries);
+    public void saveAdditional(ValueOutput output) {
+        this.cell.writeToNBT(output, "cell");
+        this.host.getConfig().writeToChildTag(output, "config");
+        this.manager.writeToNBT(output);
     }
 
-    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
-        this.cell.readFromNBT(data, "cell", registries);
-        this.host.getConfig().readFromChildTag(data, "config", registries);
-        this.manager.readFromNBT(data, registries);
+    public void loadTag(ValueInput input) {
+        this.cell.readFromNBT(input, "cell");
+        this.host.getConfig().readFromChildTag(input, "config");
+        this.manager.readFromNBT(input);
     }
 
-    public InternalInventory getSubInventory(ResourceLocation id) {
+    public InternalInventory getSubInventory(Identifier id) {
         if (id.equals(ISegmentedInventory.CELLS)) {
             return this.cell;
         }

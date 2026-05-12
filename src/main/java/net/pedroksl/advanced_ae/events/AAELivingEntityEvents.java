@@ -57,8 +57,9 @@ public class AAELivingEntityEvents {
             var maxAbsorption = event.getAmount() * AAEConfig.instance().getPercentageDamageAbsorption() / 100f;
             var amountPerPiece = maxAbsorption / 4f;
             float absorbed = 0;
-            for (var stack : player.getArmorSlots()) {
-                if (stack != null && !stack.isEmpty() && stack.getItem() instanceof QuantumArmorBase item) {
+            for (var slot : EquipmentSlot.values()) {
+                var stack = player.getItemBySlot(slot);
+                if (!stack.isEmpty() && stack.getItem() instanceof QuantumArmorBase item) {
                     var extracted = item.extractAEPower(stack, amountPerPiece * 1000f, Actionable.MODULATE);
                     absorbed += (float) extracted / 1000f;
                 }

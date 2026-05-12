@@ -3,19 +3,19 @@ package net.pedroksl.advanced_ae.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.platform.InputConstants;
-
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
 import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.gui.QuantumArmorStyleConfigMenu;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorStylePacket;
+import net.pedroksl.ae2addonlib.client.screens.ScreenUtil;
 import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 import net.pedroksl.ae2addonlib.client.widgets.ColorPicker;
 import net.pedroksl.ae2addonlib.util.Colors;
@@ -96,17 +96,15 @@ public class QuantumArmorStyleConfigScreen extends AEBaseScreen<QuantumArmorStyl
             }
         }
 
-        PacketDistributor.sendToServer(
+        ClientPacketDistributor.sendToServer(
                 new QuantumArmorStylePacket(updateList, this.colorPicker.color().argb()));
     }
 
     @Override
-    public boolean mouseClicked(double xCoord, double yCoord, int btn) {
-        assert this.minecraft != null;
-
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         // Handle item selection
-        if (btn == InputConstants.MOUSE_BUTTON_LEFT) {
-            Slot slot = this.findSlot(xCoord, yCoord);
+        if (!isHandlingRightClick()) {
+            Slot slot = getSlotUnderMouse();
             if (isValidSlot(slot)) {
                 if (this.applyToAll) return true;
                 this.selectedIndex = slot.index;
@@ -115,7 +113,7 @@ public class QuantumArmorStyleConfigScreen extends AEBaseScreen<QuantumArmorStyl
             }
         }
 
-        return super.mouseClicked(xCoord, yCoord, btn);
+        return super.mouseClicked(event, doubleClick);
     }
 
     private boolean isValidSlot(Slot slot) {
@@ -126,18 +124,17 @@ public class QuantumArmorStyleConfigScreen extends AEBaseScreen<QuantumArmorStyl
     }
 
     @Override
-    public void drawBG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+    public void drawBG(
+            GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
 
         if (this.applyToAll) {
             for (var slot : this.menu.getSlots(AAESlotSemantics.ARMOR)) {
-                AEBaseScreen.renderSlotHighlight(
-                        guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, Colors.LIGHT_PURPLE.argb());
+                ScreenUtil.renderSlotHighlight(guiGraphics, offsetX, offsetY, slot, Colors.LIGHT_PURPLE.argb());
             }
         } else if (selectedIndex != -1 && selectedIndex < this.menu.slots.size()) {
             var slot = this.menu.getSlot(selectedIndex);
-            AEBaseScreen.renderSlotHighlight(
-                    guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, Colors.LIGHT_PURPLE.argb());
+            ScreenUtil.renderSlotHighlight(guiGraphics, offsetX, offsetY, slot, Colors.LIGHT_PURPLE.argb());
         }
     }
 

@@ -8,19 +8,18 @@ import org.slf4j.LoggerFactory;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternProviderReturnInventory;
 import net.pedroksl.advanced_ae.common.patterns.IAdvPatternDetails;
@@ -173,99 +172,90 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
         ICraftingProvider.requestUpdate(mainNode);
     }
 
-    public void writeToNBT(CompoundTag tag, HolderLookup.Provider registries) {
-        this.configManager.writeToNBT(tag, registries);
-        this.patternInventory.writeToNBT(tag, NBT_MEMORY_CARD_PATTERNS, registries);
-        tag.putInt(NBT_PRIORITY, this.priority);
+    public void writeToNBT(ValueOutput output) {
+        this.configManager.writeToNBT(output);
+        this.patternInventory.writeToNBT(output, NBT_MEMORY_CARD_PATTERNS);
+        output.putInt(NBT_PRIORITY, this.priority);
         if (unlockEvent == UnlockCraftingEvent.REDSTONE_POWER) {
-            tag.putByte(NBT_UNLOCK_EVENT, (byte) 1);
+            output.putByte(NBT_UNLOCK_EVENT, (byte) 1);
         } else if (unlockEvent == UnlockCraftingEvent.RESULT) {
             if (unlockStack != null) {
-                tag.putByte(NBT_UNLOCK_EVENT, (byte) 2);
-                tag.put(NBT_UNLOCK_STACK, GenericStack.writeTag(registries, unlockStack));
+                output.putByte(NBT_UNLOCK_EVENT, (byte) 2);
+                GenericStack.writeTag(output.child(NBT_UNLOCK_STACK), unlockStack);
             } else {
                 LOGGER.error("Saving pattern provider {}, locked waiting for stack, but stack is null!", host);
             }
         } else if (unlockEvent == UnlockCraftingEvent.REDSTONE_PULSE) {
-            tag.putByte(NBT_UNLOCK_EVENT, (byte) 3);
+            output.putByte(NBT_UNLOCK_EVENT, (byte) 3);
         }
 
-        ListTag sendListTag = new ListTag();
+        var sendListTag = output.childrenList(NBT_SEND_LIST);
         for (var toSend : sendList) {
-            sendListTag.add(GenericStack.writeTag(registries, toSend));
+            GenericStack.writeTag(sendListTag.addChild(), toSend);
         }
-        tag.put(NBT_SEND_LIST, sendListTag);
+        output.storeNullable(NBT_SEND_DIRECTION, Direction.CODEC, sendDirection);
 
-        if (sendDirection != null) {
-            tag.putByte(NBT_SEND_DIRECTION, (byte) sendDirection.get3DDataValue());
-        }
-
-        ListTag dirListTag = new ListTag();
+        var dirMapTag = output.childrenList(NBT_DIRECTION_MAP);
         if (directionMap != null) {
             for (var entry : this.directionMap.entrySet()) {
-                CompoundTag dirTag = new CompoundTag();
-                dirTag.put("aekey", entry.getKey().toTagGeneric(registries));
+                var child = dirMapTag.addChild();
+                entry.getKey().toTagGeneric(child.child("aekey"));
                 Direction dir = entry.getValue();
                 if (dir == null) {
-                    dirTag.putByte("dir", (byte) -1);
+                    child.putByte("dir", (byte) -1);
                 } else {
-                    dirTag.putByte("dir", (byte) dir.get3DDataValue());
+                    child.putByte("dir", (byte) dir.get3DDataValue());
                 }
-                dirListTag.add(dirTag);
             }
         }
-        tag.put(NBT_DIRECTION_MAP, dirListTag);
 
-        tag.put(NBT_RETURN_INV, this.returnInv.writeToTag(registries));
+        this.returnInv.writeToTag(output.childrenList(NBT_RETURN_INV));
     }
 
-    public void readFromNBT(CompoundTag tag, HolderLookup.Provider registries) {
-        this.configManager.readFromNBT(tag, registries);
-        this.patternInventory.readFromNBT(tag, NBT_MEMORY_CARD_PATTERNS, registries);
-        this.priority = tag.getInt(NBT_PRIORITY);
+    public void readFromNBT(ValueInput input) {
+        this.configManager.readFromNBT(input);
+        this.patternInventory.readFromNBT(input, NBT_MEMORY_CARD_PATTERNS);
+        this.priority = input.getIntOr(NBT_PRIORITY, 0);
 
-        var unlockEventType = tag.getByte(NBT_UNLOCK_EVENT);
+        var unlockEventType = input.getByteOr(NBT_UNLOCK_EVENT, (byte) 0);
         this.unlockEvent = switch (unlockEventType) {
             case 0 -> null;
             case 1 -> UnlockCraftingEvent.REDSTONE_POWER;
             case 2 -> UnlockCraftingEvent.RESULT;
             case 3 -> UnlockCraftingEvent.REDSTONE_PULSE;
             default -> {
-                LOGGER.error("Unknown unlock event type {} in NBT for pattern provider: {}", unlockEventType, tag);
+                LOGGER.error("Unknown unlock event type {} in NBT for pattern provider: {}", unlockEventType, input);
                 yield null;
-            }};
+            }
+        };
         if (this.unlockEvent == UnlockCraftingEvent.RESULT) {
-            this.unlockStack = GenericStack.readTag(registries, tag.getCompound(NBT_UNLOCK_STACK));
+            this.unlockStack = GenericStack.readTag(input.childOrEmpty(NBT_UNLOCK_STACK));
             if (this.unlockStack == null) {
-                LOGGER.error("Could not load unlock stack for pattern provider from NBT: {}", tag);
+                LOGGER.error("Could not load unlock stack for pattern provider from NBT: {}", input);
             }
         } else {
             this.unlockStack = null;
         }
 
-        var sendListTag = tag.getList(NBT_SEND_LIST, Tag.TAG_COMPOUND);
-        for (int i = 0; i < sendListTag.size(); ++i) {
-            var stack = GenericStack.readTag(registries, sendListTag.getCompound(i));
+        var sendListTag = input.childrenListOrEmpty(NBT_SEND_LIST);
+        for (var sendListEntry : sendListTag) {
+            var stack = GenericStack.readTag(sendListEntry);
             if (stack != null) {
                 this.addToSendList(stack.what(), stack.amount());
             }
         }
-        if (tag.contains(NBT_SEND_DIRECTION)) {
-            sendDirection = Direction.from3DDataValue(tag.getByte(NBT_SEND_DIRECTION));
-        }
+        sendDirection = input.read(NBT_SEND_DIRECTION, Direction.CODEC).orElse(null);
 
-        ListTag listTag = tag.getList(NBT_DIRECTION_MAP, Tag.TAG_COMPOUND);
-        for (int x = 0; x < listTag.size(); x++) {
-            CompoundTag compTag = listTag.getCompound(x);
-            AEKey key = AEKey.fromTagGeneric(registries, compTag.getCompound("aekey"));
-
-            var dirTag = compTag.getByte("dir");
+        var dirMapTag = input.childrenListOrEmpty(NBT_DIRECTION_MAP);
+        for (var dirMapEntry : dirMapTag) {
+            AEKey key = AEKey.fromTagGeneric(dirMapEntry.childOrEmpty("aekey"));
+            var dirTag = dirMapEntry.getByteOr("dir", (byte) 0);
             Direction dir = dirTag == -1 ? null : Direction.from3DDataValue(dirTag);
 
             this.directionMap.put(key, dir);
         }
 
-        this.returnInv.readFromTag(tag.getList(NBT_RETURN_INV, Tag.TAG_COMPOUND), registries);
+        this.returnInv.readFromTag(input.childrenListOrEmpty(NBT_RETURN_INV));
     }
 
     public IConfigManager getConfigManager() {
@@ -716,7 +706,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     public void importSettings(DataComponentMap input, @Nullable Player player) {
         var patterns = input.getOrDefault(AEComponents.EXPORTED_PATTERNS, ItemContainerContents.EMPTY);
 
-        if (player != null && !player.level().isClientSide) {
+        if (player instanceof ServerPlayer serverPlayer) {
             clearPatternInventory(player);
 
             var desiredPatterns = new AppEngInternalInventory(patternInventory.size());
@@ -734,8 +724,8 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
                 }
 
                 // Don't restore junk
-                var pattern = PatternDetailsHelper.decodePattern(
-                        desiredPatterns.getStackInSlot(i), host.getBlockEntity().getLevel());
+                var pattern =
+                        PatternDetailsHelper.decodePattern(desiredPatterns.getStackInSlot(i), serverPlayer.level());
                 if (pattern == null) {
                     continue; // Skip junk / broken recipes
                 }

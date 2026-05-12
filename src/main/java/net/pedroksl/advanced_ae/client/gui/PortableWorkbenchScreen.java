@@ -16,7 +16,6 @@ import appeng.api.config.Settings;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
-import appeng.client.gui.Icon;
 import appeng.client.gui.implementations.UpgradeableScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.ActionButton;
@@ -24,6 +23,7 @@ import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.client.gui.widgets.ToggleButton;
 import appeng.core.definitions.AEItems;
 import appeng.core.localization.GuiText;
+import appeng.util.Icon;
 
 public class PortableWorkbenchScreen extends UpgradeableScreen<PortableWorkbenchMenu> {
 

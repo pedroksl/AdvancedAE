@@ -4,7 +4,8 @@
       "model": "advanced_ae:block/crafting/data_entangler"
     },
     "formed=true": {
-      "model": "advanced_ae:block/crafting/data_entangler_formed"
+      "type": "advanced_ae:quantum_computer_formed",
+      "unit_type": "data_entangler"
     }
   }
 }

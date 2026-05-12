@@ -7,11 +7,8 @@ import java.util.LinkedHashMap;
 
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.client.gui.QuantumCrafterConfigPatternScreen;
 
 import appeng.api.stacks.AEKey;
 import appeng.core.network.ClientboundPacket;
@@ -61,12 +58,5 @@ public record PatternConfigServerUpdatePacket(LinkedHashMap<AEKey, Long> inputs,
 
         writeKey(data, this.output.getFirst());
         data.writeLong(this.output.getSecond());
-    }
-
-    @Override
-    public void handleOnClient(Player player) {
-        if (Minecraft.getInstance().screen instanceof QuantumCrafterConfigPatternScreen screen) {
-            screen.update(this.inputs, this.output);
-        }
     }
 }

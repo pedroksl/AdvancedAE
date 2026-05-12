@@ -1,12 +1,10 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -73,46 +71,44 @@ public class StockExportBusScreen<M extends StockExportBusMenu> extends Upgradea
     }
 
     @Override
-    public boolean mouseClicked(double xCoord, double yCoord, int btn) {
-        assert this.minecraft != null;
-
-        if (this.minecraft.options.keyPickItem.matchesMouse(btn)) {
-            Slot slot = this.findSlot(xCoord, yCoord);
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (Minecraft.getInstance().options.keyPickItem.matchesMouse(event)) {
+            Slot slot = getSlotUnderMouse();
             if (this.isValidSlot(slot)) {
                 this.menu.openAmountMenu(slot.index);
+                return true;
             }
         }
 
-        return super.mouseClicked(xCoord, yCoord, btn);
+        return super.mouseClicked(event, doubleClick);
     }
 
     @Override
-    protected void renderTooltip(@NotNull GuiGraphics guiGraphics, int x, int y) {
+    public void drawTooltip(GuiGraphicsExtractor guiGraphics, int x, int y, List<Component> lines) {
         if (this.menu.getCarried().isEmpty() && this.isValidSlot(this.hoveredSlot)) {
-            ArrayList<Component> itemTooltip =
-                    new ArrayList<>(this.getTooltipFromContainerItem(this.hoveredSlot.getItem()));
+            lines.addAll(this.getTooltipFromContainerItem(this.hoveredSlot.getItem()));
+
             GenericStack unwrapped = GenericStack.fromItemStack(this.hoveredSlot.getItem());
             if (unwrapped != null) {
-                itemTooltip.add(Tooltips.getAmountTooltip(ButtonToolTips.Amount, unwrapped));
+                lines.add(Tooltips.getAmountTooltip(ButtonToolTips.Amount, unwrapped));
             }
 
-            itemTooltip.add(Tooltips.getSetAmountTooltip());
-            this.drawTooltip(guiGraphics, x, y, itemTooltip);
+            lines.add(Tooltips.getSetAmountTooltip());
         } else {
-            super.renderTooltip(guiGraphics, x, y);
+            super.drawTooltip(guiGraphics, x, y, lines);
         }
     }
 
     @Override
-    public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
+    public void drawFG(GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
         super.drawFG(guiGraphics, offsetX, offsetY, mouseX, mouseY);
-        PoseStack poseStack = guiGraphics.pose();
-        poseStack.pushPose();
-        poseStack.translate(10.0F, 17.0F, 0.0F);
-        poseStack.scale(0.7F, 0.7F, 1.0F);
+        var poseStack = guiGraphics.pose();
+        poseStack.pushMatrix();
+        poseStack.translate(10.0F, 17.0F);
+        poseStack.scale(0.6F);
         Color color = this.style.getColor(PaletteColor.DEFAULT_TEXT_COLOR);
-        guiGraphics.drawString(this.font, AAEText.SetAmountButtonHint.text(), 0, 0, color.toARGB(), false);
-        poseStack.popPose();
+        guiGraphics.text(this.font, AAEText.SetAmountButtonHint.text(), 0, 0, color.toARGB(), false);
+        poseStack.popMatrix();
     }
 
     private boolean isValidSlot(Slot slot) {

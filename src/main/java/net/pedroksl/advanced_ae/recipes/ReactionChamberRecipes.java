@@ -13,12 +13,13 @@ import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.GenericStack;
+import appeng.crafting.RecipeAccess;
 
 public final class ReactionChamberRecipes {
     private ReactionChamberRecipes() {}
 
     public static Iterable<RecipeHolder<ReactionChamberRecipe>> getRecipes(Level level) {
-        return level.getRecipeManager().getAllRecipesFor(ReactionChamberRecipe.TYPE);
+        return RecipeAccess.byType(level, AAERecipeTypes.REACTION_CHAMBER);
     }
 
     @Nullable

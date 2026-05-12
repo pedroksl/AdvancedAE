@@ -2,32 +2,33 @@ package net.pedroksl.advanced_ae.gui.advpatternprovider;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.ARGB;
 import net.pedroksl.advanced_ae.client.gui.AdvPatternProviderScreen;
 
-import appeng.api.client.AEKeyRendering;
 import appeng.api.config.LockCraftingMode;
 import appeng.api.stacks.AmountFormat;
 import appeng.client.Point;
 import appeng.client.gui.ICompositeWidget;
-import appeng.client.gui.Icon;
 import appeng.client.gui.Tooltip;
+import appeng.client.gui.style.Blitter;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.InGameTooltip;
+import appeng.util.Icon;
 
 public class AdvPatternProviderLockReason implements ICompositeWidget {
     protected boolean visible = false;
     protected int x;
     protected int y;
 
-    private final AdvPatternProviderScreen gui;
+    private final AdvPatternProviderScreen screen;
 
-    public AdvPatternProviderLockReason(AdvPatternProviderScreen gui) {
-        this.gui = gui;
+    public AdvPatternProviderLockReason(AdvPatternProviderScreen screen) {
+        this.screen = screen;
     }
 
     @Override
@@ -54,27 +55,29 @@ public class AdvPatternProviderLockReason implements ICompositeWidget {
     }
 
     @Override
-    public void drawForegroundLayer(GuiGraphics guiGraphics, Rect2i bounds, Point mouse) {
-        var menu = gui.getMenu();
+    public void drawForegroundLayer(GuiGraphicsExtractor guiGraphics, Rect2i bounds, Point mouse) {
+        var menu = screen.getMenu();
 
         Icon icon;
         Component lockStatusText;
         if (menu.getCraftingLockedReason() == LockCraftingMode.NONE) {
             icon = Icon.UNLOCKED;
-            lockStatusText = GuiText.CraftingLockIsUnlocked.text().withStyle(ChatFormatting.DARK_GREEN);
+            lockStatusText =
+                    GuiText.CraftingLockIsUnlocked.text().setStyle(Style.EMPTY.withColor(ARGB.color(125, 169, 210)));
         } else {
             icon = Icon.LOCKED;
-            lockStatusText = GuiText.CraftingLockIsLocked.text().withStyle(ChatFormatting.DARK_RED);
+            lockStatusText =
+                    GuiText.CraftingLockIsLocked.text().setStyle(Style.EMPTY.withColor(ARGB.color(193, 66, 75)));
         }
 
-        icon.getBlitter().dest(x, y).blit(guiGraphics);
-        guiGraphics.drawString(Minecraft.getInstance().font, lockStatusText, x + 15, y + 5, -1, false);
+        Blitter.icon(icon).dest(x, y).blit(guiGraphics);
+        guiGraphics.text(Minecraft.getInstance().font, lockStatusText, x + 15, y + 5, -1, false);
     }
 
     @Nullable
     @Override
     public Tooltip getTooltip(int mouseX, int mouseY) {
-        var menu = gui.getMenu();
+        var menu = screen.getMenu();
         var tooltip =
                 switch (menu.getCraftingLockedReason()) {
                     case NONE -> null;
@@ -86,7 +89,7 @@ public class AdvPatternProviderLockReason implements ICompositeWidget {
                         Component stackName;
                         Component stackAmount;
                         if (stack != null) {
-                            stackName = AEKeyRendering.getDisplayName(stack.what());
+                            stackName = stack.what().getDisplayName();
                             stackAmount =
                                     Component.literal(stack.what().formatAmount(stack.amount(), AmountFormat.FULL));
                         } else {

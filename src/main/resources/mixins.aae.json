@@ -1,28 +1,19 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "net.pedroksl.advanced_ae.mixins",
-  "plugin": "net.pedroksl.advanced_ae.mixins.AAEMixinPlugin",
-  "refmap": "mixins.aae.refmap.json",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "MixinContainerPatternModifier",
-    "MixinEncodedPatternItem",
-    "MixinIOBusPartInvoker",
-    "MixinLivingEntity",
-    "MixinPatternEncodingLogic",
-    "MixinPatternEncodingTermMenu",
-    "MixinPatternProviderLogic",
-    "appflux.MixinAdvPatternProviderLogic",
-    "appflux.MixinAdvPatternProviderLogicHost",
-    "appflux.MixinAdvPatternProviderMenu",
-    "cpu.MixinCraftingCPUMenu",
-    "cpu.MixinCraftingService"
-  ],
-  "client": [
-    "appflux.MixinAdvPatternProviderScreen",
-    "appflux.MixinSmallAdvPatternProviderScreen",
-    "client.BuiltInModelHooksAccessor",
-    "client.ModelBakeryMixin"
-  ]
+    "required": true,
+    "minVersion": "0.8",
+    "package": "net.pedroksl.advanced_ae.mixins",
+    "plugin": "net.pedroksl.advanced_ae.mixins.AAEMixinPlugin",
+    "refmap": "mixins.aae.refmap.json",
+    "compatibilityLevel": "JAVA_25",
+    "mixins": [
+        "MixinEncodedPatternItem",
+        "MixinIOBusPartInvoker",
+        "MixinLivingEntity",
+        "MixinPatternEncodingLogic",
+        "MixinPatternEncodingTermMenu",
+        "MixinPatternProviderLogic",
+        "cpu.MixinCraftingCPUMenu",
+        "cpu.MixinCraftingService"
+    ],
+    "client": []
 }

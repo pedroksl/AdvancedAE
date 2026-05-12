@@ -5,10 +5,11 @@ import java.util.*;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 
 import appeng.api.config.CpuSelectionMode;
@@ -21,7 +22,6 @@ import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.GenericStack;
 import appeng.api.util.IConfigManager;
 import appeng.blockentity.crafting.CraftingMonitorBlockEntity;
-import appeng.crafting.CraftingPlan;
 import appeng.crafting.execution.CraftingSubmitResult;
 import appeng.crafting.inv.ListCraftingInventory;
 import appeng.me.cluster.IAECluster;
@@ -317,23 +317,17 @@ public class AdvCraftingCPUCluster implements IAECluster {
         return node != null && node.isActive();
     }
 
-    public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
-        ListTag listCpus = new ListTag();
-        for (var cpu : activeCpus.entrySet()) {
-            if (cpu != null) {
-                StringTag keyTag = StringTag.valueOf(cpu.getKey().toString());
-                LongTag bytesTag = LongTag.valueOf(cpu.getValue().getAvailableStorage());
-                CompoundTag cpuTag = new CompoundTag();
-                cpu.getValue().writeToNBT(cpuTag, registries);
-                CompoundTag pair = new CompoundTag();
-                pair.put("key", keyTag);
-                pair.put("bytes", bytesTag);
-                pair.put("cpu", cpuTag);
-                listCpus.add(pair);
+    public void writeToNBT(ValueOutput output) {
+        var cpuList = output.childrenList("cpus");
+        for (var entry : activeCpus.entrySet()) {
+            if (entry != null) {
+                var child = cpuList.addChild();
+                child.putString("key", entry.getKey().toString());
+                child.putLong("bytes", entry.getValue().bytes);
+                entry.getValue().writeToNBT(child.child("cpu"));
             }
         }
-        data.put("cpuList", listCpus);
-        this.configManager.writeToNBT(data, registries);
+        this.configManager.writeToNBT(output.child("config"));
     }
 
     void done() {
@@ -342,51 +336,25 @@ public class AdvCraftingCPUCluster implements IAECluster {
         core.setCoreBlock(true);
 
         if (core.getPreviousState() != null) {
-            this.readFromNBT(core.getPreviousState(), core.getLevel().registryAccess());
+            this.readFromNBT(core.getPreviousState());
             core.setPreviousState(null);
         }
 
         this.updateName();
     }
 
-    public void readFromNBT(CompoundTag data, HolderLookup.Provider registries) {
-        ListTag cpuList = (ListTag) data.get("cpuList");
-        if (cpuList != null) {
-            for (var x = 0; x < cpuList.size(); x++) {
-                CompoundTag pair = cpuList.getCompound(x);
-
-                // fix old cpus
-                UUID id;
-                long bytes;
-                Tag keyTag = pair.get("key");
-                if (keyTag != null && keyTag.getType() instanceof CompoundTag planTag) {
-                    var plan = readCraftingPlanFromNBT(planTag, registries);
-                    id = UUID.randomUUID();
-                    bytes = plan.bytes();
-                } else {
-                    try {
-                        id = UUID.fromString(pair.getString("key"));
-                    } catch (IllegalArgumentException e) {
-                        id = UUID.randomUUID();
-                    }
-                    bytes = pair.getLong("bytes");
-                }
-
-                var cpu = new AdvCraftingCPU(this, id, bytes);
-                this.activeCpus.put(id, cpu);
-                cpu.readFromNBT(pair.getCompound("cpu"), registries);
-            }
+    public void readFromNBT(ValueInput input) {
+        for (var entry : input.childrenListOrEmpty("cpuList")) {
+            var key = entry.getStringOr("key", "");
+            var id = key.isEmpty() ? UUID.randomUUID() : UUID.fromString(key);
+            var bytes = entry.getLongOr("bytes", 0);
+            var cpu = new AdvCraftingCPU(this, id, bytes);
+            this.activeCpus.put(id, cpu);
+            cpu.readFromNBT(input.childOrEmpty("cpu"));
         }
-        this.configManager.readFromNBT(data, registries);
-        recalculateRemainingStorage();
-    }
 
-    private CraftingPlan readCraftingPlanFromNBT(CompoundTag tag, HolderLookup.Provider registries) {
-        GenericStack output = GenericStack.readTag(registries, tag.getCompound("output"));
-        long bytes = tag.getLong("bytes");
-        boolean simulation = tag.getBoolean("simulation");
-        boolean multiplePaths = tag.getBoolean("multiplePaths");
-        return new CraftingPlan(output, bytes, simulation, multiplePaths, null, null, null, null);
+        this.configManager.readFromNBT(input);
+        recalculateRemainingStorage();
     }
 
     public void updateName() {

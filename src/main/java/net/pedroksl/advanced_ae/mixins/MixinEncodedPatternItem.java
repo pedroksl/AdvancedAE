@@ -1,9 +1,8 @@
 package net.pedroksl.advanced_ae.mixins;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.pedroksl.advanced_ae.common.patterns.AdvProcessingPattern;
 
 import appeng.api.crafting.*;
@@ -32,11 +32,6 @@ public class MixinEncodedPatternItem<T extends IPatternDetails> {
     @Shadow
     private EncodedPatternDecoder<T> decoder;
 
-    @Final
-    @Nullable
-    @Shadow
-    private InvalidPatternTooltipStrategy invalidPatternTooltip;
-
     @Shadow
     protected static Component getTooltipEntryLine(GenericStack stack) {
         return Component.empty();
@@ -44,7 +39,12 @@ public class MixinEncodedPatternItem<T extends IPatternDetails> {
 
     @Inject(method = "appendHoverText", at = @At("HEAD"), cancellable = true)
     public void onHoverText(
-            ItemStack stack, Item.TooltipContext context, List<Component> lines, TooltipFlag flags, CallbackInfo ci) {
+            ItemStack stack,
+            Item.TooltipContext context,
+            TooltipDisplay tooltipDisplay,
+            Consumer<Component> lines,
+            TooltipFlag flags,
+            CallbackInfo ci) {
         var what = AEItemKey.of(stack);
         if (what == null) {
             // This can be called very early to index tooltips for search. In those cases,
@@ -83,7 +83,7 @@ public class MixinEncodedPatternItem<T extends IPatternDetails> {
 
             boolean first = true;
             for (var output : tooltip.getOutputs()) {
-                lines.add(Component.empty().append(first ? label : and).append(getTooltipEntryLine(output)));
+                lines.accept(Component.empty().append(first ? label : and).append(getTooltipEntryLine(output)));
                 first = false;
             }
 
@@ -94,7 +94,7 @@ public class MixinEncodedPatternItem<T extends IPatternDetails> {
                 var dirText = inputDirection == null
                         ? ""
                         : " (" + inputDirection.toString().toUpperCase().charAt(0) + ")";
-                lines.add(Component.empty()
+                lines.accept(Component.empty()
                         .append(first ? with : and)
                         .append(getTooltipEntryLine(input))
                         .append(dirText));
@@ -103,12 +103,13 @@ public class MixinEncodedPatternItem<T extends IPatternDetails> {
 
             for (var property : tooltip.getProperties()) {
                 if (property.value() != null) {
-                    lines.add(Component.empty()
+                    lines.accept(Component.empty()
                             .append(property.name())
                             .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
                             .append(property.value()));
                 } else {
-                    lines.add(Component.empty().withStyle(ChatFormatting.GRAY).append(property.name()));
+                    lines.accept(
+                            Component.empty().withStyle(ChatFormatting.GRAY).append(property.name()));
                 }
             }
         }

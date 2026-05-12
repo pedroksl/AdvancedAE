@@ -14,7 +14,7 @@ import appeng.menu.guisync.GuiSync;
 public class AdvancedIOBusMenu extends StockExportBusMenu {
 
     @GuiSync(2)
-    private YesNo regulate;
+    private YesNo regulate = YesNo.NO;
 
     public AdvancedIOBusMenu(int id, Inventory ip, StockExportBusPart host) {
         super(AAEMenus.ADVANCED_IO_BUS.get(), id, ip, host);

@@ -4,7 +4,6 @@ import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.world.level.ItemLike;
 import net.pedroksl.advanced_ae.AdvancedAE;
-import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.common.helpers.ToggleUpgradeCardAction;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.ae2addonlib.registry.HotkeyRegistry;
@@ -14,7 +13,8 @@ public final class AAEHotkeysRegistry extends HotkeyRegistry {
     public static final AAEHotkeysRegistry INSTANCE = new AAEHotkeysRegistry();
 
     AAEHotkeysRegistry() {
-        super(AdvancedAE.MOD_ID, id -> Keys.valueOf(id).getDefaultHotkey(), AAEHotkeys.INSTANCE::registerHotkey);
+        super(AdvancedAE.MOD_ID, id -> Keys.valueOf(id).getDefaultHotkey(), (id) -> AdvancedAE.instance()
+                .registerHotkey(id));
     }
 
     public enum Keys {
@@ -34,10 +34,10 @@ public final class AAEHotkeysRegistry extends HotkeyRegistry {
             this(id, englishTranslation, GLFW.GLFW_KEY_UNKNOWN);
         }
 
-        Keys(String id, String englishTranslation, int defaultHotekey) {
+        Keys(String id, String englishTranslation, int defaultHotkey) {
             this.id = id;
             this.englishTranslation = englishTranslation;
-            this.defaultHotkey = defaultHotekey;
+            this.defaultHotkey = defaultHotkey;
         }
 
         public String getId() {

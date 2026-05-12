@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
@@ -16,14 +16,13 @@ import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAESettingToggleButton;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterMenu;
+import net.pedroksl.ae2addonlib.client.screens.ScreenUtil;
 import net.pedroksl.ae2addonlib.client.widgets.AddonActionItems;
 import net.pedroksl.ae2addonlib.client.widgets.ToolbarActionButton;
 
 import appeng.api.config.RedstoneMode;
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
-import appeng.client.gui.AEBaseScreen;
-import appeng.client.gui.Icon;
 import appeng.client.gui.implementations.UpgradeableScreen;
 import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.ScreenStyle;
@@ -34,6 +33,7 @@ import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.core.definitions.AEItems;
 import appeng.core.localization.Tooltips;
 import appeng.menu.SlotSemantics;
+import appeng.util.Icon;
 
 public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> {
 
@@ -103,13 +103,14 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
     }
 
     @Override
-    public void drawBG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+    public void drawBG(
+            GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
 
         for (var x = 0; x < this.invalidPatternSlots.size(); x++) {
             if (this.invalidPatternSlots.get(x)) {
                 Slot slot = menu.getSlots(SlotSemantics.MACHINE_INPUT).get(x);
-                AEBaseScreen.renderSlotHighlight(guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, 0x7fff0000);
+                ScreenUtil.renderSlotHighlight(guiGraphics, offsetX, offsetY, slot, 0x7fff0000);
             }
         }
     }
@@ -154,7 +155,7 @@ public class QuantumCrafterScreen extends UpgradeableScreen<QuantumCrafterMenu> 
         }
 
         @Override
-        protected void renderWidget(GuiGraphics guiGraphics, int i, int i1, float v) {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int i, int i1, float v) {
             this.invalidPatternAlert.dest(this.getX(), this.getY()).blit(guiGraphics);
         }
 

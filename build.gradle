@@ -1,12 +1,14 @@
+import com.diffplug.gradle.spotless.JsonExtension
 import com.diffplug.spotless.LineEnding
 import com.hypherionmc.modpublisher.properties.ModLoader
 
 plugins {
+    id 'idea'
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '1.0.17'
+    id 'net.neoforged.moddev'
     id 'com.diffplug.spotless'
-    id "com.hypherionmc.modutils.modpublisher" version '2.1.8'
+    id "com.hypherionmc.modutils.modpublisher" version '2.2.1'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -15,26 +17,16 @@ tasks.named('wrapper', Wrapper).configure {
 
 version = mod_version
 group = mod_group_id
-
-repositories {
-    mavenLocal()
-}
+neoForge.version = project.neoforge_version
 
 base {
     archivesName = mod_name.replace(" ", "")
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 neoForge {
-    version = project.neoforge_version
-
     validateAccessTransformers = true
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
 
     mods {
         advanced_ae {
@@ -49,7 +41,6 @@ neoForge {
     runs {
         client {
             client()
-
             systemProperties = [
                     'guideme.ae2.guide.sources': file('src/main/resources/assets/advanced_ae/ae2guide/aae_intro/').absolutePath
             ]
@@ -57,8 +48,6 @@ neoForge {
 
         server {
             server()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            //programArgument '--nogui'
         }
 
         gametestWorld {
@@ -67,20 +56,18 @@ neoForge {
         }
 
         data {
-            data()
+            clientData()
             programArguments = [
                     '--mod', project.mod_id,
                     '--all',
                     '--output', file('src/generated/resources/').getAbsolutePath(),
-                    '--existing', file('src/main/resources/').getAbsolutePath(),
-                    "--existing-mod", "ae2",
-                    "--existing-mod", "ae2addonlib"
+                    '--existing', file('src/main/resources/').getAbsolutePath()
             ]
         }
 
         configureEach {
             systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
+            logLevel = org.slf4j.event.Level.INFO
         }
     }
 }
@@ -91,90 +78,55 @@ sourceSets.main.resources {
 }
 
 configurations {
+    localRuntimeOnly
+    buildtoolsImplementation.extendsFrom(compileClasspath)
     runtimeClasspath.extendsFrom localRuntime
-}
-
-repositories {
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-        content {
-            includeGroup "dev.emi"
-        }
-    }
-    maven {
-        name 'cursemaven'
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        name = "Modmaven"
-        url = uri("https://modmaven.dev/")
-        content {
-            includeGroup("appeng")
-            includeGroup("de.mari_023")
-        }
-    }
-    maven {
-        url "https://maven.shedaniel.me/"
-        content {
-            includeGroup "me.shedaniel"
-            includeGroup "me.shedaniel.cloth"
-            includeGroup "dev.architectury"
-        }
-    }
-    maven {
-        name = 'GeckoLib'
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-        content {
-            includeGroup("software.bernie.geckolib")
-        }
-    }
+    clientRuntimeClasspath.extendsFrom localRuntimeOnly
 }
 
 dependencies {
-    runtimeOnly "curse.maven:glodium-957920:${glodium_file_id}"
+    //runtimeOnly "curse.maven:glodium-957920:${glodium_file_id}"
     implementation "org.appliedenergistics:guideme:${guide_me_version}"
     api "org.appliedenergistics:appliedenergistics2:${ae2_version}"
-    implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
-    jarJar implementation("io.github.pedroksl:ae2addonlib:${ae2addonlib_version}-${minecraft_version}")
-    jarJar implementation("de.mari_023:ae2wtlib_api:${ae2wtlib_version}") {
-        transitive = false
-    }
-    runtimeOnly("de.mari_023:ae2wtlib:${ae2wtlib_version}") {
-        transitive = false
-    }
+    //implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
+    jarJar implementation("io.github.pedroksl:ae2addonlib:${ae2addonlib_version}")
+//    jarJar implementation("de.mari_023:ae2wtlib_api:${ae2wtlib_version}") {
+//        transitive = false
+//    }
+//    runtimeOnly("de.mari_023:ae2wtlib:${ae2wtlib_version}") {
+//        transitive = false
+//    }
 
-    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
-    implementation "curse.maven:applied-flux-965012:${applied_flux_file_id}"
+    implementation "com.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    //compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
+    //implementation "curse.maven:applied-flux-965012:${applied_flux_file_id}"
 
     implementation "curse.maven:jade-324717:${jade_file_id}"
-    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
-    compileOnly "curse.maven:jei-238222:${jei_version}"
+    //compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+    compileOnly "mezz.jei:jei-${jei_minecraft_version}-neoforge-api:${jei_version}"
 
     // Compatibility
-    compileOnly "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
+    //compileOnly "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
     compileOnly "curse.maven:irisshaders-455508:${iris_file_id}"
-    implementation "curse.maven:mega-cells-622112:${mega_file_id}"
-    implementation "curse.maven:mekanism-268560:${mekanism_file_id}"
-    implementation "curse.maven:applied-mekanistics-574300:${appmek_file_id}"
-    implementation "curse.maven:curios-309927:${curios_file_id}"
+    //implementation "curse.maven:mega-cells-622112:${mega_file_id}"
+    //implementation "curse.maven:mekanism-268560:${mekanism_file_id}"
+    //implementation "curse.maven:applied-mekanistics-574300:${appmek_file_id}"
+    implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}:api"
+    if (runtime_curio == "true") {
+        runtimeOnly("top.theillusivec4.curios:curios-neoforge:${project.curios_version}")
+    }
 
     // Runtime Tests
-    localRuntime "curse.maven:cucumber-272335:${cucumber_file_id}"
-    localRuntime "curse.maven:mystical-agriculture-246640:${ma_file_id}"
+    //localRuntime "curse.maven:cucumber-272335:${cucumber_file_id}"
+    //localRuntime "curse.maven:mystical-agriculture-246640:${ma_file_id}"
 
-    localRuntime "curse.maven:dark-mode-everywhere-574123:6470153"
-    localRuntime "curse.maven:placebo-283644:${placebo_file_id}"
-    localRuntime "curse.maven:apothic-attributes-898963:${apothic_att_file_id}"
-    localRuntime "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
+    //localRuntime "curse.maven:dark-mode-everywhere-574123:6470153"
+    //localRuntime "curse.maven:placebo-283644:${placebo_file_id}"
+    //localRuntime "curse.maven:apothic-attributes-898963:${apothic_att_file_id}"
+    //localRuntime "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
 
-    localRuntime "curse.maven:sodium-394468:${sodium_file_id}"
-
-    localRuntime "curse.maven:irisshaders-455508:${iris_file_id}"
+    //localRuntime "curse.maven:sodium-394468:${sodium_file_id}"
+    //localRuntime "curse.maven:irisshaders-455508:${iris_file_id}"
     // setup Xei
     switch (use_Xei) {
         case "emi":
@@ -186,27 +138,39 @@ dependencies {
             runtimeOnly "curse.maven:cloth-config-348521:5729127"
             break
         case "jei":
-            runtimeOnly "curse.maven:jei-238222:6829086"
-            runtimeOnly "dev.architectury:architectury-neoforge:13.0.8"
+            runtimeOnly "mezz.jei:jei-${jei_minecraft_version}-neoforge:${jei_version}"
             break
     }
 }
 
-tasks.withType(ProcessResources).configureEach {
-    var replaceProperties = [
-            minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
-            neo_version         : neoforge_version, neo_version_range: neoforge_version_range,
-            loader_version_range: loader_version_range,
-            mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors         : mod_authors, mod_description: mod_description, geckolib_version: geckolib_version,
-            ae2wtlib_version    : ae2wtlib_version
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
+final generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    group = 'build'
+    from('src/main/neoforge.mods.toml') {
+        rename '(.*)', 'META-INF/$1'
     }
+    into 'build/generated/modMetadata'
+
+    // Exposed project properties
+    Map<String, String> projectProperties = [
+            'minecraft_version',
+            'neoforge_version_range',
+            'loader_version_range',
+            'ae2_version',
+            'mod_id',
+            'mod_name',
+            'mod_license',
+            'mod_version',
+            'mod_authors',
+            'mod_description',
+            'geckolib_version',
+            'ae2wtlib_version'
+    ].collectEntries { [it, project[it]] }
+
+    inputs.properties projectProperties
+    expand projectProperties
 }
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
 
 publishing {
     publications {
@@ -216,7 +180,7 @@ publishing {
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/repo"
+            url = 'file://${project.projectDir}/repo'
         }
     }
 }
@@ -323,22 +287,23 @@ publisher {
 
 spotless {
     java {
-        target("/src/**/java/**/*.java")
+        target '/src/*/java/**/*.java'
         endWithNewline()
-        indentWithTabs(1)
+        leadingSpacesToTabs(4)
         removeUnusedImports()
         palantirJavaFormat()
-        importOrderFile(file("aae.importorder"))
         toggleOffOn()
+        importOrderFile 'aae.importorder'
         setLineEndings(LineEnding.UNIX)
 
         bumpThisNumberIfACustomStepChanges(1)
     }
 
     json {
-        target('src/**/resources/**/*.json')
-        biome()
-        indentWithSpaces(2)
+        target 'src/*/resources/**/*.json'
+        targetExclude 'src/generated/resources/**'
+        biome().downloadDir(new File(rootDir, ".gradle/biome").absolutePath)
+        leadingTabsToSpaces(4)
         endWithNewline()
         setLineEndings(LineEnding.UNIX)
     }

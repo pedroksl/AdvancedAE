@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
 import net.pedroksl.advanced_ae.client.widgets.QuantumUpgradeWidget;
@@ -26,9 +25,11 @@ import net.pedroksl.advanced_ae.gui.QuantumArmorConfigMenu;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorMagnetPacket;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeFilterPacket;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.QuantumArmorUpgradeValuePacket;
+import net.pedroksl.ae2addonlib.client.screens.ScreenUtil;
 import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 
 import appeng.client.gui.AEBaseScreen;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.Color;
 import appeng.client.gui.style.PaletteColor;
 import appeng.client.gui.style.ScreenStyle;
@@ -44,7 +45,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     private static final int VISIBLE_ROWS = 4;
 
     private static final Rect2i LIST_BACK_BBOX = new Rect2i(0, 195, 128, 16);
-    private static final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/quantum_armor_config.png");
+    private static final Identifier DEFAULT_TEXTURE = AppEng.makeId("textures/guis/quantum_armor_config.png");
 
     private final Scrollbar scrollbar;
     private final ProgressBar pb;
@@ -75,37 +76,35 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     }
 
     @Override
-    public boolean mouseClicked(double xCoord, double yCoord, int btn) {
-        assert this.minecraft != null;
-
-        // Handle item selection
-        if (btn == InputConstants.MOUSE_BUTTON_LEFT) {
-            Slot slot = this.findSlot(xCoord, yCoord);
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (!isHandlingRightClick() && getHoveredSlot() != null) {
+            Slot slot = getHoveredSlot();
             if (this.isArmorSlot(slot)) {
                 this.selectedIndex = slot.index;
                 this.menu.setSelectedItemSlot(slot.getSlotIndex());
+                return true;
             }
         }
 
-        return super.mouseClicked(xCoord, yCoord, btn);
+        return super.mouseClicked(event, doubleClick);
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (isCloseHotkey(keyCode, scanCode)) {
+    public boolean keyPressed(KeyEvent event) {
+        if (isCloseHotkey(event)) {
             this.getPlayer().closeContainer();
             return true;
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
-    private boolean isCloseHotkey(int keyCode, int scanCode) {
+    private boolean isCloseHotkey(KeyEvent event) {
         var hotkeyId = getMenu().getHost().getCloseHotkey();
         if (hotkeyId != null) {
             var hotkey = AAEHotkeys.INSTANCE.getHotkeyMapping(hotkeyId);
             if (hotkey != null) {
-                return hotkey.mapping().matches(keyCode, scanCode);
+                return hotkey.mapping().matches(event);
             }
         }
         return false;
@@ -120,7 +119,7 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
     }
 
     @Override
-    public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
+    public void drawFG(GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
         super.drawFG(guiGraphics, offsetX, offsetY, mouseX, mouseY);
 
         Color color = this.style.getColor(PaletteColor.DEFAULT_TEXT_COLOR);
@@ -139,23 +138,24 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
             upgrade.setY(y, this.topPos);
             upgrade.show();
 
-            PoseStack poseStack = guiGraphics.pose();
-            poseStack.pushPose();
-            poseStack.translate(10.0F, 8.0F + (i * 3.5F), 0.0F);
-            poseStack.scale(0.8F, 0.8F, 1.0F);
-            guiGraphics.drawString(
+            var poseStack = guiGraphics.pose();
+            poseStack.pushMatrix();
+            poseStack.translate(10.0F, 8.0F + (i * 3.5F));
+            poseStack.scale(0.8F);
+            guiGraphics.text(
                     this.font,
                     upgrade.getType().getTranslatedName(),
                     upgrade.getX() + 2,
                     upgrade.getY() + 3,
                     color.toARGB(),
                     false);
-            poseStack.popPose();
+            poseStack.popMatrix();
         }
     }
 
     @Override
-    public void drawBG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+    public void drawBG(
+            GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
 
         int currentX = offsetX + LIST_ANCHOR_X;
@@ -163,20 +163,20 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
         int visibleRows = Math.min(VISIBLE_ROWS, this.upgradeList.size());
         for (int i = 0; i < visibleRows; ++i) {
-            guiGraphics.blit(
-                    DEFAULT_TEXTURE,
-                    currentX,
-                    currentY,
-                    LIST_BACK_BBOX.getX(),
-                    LIST_BACK_BBOX.getY(),
-                    LIST_BACK_BBOX.getWidth(),
-                    LIST_BACK_BBOX.getHeight());
+            Blitter.texture(DEFAULT_TEXTURE)
+                    .src(
+                            LIST_BACK_BBOX.getX(),
+                            LIST_BACK_BBOX.getY(),
+                            LIST_BACK_BBOX.getWidth(),
+                            LIST_BACK_BBOX.getHeight())
+                    .dest(currentX, currentY)
+                    .blit(guiGraphics);
             currentY += LIST_LINE_HEIGHT;
         }
 
         if (selectedIndex != -1 && selectedIndex < this.menu.slots.size()) {
             var slot = this.menu.getSlot(selectedIndex);
-            AEBaseScreen.renderSlotHighlight(guiGraphics, slot.x + offsetX, slot.y + offsetY, 0, 0x787d53c1);
+            ScreenUtil.renderSlotHighlight(guiGraphics, offsetX, offsetY, slot, 0x787d53c1);
         }
     }
 
@@ -235,15 +235,16 @@ public class QuantumArmorConfigScreen extends AEBaseScreen<QuantumArmorConfigMen
 
     public void openConfigDialog(UpgradeState state) {
         if (state.type().getSettingType() == UpgradeType.SettingType.NUM_INPUT) {
-            PacketDistributor.sendToServer(new QuantumArmorUpgradeValuePacket(state.type(), state.currentValue()));
+            ClientPacketDistributor.sendToServer(
+                    new QuantumArmorUpgradeValuePacket(state.type(), state.currentValue()));
         } else if (state.type().getSettingType() == UpgradeType.SettingType.FILTER) {
-            PacketDistributor.sendToServer(new QuantumArmorUpgradeFilterPacket(state.type(), state.filter()));
+            ClientPacketDistributor.sendToServer(new QuantumArmorUpgradeFilterPacket(state.type(), state.filter()));
         } else if (state.type().getSettingType() == UpgradeType.SettingType.NUM_AND_FILTER) {
             if (state.type() == UpgradeType.MAGNET) {
                 var stack = this.menu.getSlot(selectedIndex).getItem();
                 if (stack.getItem() instanceof QuantumArmorBase) {
                     var blacklist = stack.get(AAEComponents.UPGRADE_EXTRA.get(UpgradeType.MAGNET));
-                    PacketDistributor.sendToServer(
+                    ClientPacketDistributor.sendToServer(
                             new QuantumArmorMagnetPacket(state.currentValue(), state.filter(), blacklist));
                 }
             }

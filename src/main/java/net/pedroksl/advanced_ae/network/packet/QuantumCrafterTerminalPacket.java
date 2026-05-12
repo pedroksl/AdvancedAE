@@ -2,15 +2,10 @@ package net.pedroksl.advanced_ae.network.packet;
 
 import it.unimi.dsi.fastutil.ints.*;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.pedroksl.advanced_ae.client.gui.QuantumCrafterTermScreen;
 
 import appeng.core.network.ClientboundPacket;
 import appeng.core.network.CustomAppEngPayload;
@@ -98,17 +93,5 @@ public record QuantumCrafterTerminalPacket(
             Int2BooleanArrayMap enabledArray,
             Int2BooleanArrayMap invalidArray) {
         return new QuantumCrafterTerminalPacket(false, inventoryId, 0, 0, slots, enabledArray, invalidArray);
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void handleOnClient(Player player) {
-        if (Minecraft.getInstance().screen instanceof QuantumCrafterTermScreen<?> screen) {
-            if (fullUpdate) {
-                screen.postFullUpdate(this.inventoryId, sortBy, inventorySize, slots, enabledArray, invalidArray);
-            } else {
-                screen.postIncrementalUpdate(this.inventoryId, slots, enabledArray, invalidArray);
-            }
-        }
     }
 }

@@ -9,8 +9,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 
@@ -20,15 +21,12 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     protected float lastHurt;
 
-    @Shadow
-    public abstract Iterable<ItemStack> getArmorSlots();
-
     @Inject(method = "playHurtSound", at = @At("HEAD"), cancellable = true)
     public void hurtSound(DamageSource source, CallbackInfo ci) {
         if (lastHurt < 10f) {
-            if (super.getType() == EntityType.PLAYER) {
-                for (var stack : getArmorSlots()) {
-                    if (stack.getItem() instanceof QuantumArmorBase) {
+            if (source.getEntity() != null && super.getType() == EntityType.PLAYER) {
+                for (var slot : EquipmentSlot.values()) {
+                    if (((Player) source.getEntity()).getItemBySlot(slot).getItem() instanceof QuantumArmorBase) {
                         ci.cancel();
                         return;
                     }

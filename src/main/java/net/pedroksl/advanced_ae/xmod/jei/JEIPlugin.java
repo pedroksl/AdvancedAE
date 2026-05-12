@@ -1,37 +1,35 @@
 package net.pedroksl.advanced_ae.xmod.jei;
 
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.*;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
-import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
+import net.pedroksl.advanced_ae.recipes.AAERecipeTypes;
 import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-    public static final ResourceLocation TEXTURE = AdvancedAE.makeId("textures/guis/emi.png");
+    public static final Identifier TEXTURE = AdvancedAE.makeId("textures/guis/emi.png");
 
-    private static final ResourceLocation ID = AdvancedAE.makeId("core");
+    private static final Identifier ID = AdvancedAE.makeId("core");
 
     public JEIPlugin() {}
 
     @Override
-    public ResourceLocation getPluginUid() {
+    public Identifier getPluginUid() {
         return ID;
     }
 
@@ -43,32 +41,37 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
-        registration.addRecipes(
-                ReactionChamberCategory.RECIPE_TYPE,
-                List.copyOf(recipeManager.byType(ReactionChamberRecipe.TYPE).stream()
-                        .map(RecipeHolder::value)
-                        .toList()));
+        addSyncedRecipes(registration, ReactionChamberCategory.RECIPE_TYPE, AAERecipeTypes.REACTION_CHAMBER);
+    }
+
+    private static <I extends RecipeInput, T extends Recipe<I>> void addSyncedRecipes(
+            IRecipeRegistration registration,
+            IRecipeType<RecipeHolder<T>> recipeType,
+            RecipeType<T> vanillaRecipeType) {
+        var recipes = AdvancedAE.instance().getRecipeMapForType(Minecraft.getInstance().level, vanillaRecipeType);
+        var recipeHolders = List.copyOf(recipes.byType(vanillaRecipeType));
+        registration.addRecipes(recipeType, recipeHolders);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         var chamber = AAEBlocks.REACTION_CHAMBER.stack();
-        registration.addRecipeCatalyst(chamber, ReactionChamberCategory.RECIPE_TYPE);
+        registration.addCraftingStation(ReactionChamberCategory.RECIPE_TYPE, chamber);
     }
 
-    public static Ingredient stackOf(IngredientStack.Item stack) {
+    public static List<ItemStack> stackOf(IngredientStack.Item stack) {
         if (!stack.isEmpty()) {
-            return Ingredient.of(Arrays.stream(stack.getIngredient().getItems())
-                    .map(oldStack -> oldStack.copyWithCount(stack.getAmount())));
+            return stack.getIngredient().getValues().stream()
+                    .map(item -> new ItemStack(item, stack.getAmount()))
+                    .toList();
         }
-        return Ingredient.of(ItemStack.EMPTY);
+        return List.of();
     }
 
     public static List<FluidStack> stackOf(IngredientStack.Fluid stack) {
         FluidIngredient ingredient = stack.getIngredient();
-        return Arrays.stream(ingredient.getStacks())
-                .map(oldStack -> oldStack.copyWithAmount(stack.getAmount()))
+        return ingredient.fluids().stream()
+                .map(fluid -> new FluidStack(fluid, stack.getAmount()))
                 .toList();
     }
 }

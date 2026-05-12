@@ -18,6 +18,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import net.pedroksl.advanced_ae.common.helpers.MagnetHelpers;
@@ -40,7 +42,7 @@ public class UpgradeCards {
         boolean canFly = chest.getItem() instanceof QuantumArmorBase armor
                 && armor.isUpgradeEnabledAndPowered(chest, UpgradeType.FLIGHT);
         boolean isNotFlying = !player.getAbilities().flying;
-        if (!player.isSprinting() && (canFly || isNotFlying) && !player.isInWaterOrBubble()) {
+        if (!player.isSprinting() && (canFly || isNotFlying) && !player.isInWater()) {
             var upgrade = UpgradeType.WALK_SPEED;
             if (stack.getItem() instanceof QuantumLeggings legs && legs.isUpgradeEnabledAndPowered(stack, upgrade)) {
                 return processMovementSpeed(upgrade, player, canFly, stack, chest);
@@ -56,7 +58,7 @@ public class UpgradeCards {
         boolean canFly = chest.getItem() instanceof QuantumArmorBase armor
                 && armor.isUpgradeEnabledAndPowered(chest, UpgradeType.FLIGHT);
         boolean isNotFlying = player.fallDistance <= 0 && !player.isFallFlying();
-        if (player.isSprinting() && (canFly || isNotFlying) && !player.isInWaterOrBubble()) {
+        if (player.isSprinting() && (canFly || isNotFlying) && !player.isInWater()) {
             var upgrade = UpgradeType.SPRINT_SPEED;
             if (stack.getItem() instanceof QuantumLeggings legs && legs.isUpgradeEnabledAndPowered(stack, upgrade)) {
                 return processMovementSpeed(upgrade, player, canFly, stack, chest);
@@ -68,7 +70,7 @@ public class UpgradeCards {
     }
 
     public static boolean swimSpeed(Level level, Player player, ItemStack stack) {
-        if (player.isInWaterOrBubble()) {
+        if (player.isInWater()) {
             var upgrade = UpgradeType.SWIM_SPEED;
             if (stack.getItem() instanceof QuantumLeggings legs && legs.isUpgradeEnabledAndPowered(stack, upgrade)) {
                 return processMovementSpeed(upgrade, player, false, stack, null);
@@ -123,7 +125,7 @@ public class UpgradeCards {
     }
 
     public static boolean jumpHeight(Level level, Player player, ItemStack stack) {
-        if (!player.isInWaterOrBubble() && !player.isFallFlying()) {
+        if (!player.isInWater() && !player.isFallFlying()) {
             var upgrade = UpgradeType.JUMP_HEIGHT;
             if (stack.getItem() instanceof QuantumBoots boots && boots.isUpgradeEnabledAndPowered(stack, upgrade)) {
                 var value = upgrade.getSettings().multiplier
@@ -347,15 +349,8 @@ public class UpgradeCards {
                         rechargeItem(player, player.getOffhandItem(), grid, rate, energy);
                     }
 
-                    var optionalInv = CuriosPlugin.getCuriosInventory(player);
-                    if (optionalInv.isPresent()) {
-                        var curiosInventory = optionalInv.get();
-                        var handler = curiosInventory.getEquippedCurios();
-                        for (var i = 0; i < handler.getSlots(); i++) {
-                            var item = handler.getStackInSlot(i);
-                            if (item.isEmpty()) continue;
-                            rechargeItem(player, item, grid, rate, energy);
-                        }
+                    if (Addons.CURIOS.isLoaded()) {
+                        CuriosPlugin.rechargeCurios(player, (item) -> rechargeItem(player, item, grid, rate, energy));
                     }
                 }
             }
@@ -364,19 +359,22 @@ public class UpgradeCards {
         return false;
     }
 
-    private static void rechargeItem(
+    public static void rechargeItem(
             Player player, ItemStack stack, IGrid grid, double rate, IEnergyService energyService) {
-        var cap = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        var cap = ItemAccess.forStack(stack).getCapability(Capabilities.Energy.ITEM);
         var afRate = Integer.MAX_VALUE;
-        if (cap != null && cap.canReceive() && cap.getEnergyStored() < cap.getMaxEnergyStored()) {
+        if (cap == null) return;
+
+        try (var tx = Transaction.openRoot()) {
             if (Addons.APPFLUX.isLoaded()) {
-                AppliedFluxPlugin.rechargeEnergyStorage(grid, afRate, IActionSource.ofPlayer(player), cap);
+                AppliedFluxPlugin.rechargeEnergyStorage(grid, afRate, IActionSource.ofPlayer(player), cap, tx);
             }
 
             if (energyService.getStoredPower() > 0) {
                 var extracted = energyService.extractAEPower(rate, Actionable.MODULATE, PowerMultiplier.CONFIG);
-                var inserted = cap.receiveEnergy((int) extracted, false);
+                var inserted = cap.insert((int) extracted, tx);
                 energyService.injectPower(extracted - inserted, Actionable.MODULATE);
+                tx.commit();
             }
         }
     }

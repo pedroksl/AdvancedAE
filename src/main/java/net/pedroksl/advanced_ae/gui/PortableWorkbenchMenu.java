@@ -13,6 +13,7 @@ import it.unimi.dsi.fastutil.shorts.ShortSet;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.helpers.PortableCellWorkbenchMenuHost;
 
@@ -28,6 +29,7 @@ import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.util.IConfigManager;
 import appeng.helpers.externalstorage.GenericStackInv;
 import appeng.menu.SlotSemantics;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.implementations.UpgradeableMenu;
 import appeng.menu.slot.CellPartitionSlot;
@@ -40,10 +42,10 @@ import appeng.util.inv.SupplierInternalInventory;
 public class PortableWorkbenchMenu extends UpgradeableMenu<PortableCellWorkbenchMenuHost>
         implements IPartitionSlotHost {
 
-    public static final String ACTION_NEXT_COPYMODE = "nextCopyMode";
-    public static final String ACTION_PARTITION = "partition";
-    public static final String ACTION_CLEAR = "clear";
-    public static final String ACTION_SET_FUZZY_MODE = "setFuzzyMode";
+    public static final ClientActionKey<Void> ACTION_NEXT_COPYMODE = new ClientActionKey<>("nextCopyMode");
+    public static final ClientActionKey<Void> ACTION_PARTITION = new ClientActionKey<>("partition");
+    public static final ClientActionKey<Void> ACTION_CLEAR = new ClientActionKey<>("clear");
+    public static final ClientActionKey<FuzzyMode> ACTION_SET_FUZZY_MODE = new ClientActionKey<>("setFuzzyMode");
 
     @GuiSync(2)
     public CopyMode copyMode = CopyMode.CLEAR_ON_REMOVE;
@@ -54,7 +56,8 @@ public class PortableWorkbenchMenu extends UpgradeableMenu<PortableCellWorkbench
         registerClientAction(ACTION_NEXT_COPYMODE, this::nextWorkBenchCopyMode);
         registerClientAction(ACTION_PARTITION, this::partition);
         registerClientAction(ACTION_CLEAR, this::clear);
-        registerClientAction(ACTION_SET_FUZZY_MODE, FuzzyMode.class, this::setCellFuzzyMode);
+        registerClientAction(
+                ACTION_SET_FUZZY_MODE, NeoForgeStreamCodecs.enumCodec(FuzzyMode.class), this::setCellFuzzyMode);
     }
 
     public void setCellFuzzyMode(FuzzyMode fuzzyMode) {

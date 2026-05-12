@@ -6,16 +6,17 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
@@ -66,11 +67,6 @@ public class ReactionChamberRecipeBuilder {
         return this;
     }
 
-    public ReactionChamberRecipeBuilder fluid(TagKey<Fluid> tag, int amount) {
-        this.fluid = IngredientStack.of(FluidIngredient.tag(tag), amount);
-        return this;
-    }
-
     public ReactionChamberRecipeBuilder input(ItemStack item) {
         this.inputs.add(IngredientStack.of(item));
         return this;
@@ -86,19 +82,19 @@ public class ReactionChamberRecipeBuilder {
         return this;
     }
 
-    public ReactionChamberRecipeBuilder input(TagKey<Item> tag) {
-        this.inputs.add(IngredientStack.of(Ingredient.of(tag), 1));
+    public ReactionChamberRecipeBuilder input(HolderSet<Item> items) {
+        this.inputs.add(IngredientStack.of(Ingredient.of(items), 1));
         return this;
     }
 
-    public ReactionChamberRecipeBuilder input(TagKey<Item> tag, int count) {
-        this.inputs.add(IngredientStack.of(Ingredient.of(tag), count));
+    public ReactionChamberRecipeBuilder input(HolderSet<Item> items, int count) {
+        this.inputs.add(IngredientStack.of(Ingredient.of(items), count));
         return this;
     }
 
-    public void save(RecipeOutput consumer, ResourceLocation id) {
+    public void save(RecipeOutput consumer, Identifier id) {
         var recipe = new ReactionChamberRecipe(this.output, this.inputs, this.fluid, this.energy);
-        consumer.accept(id, recipe, null);
+        consumer.accept(ResourceKey.create(Registries.RECIPE, id), recipe, null);
     }
 
     public void save(RecipeOutput consumer, String id) {

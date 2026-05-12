@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.gui;
 
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
@@ -11,6 +12,7 @@ import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.locator.MenuHostLocator;
 
@@ -19,20 +21,20 @@ public class QuantumArmorNumInputConfigMenu extends AEBaseMenu implements ISubMe
     private final ISubMenuHost host;
 
     @GuiSync(7)
-    public UpgradeType type;
+    public UpgradeType type = UpgradeType.EMPTY;
 
     @GuiSync(9)
-    public int currentValue;
+    public int currentValue = 0;
 
-    public int slotIndex;
+    public int slotIndex = 0;
 
-    private static final String SET_CURRENT_VALUE = "set_current_value";
+    private static final ClientActionKey<Integer> SET_CURRENT_VALUE = new ClientActionKey<>("set_current_value");
 
     public QuantumArmorNumInputConfigMenu(int id, Inventory playerInventory, ISubMenuHost host) {
         super(AAEMenus.QUANTUM_ARMOR_NUM_INPUT.get(), id, playerInventory, host);
         this.host = host;
 
-        registerClientAction(SET_CURRENT_VALUE, Integer.class, this::setCurrentValue);
+        registerClientAction(SET_CURRENT_VALUE, ByteBufCodecs.INT, this::setCurrentValue);
     }
 
     @Override

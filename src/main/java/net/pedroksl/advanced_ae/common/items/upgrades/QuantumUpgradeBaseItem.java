@@ -1,10 +1,12 @@
 package net.pedroksl.advanced_ae.common.items.upgrades;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 
@@ -30,20 +32,24 @@ public class QuantumUpgradeBaseItem extends AEBaseItem {
 
     @Override
     public void appendHoverText(
-            ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, lines, tooltipFlag);
+            ItemStack itemStack,
+            TooltipContext context,
+            TooltipDisplay display,
+            Consumer<Component> lines,
+            TooltipFlag tooltipFlag) {
+        super.appendHoverText(itemStack, context, display, lines, tooltipFlag);
         if (type == UpgradeType.EMPTY) {
-            lines.add(type.getTooltip());
+            lines.accept(type.getTooltip());
             return;
         }
 
-        lines.add(AAEText.QuantumUpgradeTooltip.text().withStyle(Tooltips.NUMBER_TEXT));
-        lines.add(type.getTooltip());
+        lines.accept(AAEText.QuantumUpgradeTooltip.text().withStyle(Tooltips.NUMBER_TEXT));
+        lines.accept(type.getTooltip());
         List<QuantumArmorBase> list = QuantumArmorBase.upgradeAvailableFor(type);
-        lines.add(Component.empty());
-        lines.add(AAEText.UpgradeTooltip.text().withStyle(Tooltips.NORMAL_TOOLTIP_TEXT));
+        lines.accept(Component.empty());
+        lines.accept(AAEText.UpgradeTooltip.text().withStyle(Tooltips.NORMAL_TOOLTIP_TEXT));
         for (var equip : list) {
-            lines.add(Component.translatable(equip.getDescriptionId()).withStyle(Tooltips.NORMAL_TOOLTIP_TEXT));
+            lines.accept(Component.translatable(equip.getDescriptionId()).withStyle(Tooltips.NORMAL_TOOLTIP_TEXT));
         }
     }
 }

@@ -2,9 +2,9 @@ package net.pedroksl.advanced_ae.common.inventory;
 
 import java.util.function.BiConsumer;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.pedroksl.advanced_ae.common.definitions.AAEHotkeysRegistry;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
@@ -41,11 +41,8 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
         super(item, player, locator);
         this.returnToMainMenu = returnToMainMenu;
 
-        var itemTag = this.getItemStack().get(LibComponents.NBT_TAG);
-        var registry = player.registryAccess();
-        if (itemTag != null) {
-            this.input.readFromNBT(itemTag, "input", registry);
-        }
+        var inv = this.getItemStack().getOrDefault(LibComponents.ITEM_INVENTORY, ItemContainerContents.EMPTY);
+        this.input.fromItemContainerContents(inv);
     }
 
     @Override
@@ -118,30 +115,12 @@ public class QuantumArmorMenuHost<T extends QuantumArmorBase> extends ItemMenuHo
 
     @Override
     public void saveChangedInventory(AppEngInternalInventory appEngInternalInventory) {
-        var itemTag = new CompoundTag();
-        var registry = this.getPlayer().registryAccess();
-        this.input.writeToNBT(itemTag, "input", registry);
-
-        if (!itemTag.isEmpty()) {
-            this.getItemStack().set(LibComponents.NBT_TAG, itemTag);
-        } else {
-            this.getItemStack().remove(LibComponents.NBT_TAG);
-        }
+        this.getItemStack().set(LibComponents.ITEM_INVENTORY, this.input.toItemContainerContents());
     }
 
     @Override
     public void onChangeInventory(AppEngInternalInventory inv, int slot) {
-        var itemTag = this.getItemStack().getOrDefault(LibComponents.NBT_TAG, new CompoundTag());
-        var registry = this.getPlayer().registryAccess();
-        if (this.input == inv) {
-            this.input.writeToNBT(itemTag, "input", registry);
-        }
-
-        if (!itemTag.isEmpty()) {
-            this.getItemStack().set(LibComponents.NBT_TAG, itemTag);
-        } else {
-            this.getItemStack().remove(LibComponents.NBT_TAG);
-        }
+        this.getItemStack().set(LibComponents.ITEM_INVENTORY, this.input.toItemContainerContents());
 
         if (invChangeHandler != null) {
             invChangeHandler.handleChange(inv, slot);

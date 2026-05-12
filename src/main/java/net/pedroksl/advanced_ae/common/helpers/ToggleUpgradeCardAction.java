@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.common.helpers;
 
 import java.util.function.Predicate;
 
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -20,15 +21,12 @@ public record ToggleUpgradeCardAction(Predicate<ItemStack> locatable, Opener ope
 
     @Override
     public boolean run(Player player) {
-        var items = player.getArmorSlots();
-        int i = 0;
-        for (var item : items) {
-            if (this.locatable.test(item)) {
-                if (opener.open(player, item)) {
+        for (var slot : EquipmentSlot.values()) {
+            if (this.locatable.test(player.getItemBySlot(slot))) {
+                if (opener.open(player, player.getItemBySlot(slot))) {
                     return true;
                 }
             }
-            i++;
         }
 
         return false;

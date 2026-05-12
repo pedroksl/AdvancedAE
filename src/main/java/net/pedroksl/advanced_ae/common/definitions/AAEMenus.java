@@ -48,8 +48,8 @@ public class AAEMenus extends MenuRegistry {
             create("quantum_crafter", QuantumCrafterMenu::new, QuantumCrafterEntity.class);
     public static final Supplier<MenuType<QuantumCrafterTermMenu>> QUANTUM_CRAFTER_TERMINAL =
             create("quantum_crafter_terminal", QuantumCrafterTermMenu::new, IQuantumCrafterTermMenuHost.class);
-    public static final Supplier<MenuType<QuantumCrafterWirelessTermMenu>> QUANTUM_CRAFTER_WIRELESS_TERMINAL =
-            create("wireless_quantum_crafter_terminal", () -> QuantumCrafterWirelessTermMenu.TYPE);
+    //    public static final Supplier<MenuType<QuantumCrafterWirelessTermMenu>> QUANTUM_CRAFTER_WIRELESS_TERMINAL =
+    //            create("wireless_quantum_crafter_terminal", () -> QuantumCrafterWirelessTermMenu.TYPE);
 
     public static final Supplier<MenuType<StockExportBusMenu>> STOCK_EXPORT_BUS =
             create("stock_export_bus", StockExportBusMenu::new, StockExportBusPart.class);

@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.api.IQuantumCrafterTermMenuHost;
 import net.pedroksl.advanced_ae.api.ShowQuantumCrafters;
@@ -179,7 +179,7 @@ public class QuantumCrafterTermMenu extends AEBaseMenu implements LinkStatusAwar
 
     public void configPattern(long serverId, int slot) {
         if (isClientSide()) {
-            PacketDistributor.sendToServer(new QuantumCrafterTerminalClientAction(true, serverId, slot));
+            ClientPacketDistributor.sendToServer(new QuantumCrafterTerminalClientAction(true, serverId, slot));
             return;
         }
 
@@ -208,7 +208,7 @@ public class QuantumCrafterTermMenu extends AEBaseMenu implements LinkStatusAwar
 
     public void toggleEnabledPattern(long serverId, int slot) {
         if (isClientSide()) {
-            PacketDistributor.sendToServer(new QuantumCrafterTerminalClientAction(false, serverId, slot));
+            ClientPacketDistributor.sendToServer(new QuantumCrafterTerminalClientAction(false, serverId, slot));
             return;
         }
 

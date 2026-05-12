@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "advanced_ae:item/hp_buffer_card"
+  }
+}

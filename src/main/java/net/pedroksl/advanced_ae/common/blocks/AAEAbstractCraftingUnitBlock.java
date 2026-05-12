@@ -2,10 +2,12 @@ package net.pedroksl.advanced_ae.common.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,41 +51,24 @@ public abstract class AAEAbstractCraftingUnitBlock<T extends AdvCraftingBlockEnt
     }
 
     @Override
-    public BlockState updateShape(
-            BlockState stateIn,
-            Direction facing,
-            BlockState facingState,
-            LevelAccessor level,
-            BlockPos currentPos,
-            BlockPos facingPos) {
-        BlockEntity te = level.getBlockEntity(currentPos);
+    protected BlockState updateShape(
+            BlockState state,
+            LevelReader level,
+            ScheduledTickAccess scheduledTickAccess,
+            BlockPos pos,
+            Direction direction,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random) {
+        BlockEntity te = level.getBlockEntity(pos);
         if (te != null) {
             te.requestModelDataUpdate();
         }
-        return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
-    }
-
-    @Override
-    public void neighborChanged(
-            BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        final AdvCraftingBlockEntity cp = this.getBlockEntity(level, pos);
+        var cp = this.getBlockEntity(level, pos);
         if (cp != null) {
-            cp.updateMultiBlock(fromPos);
+            cp.updateMultiBlock(neighborPos);
         }
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (newState.getBlock() == state.getBlock()) {
-            return; // Just a block state change
-        }
-
-        final AdvCraftingBlockEntity cp = this.getBlockEntity(level, pos);
-        if (cp != null) {
-            cp.breakCluster();
-        }
-
-        super.onRemove(state, level, pos, newState, isMoving);
+        return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
     }
 
     @Override
@@ -94,7 +79,7 @@ public abstract class AAEAbstractCraftingUnitBlock<T extends AdvCraftingBlockEnt
                 MenuOpener.open(AAEMenus.QUANTUM_COMPUTER.get(), player, MenuLocators.forBlockEntity(be));
             }
 
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
 
         return super.useWithoutItem(state, level, pos, player, hitResult);

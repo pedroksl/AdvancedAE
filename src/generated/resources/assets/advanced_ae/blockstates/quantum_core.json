@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "formed=false,multiblocked=false,powered=false": {
+      "model": "advanced_ae:block/crafting/quantum_core"
+    },
+    "formed=false,multiblocked=false,powered=true": {
+      "model": "advanced_ae:block/crafting/quantum_core"
+    },
+    "formed=false,multiblocked=true,powered=false": {
+      "model": "advanced_ae:block/crafting/quantum_core"
+    },
+    "formed=false,multiblocked=true,powered=true": {
+      "type": "advanced_ae:quantum_computer_formed",
+      "unit_type": "quantum_core"
+    },
+    "formed=true,multiblocked=false,powered=false": {
+      "model": "advanced_ae:block/crafting/quantum_core"
+    },
+    "formed=true,multiblocked=false,powered=true": {
+      "model": "advanced_ae:block/crafting/quantum_core_formed_on"
+    },
+    "formed=true,multiblocked=true,powered=false": {
+      "model": "advanced_ae:block/crafting/quantum_core"
+    },
+    "formed=true,multiblocked=true,powered=true": {
+      "type": "advanced_ae:quantum_computer_formed",
+      "unit_type": "quantum_core"
+    }
+  }
+}

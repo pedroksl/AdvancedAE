@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
@@ -26,9 +25,6 @@ public final class AAEComponents extends ComponentRegistry {
     public static final DataComponentType<EncodedAdvProcessingPattern> ENCODED_ADV_PROCESSING_PATTERN =
             register("encoded_adv_processing_pattern", builder -> builder.persistent(EncodedAdvProcessingPattern.CODEC)
                     .networkSynchronized(EncodedAdvProcessingPattern.STREAM_CODEC));
-    public static final DataComponentType<CompoundTag> PORTABLE_CELL_STACK_TAG =
-            register("portable_cell_stack", builder -> builder.persistent(CompoundTag.CODEC)
-                    .networkSynchronized(ByteBufCodecs.COMPOUND_TAG));
     public static final DataComponentType<Boolean> NIGHT_VISION_ACTIVATED =
             register("night_vision_activated", builder -> builder.persistent(Codec.BOOL)
                     .networkSynchronized(ByteBufCodecs.BOOL));

@@ -1,8 +1,0 @@
-// 1.21.1	2025-08-20T23:13:00.8287035	Tags (Block)
-d7e633ecdb79ed54026c54b83cbd7a54168d941f data/c/tags/block/storage_blocks.json
-86fe74fc51ce3047aabc48a289b4e9661e98aa9c data/c/tags/block/storage_blocks/quantum_alloy.json
-274313dfaf0273b348561a162e9d1f92b26cf535 data/minecraft/tags/block/mineable/pickaxe.json
-8f909d6acbee35f2fc16ab5f4786deea716a043c data/minecraft/tags/block/needs_iron_tool.json
-4f44f6d4f80c2c7d6ac582a1d2ec509dc51da49b data/minecraft/tags/block/slabs.json
-0c37f69cc0edad01c49f7957395fa70ef030a391 data/minecraft/tags/block/stairs.json
-a645fe456a659a0f706333346c96d52f2b46b645 data/minecraft/tags/block/walls.json

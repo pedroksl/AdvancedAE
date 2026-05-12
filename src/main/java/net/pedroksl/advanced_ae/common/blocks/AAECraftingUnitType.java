@@ -1,5 +1,10 @@
 package net.pedroksl.advanced_ae.common.blocks;
 
+import java.util.Locale;
+
+import com.mojang.serialization.Codec;
+
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
@@ -7,22 +12,22 @@ import net.pedroksl.advanced_ae.common.definitions.AAEConfig;
 import appeng.block.crafting.ICraftingUnitType;
 import appeng.core.definitions.BlockDefinition;
 
-public enum AAECraftingUnitType implements ICraftingUnitType {
-    QUANTUM_UNIT(0, "quantum_unit"),
-    QUANTUM_CORE(256, "quantum_core"),
-    STORAGE_128M(128, "quantum_storage_128"),
-    STORAGE_256M(256, "quantum_storage_256"),
-    STORAGE_MULTIPLIER(0, "data_entangler"),
-    QUANTUM_ACCELERATOR(0, "quantum_accelerator"),
-    MULTI_THREADER(0, "quantum_multi_threader"),
-    STRUCTURE(0, "quantum_structure");
+public enum AAECraftingUnitType implements ICraftingUnitType, StringRepresentable {
+    QUANTUM_UNIT(0),
+    QUANTUM_CORE(256),
+    QUANTUM_STORAGE_128(128),
+    QUANTUM_STORAGE_256(256),
+    DATA_ENTANGLER(0),
+    QUANTUM_ACCELERATOR(0),
+    QUANTUM_MULTI_THREADER(0),
+    QUANTUM_STRUCTURE(0);
+
+    public static final Codec<AAECraftingUnitType> CODEC = StringRepresentable.fromValues(AAECraftingUnitType::values);
 
     private final int storageMb;
-    private final String affix;
 
-    AAECraftingUnitType(int storageMb, String affix) {
+    AAECraftingUnitType(int storageMb) {
         this.storageMb = storageMb;
-        this.affix = affix;
     }
 
     @Override
@@ -31,7 +36,7 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
     }
 
     public int getStorageMultiplier() {
-        return this == STORAGE_MULTIPLIER ? AAEConfig.instance().getQuantumComputerDataEntanglerMultiplication() : 0;
+        return this == DATA_ENTANGLER ? AAEConfig.instance().getQuantumComputerDataEntanglerMultiplication() : 0;
     }
 
     @Override
@@ -43,28 +48,31 @@ public enum AAECraftingUnitType implements ICraftingUnitType {
     }
 
     public int getAccelerationMultiplier() {
-        return this == MULTI_THREADER ? AAEConfig.instance().getQuantumComputerMultiThreaderMultiplication() : 0;
-    }
-
-    public String getAffix() {
-        return this.affix;
+        return this == QUANTUM_MULTI_THREADER
+                ? AAEConfig.instance().getQuantumComputerMultiThreaderMultiplication()
+                : 0;
     }
 
     public BlockDefinition<?> getDefinition() {
         return switch (this) {
             case QUANTUM_UNIT -> AAEBlocks.QUANTUM_UNIT;
             case QUANTUM_CORE -> AAEBlocks.QUANTUM_CORE;
-            case STORAGE_128M -> AAEBlocks.QUANTUM_STORAGE_128M;
-            case STORAGE_256M -> AAEBlocks.QUANTUM_STORAGE_256M;
-            case STORAGE_MULTIPLIER -> AAEBlocks.DATA_ENTANGLER;
+            case QUANTUM_STORAGE_128 -> AAEBlocks.QUANTUM_STORAGE_128M;
+            case QUANTUM_STORAGE_256 -> AAEBlocks.QUANTUM_STORAGE_256M;
+            case DATA_ENTANGLER -> AAEBlocks.DATA_ENTANGLER;
             case QUANTUM_ACCELERATOR -> AAEBlocks.QUANTUM_ACCELERATOR;
-            case MULTI_THREADER -> AAEBlocks.QUANTUM_MULTI_THREADER;
-            case STRUCTURE -> AAEBlocks.QUANTUM_STRUCTURE;
+            case QUANTUM_MULTI_THREADER -> AAEBlocks.QUANTUM_MULTI_THREADER;
+            case QUANTUM_STRUCTURE -> AAEBlocks.QUANTUM_STRUCTURE;
         };
     }
 
     @Override
     public Item getItemFromType() {
         return getDefinition().asItem();
+    }
+
+    @Override
+    public String getSerializedName() {
+        return name().toLowerCase(Locale.ROOT);
     }
 }

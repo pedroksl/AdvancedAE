@@ -2,10 +2,9 @@ package net.pedroksl.advanced_ae.datagen;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -39,10 +38,6 @@ public class AAELanguageProvider extends LanguageProvider {
 
         for (var translation : AAEText.values()) {
             add(translation.getTranslationKey(), translation.getEnglishText());
-        }
-
-        for (var material : AAEMaterials.INSTANCE.getMaterials()) {
-            add(material.get(), material.englishName());
         }
 
         for (var key : AAEHotkeysRegistry.Keys.values()) {
@@ -102,10 +97,6 @@ public class AAELanguageProvider extends LanguageProvider {
 
     public void add(Fluid key, String englishName) {
         add(Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(key)), englishName);
-    }
-
-    public void add(ArmorMaterial key, String englishName) {
-        add(Util.makeDescriptionId("material", BuiltInRegistries.ARMOR_MATERIAL.getKey(key)), englishName);
     }
 
     @NotNull

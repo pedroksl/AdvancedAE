@@ -1,14 +1,12 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.*;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.pedroksl.ae2addonlib.registry.helpers.ICreativeTabItem;
 
 import appeng.api.config.AccessRestriction;
@@ -17,13 +15,13 @@ import appeng.api.ids.AEComponents;
 import appeng.api.implementations.items.IAEItemPowerStorage;
 import appeng.core.localization.Tooltips;
 
-public class PoweredItem extends ArmorItem implements IAEItemPowerStorage, ICreativeTabItem {
+public class PoweredItem extends Item implements IAEItemPowerStorage, ICreativeTabItem {
 
     private static final double MIN_POWER = 0.0001;
     private final DoubleSupplier powerCapacity;
 
-    public PoweredItem(Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
-        super(material, type, properties);
+    public PoweredItem(Properties properties, DoubleSupplier powerCapacity) {
+        super(properties);
         this.powerCapacity = powerCapacity;
     }
 
@@ -36,13 +34,16 @@ public class PoweredItem extends ArmorItem implements IAEItemPowerStorage, ICrea
         output.accept(charged);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(
-            ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {
+            ItemStack stack,
+            TooltipContext context,
+            TooltipDisplay display,
+            Consumer<Component> lines,
+            TooltipFlag tooltipFlag) {
         var storedEnergy = getAECurrentPower(stack);
         var energyCapacity = getAEMaxPower(stack);
-        lines.add(Tooltips.energyStorageComponent(storedEnergy, energyCapacity));
+        lines.accept(Tooltips.energyStorageComponent(storedEnergy, energyCapacity));
     }
 
     @Override

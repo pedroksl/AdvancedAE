@@ -5,12 +5,10 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,7 +16,9 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.model.data.ModelData;
 import net.pedroksl.advanced_ae.common.blocks.AAEAbstractCraftingUnitBlock;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitBlock;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
@@ -45,7 +45,7 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
         implements IAEMultiBlock<AdvCraftingCPUCluster>, IPowerChannelState, IConfigurableObject {
 
     private final AdvCraftingCPUCalculator calc = new AdvCraftingCPUCalculator(this);
-    private CompoundTag previousState = null;
+    private ValueInput previousState = null;
     private boolean isCoreBlock = false;
     private AdvCraftingCPUCluster cluster;
 
@@ -109,7 +109,7 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
 
     public void updateMultiBlock(BlockPos changedPos) {
         if (level instanceof ServerLevel serverLevel) {
-            this.calc.updateMultiblockAfterNeighborUpdate(serverLevel, worldPosition, changedPos);
+            this.calc.updateMultiblockAfterNeighborChange(serverLevel, worldPosition, changedPos);
         }
     }
 
@@ -176,23 +176,23 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
     }
 
     @Override
-    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
-        super.saveAdditional(data, registries);
+    public void saveAdditional(ValueOutput data) {
+        super.saveAdditional(data);
         data.putBoolean("core", this.isCoreBlock());
         if (this.isCoreBlock() && this.cluster != null) {
-            this.cluster.writeToNBT(data, registries);
+            this.cluster.writeToNBT(data);
         }
     }
 
     @Override
-    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
-        super.loadTag(data, registries);
-        this.setCoreBlock(data.getBoolean("core"));
+    public void loadTag(ValueInput input) {
+        super.loadTag(input);
+        this.setCoreBlock(input.getBooleanOr("core", false));
         if (this.isCoreBlock()) {
             if (this.cluster != null) {
-                this.cluster.readFromNBT(data, registries);
+                this.cluster.readFromNBT(input);
             } else {
-                this.setPreviousState(data.copy());
+                this.setPreviousState(input);
             }
         }
     }
@@ -297,11 +297,11 @@ public class AdvCraftingBlockEntity extends AENetworkedBlockEntity
         this.isCoreBlock = isCoreBlock;
     }
 
-    public CompoundTag getPreviousState() {
+    public ValueInput getPreviousState() {
         return this.previousState;
     }
 
-    public void setPreviousState(CompoundTag previousState) {
+    public void setPreviousState(ValueInput previousState) {
         this.previousState = previousState;
     }
 

@@ -1,8 +1,9 @@
 {
-  "parent": "ae2:item/cable_pattern_provider",
+  "parent": "ae2:item/cable_interface",
   "textures": {
     "back": "advanced_ae:part/small_adv_pattern_provider_back",
     "front": "advanced_ae:part/small_adv_pattern_provider",
+    "particle": "advanced_ae:part/small_adv_pattern_provider_back",
     "sides": "advanced_ae:part/small_adv_pattern_provider_sides"
   }
 }

@@ -4,7 +4,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.network.packet.*;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.*;
-import net.pedroksl.ae2addonlib.network.NetworkHandler;
+import net.pedroksl.ae2addonlib.core.network.NetworkHandler;
 
 public class AAENetworkHandler extends NetworkHandler {
 

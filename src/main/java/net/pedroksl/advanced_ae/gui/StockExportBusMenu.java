@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.gui;
 
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,11 +15,12 @@ import appeng.api.stacks.GenericStack;
 import appeng.core.definitions.AEItems;
 import appeng.menu.MenuOpener;
 import appeng.menu.SlotSemantics;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.implementations.UpgradeableMenu;
 
 public class StockExportBusMenu extends UpgradeableMenu<StockExportBusPart> implements ISetAmountMenuHost {
 
-    private static final String OPEN_AMOUNT_MENU = "open_amount_menu";
+    private static final ClientActionKey<Integer> OPEN_AMOUNT_MENU = new ClientActionKey<>("open_amount_menu");
 
     public StockExportBusMenu(int id, Inventory ip, StockExportBusPart host) {
         this(AAEMenus.STOCK_EXPORT_BUS.get(), id, ip, host);
@@ -28,7 +30,7 @@ public class StockExportBusMenu extends UpgradeableMenu<StockExportBusPart> impl
             MenuType<? extends StockExportBusMenu> menuType, int id, Inventory ip, StockExportBusPart host) {
         super(menuType, id, ip, host);
 
-        registerClientAction(OPEN_AMOUNT_MENU, Integer.class, this::openAmountMenu);
+        registerClientAction(OPEN_AMOUNT_MENU, ByteBufCodecs.INT, this::openAmountMenu);
     }
 
     @Override

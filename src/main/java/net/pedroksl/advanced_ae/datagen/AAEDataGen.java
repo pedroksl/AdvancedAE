@@ -1,34 +1,35 @@
 package net.pedroksl.advanced_ae.datagen;
 
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
 
-@EventBusSubscriber(modid = AdvancedAE.MOD_ID, value = Dist.CLIENT)
+import appeng.datagen.providers.models.AE2ModelProvider;
+
+@EventBusSubscriber(modid = AdvancedAE.MOD_ID)
 public class AAEDataGen {
 
     @SubscribeEvent
-    public static void onGatherData(GatherDataEvent event) {
-        var gen = event.getGenerator();
-        var out = gen.getPackOutput();
-        var fileHelper = event.getExistingFileHelper();
+    public static void onGatherData(GatherDataEvent.Client event) {
+        var generator = event.getGenerator();
+
+        var localization = new AAELanguageProvider(generator.getPackOutput());
+        var pack = generator.getVanillaPack(true);
+
         var lookup = event.getLookupProvider();
-        var languageProvider = new AAELanguageProvider(out);
 
-        gen.addProvider(event.includeClient(), new AAEModelProvider(out, fileHelper));
-        gen.addProvider(event.includeServer(), new AAERecipeProvider(out, lookup));
-        gen.addProvider(event.includeServer(), new AAELootTableProvider(out, lookup));
+        pack.addProvider(packOutput -> new AAELootTableProvider(packOutput, lookup));
+        pack.addProvider(AE2ModelProvider.create(AdvancedAE.MOD_ID, AAEModelProvider::new));
 
-        var blockTags = new AAETagProvider.AAEBlockTagProvider(out, lookup, fileHelper);
-        var itemTags = new AAETagProvider.AAEItemTagProvider(out, lookup, blockTags.contentsGetter(), fileHelper);
-        var componentTags =
-                new AAETagProvider.AAEDataComponentTypeTagProvider(out, lookup, fileHelper, languageProvider);
-        gen.addProvider(event.includeServer(), blockTags);
-        gen.addProvider(event.includeServer(), itemTags);
-        gen.addProvider(event.includeServer(), componentTags);
+        // gen.addProvider(event.includeServer(), new AAERecipeProvider(out, lookup));
 
-        gen.addProvider(event.includeClient(), languageProvider);
+        var blockTags = pack.addProvider(packOutput -> new AAETagProvider.AAEBlockTagProvider(packOutput, lookup));
+        pack.addProvider(
+                packOutput -> new AAETagProvider.AAEItemTagProvider(packOutput, lookup, blockTags.contentsGetter()));
+        pack.addProvider(
+                packOutput -> new AAETagProvider.AAEDataComponentTypeTagProvider(packOutput, lookup, localization));
+
+        pack.addProvider(_ -> localization);
     }
 }

@@ -1,7 +1,7 @@
 package net.pedroksl.advanced_ae.common.inventory;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.pedroksl.advanced_ae.common.definitions.AAEHotkeysRegistry;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
@@ -20,39 +20,18 @@ public class AdvPatternEncoderHost extends ItemMenuHost<AdvPatternEncoderItem> i
     public AdvPatternEncoderHost(AdvPatternEncoderItem item, Player player, ItemMenuHostLocator locator) {
         super(item, player, locator);
 
-        var itemTag = this.getItemStack().get(LibComponents.NBT_TAG);
-        var registry = player.registryAccess();
-        if (itemTag != null) {
-            this.inOutInventory.readFromNBT(itemTag, "inOutInventory", registry);
-        }
+        var inv = this.getItemStack().getOrDefault(LibComponents.ITEM_INVENTORY, ItemContainerContents.EMPTY);
+        this.inOutInventory.fromItemContainerContents(inv);
     }
 
     @Override
     public void saveChangedInventory(AppEngInternalInventory inv) {
-        var itemTag = new CompoundTag();
-        var registry = this.getPlayer().registryAccess();
-        this.inOutInventory.writeToNBT(itemTag, "inOutInventory", registry);
-
-        if (!itemTag.isEmpty()) {
-            this.getItemStack().set(LibComponents.NBT_TAG, itemTag);
-        } else {
-            this.getItemStack().remove(LibComponents.NBT_TAG);
-        }
+        this.getItemStack().set(LibComponents.ITEM_INVENTORY, this.inOutInventory.toItemContainerContents());
     }
 
     @Override
     public void onChangeInventory(AppEngInternalInventory inv, int slot) {
-        var itemTag = this.getItemStack().getOrDefault(LibComponents.NBT_TAG, new CompoundTag());
-        var registry = this.getPlayer().registryAccess();
-        if (this.inOutInventory == inv) {
-            this.inOutInventory.writeToNBT(itemTag, "inOutInventory", registry);
-        }
-
-        if (!itemTag.isEmpty()) {
-            this.getItemStack().set(LibComponents.NBT_TAG, itemTag);
-        } else {
-            this.getItemStack().remove(LibComponents.NBT_TAG);
-        }
+        this.getItemStack().set(LibComponents.ITEM_INVENTORY, this.inOutInventory.toItemContainerContents());
 
         if (invChangeHandler != null) {
             invChangeHandler.handleChange(inv, slot);

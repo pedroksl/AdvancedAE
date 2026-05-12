@@ -2,7 +2,7 @@ package net.pedroksl.advanced_ae.client.gui;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAESettingToggleButton;
 import net.pedroksl.advanced_ae.gui.advpatternprovider.AdvPatternProviderLockReason;
@@ -12,12 +12,12 @@ import appeng.api.config.LockCraftingMode;
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
 import appeng.client.gui.AEBaseScreen;
-import appeng.client.gui.Icon;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.*;
 import appeng.core.localization.GuiText;
 import appeng.core.network.ServerboundPacket;
 import appeng.core.network.serverbound.ConfigButtonPacket;
+import appeng.util.Icon;
 
 public class AdvPatternProviderScreen extends AEBaseScreen<AdvPatternProviderMenu> {
 
@@ -68,6 +68,6 @@ public class AdvPatternProviderScreen extends AEBaseScreen<AdvPatternProviderMen
     private void selectNextPatternProviderMode() {
         final boolean backwards = isHandlingRightClick();
         ServerboundPacket message = new ConfigButtonPacket(Settings.PATTERN_ACCESS_TERMINAL, backwards);
-        PacketDistributor.sendToServer(message);
+        ClientPacketDistributor.sendToServer(message);
     }
 }

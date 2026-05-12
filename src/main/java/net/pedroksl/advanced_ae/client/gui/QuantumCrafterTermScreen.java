@@ -7,18 +7,20 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.api.ShowQuantumCrafters;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAESettingToggleButton;
@@ -30,6 +32,7 @@ import appeng.api.config.TerminalStyle;
 import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.storage.ILinkStatus;
 import appeng.client.gui.AEBaseScreen;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.PaletteColor;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.AECheckbox;
@@ -95,6 +98,8 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
     // This is the lower part of the UI, anything below the scrollable area (incl. its bottom border)
     private static final Rect2i FOOTER_BBOX = new Rect2i(0, 125, GUI_WIDTH, GUI_FOOTER_HEIGHT);
 
+    private final Identifier DEFAULT_TEXTURE = AppEng.makeId("textures/guis/quantum_crafter_terminal.png");
+
     private final HashMap<Long, AutoCrafterContainerRecord> byId = new HashMap<>();
     private final HashMap<Long, Int2ObjectMap<Button>> configButtons = new HashMap<>();
     private final HashMap<Long, Int2ObjectMap<AECheckbox>> enableButtons = new HashMap<>();
@@ -115,7 +120,7 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
         this.scrollbar = widgets.addScrollBar("scrollbar", Scrollbar.BIG);
         this.imageWidth = GUI_WIDTH;
 
-        // Add a terminalstyle button
+        // Add a terminal style button
         TerminalStyle terminalStyle = AEConfig.instance().getTerminalStyle();
         this.addToLeftToolbar(
                 new SettingToggleButton<>(Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
@@ -158,7 +163,7 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
     }
 
     @Override
-    public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
+    public void drawFG(GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
         this.menu.slots.removeIf(slot -> slot instanceof PatternSlot);
         this.configButtons.forEach((k, m) -> m.forEach((key, value) -> setVisibility(value, false)));
         this.enableButtons.forEach((k, m) -> m.forEach((key, value) -> setVisibility(value, false)));
@@ -214,7 +219,7 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
         renderLinkStatus(guiGraphics, getMenu().getLinkStatus());
     }
 
-    private void renderLinkStatus(GuiGraphics guiGraphics, ILinkStatus linkStatus) {
+    private void renderLinkStatus(GuiGraphicsExtractor guiGraphics, ILinkStatus linkStatus) {
         // Draw an overlay indicating the grid is disconnected
         if (!linkStatus.connected()) {
             var renderContext = new SimpleRenderContext(LytRect.empty(), guiGraphics);
@@ -232,17 +237,17 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
     }
 
     @Override
-    public boolean mouseClicked(double xCoord, double yCoord, int btn) {
-        if (btn == 1 && this.searchField.isMouseOver(xCoord, yCoord)) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (this.searchField.isMouseOver(event.x(), event.y()) && event.button() == 1) {
             this.searchField.setValue("");
             // Don't return immediately to also grab focus.
         }
 
-        return super.mouseClicked(xCoord, yCoord, btn);
+        return super.mouseClicked(event, doubleClick);
     }
 
     @Override
-    protected void slotClicked(Slot slot, int slotIdx, int mouseButton, ClickType clickType) {
+    protected void slotClicked(Slot slot, int slotIdx, int mouseButton, ContainerInput clickType) {
         if (slot instanceof PatternSlot machineSlot) {
             InventoryAction action = null;
 
@@ -269,8 +274,8 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
 
             if (action != null) {
                 final InventoryActionPacket p = new InventoryActionPacket(
-                        action, machineSlot.slot, machineSlot.getMachineInv().getServerId());
-                PacketDistributor.sendToServer(p);
+                        action, machineSlot.index, machineSlot.getMachineInv().getServerId());
+                ClientPacketDistributor.sendToServer(p);
             }
 
             return;
@@ -280,16 +285,20 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
     }
 
     @Override
-    public void drawBG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+    public void drawBG(
+            GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         // Draw the top of the dialog
-        blit(guiGraphics, offsetX, offsetY, HEADER_BBOX);
+        Blitter.texture(DEFAULT_TEXTURE).src(HEADER_BBOX).dest(offsetX, offsetY).blit(guiGraphics);
 
         final int scrollLevel = scrollbar.getCurrentScroll();
 
         int currentY = offsetY + GUI_HEADER_HEIGHT;
 
         // Draw the footer now so slots will draw on top of it
-        blit(guiGraphics, offsetX, currentY + this.visibleRows * ROW_HEIGHT, FOOTER_BBOX);
+        Blitter.texture(DEFAULT_TEXTURE)
+                .src(FOOTER_BBOX)
+                .dest(offsetX, currentY + this.visibleRows)
+                .blit(guiGraphics);
 
         for (int i = 0; i < this.visibleRows; ++i) {
             // Draw the dialog background for this row
@@ -300,13 +309,16 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
 
             // Draw the background for the slots in an inventory row
             Rect2i bbox = selectRowBackgroundBox(false, firstLine, lastLine);
-            blit(guiGraphics, offsetX, currentY, bbox);
+            Blitter.texture(DEFAULT_TEXTURE).src(bbox).dest(offsetX, currentY).blit(guiGraphics);
             if (scrollLevel + i < this.rows.size()) {
                 var row = this.rows.get(scrollLevel + i);
                 if (row instanceof SlotsRow slotsRow) {
                     bbox = selectRowBackgroundBox(true, firstLine, lastLine);
                     bbox.setWidth(GUI_PADDING_X + SLOT_SIZE * slotsRow.slots - 1);
-                    blit(guiGraphics, offsetX, currentY, bbox);
+                    Blitter.texture(DEFAULT_TEXTURE)
+                            .src(bbox)
+                            .dest(offsetX, currentY)
+                            .blit(guiGraphics);
                 }
             }
 
@@ -333,11 +345,11 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
     }
 
     @Override
-    public boolean charTyped(char character, int key) {
-        if (character == ' ' && this.searchField.getValue().isEmpty()) {
+    public boolean charTyped(CharacterEvent event) {
+        if (event.codepoint() == ' ' && this.searchField.getValue().isEmpty()) {
             return true;
         }
-        return super.charTyped(character, key);
+        return super.charTyped(event);
     }
 
     public void clear() {
@@ -578,17 +590,6 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
      */
     private int getMaxRows() {
         return this.byId.size() * 3;
-    }
-
-    /**
-     * A version of blit that lets us pass a source rectangle
-     *
-     * @see GuiGraphics#blit(ResourceLocation, int, int, int, int, int, int)
-     */
-    private void blit(GuiGraphics guiGraphics, int offsetX, int offsetY, Rect2i srcRect) {
-        var texture = AppEng.makeId("textures/guis/quantum_crafter_terminal.png");
-        guiGraphics.blit(
-                texture, offsetX, offsetY, srcRect.getX(), srcRect.getY(), srcRect.getWidth(), srcRect.getHeight());
     }
 
     protected int getVisibleRows() {
