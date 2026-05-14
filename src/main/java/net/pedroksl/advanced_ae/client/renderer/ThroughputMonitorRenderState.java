@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.client.renderer;
 
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 
 import appeng.api.orientation.BlockOrientation;
@@ -16,4 +17,5 @@ public class ThroughputMonitorRenderState extends MonitorRenderState {
     public FormattedCharSequence throughput;
     public int throughputWidth;
     public int subColor;
+    public Identifier trendTexture;
 }

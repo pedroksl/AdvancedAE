@@ -21,7 +21,6 @@ import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.parts.IPartItem;
 import appeng.api.stacks.AmountFormat;
-import appeng.api.util.AEColor;
 import appeng.hooks.ticking.TickHandler;
 import appeng.parts.reporting.AbstractMonitorPart;
 
@@ -31,9 +30,6 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     protected double lastReportedValue = -1;
     private WorkRoutine workRoutine = WorkRoutine.SECOND;
     private WorkRoutine lastWorkRoutine = WorkRoutine.SECOND;
-
-    public static final int positiveColor = AEColor.GREEN.mediumVariant;
-    public static final int negativeColor = AEColor.RED.mediumVariant;
 
     private enum WorkRoutine {
         TICK(1, 10),
@@ -77,13 +73,13 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     public MutableComponent getThroughputText() {
         if (getDisplayed() == null) return Component.empty();
 
-        var sign = lastReportedValue > 0 ? "+" : lastReportedValue == 0 ? "" : "-";
+        var sign = this.lastReportedValue > 0 ? "+" : this.lastReportedValue == 0 ? "" : "-";
 
         String valueText;
-        if (Math.abs(lastReportedValue) > 10 || lastReportedValue == 0) {
-            valueText = getDisplayed().formatAmount(Math.round(Math.abs(lastReportedValue)), AmountFormat.SLOT);
+        if (Math.abs(this.lastReportedValue) > 10 || this.lastReportedValue == 0) {
+            valueText = getDisplayed().formatAmount(Math.round(Math.abs(this.lastReportedValue)), AmountFormat.SLOT);
         } else {
-            valueText = String.format("%.2f", Math.abs(lastReportedValue));
+            valueText = String.format("%.2f", Math.abs(this.lastReportedValue));
         }
 
         return switch (this.workRoutine) {
@@ -94,10 +90,8 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
         };
     }
 
-    public int getThroughputColor() {
-        return lastReportedValue > 0
-                ? positiveColor
-                : lastReportedValue == 0 ? this.getColor().contrastTextColor : negativeColor;
+    public double getThroughput() {
+        return lastReportedValue;
     }
 
     @Override
@@ -125,13 +119,8 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     public boolean readFromStream(RegistryFriendlyByteBuf data) {
         boolean needRedraw = super.readFromStream(data);
 
-        var reportedValue = data.readLong();
-        needRedraw |= reportedValue != this.lastReportedValue;
-        this.lastReportedValue = reportedValue;
-
-        var routine = data.readEnum(WorkRoutine.class);
-        needRedraw |= this.workRoutine != routine;
-        this.workRoutine = routine;
+        this.lastReportedValue = data.readDouble();
+        this.workRoutine = data.readEnum(WorkRoutine.class);
 
         return needRedraw;
     }
@@ -146,7 +135,7 @@ public class ThroughputMonitorPart extends AbstractMonitorPart implements IGridT
     @Override
     public void readVisualStateFromNBT(ValueInput input) {
         super.readVisualStateFromNBT(input);
-        this.lastReportedValue = input.getLongOr("lastValue", 0);
+        this.lastReportedValue = input.getDoubleOr("lastValue", 0);
         this.workRoutine = WorkRoutine.fromInt(input.getIntOr("routine", 0));
     }
 
