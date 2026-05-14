@@ -8,10 +8,7 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.equipment.ArmorType;
@@ -61,32 +58,6 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
     protected void appendExtraHoverText(
             ItemStack stack, TooltipContext context, Consumer<Component> lines, TooltipFlag advancedTooltips) {
         lines.accept(AAEText.QuantumArmorStableFootingTooltip.text().withStyle(Tooltips.NUMBER_TEXT));
-    }
-
-    @Override
-    public void inventoryTick(
-            ItemStack stack, ServerLevel level, Entity entity, @org.jspecify.annotations.Nullable EquipmentSlot slot) {
-        super.inventoryTick(stack, level, entity, slot);
-
-        if (entity instanceof Player player) {
-            if (!getPassiveUpgrades(stack).isEmpty()) {
-                tickUpgrades(level, player, stack);
-            }
-
-            if (level.isClientSide() && isVisible(stack)) {
-                toggleBoneVisibilities(stack, player);
-            }
-        }
-    }
-
-    private void toggleBoneVisibilities(ItemStack stack, Player player) {
-        // TODO bone visibilities
-        //        var renderer = getRenderer(player, stack);
-        //        if (renderer != null) {
-        //            var visible = stack.has(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.STRENGTH));
-        //            renderer.setBoneVisible(QuantumArmorRenderer.LEFT_BLADE_BONE, visible);
-        //            renderer.setBoneVisible(QuantumArmorRenderer.RIGHT_BLADE_BONE, visible);
-        //        }
     }
 
     @Override

@@ -33,7 +33,7 @@ public class QuantumComputerModel extends ConnectedTexturesBaseBakedModel {
             Material.Baked faceBottomAnimation) {
         super(RenderTypes.entityCutout(null), face, side, poweredSides);
 
-        isStructure = true;
+        isStructure = false;
 
         setSideEmissive(true);
 
@@ -59,7 +59,7 @@ public class QuantumComputerModel extends ConnectedTexturesBaseBakedModel {
 
     @Override
     protected boolean shouldConnect(Block block) {
-        return isStructure;
+	    return block instanceof AAECraftingUnitBlock unit && (isStructure ? unit.type == AAECraftingUnitType.QUANTUM_STRUCTURE : unit.type != AAECraftingUnitType.QUANTUM_STRUCTURE);
     }
 
     @Override

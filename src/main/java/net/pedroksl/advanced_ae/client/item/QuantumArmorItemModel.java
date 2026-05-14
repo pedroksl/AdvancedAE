@@ -3,7 +3,6 @@ package net.pedroksl.advanced_ae.client.item;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.util.ARGB;
 import org.joml.Matrix4fc;
 import org.jspecify.annotations.Nullable;
 
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -41,7 +41,7 @@ public class QuantumArmorItemModel implements ItemModel {
             return;
         }
 
-		renderState.appendModelIdentityElement(this);
+        renderState.appendModelIdentityElement(this);
 
         var layer = renderState.newLayer();
 
@@ -52,10 +52,10 @@ public class QuantumArmorItemModel implements ItemModel {
 
         renderState.appendModelIdentityElement(color);
         var tint = layer.tintLayers();
-		tint.add(-1);
+        tint.add(-1);
         tint.add(ARGB.opaque(color));
         this.model.applyToLayer(layer, displayContext);
-		renderState.appendModelIdentityElement(tint.getInt(1));
+        renderState.appendModelIdentityElement(tint.getInt(1));
     }
 
     public record Unbaked(Identifier model) implements ItemModel.Unbaked {

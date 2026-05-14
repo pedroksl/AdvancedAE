@@ -81,7 +81,7 @@ public class QuantumArmorStyleConfigMenu extends AEBaseMenu implements ISubMenu 
         for (var slotIndex : slots) {
             var slot = getSlot(slotIndex);
             if (slot != null && slot.hasItem() && slot.getItem().getItem() instanceof QuantumArmorBase armor) {
-                armor.setTintColor(this.getPlayerInventory().player, slot.getItem(), color);
+                armor.setTintColor(slot.getItem(), color);
             }
         }
     }

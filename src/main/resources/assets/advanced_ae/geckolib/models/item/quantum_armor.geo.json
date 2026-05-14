@@ -3,7 +3,7 @@
     "minecraft:geometry": [
         {
             "description": {
-                "identifier": "geometry.quantum_armor",
+                "identifier": "geometry.unknown",
                 "texture_width": 128,
                 "texture_height": 128,
                 "visible_bounds_width": 3,
@@ -278,15 +278,15 @@
                             "size": [4.4, 2, 0.5],
                             "uv": {
                                 "north": { "uv": [0, 12], "uv_size": [32, 12] },
-                                "up": { "uv": [12, 12], "uv_size": [8, 2] },
-                                "down": { "uv": [12, 14], "uv_size": [8, -2] }
+                                "up": { "uv": [0, 12], "uv_size": [32, 2] },
+                                "down": { "uv": [0, 24], "uv_size": [32, -2] }
                             }
                         },
                         {
-                            "origin": [-2.91832, 20.25858, -2.5144],
-                            "size": [0.8, 2, 0.5],
-                            "pivot": [-2.86832, 21.25858, -2.2644],
-                            "rotation": [0, 15, 0],
+                            "origin": [-3.26953, 20.25858, -2.60424],
+                            "size": [1.1, 2, 0.5],
+                            "pivot": [-2.91953, 21.25858, -2.35424],
+                            "rotation": [0, 7.5, 0],
                             "uv": {
                                 "north": { "uv": [32, 0], "uv_size": [8, 12] },
                                 "up": { "uv": [12, 12], "uv_size": [6, 2] },
@@ -294,10 +294,10 @@
                             }
                         },
                         {
-                            "origin": [2.10116, 20.25858, -2.5144],
-                            "size": [0.8, 2, 0.5],
-                            "pivot": [2.85116, 21.25858, -2.2644],
-                            "rotation": [0, -15, 0],
+                            "origin": [2.14981, 20.25858, -2.56509],
+                            "size": [1.1, 2, 0.5],
+                            "pivot": [3.19981, 21.25858, -2.31509],
+                            "rotation": [0, -7.5, 0],
                             "uv": {
                                 "north": { "uv": [32, 12], "uv_size": [8, 12] },
                                 "up": { "uv": [12, 12], "uv_size": [6, 2] },

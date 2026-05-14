@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.common.items.armors;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import com.geckolib.animatable.GeoItem;
 import com.geckolib.animatable.client.GeoRenderProvider;
@@ -12,12 +13,15 @@ import com.geckolib.animation.AnimationController;
 import com.geckolib.animation.RawAnimation;
 import com.geckolib.renderer.GeoArmorRenderer;
 import com.geckolib.util.GeckoLibUtil;
+import com.google.common.base.Suppliers;
 
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -48,6 +52,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     protected static final int DEFAULT_TINT_COLOR = Colors.PURPLE.argb();
+    protected static final int DEFAULT_ACCENT_COLOR = Colors.PINK.argb();
 
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
 
@@ -85,40 +90,21 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
         return stack.getOrDefault(LibComponents.TINT_COLOR_TAG, DEFAULT_TINT_COLOR);
     }
 
-    public void setTintColor(Player player, ItemStack stack, int color) {
+    public void setTintColor(ItemStack stack, int color) {
         stack.set(LibComponents.TINT_COLOR_TAG, color);
+    }
 
-        // TODO tint coloring
-        //        if (player.level().isClientSide()) {
-        //            var renderer = getRenderer(player, stack);
-        //            if (renderer != null) {
-        //                renderer.setTintColor(color);
-        //            }
-        //        }
+    @Override
+    public void inventoryTick(
+            ItemStack stack, ServerLevel level, Entity entity, @org.jspecify.annotations.Nullable EquipmentSlot slot) {
+        if (!getPassiveUpgrades(stack).isEmpty() && entity instanceof Player player) {
+            tickUpgrades(level, player, stack);
+        }
     }
 
     public boolean isVisible(ItemStack stack) {
         return !stack.getOrDefault(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.CAMO), false);
     }
-
-    //    private void updateVisibility(Player player, ItemStack stack) {
-    //        var visible = isVisible(stack);
-    //        var renderer = getRenderer(player, stack);
-    //        if (renderer != null && stack.getItem() instanceof QuantumArmorBase item) {
-    //            renderer.setVisible(item.getEquipmentSlot(), visible);
-    //        }
-    //    }
-
-    //    protected QuantumArmorRenderer getRenderer(Player player, ItemStack stack) {
-    //        var renderProvider = getRenderProvider();
-    //        if (renderProvider instanceof GeoRenderProvider provider) {
-    //            var renderer = provider.getGeoArmorRenderer(player, stack, stack.getEquipmentSlot(), null);
-    //            if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
-    //                return quantumRenderer;
-    //            }
-    //        }
-    //        return null;
-    //    }
 
     @Override
     public void appendHoverText(
@@ -214,19 +200,12 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private QuantumArmorRenderer<?> renderer;
+            private final Supplier<QuantumArmorRenderer<?>> renderer = Suppliers.memoize(QuantumArmorRenderer::new);
 
             @Override
             public @Nullable GeoArmorRenderer<?, ?> getGeoArmorRenderer(
                     ItemStack itemStack, EquipmentSlot equipmentSlot) {
-                if (this.renderer == null) this.renderer = new QuantumArmorRenderer<>();
-
-                this.renderer.setTintColor(getTintColor(itemStack));
-                this.renderer.setVisible(
-                        equipmentSlot,
-                        !itemStack.getOrDefault(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.CAMO), true));
-
-                return this.renderer;
+                return this.renderer.get();
             }
         });
     }

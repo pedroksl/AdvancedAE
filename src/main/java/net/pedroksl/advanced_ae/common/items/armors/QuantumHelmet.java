@@ -1,26 +1,18 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import com.geckolib.animatable.client.GeoRenderProvider;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.helpers.PortableCellWorkbenchMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.packet.MenuSelectionPacket;
-import net.pedroksl.advanced_ae.xmod.iris.IrisPlugin;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.menu.MenuOpener;
@@ -42,33 +34,6 @@ public class QuantumHelmet extends QuantumArmorBase {
                 UpgradeType.CHARGING,
                 UpgradeType.WORKBENCH,
                 UpgradeType.CAMO);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
-        super.inventoryTick(stack, level, owner, slot);
-
-        if (owner instanceof Player player) {
-            if (!getPassiveUpgrades(stack).isEmpty()) {
-                tickUpgrades(level, player, stack);
-            }
-
-            if (isVisible(stack)) {
-                toggleBoneVisibilities(stack, player);
-            }
-        }
-    }
-
-    private void toggleBoneVisibilities(ItemStack stack, Player player) {
-        var item = (QuantumArmorBase) stack.getItem();
-        var renderProvider = item.getRenderProvider();
-        if (renderProvider instanceof GeoRenderProvider provider) {
-            var renderer = provider.getGeoArmorRenderer(stack, EquipmentSlot.HEAD);
-            if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
-                var visible = IrisPlugin.isShaderPackInUse();
-                quantumRenderer.setBoneVisible(QuantumArmorRenderer.HUD_BONE, visible);
-            }
-        }
     }
 
     @Override
