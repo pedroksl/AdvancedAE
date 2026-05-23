@@ -21,18 +21,6 @@ import appeng.parts.reporting.AbstractDisplayPart;
 
 public class QuantumCrafterTerminalPart extends AbstractDisplayPart implements IQuantumCrafterTermMenuHost {
 
-    // TODO implement quantum crafter models
-    //    @PartModels
-    //    public static final ResourceLocation MODEL_OFF = AdvancedAE.makeId("part/quantum_crafter_terminal_off");
-    //
-    //    @PartModels
-    //    public static final ResourceLocation MODEL_ON = AdvancedAE.makeId("part/quantum_crafter_terminal_on");
-    //
-    //    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, MODEL_OFF, MODEL_STATUS_OFF);
-    //    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_ON);
-    //    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, MODEL_ON,
-    // MODEL_STATUS_HAS_CHANNEL);
-
     private final IConfigManager configManager = IConfigManager.builder(() -> {
                 this.getHost().markForSave();
             })
