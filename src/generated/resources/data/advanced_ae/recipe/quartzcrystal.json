@@ -1,0 +1,22 @@
+{
+  "type": "advanced_ae:react",
+  "input_energy": 50000,
+  "input_fluid": {
+    "amount": 500,
+    "ingredient": "minecraft:water"
+  },
+  "input_items": [
+    {
+      "amount": 16,
+      "ingredient": "ae2:charged_certus_quartz_crystal"
+    },
+    {
+      "amount": 16,
+      "ingredient": "#c:dusts/certus_quartz"
+    }
+  ],
+  "itemOutput": {
+    "count": 64,
+    "id": "ae2:certus_quartz_crystal"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "advanced_ae:quantum_upgrade_base",
+    "E": "minecraft:elytra",
+    "F": "minecraft:feather",
+    "P": "advanced_ae:quantum_alloy_plate",
+    "T": "minecraft:tnt"
+  },
+  "pattern": [
+    "PEP",
+    "FCF",
+    "PTP"
+  ],
+  "result": {
+    "id": "advanced_ae:flight_card"
+  }
+}

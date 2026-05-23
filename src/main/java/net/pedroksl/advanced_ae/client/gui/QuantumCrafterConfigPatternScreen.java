@@ -101,7 +101,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
 
             x += 37;
             y += 4;
-            guiGraphics.centeredText(Minecraft.getInstance().font, row.label, x, y, 0xFFFFFF);
+            guiGraphics.centeredText(Minecraft.getInstance().font, row.label, x, y, 0xFFFFFFFF);
 
             x += offsetX + 20;
             y += offsetY;
@@ -121,7 +121,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
 
             x += 37;
             y += 4;
-            guiGraphics.centeredText(Minecraft.getInstance().font, outputRow.label, x, y, 0xFFFFFF);
+            guiGraphics.centeredText(Minecraft.getInstance().font, outputRow.label, x, y, 0xFFFFFFFF);
 
             x += offsetX + 20;
             y += offsetY;
@@ -212,7 +212,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
                 },
                 tooltip);
 
-        numberField.setLongValue(value);
+        numberField.setLongValue(value, false);
 
         return numberField;
     }

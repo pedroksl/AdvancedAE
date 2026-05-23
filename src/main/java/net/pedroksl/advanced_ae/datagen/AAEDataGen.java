@@ -22,7 +22,7 @@ public class AAEDataGen {
         pack.addProvider(packOutput -> new AAELootTableProvider(packOutput, lookup));
         pack.addProvider(AE2ModelProvider.create(AdvancedAE.MOD_ID, AAEModelProvider::new));
 
-        // gen.addProvider(event.includeServer(), new AAERecipeProvider(out, lookup));
+        pack.addProvider(packOutput -> new AAERecipeProvider.Runner(packOutput, lookup));
 
         var blockTags = pack.addProvider(packOutput -> new AAETagProvider.AAEBlockTagProvider(packOutput, lookup));
         pack.addProvider(

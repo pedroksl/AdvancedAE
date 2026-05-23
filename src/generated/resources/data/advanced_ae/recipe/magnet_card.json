@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "advanced_ae:quantum_alloy",
+    "C": "advanced_ae:quantum_upgrade_base",
+    "I": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    "IIA",
+    "IC ",
+    "IIA"
+  ],
+  "result": {
+    "id": "advanced_ae:magnet_card"
+  }
+}

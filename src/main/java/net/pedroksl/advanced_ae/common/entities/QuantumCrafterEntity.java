@@ -774,9 +774,10 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         x = 0;
         for (var tag : input.childrenListOrEmpty("enabledPatterns")) {
             this.enabledPatternSlots.set(x, tag.getBooleanOr("enabled", false));
+            x++;
         }
 
-        readJobs(input.childOrEmpty("craftingJobs"));
+        readJobs(input);
 
         this.upgrades.readFromNBT(input, "upgrades");
         this.configManager.readFromNBT(input);
@@ -791,22 +792,18 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
     public void makeJobsTag(ValueOutput output, String name) {
         var data = output.childrenList(name);
-        try {
-            for (var job : craftingJobs) {
-                var child = data.addChild();
-                if (job != null) {
-                    job.writeToNBT(child);
-                }
+        for (var job : craftingJobs) {
+            var child = data.addChild();
+            if (job != null) {
+                job.writeToNBT(child);
             }
-
-        } catch (NullPointerException ignored) {
         }
     }
 
     private void readJobs(ValueInput input) {
         var x = 0;
         for (var job : input.childrenListOrEmpty("craftingJobs")) {
-            craftingJobs.set(x, CraftingJob.fromTag(job.childOrEmpty("job")));
+            craftingJobs.set(x, CraftingJob.fromTag(job));
             x++;
         }
     }
@@ -1128,6 +1125,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         try {
             var job = craftingJobs.get(index);
             job.setMinimumInputToKeep(inputIndex, amount);
+            saveChanges();
         } catch (IndexOutOfBoundsException ignored) {
 
         }
@@ -1138,6 +1136,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         try {
             var job = craftingJobs.get(index);
             job.limitMaxOutput = amount;
+            saveChanges();
         } catch (IndexOutOfBoundsException ignored) {
 
         }

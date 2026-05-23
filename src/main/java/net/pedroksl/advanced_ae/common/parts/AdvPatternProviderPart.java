@@ -14,7 +14,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogicHost;
@@ -108,7 +107,7 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
 
     @Override
     public boolean onUseWithoutItem(Player p, Vec3 pos) {
-        if (AdvancedAE.instance().getClientLevel() == null) {
+        if (!p.level().isClientSide()) {
             this.openMenu(p, MenuLocators.forPart(this));
         }
         return true;

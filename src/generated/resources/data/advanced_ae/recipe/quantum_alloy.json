@@ -1,0 +1,25 @@
+{
+  "type": "advanced_ae:react",
+  "input_energy": 200000,
+  "input_fluid": {
+    "amount": 1000,
+    "ingredient": "advanced_ae:quantum_infusion_source"
+  },
+  "input_items": [
+    {
+      "amount": 4,
+      "ingredient": "minecraft:copper_ingot"
+    },
+    {
+      "amount": 4,
+      "ingredient": "advanced_ae:shattered_singularity"
+    },
+    {
+      "amount": 4,
+      "ingredient": "ae2:singularity"
+    }
+  ],
+  "itemOutput": {
+    "id": "advanced_ae:quantum_alloy"
+  }
+}

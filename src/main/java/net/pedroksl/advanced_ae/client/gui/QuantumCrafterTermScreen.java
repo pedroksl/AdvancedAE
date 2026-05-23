@@ -26,6 +26,7 @@ import net.pedroksl.advanced_ae.api.ShowQuantumCrafters;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAESettingToggleButton;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
+import net.pedroksl.advanced_ae.network.packet.QuickMovePatternPacket;
 
 import appeng.api.config.Settings;
 import appeng.api.config.TerminalStyle;
@@ -274,10 +275,27 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
 
             if (action != null) {
                 final InventoryActionPacket p = new InventoryActionPacket(
-                        action, machineSlot.index, machineSlot.getMachineInv().getServerId());
+                        action,
+                        machineSlot.getSlotIndex(),
+                        machineSlot.getMachineInv().getServerId());
                 ClientPacketDistributor.sendToServer(p);
             }
 
+            return;
+        }
+
+        if (clickType == ContainerInput.QUICK_MOVE && menu.isPlayerSideSlot(slot)) {
+            Set<Long> visiblePatternContainers = new LinkedHashSet<>();
+            for (var row : this.rows) {
+                if (row instanceof SlotsRow slotsRow) {
+                    visiblePatternContainers.add(slotsRow.container.getServerId());
+                }
+            }
+
+            int clickedSlot = slot.getContainerSlot();
+            var packet =
+                    new QuickMovePatternPacket(menu.containerId, clickedSlot, List.copyOf(visiblePatternContainers));
+            ClientPacketDistributor.sendToServer(packet);
             return;
         }
 
@@ -297,7 +315,7 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
         // Draw the footer now so slots will draw on top of it
         Blitter.texture(DEFAULT_TEXTURE)
                 .src(FOOTER_BBOX)
-                .dest(offsetX, currentY + this.visibleRows)
+                .dest(offsetX, currentY + this.visibleRows * ROW_HEIGHT)
                 .blit(guiGraphics);
 
         for (int i = 0; i < this.visibleRows; ++i) {

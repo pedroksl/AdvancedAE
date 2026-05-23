@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:blaze_powder",
+    "C": "advanced_ae:quantum_upgrade_base",
+    "E": "minecraft:end_crystal",
+    "G": "minecraft:gunpowder"
+  },
+  "pattern": [
+    " C ",
+    " G ",
+    "BEB"
+  ],
+  "result": {
+    "id": "advanced_ae:jump_height_card"
+  }
+}

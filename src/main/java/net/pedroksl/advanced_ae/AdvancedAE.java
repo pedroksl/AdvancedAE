@@ -16,6 +16,7 @@ import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
@@ -71,6 +72,7 @@ public abstract class AdvancedAE {
         eventBus.addListener(AdvancedAE::initCapabilities);
         eventBus.addListener(AdvancedAE::imc);
         eventBus.addListener(AAENetworkHandler.INSTANCE::register);
+        NeoForge.EVENT_BUS.addListener(this::registerSynchronizedRecipes);
 
         eventBus.addListener(this::commonSetup);
         AAEHotkeysRegistry.INSTANCE.init();
@@ -78,6 +80,10 @@ public abstract class AdvancedAE {
 
     public static AdvancedAE instance() {
         return INSTANCE;
+    }
+
+    private void registerSynchronizedRecipes(OnDatapackSyncEvent event) {
+        event.sendRecipes(AAERecipeTypes.REACTION_CHAMBER);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -190,6 +196,8 @@ public abstract class AdvancedAE {
             MekanismPlugin.initCap(event);
         }
     }
+
+    private static void registerPartCapabilities(RegisterPartCapabilitiesEvent event) {}
 
     public static void imc(InterModEnqueueEvent event) {
         if (Addons.INVTWEAKS.isLoaded()) {

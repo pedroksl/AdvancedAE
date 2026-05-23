@@ -13,6 +13,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.pedroksl.advanced_ae.api.AAESettings;
@@ -30,6 +31,7 @@ import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.ILinkStatus;
+import appeng.blockentity.crafting.IMolecularAssemblerSupportedPattern;
 import appeng.core.AELog;
 import appeng.core.network.clientbound.SetLinkStatusPacket;
 import appeng.helpers.InventoryAction;
@@ -458,6 +460,40 @@ public class QuantumCrafterTermMenu extends AEBaseMenu implements LinkStatusAwar
             }
 
             return !ItemStack.matches(a, b);
+        }
+    }
+
+    public void quickMovePattern(ServerPlayer player, int clickedSlot, List<Long> allowedPatternContainers) {
+        if (clickedSlot < 0 || clickedSlot >= this.slots.size()) {
+            return;
+        }
+        Slot sourceSlot = getSlot(clickedSlot);
+        if (!isPlayerSideSlot(sourceSlot)) {
+            return;
+        }
+        ItemStack sourceStack = sourceSlot.getItem();
+        if (sourceStack.getCount() != 1) {
+            return;
+        }
+        var pattern = PatternDetailsHelper.decodePattern(sourceStack, player.level());
+        if (!(pattern instanceof IMolecularAssemblerSupportedPattern)) {
+            return;
+        }
+
+        List<ContainerTracker> targets = new ArrayList<>();
+        for (var id : allowedPatternContainers) {
+            var inv = this.byId.get(id.longValue());
+            if (inv != null && isVisible(inv.container)) {
+                targets.add(inv);
+            }
+        }
+
+        for (var target : targets) {
+            var targetContainer = new FilteredInternalInventory(target.server, new PatternSlotFilter());
+            if (targetContainer.addItems(sourceStack).isEmpty()) {
+                sourceSlot.set(ItemStack.EMPTY);
+                return;
+            }
         }
     }
 

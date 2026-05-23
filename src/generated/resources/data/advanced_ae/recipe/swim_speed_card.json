@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:oak_boat",
+    "C": "advanced_ae:quantum_upgrade_base",
+    "H": "minecraft:heart_of_the_sea",
+    "R": "minecraft:firework_rocket"
+  },
+  "pattern": [
+    " B ",
+    "HCH",
+    " R "
+  ],
+  "result": {
+    "id": "advanced_ae:swim_speed_card"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "ae2:speed_card",
+    "C": "advanced_ae:quantum_upgrade_base",
+    "R": "#c:dusts/redstone"
+  },
+  "pattern": [
+    " R ",
+    "ACA",
+    " R "
+  ],
+  "result": {
+    "id": "advanced_ae:walk_speed_card"
+  }
+}

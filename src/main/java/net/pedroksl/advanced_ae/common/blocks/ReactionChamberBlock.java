@@ -13,8 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
@@ -56,8 +54,11 @@ public class ReactionChamberBlock extends AEBaseEntityBlock<ReactionChamberEntit
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-        var handler = ItemAccess.forStack(heldItem).oneByOne().getCapability(Capabilities.Fluid.ITEM);
-        if (FluidUtil.interactWithFluidHandler(player, hand, pos, handler)) {
+        if (heldItem.isEmpty()) return useWithoutItem(state, level, pos, player, hit);
+
+        var be = level.getBlockEntity(pos);
+        if (be instanceof ReactionChamberEntity chamber
+                && FluidUtil.interactWithFluidHandler(player, hand, pos, chamber.getFluidHandler())) {
             return InteractionResult.SUCCESS;
         }
 

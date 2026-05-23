@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "ae2:speed_card",
+    "I": "advanced_ae:import_export_bus_part",
+    "Q": "advanced_ae:quantum_processor",
+    "S": "advanced_ae:stock_export_bus_part"
+  },
+  "pattern": [
+    "AQA",
+    "IQS",
+    "AQA"
+  ],
+  "result": {
+    "id": "advanced_ae:advanced_io_bus_part"
+  }
+}

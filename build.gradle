@@ -163,7 +163,8 @@ final generateModMetadata = tasks.register("generateModMetadata", ProcessResourc
             'mod_authors',
             'mod_description',
             'geckolib_version',
-            'ae2wtlib_version'
+            'ae2wtlib_version',
+            'jei_version'
     ].collectEntries { [it, project[it]] }
 
     inputs.properties projectProperties
@@ -256,7 +257,7 @@ publisher {
 
     // Add supported java versions. Currently only used by CurseForge
     // Supports anything that can be parsed using JavaVersion.toVersion()
-    setJavaVersions(JavaVersion.VERSION_21, 21)
+    setJavaVersions(JavaVersion.VERSION_21, 25)
 
     // Safety check to check if the artifact contains a valid mod metadata entry,
     // which could possibly mean that the jar is empty

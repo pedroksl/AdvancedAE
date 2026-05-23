@@ -1,0 +1,28 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:mod_loaded",
+        "modid": "extendedae"
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "ae2:capacity_card",
+    "G": "#ae2:glass_cable",
+    "I": "#c:ingots",
+    "S": "advanced_ae:shattered_singularity",
+    "T": "minecraft:crafting_table"
+  },
+  "pattern": [
+    "STS",
+    "GIG",
+    "CCC"
+  ],
+  "result": {
+    "id": "advanced_ae:adv_pattern_provider_capacity_upgrade"
+  }
+}

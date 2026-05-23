@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -14,49 +15,101 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStackTemplate;
+import net.neoforged.neoforge.fluids.crafting.display.FluidSlotDisplay;
+import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.ae2addonlib.recipes.IngredientStack;
 
-import appeng.api.stacks.AEFluidKey;
-import appeng.api.stacks.AEItemKey;
-import appeng.api.stacks.GenericStack;
 import appeng.recipes.MechanicsRecipe;
 
 public class ReactionChamberRecipe extends MechanicsRecipe<RecipeInput> {
 
     public static final MapCodec<ReactionChamberRecipe> CODEC = RecordCodecBuilder.mapCodec((builder) -> builder.group(
-                    GenericStack.CODEC.fieldOf("output").forGetter((ir) -> ir.output),
+                    ItemStackTemplate.CODEC
+                            .optionalFieldOf("itemOutput")
+                            .forGetter((ir) -> java.util.Optional.ofNullable(ir.itemOutput)),
+                    FluidStackTemplate.CODEC
+                            .optionalFieldOf("fluidOutput")
+                            .forGetter((ir) -> java.util.Optional.ofNullable(ir.fluidOutput)),
                     IngredientStack.Item.CODEC.listOf().fieldOf("input_items").forGetter((ir) -> ir.inputs),
                     IngredientStack.Fluid.CODEC.fieldOf("input_fluid").forGetter((ir) -> ir.fluid),
                     Codec.INT.fieldOf("input_energy").forGetter((ir) -> ir.energy))
             .apply(builder, ReactionChamberRecipe::new));
-    public static final StreamCodec<RegistryFriendlyByteBuf, ReactionChamberRecipe> STREAM_CODEC =
-            StreamCodec.composite(
-                    GenericStack.STREAM_CODEC,
-                    (r) -> r.output,
-                    IngredientStack.Item.STREAM_CODEC.apply(ByteBufCodecs.list()),
-                    (r) -> r.inputs,
-                    IngredientStack.Fluid.STREAM_CODEC,
-                    (r) -> r.fluid,
-                    ByteBufCodecs.INT,
-                    (r) -> r.energy,
-                    ReactionChamberRecipe::new);
+    public static final StreamCodec<RegistryFriendlyByteBuf, ReactionChamberRecipe> STREAM_CODEC = new StreamCodec<>() {
+        @Override
+        public ReactionChamberRecipe decode(RegistryFriendlyByteBuf input) {
+            boolean isItem = input.readBoolean();
+
+            ItemStackTemplate itemOutput = null;
+            FluidStackTemplate fluidOutput = null;
+
+            if (isItem) {
+                itemOutput = ItemStackTemplate.STREAM_CODEC.decode(input);
+            } else {
+                fluidOutput = FluidStackTemplate.STREAM_CODEC.decode(input);
+            }
+
+            var inputs = IngredientStack.Item.STREAM_CODEC
+                    .apply(ByteBufCodecs.list())
+                    .decode(input);
+            var fluid = IngredientStack.Fluid.STREAM_CODEC.decode(input);
+            var energy = ByteBufCodecs.INT.decode(input);
+            return new ReactionChamberRecipe(itemOutput, fluidOutput, inputs, fluid, energy);
+        }
+
+        @Override
+        public void encode(RegistryFriendlyByteBuf output, ReactionChamberRecipe recipe) {
+            output.writeBoolean(recipe.itemOutput != null);
+
+            if (recipe.itemOutput != null) {
+                ItemStackTemplate.STREAM_CODEC.encode(output, recipe.itemOutput);
+            } else {
+                FluidStackTemplate.STREAM_CODEC.encode(output, recipe.fluidOutput);
+            }
+
+            IngredientStack.Item.STREAM_CODEC.apply(ByteBufCodecs.list()).encode(output, recipe.inputs);
+            IngredientStack.Fluid.STREAM_CODEC.encode(output, recipe.fluid);
+            ByteBufCodecs.INT.encode(output, recipe.energy);
+        }
+    };
 
     public static final RecipeSerializer<ReactionChamberRecipe> SERIALIZER =
             new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
     protected final List<IngredientStack.Item> inputs;
     protected final IngredientStack.Fluid fluid;
-    public final GenericStack output;
+    public final ItemStackTemplate itemOutput;
+    public final FluidStackTemplate fluidOutput;
 
     protected final int energy;
 
     public ReactionChamberRecipe(
-            GenericStack output, List<IngredientStack.Item> inputs, IngredientStack.Fluid fluid, int energy) {
+            Optional<ItemStackTemplate> itemOutput,
+            Optional<FluidStackTemplate> fluidOutput,
+            List<IngredientStack.Item> inputs,
+            IngredientStack.Fluid fluid,
+            int energy) {
         this.inputs = inputs;
-        this.output = output;
+        this.itemOutput = itemOutput.orElse(null);
+        this.fluidOutput = fluidOutput.orElse(null);
+        this.fluid = fluid;
+        this.energy = energy;
+    }
+
+    public ReactionChamberRecipe(
+            ItemStackTemplate itemOutput,
+            FluidStackTemplate fluidOutput,
+            List<IngredientStack.Item> inputs,
+            IngredientStack.Fluid fluid,
+            int energy) {
+        this.inputs = inputs;
+        this.itemOutput = itemOutput;
+        this.fluidOutput = fluidOutput;
         this.fluid = fluid;
         this.energy = energy;
     }
@@ -72,19 +125,19 @@ public class ReactionChamberRecipe extends MechanicsRecipe<RecipeInput> {
     }
 
     public boolean isItemOutput() {
-        return this.output.what() instanceof AEItemKey;
+        return this.itemOutput != null;
     }
 
     public ItemStack getResultItem() {
-        if (this.output.what() instanceof AEItemKey key) {
-            return key.toStack((int) this.output.amount());
+        if (this.itemOutput != null) {
+            return itemOutput.create();
         }
         return ItemStack.EMPTY;
     }
 
     public FluidStack getResultFluid() {
-        if (this.output.what() instanceof AEFluidKey key) {
-            return key.toStack((int) this.output.amount());
+        if (this.fluidOutput != null) {
+            return this.fluidOutput.create();
         }
         return FluidStack.EMPTY;
     }
@@ -130,6 +183,19 @@ public class ReactionChamberRecipe extends MechanicsRecipe<RecipeInput> {
 
     @Override
     public List<RecipeDisplay> display() {
-        return List.of();
+        return List.of(new ReactionChamberRecipeDisplay(
+                this.inputs.stream()
+                        .map(IngredientStack::getIngredient)
+                        .map(Ingredient::display)
+                        .toList(),
+                this.fluid.getIngredient().display(),
+                this.itemOutput != null
+                        ? new SlotDisplay.ItemStackSlotDisplay(this.itemOutput)
+                        : SlotDisplay.Empty.INSTANCE,
+                this.fluidOutput != null
+                        ? new FluidSlotDisplay(this.fluidOutput.fluid())
+                        : new FluidSlotDisplay(FluidStack.EMPTY.typeHolder()),
+                new SlotDisplay.ItemSlotDisplay(AAEBlocks.REACTION_CHAMBER.asItem()),
+                this.itemOutput != null));
     }
 }

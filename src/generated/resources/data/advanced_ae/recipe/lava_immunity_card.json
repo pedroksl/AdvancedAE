@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "advanced_ae:quantum_upgrade_base",
+    "L": "minecraft:lava_bucket",
+    "Q": "ae2:quartz_glass",
+    "T": "minecraft:totem_of_undying"
+  },
+  "pattern": [
+    " T ",
+    " C ",
+    "QLQ"
+  ],
+  "result": {
+    "id": "advanced_ae:lava_immunity_card"
+  }
+}

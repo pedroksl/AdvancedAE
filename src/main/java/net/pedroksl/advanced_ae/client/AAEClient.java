@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
 
-import net.pedroksl.advanced_ae.client.item.QuantumArmorItemModel;
-import net.pedroksl.ae2addonlib.client.Hotkeys;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
@@ -25,6 +23,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.*;
+import net.pedroksl.advanced_ae.client.item.QuantumArmorItemModel;
 import net.pedroksl.advanced_ae.client.renderer.QuantumComputerModel;
 import net.pedroksl.advanced_ae.client.renderer.ReactionChamberRenderer;
 import net.pedroksl.advanced_ae.client.renderer.ThroughputMonitorRenderer;
@@ -60,7 +59,7 @@ public class AAEClient extends AdvancedAE {
         eventBus.addListener(AAEClient::initScreens);
         eventBus.addListener(AAEClient::initRenderers);
         eventBus.addListener(AAEClient::initClientExtensions);
-		eventBus.addListener(AAEClient::registerItemModels);
+        eventBus.addListener(AAEClient::registerItemModels);
         eventBus.addListener(AAEClient::initFluidModels);
         eventBus.addListener(this::registerHotkeys);
 
@@ -188,9 +187,9 @@ public class AAEClient extends AdvancedAE {
                 AAEFluids.QUANTUM_INFUSION.fluidType());
     }
 
-	private static void registerItemModels(RegisterItemModelsEvent event) {
-		event.register(QuantumArmorItemModel.Unbaked.ID, QuantumArmorItemModel.Unbaked.MAP_CODEC);
-	}
+    private static void registerItemModels(RegisterItemModelsEvent event) {
+        event.register(QuantumArmorItemModel.Unbaked.ID, QuantumArmorItemModel.Unbaked.MAP_CODEC);
+    }
 
     private static void initFluidModels(RegisterFluidModelsEvent event) {
         for (var fluid : AAEFluids.INSTANCE.getFluids()) {

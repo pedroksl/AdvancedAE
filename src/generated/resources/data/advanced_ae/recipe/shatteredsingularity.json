@@ -1,0 +1,25 @@
+{
+  "type": "advanced_ae:react",
+  "input_energy": 200000,
+  "input_fluid": {
+    "amount": 100,
+    "ingredient": "minecraft:lava"
+  },
+  "input_items": [
+    {
+      "ingredient": "ae2:singularity"
+    },
+    {
+      "amount": 2,
+      "ingredient": "#c:dusts/ender_pearl"
+    },
+    {
+      "amount": 2,
+      "ingredient": "ae2:sky_dust"
+    }
+  ],
+  "itemOutput": {
+    "count": 2,
+    "id": "advanced_ae:shattered_singularity"
+  }
+}

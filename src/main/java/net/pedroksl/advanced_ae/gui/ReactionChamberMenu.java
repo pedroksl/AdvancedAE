@@ -170,11 +170,6 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     }
 
     @Override
-    public void setCarriedItem(ItemStack stack) {
-        setCarried(stack);
-    }
-
-    @Override
     public GenericStackInv getTank() {
         return this.getHost().getTank();
     }

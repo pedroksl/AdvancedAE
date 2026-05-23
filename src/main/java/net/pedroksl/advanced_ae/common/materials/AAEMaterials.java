@@ -4,7 +4,10 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAssets;
@@ -27,6 +30,6 @@ public interface AAEMaterials {
             SoundEvents.ARMOR_EQUIP_NETHERITE,
             5.0F,
             0.25F,
-            null,
+            TagKey.create(Registries.ITEM, Identifier.withDefaultNamespace("")),
             EquipmentAssets.createId("quantum_alloy"));
 }

@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
@@ -126,7 +127,7 @@ public class ReactionChamberCategory implements IRecipeCategory<RecipeHolder<Rea
         var text = AAEText.ReactionChamberEnergy.text(recipe.getEnergy() / 1000);
         FormattedCharSequence formattedcharsequence = text.getVisualOrderText();
         var textX = getWidth() / 2 + 4 - font.width(formattedcharsequence) / 2;
-        guiGraphics.text(font, text, textX, 66, ChatFormatting.DARK_GRAY.getColor(), false);
+        guiGraphics.text(font, text, textX, 66, ARGB.opaque(ChatFormatting.DARK_GRAY.getColor()), false);
 
         bolt.draw(guiGraphics, textX - 16, 64);
     }

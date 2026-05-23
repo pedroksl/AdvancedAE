@@ -1,0 +1,26 @@
+{
+  "type": "advanced_ae:react",
+  "input_energy": 200000,
+  "input_fluid": {
+    "amount": 500,
+    "ingredient": "minecraft:water"
+  },
+  "input_items": [
+    {
+      "amount": 16,
+      "ingredient": "ae2:charged_certus_quartz_crystal"
+    },
+    {
+      "amount": 16,
+      "ingredient": "minecraft:redstone"
+    },
+    {
+      "amount": 16,
+      "ingredient": "minecraft:quartz"
+    }
+  ],
+  "itemOutput": {
+    "count": 64,
+    "id": "ae2:fluix_crystal"
+  }
+}

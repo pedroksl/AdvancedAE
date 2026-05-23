@@ -4,6 +4,7 @@ import static appeng.core.AppEng.makeId;
 import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import net.minecraft.client.color.item.Constant;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -38,6 +39,14 @@ import appeng.items.parts.ColoredPartItem;
 import appeng.items.parts.PartItem;
 
 public class AAEModelProvider extends AE2AddonModelProvider {
+
+    private static final ModelTemplate QUANTUM_CRAFTER = new ModelTemplate(
+            Optional.of(Identifier.withDefaultNamespace("block/cube_bottom_top")),
+            Optional.empty(),
+            TextureSlot.TOP,
+            TextureSlot.NORTH,
+            TextureSlot.BOTTOM,
+            TextureSlot.SIDE);
 
     public AAEModelProvider(
             BlockModelGenerators blockModels, ItemModelGenerators itemModels, PartModelOutput partModels) {
@@ -193,7 +202,7 @@ public class AAEModelProvider extends AE2AddonModelProvider {
         var sides = new Material(AdvancedAE.makeId("block/quantum_crafter_side"), false);
 
         var block = AAEBlocks.QUANTUM_CRAFTER.block();
-        var blockModel = ModelTemplates.CUBE_BOTTOM_TOP.create(
+        var blockModel = QUANTUM_CRAFTER.create(
                 block,
                 new TextureMapping()
                         .put(TextureSlot.TOP, grid)
@@ -201,14 +210,15 @@ public class AAEModelProvider extends AE2AddonModelProvider {
                         .put(TextureSlot.BOTTOM, bottom)
                         .put(TextureSlot.SIDE, sides),
                 modelOutput);
-        var blockModelOn = ModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(
+        var blockModelOn = QUANTUM_CRAFTER.createWithSuffix(
                 block,
                 "_on",
                 new TextureMapping()
                         .put(TextureSlot.TOP, gridOn)
                         .put(TextureSlot.NORTH, gridOn)
                         .put(TextureSlot.BOTTOM, bottom)
-                        .put(TextureSlot.SIDE, sides),
+                        .put(TextureSlot.SIDE, sides)
+                        .put(TextureSlot.PARTICLE, gridOn),
                 modelOutput);
 
         blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
@@ -216,7 +226,8 @@ public class AAEModelProvider extends AE2AddonModelProvider {
                         .select(false, plainSpinnableVariant(blockModel))
                         .select(true, plainSpinnableVariant(blockModelOn)))
                 .withUnbaked(createFacingSpinDispatch()));
-        // TODO: item model
+
+        blockModels.registerSimpleItemModel(AAEBlocks.QUANTUM_CRAFTER.asItem(), blockModelOn);
     }
 
     private static StatusIndicatorPartModel.Unbaked partStatusIndicator(Identifier baseModel) {

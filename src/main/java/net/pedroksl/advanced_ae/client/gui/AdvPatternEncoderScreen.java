@@ -26,6 +26,7 @@ import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionP
 
 import appeng.api.stacks.AEKey;
 import appeng.client.gui.AEBaseScreen;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.Scrollbar;
 import appeng.core.AppEng;
@@ -132,16 +133,10 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
 
         int visibleRows = Math.min(VISIBLE_ROWS, this.inputList.size());
         for (int i = 0; i < visibleRows; ++i) {
-            guiGraphics.blit(
-                    DEFAULT_TEXTURE,
-                    currentX,
-                    currentY,
-                    SLOT_BBOX.getX(),
-                    SLOT_BBOX.getY(),
-                    SLOT_BBOX.getWidth(),
-                    SLOT_BBOX.getHeight(),
-                    256,
-                    256);
+            Blitter.texture(DEFAULT_TEXTURE)
+                    .src(SLOT_BBOX)
+                    .dest(currentX, currentY)
+                    .blit(guiGraphics);
             currentY += ROW_HEIGHT + ROW_SPACING;
         }
     }

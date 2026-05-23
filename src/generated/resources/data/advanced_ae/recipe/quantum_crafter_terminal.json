@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "ae2:pattern_access_terminal",
+    "advanced_ae:quantum_processor"
+  ],
+  "result": {
+    "id": "advanced_ae:quantum_crafter_terminal_part"
+  }
+}

@@ -59,7 +59,10 @@ public class QuantumComputerModel extends ConnectedTexturesBaseBakedModel {
 
     @Override
     protected boolean shouldConnect(Block block) {
-	    return block instanceof AAECraftingUnitBlock unit && (isStructure ? unit.type == AAECraftingUnitType.QUANTUM_STRUCTURE : unit.type != AAECraftingUnitType.QUANTUM_STRUCTURE);
+        return block instanceof AAECraftingUnitBlock unit
+                && (isStructure
+                        ? unit.type == AAECraftingUnitType.QUANTUM_STRUCTURE
+                        : unit.type != AAECraftingUnitType.QUANTUM_STRUCTURE);
     }
 
     @Override

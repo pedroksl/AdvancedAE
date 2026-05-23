@@ -1,0 +1,24 @@
+{
+  "type": "advanced_ae:react",
+  "input_energy": 1000000,
+  "input_fluid": {
+    "amount": 1000,
+    "ingredient": "advanced_ae:quantum_infusion_source"
+  },
+  "input_items": [
+    {
+      "amount": 8,
+      "ingredient": "advanced_ae:quantum_alloy"
+    },
+    {
+      "amount": 2,
+      "ingredient": "minecraft:netherite_ingot"
+    },
+    {
+      "ingredient": "minecraft:nether_star"
+    }
+  ],
+  "itemOutput": {
+    "id": "advanced_ae:quantum_alloy_plate"
+  }
+}

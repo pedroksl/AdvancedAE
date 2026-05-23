@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "advanced_ae:block/quantum_crafter"
+    "model": "advanced_ae:block/quantum_crafter_on"
   }
 }

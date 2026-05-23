@@ -1,8 +1,11 @@
 package net.pedroksl.advanced_ae.datagen;
 
+import java.util.concurrent.CompletableFuture;
+
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -98,7 +101,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .pattern("###")
                 .define('#', AAEItems.QUANTUM_ALLOY)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("quantum_alloy_block"));
+                .save(output);
         shapeless(RecipeCategory.MISC, AAEItems.QUANTUM_ALLOY, 9)
                 .requires(AAEBlocks.QUANTUM_ALLOY_BLOCK)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
@@ -190,18 +193,18 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(AAEItems.SHATTERED_SINGULARITY, 4)
                 .input(AEItems.SINGULARITY, 4)
                 .fluid(AAEFluids.QUANTUM_INFUSION.source(), 1000)
-                .save(output, makeId("quantum_alloy"));
+                .save(output, "quantum_alloy");
         ReactionChamberRecipeBuilder.react(AAEItems.QUANTUM_ALLOY_PLATE, 1, 1000000)
                 .input(AAEItems.QUANTUM_ALLOY, 8)
                 .input(Items.NETHERITE_INGOT, 2)
                 .input(Items.NETHER_STAR, 1)
                 .fluid(AAEFluids.QUANTUM_INFUSION.source(), 1000)
-                .save(output, makeId("quantum_alloy_plate"));
+                .save(output, "quantum_alloy_plate");
         shapeless(RecipeCategory.MISC, AAEItems.THROUGHPUT_MONITOR)
                 .requires(AEItems.CALCULATION_PROCESSOR)
                 .requires(AEParts.STORAGE_MONITOR)
                 .unlockedBy("hasItem", has(AEParts.STORAGE_MONITOR))
-                .save(output, makeId("throughput_monitor"));
+                .save(output);
         shapeless(RecipeCategory.MISC, AAEItems.QUANTUM_CRAFTER_TERMINAL)
                 .requires(AEParts.PATTERN_ACCESS_TERMINAL)
                 .requires(AAEItems.QUANTUM_PROCESSOR)
@@ -252,7 +255,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('C', AEItems.CELL_COMPONENT_256K)
                 .define('Q', AEBlocks.QUARTZ_VIBRANT_GLASS)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_PROCESSOR))
-                .save(output, makeId("quantum_storage_component"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.MONITOR_CONFIGURATOR)
                 .pattern("  S")
                 .pattern(" I ")
@@ -260,13 +263,13 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('I', Items.IRON_INGOT)
                 .define('S', AEItems.SPEED_CARD)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_PROCESSOR))
-                .save(output, makeId("throughput_monitor_configurator"));
+                .save(output);
 
         // Fluids
         ReactionChamberRecipeBuilder.react(AAEFluids.QUANTUM_INFUSION.source(), 1000, 20000)
                 .input(AAEItems.QUANTUM_INFUSED_DUST)
                 .fluid(Fluids.WATER, 4000)
-                .save(output, makeId("quantum_infusion"));
+                .save(output, "quantum_infusion");
 
         // Quantum Computer
         shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_STRUCTURE)
@@ -393,7 +396,7 @@ public class AAERecipeProvider extends RecipeProvider {
         //                .input(EAESingletons.ENTRO_DUST, 32)
         //                .input(AEItems.FLUIX_CRYSTAL, 32)
         //                .fluid(Fluids.WATER, 500)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), makeId("entrocrystal"));
+        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), "entrocrystal");
         ReactionChamberRecipeBuilder.react(AEBlocks.DAMAGED_BUDDING_QUARTZ, 8, 100000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
                 .input(AEBlocks.QUARTZ_BLOCK, 8)
@@ -431,7 +434,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', AAEItems.QUANTUM_ALLOY_PLATE)
                 .define('P', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("quantum_helmet"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.QUANTUM_CHESTPLATE)
                 .pattern("PWP")
                 .pattern("PNP")
@@ -442,7 +445,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', AAEItems.QUANTUM_ALLOY_PLATE)
                 .define('P', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("quantum_chest"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.QUANTUM_LEGGINGS)
                 .pattern("PWP")
                 .pattern("PNP")
@@ -453,7 +456,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', AAEItems.QUANTUM_ALLOY_PLATE)
                 .define('P', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("quantum_leggings"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.QUANTUM_BOOTS)
                 .pattern("PWP")
                 .pattern("PNP")
@@ -464,7 +467,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', AAEItems.QUANTUM_ALLOY_PLATE)
                 .define('P', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("quantum_boots"));
+                .save(output);
 
         // Quantum Armor Upgrade Cards
         shaped(RecipeCategory.MISC, AAEItems.QUANTUM_UPGRADE_BASE)
@@ -483,7 +486,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('R', ConventionTags.REDSTONE)
                 .define('A', AEItems.SPEED_CARD)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("walk_speed_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.SPRINT_SPEED_CARD)
                 .pattern("ARA")
                 .pattern("RCR")
@@ -492,7 +495,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', AEItems.SPEED_CARD)
                 .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("sprint_speed_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.STEP_ASSIST_CARD)
                 .pattern(" S ")
                 .pattern("SCS")
@@ -500,7 +503,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('C', AAEItems.QUANTUM_UPGRADE_BASE)
                 .define('S', AAEBlocks.QUANTUM_ALLOY_STAIRS)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("step_assist_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.JUMP_HEIGHT_CARD)
                 .pattern(" C ")
                 .pattern(" G ")
@@ -510,7 +513,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('B', Items.BLAZE_POWDER)
                 .define('E', Items.END_CRYSTAL)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("jump_height_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.LAVA_IMMUNITY_CARD)
                 .pattern(" T ")
                 .pattern(" C ")
@@ -520,7 +523,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('L', Items.LAVA_BUCKET)
                 .define('Q', AEBlocks.QUARTZ_GLASS)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("lava_immunity_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.FLIGHT_CARD)
                 .pattern("PEP")
                 .pattern("FCF")
@@ -531,7 +534,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('T', Items.TNT)
                 .define('P', AAEItems.QUANTUM_ALLOY_PLATE)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("flight_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.WATER_BREATHING_CARD)
                 .pattern(" E ")
                 .pattern("PCP")
@@ -541,7 +544,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('H', Items.HEART_OF_THE_SEA)
                 .define('P', Items.PUFFERFISH)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("water_breathing_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.AUTO_FEED_CARD)
                 .pattern(" W ")
                 .pattern("ACM")
@@ -552,7 +555,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('M', Items.GLISTERING_MELON_SLICE)
                 .define('W', AEBlocks.WIRELESS_ACCESS_POINT)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("auto_feed_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.AUTO_STOCK_CARD)
                 .pattern(" W ")
                 .pattern("BCB")
@@ -562,7 +565,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('B', Items.SHULKER_BOX)
                 .define('M', AEBlocks.CONTROLLER)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("auto_stock_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.MAGNET_CARD)
                 .pattern("IIA")
                 .pattern("IC ")
@@ -571,7 +574,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('I', Items.IRON_INGOT)
                 .define('A', AAEItems.QUANTUM_ALLOY)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("magnet_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.HP_BUFFER_CARD)
                 .pattern(" T ")
                 .pattern("ICO")
@@ -582,7 +585,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('O', AEParts.EXPORT_BUS)
                 .define('E', AEItems.PORTABLE_ITEM_CELL64K)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("hp_buffer_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.EVASION_CARD)
                 .pattern("PSP")
                 .pattern("HCH")
@@ -592,7 +595,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('S', AEItems.SPEED_CARD)
                 .define('P', AAEItems.QUANTUM_ALLOY_PLATE)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("evasion_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.REGENERATION_CARD)
                 .pattern(" A ")
                 .pattern("RCM")
@@ -603,7 +606,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('M', Items.MUSHROOM_STEW)
                 .define('O', Items.COOKIE)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("regeneration_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.STRENGTH_CARD)
                 .pattern(" N ")
                 .pattern("FCQ")
@@ -614,7 +617,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('Q', AEItems.CERTUS_QUARTZ_SWORD)
                 .define('D', Items.DIAMOND_SWORD)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("strength_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.ATTACK_SPEED_CARD)
                 .pattern("SSS")
                 .pattern("QCQ")
@@ -623,7 +626,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('S', AEItems.SPEED_CARD)
                 .define('Q', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("attack_speed_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.LUCK_CARD)
                 .pattern("AFA")
                 .pattern("NCN")
@@ -633,7 +636,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', Blocks.AMETHYST_BLOCK)
                 .define('N', Items.NETHER_STAR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("luck_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.REACH_CARD)
                 .pattern("E E")
                 .pattern("OCO")
@@ -643,7 +646,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('O', Items.LIGHTNING_ROD)
                 .define('S', Items.ECHO_SHARD)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("reach_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.SWIM_SPEED_CARD)
                 .pattern(" B ")
                 .pattern("HCH")
@@ -653,7 +656,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('R', Items.FIREWORK_ROCKET)
                 .define('H', Items.HEART_OF_THE_SEA)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("swim_speed_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.NIGHT_VISION_CARD)
                 .pattern(" B ")
                 .pattern("GCG")
@@ -663,7 +666,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('S', Items.SEA_LANTERN)
                 .define('G', Items.GLOWSTONE_DUST)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("night_vision_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.FLIGHT_DRIFT_CARD)
                 .pattern(" R ")
                 .pattern("QCQ")
@@ -673,7 +676,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('L', Blocks.LODESTONE)
                 .define('Q', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("flight_drift_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.RECHARGING_CARD)
                 .pattern("SWS")
                 .pattern("QCQ")
@@ -685,7 +688,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('E', AEItems.ENERGY_CARD)
                 .define('D', AEBlocks.DENSE_ENERGY_CELL)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("recharging_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.WORKBENCH_CARD)
                 .pattern(" W ")
                 .pattern("PCP")
@@ -696,7 +699,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', AAEItems.QUANTUM_ALLOY)
                 .define('P', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("portable_workbench_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.PICK_CRAFT_CARD)
                 .pattern(" W ")
                 .pattern("PCP")
@@ -707,7 +710,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('A', AAEItems.QUANTUM_ALLOY)
                 .define('P', AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("pick_craft_card"));
+                .save(output);
         shaped(RecipeCategory.MISC, AAEItems.CAMO_CARD)
                 .pattern(" G ")
                 .pattern("FCF")
@@ -717,7 +720,7 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('F', Items.FERMENTED_SPIDER_EYE)
                 .define('N', Items.NETHER_WART)
                 .unlockedBy("hasItem", has(AAEItems.QUANTUM_ALLOY))
-                .save(output, makeId("camo_card"));
+                .save(output);
 
         resetNbtRecipe(AAEItems.QUANTUM_HELMET);
         resetNbtRecipe(AAEItems.QUANTUM_CHESTPLATE);
@@ -793,7 +796,7 @@ public class AAERecipeProvider extends RecipeProvider {
 
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(inputBlock), RecipeCategory.MISC, outputBlock, 2)
                 .unlockedBy("hasItem", has(inputBlock))
-                .save(output, slabs.id().toString());
+                .save(output);
     }
 
     private void stairRecipe(BlockDefinition<?> block, BlockDefinition<?> stairs) {
@@ -810,7 +813,7 @@ public class AAERecipeProvider extends RecipeProvider {
 
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(inputBlock), RecipeCategory.MISC, outputBlock, 1)
                 .unlockedBy("hasItem", has(inputBlock))
-                .save(output, stairs.id().toString());
+                .save(output);
     }
 
     private void wallRecipe(BlockDefinition<?> block, BlockDefinition<?> wall) {
@@ -826,10 +829,26 @@ public class AAERecipeProvider extends RecipeProvider {
 
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(inputBlock), RecipeCategory.MISC, outputBlock, 1)
                 .unlockedBy("hasItem", has(inputBlock))
-                .save(output, wall.id().toString());
+                .save(output);
     }
 
     private String makeId(String path) {
         return AdvancedAE.makeId(path).toString();
+    }
+
+    public static final class Runner extends RecipeProvider.Runner {
+        public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
+            super(packOutput, registries);
+        }
+
+        @Override
+        protected RecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput recipeOutput) {
+            return new AAERecipeProvider(provider, recipeOutput);
+        }
+
+        @Override
+        public String getName() {
+            return "Advanced AE Recipes";
+        }
     }
 }

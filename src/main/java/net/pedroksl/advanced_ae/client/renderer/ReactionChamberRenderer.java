@@ -50,7 +50,7 @@ public class ReactionChamberRenderer implements BlockEntityRenderer<ReactionCham
             @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderer.super.extractRenderState(be, state, partialTicks, cameraPos, crumblingOverlay);
 
-        state.clearState();
+        if (state.items.isEmpty()) state.initItems();
 
         if (!AAEConfig.instance().getEnableEffects()) {
             return;
@@ -79,7 +79,6 @@ public class ReactionChamberRenderer implements BlockEntityRenderer<ReactionCham
         var inv = be.getInput();
         for (int x = 0; x < inv.size(); x++) {
             var stack = inv.getStackInSlot(x);
-            if (stack.isEmpty()) continue;
 
             this.itemModelResolver.updateForTopItem(
                     state.items.get(x),
@@ -98,6 +97,8 @@ public class ReactionChamberRenderer implements BlockEntityRenderer<ReactionCham
             PoseStack poseStack,
             SubmitNodeCollector submitNodeCollector,
             CameraRenderState cameraRenderState) {
+        if (state.orientation == null) return;
+
         poseStack.pushPose();
 
         RenderType renderType = Sheets.translucentBlockSheet();
@@ -145,7 +146,7 @@ public class ReactionChamberRenderer implements BlockEntityRenderer<ReactionCham
 
             float duration = 10000;
             long t = System.currentTimeMillis() % (int) duration;
-            float angle = t / (duration / 360f) + x * 120;
+            float angle = t / (duration / 360f) + x * 120 + ((float) (x / 3) * 40);
             poseStack.rotateAround(new Quaternionf().rotationY(Mth.DEG_TO_RAD * angle), 0.5f, 0f, 0.5f);
             var yOffset = itemYPosition(t, duration) / 12f;
             poseStack.translate(0.25f, T - 0.1 + yOffset, 0.5f);
@@ -206,8 +207,8 @@ public class ReactionChamberRenderer implements BlockEntityRenderer<ReactionCham
                 .setColor(color)
                 .setUv(u, v)
                 .setOverlay(overlay)
-                .setLight(light);
-        setNormal(buffer, pose, front);
+                .setLight(light)
+                .setNormal(pose, front.getStepX(), front.getStepY(), front.getStepZ());
     }
 
     // Fluid Coordinates
@@ -234,10 +235,6 @@ public class ReactionChamberRenderer implements BlockEntityRenderer<ReactionCham
     public static RelativeSide[] SIDES = {
         RelativeSide.FRONT, RelativeSide.LEFT, RelativeSide.RIGHT, RelativeSide.BACK, RelativeSide.TOP
     };
-
-    private static void setNormal(VertexConsumer buffer, PoseStack.Pose pose, Direction front) {
-        buffer.setNormal(pose, front.getStepX(), front.getStepY(), front.getStepZ());
-    }
 
     // Calculates a value between -1 and 1 for the y position of the rendered items
     private static float itemYPosition(long x, float max) {

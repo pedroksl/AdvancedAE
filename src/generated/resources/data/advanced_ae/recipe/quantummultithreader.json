@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:mod_loaded",
+        "modid": "extendedae"
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "advanced_ae:quantum_accelerator",
+    "C": "advanced_ae:quantum_core",
+    "S": "advanced_ae:shattered_singularity",
+    "U": "advanced_ae:quantum_unit"
+  },
+  "pattern": [
+    "SSS",
+    "AUA",
+    "ACA"
+  ],
+  "result": {
+    "id": "advanced_ae:quantum_multi_threader"
+  }
+}

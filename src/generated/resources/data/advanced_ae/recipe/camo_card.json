@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "advanced_ae:quantum_upgrade_base",
+    "F": "minecraft:fermented_spider_eye",
+    "G": "minecraft:golden_carrot",
+    "N": "minecraft:nether_wart"
+  },
+  "pattern": [
+    " G ",
+    "FCF",
+    "NNN"
+  ],
+  "result": {
+    "id": "advanced_ae:camo_card"
+  }
+}

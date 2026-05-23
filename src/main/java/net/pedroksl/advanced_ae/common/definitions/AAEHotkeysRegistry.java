@@ -1,5 +1,7 @@
 package net.pedroksl.advanced_ae.common.definitions;
 
+import java.util.Objects;
+
 import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.world.level.ItemLike;
@@ -13,12 +15,12 @@ public final class AAEHotkeysRegistry extends HotkeyRegistry {
     public static final AAEHotkeysRegistry INSTANCE = new AAEHotkeysRegistry();
 
     AAEHotkeysRegistry() {
-        super(AdvancedAE.MOD_ID, id -> Keys.valueOf(id).getDefaultHotkey(), (id) -> AdvancedAE.instance()
+        super(AdvancedAE.MOD_ID, Keys::getDefaultHotkey, (id) -> AdvancedAE.instance()
                 .registerHotkey(id));
     }
 
     public enum Keys {
-        ARMOR_CONFIG("quantum_armor_config", "Open Quantum Armor Configuration", GLFW.GLFW_KEY_N),
+        ARMOR_CONFIG("quantum_armor_config", "Open Quantum Armor Configuration", GLFW.GLFW_KEY_Z),
         PATTERN_ENCODER_HOTKEY("pattern_encoder_action", "Open Advanced Pattern Encoder"),
         QUANTUM_MAGNET_UPGRADE("quantum_magnet_upgrade", "Toggle Quantum Armor Magnet", GLFW.GLFW_KEY_G),
         QUANTUM_AUTO_STOCK_UPGRADE("quantum_auto_stock_upgrade", "Toggle Quantum Armor Auto Stock", GLFW.GLFW_KEY_J),
@@ -40,6 +42,15 @@ public final class AAEHotkeysRegistry extends HotkeyRegistry {
             this.defaultHotkey = defaultHotkey;
         }
 
+        public static Keys byId(String id) {
+            for (var value : values()) {
+                if (Objects.equals(value.id, id)) {
+                    return value;
+                }
+            }
+            return null;
+        }
+
         public String getId() {
             return this.id;
         }
@@ -50,6 +61,14 @@ public final class AAEHotkeysRegistry extends HotkeyRegistry {
 
         public int getDefaultHotkey() {
             return this.defaultHotkey;
+        }
+
+        public static int getDefaultHotkey(String id) {
+            var key = byId(id);
+            if (key != null) {
+                return key.getDefaultHotkey();
+            }
+            return GLFW.GLFW_KEY_UNKNOWN;
         }
     }
 

@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
 import appeng.api.stacks.AEKey;
+import appeng.client.gui.style.Blitter;
 
 public class DirectionInputButton extends Button {
 
@@ -55,9 +56,15 @@ public class DirectionInputButton extends Button {
     @Override
     protected void extractContents(GuiGraphicsExtractor guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         if (highlighted) {
-            guiGraphics.blit(textures.getSecond(), this.getX(), this.getY(), 0, 0, width, height, 16, 16);
+            Blitter.texture(textures.getSecond(), 16, 16)
+                    .src(0, 0, width, height)
+                    .dest(this.getX(), this.getY())
+                    .blit(guiGraphics);
         } else {
-            guiGraphics.blit(textures.getFirst(), this.getX(), this.getY(), 0, 0, width, height, 16, 16);
+            Blitter.texture(textures.getFirst(), 16, 16)
+                    .src(0, 0, width, height)
+                    .dest(this.getX(), this.getY())
+                    .blit(guiGraphics);
         }
     }
 }

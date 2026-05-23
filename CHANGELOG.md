@@ -1,1 +1,1 @@
-- Fixed quantum crafter using output space as an intermediate step to pushing to ME Storage (fixes some item voiding in high output setups) (Fixes #244)
+Updated to 26.1 (*Alpha release, expect bugs to be present*)

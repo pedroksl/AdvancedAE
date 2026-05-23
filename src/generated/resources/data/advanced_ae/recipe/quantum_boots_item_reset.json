@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "advanced_ae:quantum_boots"
+  ],
+  "result": {
+    "id": "advanced_ae:quantum_boots"
+  }
+}

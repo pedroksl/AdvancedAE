@@ -1,0 +1,12 @@
+{
+  "type": "ae2:inscriber",
+  "ingredients": {
+    "bottom": "ae2:logic_processor_press",
+    "middle": "advanced_ae:shattered_singularity",
+    "top": "ae2:engineering_processor_press"
+  },
+  "mode": "press",
+  "result": {
+    "id": "advanced_ae:quantum_processor_press"
+  }
+}

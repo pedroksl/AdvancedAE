@@ -1,0 +1,17 @@
+{
+  "type": "advanced_ae:react",
+  "fluidOutput": {
+    "amount": 1000,
+    "id": "advanced_ae:quantum_infusion_source"
+  },
+  "input_energy": 20000,
+  "input_fluid": {
+    "amount": 4000,
+    "ingredient": "minecraft:water"
+  },
+  "input_items": [
+    {
+      "ingredient": "advanced_ae:quantum_infused_dust"
+    }
+  ]
+}

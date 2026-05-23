@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 
 import appeng.api.orientation.BlockOrientation;
 
@@ -15,13 +16,9 @@ public class ReactionChamberRenderState extends BlockEntityRenderState {
     int fluidTint;
     BlockOrientation orientation;
 
-    public void clearState() {
-        for (var item : items) {
-            item.clear();
+    public void initItems() {
+        for (var x = 0; x < ReactionChamberEntity.MAX_INPUT_SLOTS; x++) {
+            items.add(new ItemStackRenderState());
         }
-
-        fluidTexture = null;
-        fluidTint = -1;
-        orientation = null;
     }
 }

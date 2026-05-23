@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "S": "ae2:speed_card"
+  },
+  "pattern": [
+    "  S",
+    " I ",
+    "I  "
+  ],
+  "result": {
+    "id": "advanced_ae:throughput_monitor_configurator"
+  }
+}

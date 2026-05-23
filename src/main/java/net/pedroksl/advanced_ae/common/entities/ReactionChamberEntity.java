@@ -73,7 +73,7 @@ import appeng.util.inv.filter.AEItemFilters;
 
 public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         implements IGridTickable, IUpgradeableObject, IConfigurableObject, IDirectionalOutputHost {
-    private static final int MAX_INPUT_SLOTS = 9;
+    public static final int MAX_INPUT_SLOTS = 9;
     private static final int MAX_PROCESSING_STEPS = 200;
     private static final int MAX_POWER_STORAGE = 500000;
     private static final int MAX_TANK_CAPACITY = 16000;
@@ -91,10 +91,9 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
             new FilteredInternalInventory(this.outputInv, AEItemFilters.EXTRACT_ONLY);
     private final InternalInventory invExposed = new CombinedInternalInventory(this.inputExposed, this.outputExposed);
 
-    private final ResourceHandler<FluidResource> fluidHandler = new ReactionChamberResourceHandler();
-
     private final CustomGenericInv fluidInv =
             new CustomGenericInv(Set.of(AEKeyType.fluids()), this::onChangeTank, GenericStackInv.Mode.STORAGE, 2);
+    private final ResourceHandler<FluidResource> fluidHandler = new ReactionChamberResourceHandler();
 
     private boolean working = false;
     private int processingTime = 0;

@@ -5,12 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.LightCoordsUtil;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.parts.ThroughputMonitorPart;
 
@@ -19,7 +16,6 @@ import appeng.api.stacks.AmountFormat;
 import appeng.api.util.AEColor;
 import appeng.client.api.renderer.parts.PartRenderer;
 import appeng.client.render.BlockEntityRenderHelper;
-import net.pedroksl.ae2addonlib.util.Colors;
 
 public class ThroughputMonitorRenderer implements PartRenderer<ThroughputMonitorPart, ThroughputMonitorRenderState> {
     private final Font font;
@@ -108,7 +104,8 @@ public class ThroughputMonitorRenderer implements PartRenderer<ThroughputMonitor
                 poseStack, state.throughput, state.throughputWidth, state.subColor, nodes);
 
         if (state.trendTexture != null) {
-			AAEBlockEntityRenderHelper.renderTexture(poseStack, state.trendTexture, TREND_TEXTURE_SIZE, state.throughputWidth, nodes);
+            AAEBlockEntityRenderHelper.renderTexture(
+                    poseStack, state.trendTexture, TREND_TEXTURE_SIZE, state.throughputWidth, nodes);
         }
 
         poseStack.popPose();

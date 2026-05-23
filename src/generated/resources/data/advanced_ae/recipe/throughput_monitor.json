@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "ae2:calculation_processor",
+    "ae2:storage_monitor"
+  ],
+  "result": {
+    "id": "advanced_ae:throughput_monitor"
+  }
+}

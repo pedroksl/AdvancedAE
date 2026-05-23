@@ -9,6 +9,7 @@ import net.minecraft.world.item.crafting.*;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.client.AAEClient;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.recipes.AAERecipeTypes;
 import net.pedroksl.ae2addonlib.recipes.IngredientStack;
@@ -48,7 +49,7 @@ public class JEIPlugin implements IModPlugin {
             IRecipeRegistration registration,
             IRecipeType<RecipeHolder<T>> recipeType,
             RecipeType<T> vanillaRecipeType) {
-        var recipes = AdvancedAE.instance().getRecipeMapForType(Minecraft.getInstance().level, vanillaRecipeType);
+        var recipes = AAEClient.instance().getRecipeMapForType(Minecraft.getInstance().level, vanillaRecipeType);
         var recipeHolders = List.copyOf(recipes.byType(vanillaRecipeType));
         registration.addRecipes(recipeType, recipeHolders);
     }
