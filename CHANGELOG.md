@@ -1,1 +1,2 @@
-Updated to 26.1 (*Alpha release, expect bugs to be present*)
+- Fixed several issues in guide pages
+- Updated to AE2AddonLib 26.1.1-alpha (fixes not loading on a server)

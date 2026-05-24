@@ -16,7 +16,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -34,6 +33,7 @@ import net.pedroksl.advanced_ae.common.parts.ThroughputMonitorPart;
 import net.pedroksl.advanced_ae.gui.AdvancedIOBusMenu;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
 import net.pedroksl.advanced_ae.gui.StockExportBusMenu;
+import net.pedroksl.ae2addonlib.client.render.WaterBasedFluidModel;
 import net.pedroksl.ae2addonlib.util.WaterBasedFluidType;
 
 import appeng.client.InitScreens;
@@ -183,7 +183,7 @@ public class AAEClient extends AdvancedAE {
 
     private static void initClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerFluidType(
-                (IClientFluidTypeExtensions) AAEFluids.QUANTUM_INFUSION.fluidType(),
+                new WaterBasedFluidModel<>(((WaterBasedFluidType) AAEFluids.QUANTUM_INFUSION.fluidType())),
                 AAEFluids.QUANTUM_INFUSION.fluidType());
     }
 
@@ -193,8 +193,8 @@ public class AAEClient extends AdvancedAE {
 
     private static void initFluidModels(RegisterFluidModelsEvent event) {
         for (var fluid : AAEFluids.INSTANCE.getFluids()) {
-            if (fluid.fluidType() instanceof WaterBasedFluidType waterBasedFluidType) {
-                event.register(waterBasedFluidType.getFluidModel(), fluid::source, fluid::flowing);
+            if (fluid.fluidType() instanceof WaterBasedFluidType type) {
+                event.register(new WaterBasedFluidModel<>(type).get(), fluid::source, fluid::flowing);
             }
         }
     }

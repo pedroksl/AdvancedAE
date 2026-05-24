@@ -42,7 +42,8 @@ neoForge {
         client {
             client()
             systemProperties = [
-                    'guideme.ae2.guide.sources': file('src/main/resources/assets/advanced_ae/ae2guide/aae_intro/').absolutePath
+                    'guideDev.ae2guide.sources': file('src/main/resources/assets/advanced_ae/ae2guide/aae_intro/').absolutePath,
+                    'guideDev.ae2guide.sourcesNamespace': 'advanced_ae'
             ]
         }
 
