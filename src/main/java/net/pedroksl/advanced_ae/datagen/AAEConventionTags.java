@@ -1,7 +1,7 @@
 package net.pedroksl.advanced_ae.datagen;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -24,10 +24,10 @@ public final class AAEConventionTags {
     public static final TagKey<Item> SHATTERED_SINGULARITY = tag("c:dusts/shattered_singularity");
 
     private static TagKey<Item> tag(String name) {
-        return TagKey.create(Registries.ITEM, ResourceLocation.parse(name));
+        return TagKey.create(Registries.ITEM, Identifier.parse(name));
     }
 
     private static TagKey<Block> blockTag(String name) {
-        return TagKey.create(Registries.BLOCK, ResourceLocation.parse(name));
+        return TagKey.create(Registries.BLOCK, Identifier.parse(name));
     }
 }

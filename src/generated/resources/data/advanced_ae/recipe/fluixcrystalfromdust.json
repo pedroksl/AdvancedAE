@@ -1,29 +1,22 @@
 {
-  "type": "advanced_ae:reaction",
+  "type": "advanced_ae:react",
   "input_energy": 100000,
   "input_fluid": {
     "amount": 500,
-    "ingredient": {
-      "fluid": "minecraft:water"
-    }
+    "ingredient": "minecraft:water"
   },
   "input_items": [
     {
       "amount": 32,
-      "ingredient": {
-        "item": "ae2:charged_certus_quartz_crystal"
-      }
+      "ingredient": "ae2:charged_certus_quartz_crystal"
     },
     {
       "amount": 32,
-      "ingredient": {
-        "item": "ae2:fluix_dust"
-      }
+      "ingredient": "ae2:fluix_dust"
     }
   ],
-  "output": {
-    "#": 64,
-    "#t": "ae2:i",
+  "itemOutput": {
+    "count": 64,
     "id": "ae2:fluix_crystal"
   }
 }

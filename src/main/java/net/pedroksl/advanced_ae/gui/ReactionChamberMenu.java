@@ -12,8 +12,8 @@ import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.ReactionChamberEntity;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
 import net.pedroksl.ae2addonlib.api.IFluidTankHandler;
+import net.pedroksl.ae2addonlib.core.network.clientPacket.FluidTankStackUpdatePacket;
 import net.pedroksl.ae2addonlib.gui.OutputDirectionMenu;
-import net.pedroksl.ae2addonlib.network.clientPacket.FluidTankStackUpdatePacket;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
@@ -21,6 +21,7 @@ import appeng.api.stacks.AEFluidKey;
 import appeng.api.util.IConfigManager;
 import appeng.helpers.externalstorage.GenericStackInv;
 import appeng.menu.SlotSemantics;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.implementations.UpgradeableMenu;
 import appeng.menu.interfaces.IProgressProvider;
@@ -45,9 +46,9 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     public final int INPUT_FLUID_SIZE = 16;
     public final int OUTPUT_FLUID_SIZE = 16;
 
-    private static final String FLUSH_FLUID = "flushFluid";
-    private static final String FLUSH_FLUID_OUT = "flushFluidOut";
-    private static final String CONFIGURE_OUTPUT = "configureOutput";
+    private static final ClientActionKey<Void> FLUSH_FLUID = new ClientActionKey<>("flushFluid");
+    private static final ClientActionKey<Void> FLUSH_FLUID_OUT = new ClientActionKey<>("flushFluidOut");
+    private static final ClientActionKey<Void> CONFIGURE_OUTPUT = new ClientActionKey<>("configureOutput");
 
     private final List<Slot> inputs = new ArrayList<>(9);
 
@@ -166,11 +167,6 @@ public class ReactionChamberMenu extends UpgradeableMenu<ReactionChamberEntity>
     @Override
     public ItemStack getCarriedItem() {
         return getCarried();
-    }
-
-    @Override
-    public void setCarriedItem(ItemStack stack) {
-        setCarried(stack);
     }
 
     @Override

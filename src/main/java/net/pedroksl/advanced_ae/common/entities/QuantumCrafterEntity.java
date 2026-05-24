@@ -8,11 +8,10 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +23,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.blocks.QuantumCrafterBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
@@ -173,17 +174,17 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     @Override
-    protected void saveVisualState(CompoundTag data) {
-        super.saveVisualState(data);
+    protected void saveVisualState(ValueOutput output) {
+        super.saveVisualState(output);
 
-        data.putBoolean("working", isWorking());
+        output.putBoolean("working", isWorking());
     }
 
     @Override
-    protected void loadVisualState(CompoundTag data) {
-        super.loadVisualState(data);
+    protected void loadVisualState(ValueInput input) {
+        super.loadVisualState(input);
 
-        setWorking(data.getBoolean("working"));
+        setWorking(input.getBooleanOr("working", false));
     }
 
     @Override
@@ -206,7 +207,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
 
     @Nullable
     @Override
-    public InternalInventory getSubInventory(ResourceLocation id) {
+    public InternalInventory getSubInventory(Identifier id) {
         if (id.equals(ISegmentedInventory.STORAGE)) {
             return this.getInternalInventory();
         } else if (id.equals(ISegmentedInventory.UPGRADES)) {
@@ -371,6 +372,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             var extracted = grid.getStorageService()
                     .getInventory()
                     .extract(output.what(), maxStock, Actionable.SIMULATE, this.mySrc);
+
             var amountInOutput = 0;
             for (int x = 0; x < this.outputInv.size(); x++) {
                 var stack = this.outputInv.getStackInSlot(x);
@@ -394,18 +396,23 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     private boolean hasAvailableOutputStorage(CraftingJob job) {
-        for (var output : job.pattern.getOutputs()) {
-            if (output.what() instanceof AEItemKey key) {
-                var stack = key.toStack((int) output.amount());
-                for (var x = 0; x < this.outputInv.size(); x++) {
-                    stack = this.outputInv.insertItem(x, stack, true);
-                    if (stack.isEmpty()) {
-                        break;
+        if (isExportToMe()) {
+            return this.sendList.stream()
+                    .noneMatch(p -> p.what().matches(job.pattern.getOutputs().getFirst()));
+        } else {
+            for (var output : job.pattern.getOutputs()) {
+                if (output.what() instanceof AEItemKey key) {
+                    var stack = key.toStack((int) output.amount());
+                    for (var x = 0; x < this.outputInv.size(); x++) {
+                        stack = this.outputInv.insertItem(x, stack, true);
+                        if (stack.isEmpty()) {
+                            break;
+                        }
                     }
-                }
 
-                if (!stack.isEmpty()) {
-                    return false;
+                    if (!stack.isEmpty()) {
+                        return false;
+                    }
                 }
             }
         }
@@ -526,10 +533,14 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 var stack = key.toStack();
                 stack.setCount((int) job.outputAmountPerCraft(output) * completeRecipes);
 
-                for (var x = 0; x < this.outputInv.size(); x++) {
-                    stack = this.outputInv.insertItem(x, stack, Actionable.MODULATE.isSimulate());
-                    if (stack.isEmpty()) {
-                        break;
+                if (isExportToMe()) {
+                    this.addToSendList(key, stack.getCount());
+                } else {
+                    for (var x = 0; x < this.outputInv.size(); x++) {
+                        stack = this.outputInv.insertItem(x, stack, Actionable.MODULATE.isSimulate());
+                        if (stack.isEmpty()) {
+                            break;
+                        }
                     }
                 }
             }
@@ -714,113 +725,86 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     @Override
-    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
-        super.saveAdditional(data, registries);
+    public void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
 
-        ListTag outputTags = new ListTag();
+        var outputTags = output.childrenList("outputSides");
         for (var side : this.allowedOutputs) {
-            outputTags.add(StringTag.valueOf(side.name()));
+            outputTags.addChild().putString("side", side.name());
         }
-        data.put("outputSides", outputTags);
 
-        ListTag invalidTags = new ListTag();
+        var invalidTags = output.childrenList("invalidPatterns");
         for (var value : invalidPatternSlots) {
-            invalidTags.add(ByteTag.valueOf(value));
+            invalidTags.addChild().putBoolean("invalid", value);
         }
-        data.put("invalidPatterns", invalidTags);
 
-        ListTag enabledTags = new ListTag();
+        var enabledTags = output.childrenList("enabledPatterns");
         for (var value : enabledPatternSlots) {
-            enabledTags.add(ByteTag.valueOf(value));
-        }
-        data.put("enabledPatterns", enabledTags);
-
-        var jobTags = makeJobsTag(registries);
-        if (jobTags != null) {
-            data.put("craftingJobs", jobTags);
+            enabledTags.addChild().putBoolean("enabled", value);
         }
 
-        this.upgrades.writeToNBT(data, "upgrades", registries);
-        this.configManager.writeToNBT(data, registries);
+        makeJobsTag(output, "craftingJobs");
 
-        ListTag sendListTag = new ListTag();
+        this.upgrades.writeToNBT(output, "upgrades");
+        this.configManager.writeToNBT(output);
+
+        var sendListTag = output.childrenList(NBT_SEND_LIST);
         for (var toSend : this.sendList) {
-            sendListTag.add(GenericStack.writeTag(registries, toSend));
+            GenericStack.writeTag(sendListTag.addChild(), toSend);
         }
-        data.put(NBT_SEND_LIST, sendListTag);
     }
 
     @Override
-    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
-        super.loadTag(data, registries);
+    public void loadTag(ValueInput input) {
+        super.loadTag(input);
 
         this.allowedOutputs.clear();
-        ListTag outputTags = data.getList("outputSides", Tag.TAG_STRING);
-        if (!outputTags.isEmpty()) {
-            for (var x = 0; x < outputTags.size(); x++) {
-                RelativeSide side = Enum.valueOf(RelativeSide.class, outputTags.getString(x));
-                this.allowedOutputs.add(side);
-            }
+        for (var tag : input.childrenListOrEmpty("outputSides")) {
+            tag.getString("side").ifPresent(side -> {
+                this.allowedOutputs.add(Enum.valueOf(RelativeSide.class, side));
+            });
         }
 
-        ListTag invalidTags = data.getList("invalidPatterns", Tag.TAG_BYTE);
-        if (!invalidTags.isEmpty()) {
-            for (var x = 0; x < invalidPatternSlots.size(); x++) {
-                invalidPatternSlots.set(x, ((ByteTag) invalidTags.get(x)).getAsByte() > 0);
-            }
+        var x = 0;
+        for (var tag : input.childrenListOrEmpty("invalidPatterns")) {
+            this.invalidPatternSlots.set(x, tag.getBooleanOr("invalid", false));
+            x++;
         }
 
-        ListTag enabledTags = data.getList("enabledPatterns", Tag.TAG_BYTE);
-        if (!enabledTags.isEmpty()) {
-            for (var x = 0; x < enabledPatternSlots.size(); x++) {
-                enabledPatternSlots.set(x, ((ByteTag) enabledTags.get(x)).getAsByte() > 0);
-            }
+        x = 0;
+        for (var tag : input.childrenListOrEmpty("enabledPatterns")) {
+            this.enabledPatternSlots.set(x, tag.getBooleanOr("enabled", false));
+            x++;
         }
 
-        if (data.contains("craftingJobs")) {
-            readJobs(data, registries);
-        }
+        readJobs(input);
 
-        this.upgrades.readFromNBT(data, "upgrades", registries);
-        this.configManager.readFromNBT(data, registries);
+        this.upgrades.readFromNBT(input, "upgrades");
+        this.configManager.readFromNBT(input);
 
-        var sendListTag = data.getList(NBT_SEND_LIST, Tag.TAG_COMPOUND);
-        for (int i = 0; i < sendListTag.size(); ++i) {
-            var stack = GenericStack.readTag(registries, sendListTag.getCompound(i));
+        for (var tag : input.childrenListOrEmpty(NBT_SEND_LIST)) {
+            var stack = GenericStack.readTag(tag);
             if (stack != null) {
                 this.addToSendList(stack.what(), stack.amount());
             }
         }
     }
 
-    public ListTag makeJobsTag(HolderLookup.Provider registries) {
-        try {
-            ListTag jobTags = new ListTag();
-            for (var job : craftingJobs) {
-                CompoundTag tag = new CompoundTag();
-                if (job != null) {
-                    job.writeToNBT(tag, registries);
-                    jobTags.add(tag);
-                } else {
-                    jobTags.add(tag);
-                }
+    public void makeJobsTag(ValueOutput output, String name) {
+        var data = output.childrenList(name);
+        for (var job : craftingJobs) {
+            var child = data.addChild();
+            if (job != null) {
+                job.writeToNBT(child);
             }
-            return jobTags;
-
-        } catch (NullPointerException ignored) {
-            return null;
         }
     }
 
-    private void readJobs(CompoundTag data, HolderLookup.Provider registries) {
-        ListTag jobTags = data.getList("craftingJobs", Tag.TAG_COMPOUND);
-        if (!jobTags.isEmpty()) {
-            for (var x = 0; x < jobTags.size(); x++) {
-                CompoundTag tag = ((CompoundTag) jobTags.get(x));
-                if (!tag.isEmpty()) {
-                    craftingJobs.set(x, CraftingJob.fromTag(tag, registries));
-                }
-            }
+    private void readJobs(ValueInput input) {
+        var x = 0;
+        for (var job : input.childrenListOrEmpty("craftingJobs")) {
+            craftingJobs.set(x, CraftingJob.fromTag(job));
+            x++;
         }
     }
 
@@ -888,7 +872,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     private void importPatterns(@Nullable Player player, DataComponentMap input) {
         var patterns = input.getOrDefault(AEComponents.EXPORTED_PATTERNS, ItemContainerContents.EMPTY);
 
-        if (player != null && !player.level().isClientSide) {
+        if (player != null && !player.level().isClientSide()) {
             clearPatternInventory(player);
 
             var desiredPatterns = new AppEngInternalInventory(this.patternInv.size());
@@ -1022,7 +1006,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
     }
 
     public boolean isActive() {
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             return this.getMainNode().isOnline();
         } else {
             return this.isActive;
@@ -1141,6 +1125,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         try {
             var job = craftingJobs.get(index);
             job.setMinimumInputToKeep(inputIndex, amount);
+            saveChanges();
         } catch (IndexOutOfBoundsException ignored) {
 
         }
@@ -1151,6 +1136,7 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
         try {
             var job = craftingJobs.get(index);
             job.limitMaxOutput = amount;
+            saveChanges();
         } catch (IndexOutOfBoundsException ignored) {
 
         }
@@ -1228,52 +1214,38 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
             }
         }
 
-        public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
-            ListTag remainingTag = new ListTag();
+        public void writeToNBT(ValueOutput output) {
+            var remainingTag = output.childrenList("remainingItems");
             for (var item : remainingItems) {
                 if (item == null || item.isEmpty()) continue;
 
-                CompoundTag itemTag = new CompoundTag();
-                itemTag = (CompoundTag) item.save(registries, itemTag);
-                remainingTag.add(itemTag);
+                var child = remainingTag.addChild();
+                child.store("item", ItemStack.CODEC, item);
             }
-            data.put("remainingItems", remainingTag);
 
-            ListTag listMinTag = new ListTag();
+            var listMinTag = output.childrenList("listMinInput");
             for (var value : keepMinInput) {
-                listMinTag.add(LongTag.valueOf(value));
+                listMinTag.addChild().putLong("value", value);
             }
-            data.put("listMinInput", listMinTag);
 
-            data.putLong("limitMaxOutput", limitMaxOutput);
+            output.putLong("limitMaxOutput", limitMaxOutput);
         }
 
-        public static CraftingJob fromTag(CompoundTag data, HolderLookup.Provider registries) {
+        public static CraftingJob fromTag(ValueInput input) {
             List<ItemStack> remainingItems = new ArrayList<>();
-            if (data.contains("remainingItems")) {
-                ListTag remainingTag = data.getList("remainingItems", Tag.TAG_COMPOUND);
-                remainingItems = Arrays.asList(new ItemStack[remainingTag.size()]);
-                if (!remainingTag.isEmpty()) {
-
-                    for (var x = 0; x < remainingTag.size(); x++) {
-                        remainingItems.set(x, ItemStack.parseOptional(registries, remainingTag.getCompound(x)));
-                    }
+            for (var item : input.childrenListOrEmpty("remainingItems")) {
+                var is = item.read("item", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+                if (!is.isEmpty()) {
+                    remainingItems.add(is);
                 }
             }
 
             List<Long> keepMinInput = new ArrayList<>();
-            if (data.contains("listMinInput")) {
-                ListTag listMinTag = data.getList("listMinInput", Tag.TAG_LONG);
-                keepMinInput = Arrays.asList(new Long[listMinTag.size()]);
-                if (!listMinTag.isEmpty()) {
-
-                    for (var x = 0; x < listMinTag.size(); x++) {
-                        keepMinInput.set(x, ((LongTag) listMinTag.get(x)).getAsLong());
-                    }
-                }
+            for (var minInput : input.childrenListOrEmpty("listMinInput")) {
+                keepMinInput.add(minInput.getLongOr("value", 0));
             }
 
-            var limitMaxOutput = data.contains("limitMaxOutput") ? data.getLong("limitMaxOutput") : 0;
+            var limitMaxOutput = input.getLongOr("limitMaxOutput", 0);
 
             return new CraftingJob(null, remainingItems, keepMinInput, limitMaxOutput);
         }

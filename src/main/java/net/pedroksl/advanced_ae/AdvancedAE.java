@@ -1,27 +1,30 @@
 package net.pedroksl.advanced_ae;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.crafting.RecipeMap;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoader;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.registries.RegisterEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.pedroksl.advanced_ae.common.definitions.*;
 import net.pedroksl.advanced_ae.common.parts.AdvPatternProviderPart;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.advanced_ae.events.AAELivingEntityEvents;
 import net.pedroksl.advanced_ae.events.AAEPlayerEvents;
 import net.pedroksl.advanced_ae.network.AAENetworkHandler;
-import net.pedroksl.advanced_ae.recipes.InitRecipeSerializers;
-import net.pedroksl.advanced_ae.recipes.InitRecipeTypes;
+import net.pedroksl.advanced_ae.recipes.AAERecipeSerializers;
+import net.pedroksl.advanced_ae.recipes.AAERecipeTypes;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 import net.pedroksl.advanced_ae.xmod.dme.DMEPlugin;
@@ -42,8 +45,7 @@ import appeng.core.definitions.AEBlockEntities;
 import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 
-@Mod(value = AdvancedAE.MOD_ID, dist = Dist.DEDICATED_SERVER)
-public class AdvancedAE {
+public abstract class AdvancedAE {
     public static final String MOD_ID = "advanced_ae";
 
     static AdvancedAE INSTANCE;
@@ -62,21 +64,15 @@ public class AdvancedAE {
         AAEFluids.INSTANCE.register(eventBus);
         AAEMenus.INSTANCE.register(eventBus);
         AAEComponents.INSTANCE.register(eventBus);
-        AAEMaterials.INSTANCE.register(eventBus);
         AAECreativeTab.INSTANCE.register(eventBus);
+        AAERecipeTypes.DR.register(eventBus);
+        AAERecipeSerializers.DR.register(eventBus);
 
         eventBus.addListener(AdvancedAE::initUpgrades);
         eventBus.addListener(AdvancedAE::initCapabilities);
         eventBus.addListener(AdvancedAE::imc);
-
         eventBus.addListener(AAENetworkHandler.INSTANCE::register);
-        eventBus.addListener((RegisterEvent event) -> {
-            if (event.getRegistryKey() == Registries.RECIPE_TYPE) {
-                InitRecipeTypes.init(event.getRegistry(Registries.RECIPE_TYPE));
-            } else if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER) {
-                InitRecipeSerializers.init(event.getRegistry(Registries.RECIPE_SERIALIZER));
-            }
-        });
+        NeoForge.EVENT_BUS.addListener(this::registerSynchronizedRecipes);
 
         eventBus.addListener(this::commonSetup);
         AAEHotkeysRegistry.INSTANCE.init();
@@ -86,7 +82,9 @@ public class AdvancedAE {
         return INSTANCE;
     }
 
-    public void registerHotkey(String id) {}
+    private void registerSynchronizedRecipes(OnDatapackSyncEvent event) {
+        event.sendRecipes(AAERecipeTypes.REACTION_CHAMBER);
+    }
 
     private void commonSetup(FMLCommonSetupEvent event) {
         NeoForge.EVENT_BUS.register(AAELivingEntityEvents.class);
@@ -94,9 +92,18 @@ public class AdvancedAE {
 
         event.enqueueWork(this::postRegistrationInitialization).whenComplete((res, err) -> {
             if (err != null) {
-                AELog.warn(err);
+                AELog.warn("Common setup failed", err);
             }
         });
+    }
+
+    public RecipeMap getRecipeMapForType(Level level, RecipeType<?> recipeType) {
+        if (level instanceof ServerLevel serverLevel) {
+            return serverLevel.recipeAccess().recipeMap();
+        } else {
+            AELog.warn("Don't know how to retrieve recipe information for level type {}", level);
+            return RecipeMap.EMPTY;
+        }
     }
 
     public void postRegistrationInitialization() {
@@ -104,9 +111,9 @@ public class AdvancedAE {
         GridLinkables.register(AAEItems.QUANTUM_CHESTPLATE, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_LEGGINGS, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_BOOTS, IGridLinkedItem.LINKABLE_HANDLER);
-        GridLinkables.register(
-                AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL,
-                appeng.items.tools.powered.WirelessTerminalItem.LINKABLE_HANDLER);
+        //        GridLinkables.register(
+        //                AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL,
+        //                appeng.items.tools.powered.WirelessTerminalItem.LINKABLE_HANDLER);
     }
 
     private static void initUpgrades(FMLCommonSetupEvent event) {
@@ -144,8 +151,8 @@ public class AdvancedAE {
         for (var type : AAEItems.INSTANCE.getItems()) {
             if (type.get() instanceof IAEItemPowerStorage powerStorage) {
                 event.registerItem(
-                        Capabilities.EnergyStorage.ITEM,
-                        (object, context) -> new PoweredItemCapabilities(object, powerStorage),
+                        Capabilities.Energy.ITEM,
+                        (object, access) -> new PoweredItemCapabilities(access, object.getItem(), powerStorage),
                         type);
             }
         }
@@ -160,7 +167,7 @@ public class AdvancedAE {
                 (be, context) -> be.getLogic().getReturnInv());
 
         event.registerBlockEntity(
-                Capabilities.ItemHandler.BLOCK,
+                Capabilities.Item.BLOCK,
                 AAEBlockEntities.REACTION_CHAMBER.get(),
                 AEBaseInvBlockEntity::getExposedItemHandler);
         event.registerBlockEntity(
@@ -168,7 +175,7 @@ public class AdvancedAE {
                 AAEBlockEntities.REACTION_CHAMBER.get(),
                 (be, context) -> be.getTank());
         event.registerBlockEntity(
-                Capabilities.EnergyStorage.BLOCK,
+                Capabilities.Energy.BLOCK,
                 AAEBlockEntities.REACTION_CHAMBER.get(),
                 AEBasePoweredBlockEntity::getEnergyStorage);
 
@@ -190,6 +197,8 @@ public class AdvancedAE {
         }
     }
 
+    private static void registerPartCapabilities(RegisterPartCapabilitiesEvent event) {}
+
     public static void imc(InterModEnqueueEvent event) {
         if (Addons.INVTWEAKS.isLoaded()) {
             InterModComms.sendTo(
@@ -200,7 +209,12 @@ public class AdvancedAE {
         }
     }
 
-    public static ResourceLocation makeId(String id) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, id);
+    public static Identifier makeId(String id) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, id);
     }
+
+    @Nullable
+    public abstract Level getClientLevel();
+
+    public abstract void registerHotkey(String id);
 }

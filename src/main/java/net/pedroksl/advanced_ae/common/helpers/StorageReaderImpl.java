@@ -54,11 +54,10 @@ public class StorageReaderImpl<T, S> implements StorageReader {
     }
 
     public static StorageReader item(ServerLevel level, BlockPos fromPos, Direction fromSide) {
-        return new StorageReaderImpl<>(Capabilities.ItemHandler.BLOCK, HandlerStrategy.ITEMS, level, fromPos, fromSide);
+        return new StorageReaderImpl<>(Capabilities.Item.BLOCK, HandlerStrategy.ITEMS, level, fromPos, fromSide);
     }
 
     public static StorageReader fluid(ServerLevel level, BlockPos fromPos, Direction fromSide) {
-        return new StorageReaderImpl<>(
-                Capabilities.FluidHandler.BLOCK, HandlerStrategy.FLUIDS, level, fromPos, fromSide);
+        return new StorageReaderImpl<>(Capabilities.Fluid.BLOCK, HandlerStrategy.FLUIDS, level, fromPos, fromSide);
     }
 }

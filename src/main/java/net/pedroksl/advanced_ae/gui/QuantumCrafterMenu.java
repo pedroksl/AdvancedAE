@@ -3,6 +3,7 @@ package net.pedroksl.advanced_ae.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -18,6 +19,7 @@ import appeng.api.config.YesNo;
 import appeng.api.util.IConfigManager;
 import appeng.core.definitions.AEItems;
 import appeng.menu.SlotSemantics;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.implementations.UpgradeableMenu;
 import appeng.menu.slot.AppEngSlot;
@@ -34,9 +36,9 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
     public List<Boolean> invalidPatterns = new ArrayList<>();
     public List<Boolean> enabledPatterns = new ArrayList<>();
 
-    private static final String CONFIGURE_OUTPUT = "configureOutput";
-    private static final String CONFIG_PATTERN = "configPattern";
-    private static final String TOGGLE_ENABLE_PATTERN = "toggleEnablePattern";
+    private static final ClientActionKey<Void> CONFIGURE_OUTPUT = new ClientActionKey<>("configureOutput");
+    private static final ClientActionKey<Integer> CONFIG_PATTERN = new ClientActionKey<>("configPattern");
+    private static final ClientActionKey<Integer> TOGGLE_ENABLE_PATTERN = new ClientActionKey<>("toggleEnablePattern");
 
     private final Slot[] patternSlots = new Slot[9];
 
@@ -59,8 +61,8 @@ public class QuantumCrafterMenu extends UpgradeableMenu<QuantumCrafterEntity> {
         setEnabledPatterns(host.getEnabledPatternSlots());
 
         registerClientAction(CONFIGURE_OUTPUT, this::configureOutput);
-        registerClientAction(CONFIG_PATTERN, Integer.class, this::configPattern);
-        registerClientAction(TOGGLE_ENABLE_PATTERN, Integer.class, this::toggleEnablePattern);
+        registerClientAction(CONFIG_PATTERN, ByteBufCodecs.INT, this::configPattern);
+        registerClientAction(TOGGLE_ENABLE_PATTERN, ByteBufCodecs.INT, this::toggleEnablePattern);
     }
 
     protected void loadSettingsFromHost(IConfigManager cm) {

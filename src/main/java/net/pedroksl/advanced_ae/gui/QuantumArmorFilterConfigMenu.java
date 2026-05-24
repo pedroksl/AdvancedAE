@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,7 @@ import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.SlotSemantics;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.locator.MenuHostLocator;
 import appeng.menu.slot.FakeSlot;
@@ -33,7 +35,7 @@ import appeng.util.ConfigInventory;
 public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu, ISetAmountMenuHost {
 
     @GuiSync(7)
-    public UpgradeType upgradeType;
+    public UpgradeType upgradeType = UpgradeType.EMPTY;
 
     public int slotIndex;
     private final ISubMenuHost host;
@@ -42,7 +44,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
 
     protected final FakeSlot[] slots = new FakeSlot[9];
 
-    protected static final String OPEN_AMOUNT_MENU = "open_amount_menu";
+    protected static final ClientActionKey<Integer> OPEN_AMOUNT_MENU = new ClientActionKey<>("open_amount_menu");
 
     public QuantumArmorFilterConfigMenu(MenuType<?> type, int id, Inventory playerInventory, ISubMenuHost host) {
         super(type, id, playerInventory, host);
@@ -68,7 +70,7 @@ public class QuantumArmorFilterConfigMenu extends AEBaseMenu implements ISubMenu
             this.addSlot(slots[x], SlotSemantics.CONFIG);
         }
 
-        registerClientAction(OPEN_AMOUNT_MENU, Integer.class, this::openAmountMenu);
+        registerClientAction(OPEN_AMOUNT_MENU, ByteBufCodecs.INT, this::openAmountMenu);
     }
 
     private boolean typeFilter(AEKey aeKey) {

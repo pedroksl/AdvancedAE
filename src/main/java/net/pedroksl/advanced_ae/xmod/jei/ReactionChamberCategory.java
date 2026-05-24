@@ -2,13 +2,15 @@ package net.pedroksl.advanced_ae.xmod.jei;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
-import net.pedroksl.advanced_ae.AdvancedAE;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
+import net.pedroksl.advanced_ae.recipes.AAERecipeTypes;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 
 import appeng.core.AppEng;
@@ -22,15 +24,15 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.types.IRecipeType;
 
-public class ReactionChamberCategory implements IRecipeCategory<ReactionChamberRecipe> {
+public class ReactionChamberCategory implements IRecipeCategory<RecipeHolder<ReactionChamberRecipe>> {
 
-    public static final RecipeType<ReactionChamberRecipe> RECIPE_TYPE =
-            RecipeType.create(AdvancedAE.MOD_ID, "reaction_chamber", ReactionChamberRecipe.class);
+    public static final IRecipeType<RecipeHolder<ReactionChamberRecipe>> RECIPE_TYPE =
+            IRecipeType.create(AAERecipeTypes.REACTION_CHAMBER);
 
-    private static final ResourceLocation BACKGROUND = AppEng.makeId("textures/guis/reaction_chamber.png");
+    private static final Identifier BACKGROUND = AppEng.makeId("textures/guis/reaction_chamber.png");
 
     private final IDrawable icon;
 
@@ -56,7 +58,7 @@ public class ReactionChamberCategory implements IRecipeCategory<ReactionChamberR
     }
 
     @Override
-    public RecipeType<ReactionChamberRecipe> getRecipeType() {
+    public IRecipeType<RecipeHolder<ReactionChamberRecipe>> getRecipeType() {
         return RECIPE_TYPE;
     }
 
@@ -81,14 +83,16 @@ public class ReactionChamberCategory implements IRecipeCategory<ReactionChamberR
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, ReactionChamberRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(
+            IRecipeLayoutBuilder builder, RecipeHolder<ReactionChamberRecipe> holder, IFocusGroup focuses) {
+        var recipe = holder.value();
         var index = 0;
         var inputs = recipe.getInputs();
         for (var in : inputs) {
             var x = 37 + index % 3 * 18;
             var y = 9 + index / 3 * 18;
             if (!in.isEmpty()) {
-                builder.addInputSlot(x, y).addIngredients(JEIPlugin.stackOf(in));
+                builder.addInputSlot(x, y).addItemStacks(JEIPlugin.stackOf(in));
             }
             index++;
         }
@@ -100,29 +104,30 @@ public class ReactionChamberCategory implements IRecipeCategory<ReactionChamberR
         }
 
         if (recipe.isItemOutput()) {
-            builder.addOutputSlot(113, 28).addItemStack(recipe.getResultItem());
+            builder.addOutputSlot(113, 28).add(recipe.getResultItem());
         } else {
             var slot = builder.addOutputSlot(146, 6).setFluidRenderer(16000, false, 16, 58);
-            slot.addFluidStack(
-                    recipe.getResultFluid().getFluid(), recipe.getResultFluid().getAmount());
+            slot.add(recipe.getResultFluid().getFluid(), recipe.getResultFluid().getAmount());
         }
     }
 
     @Override
     public void draw(
-            ReactionChamberRecipe recipe,
+            RecipeHolder<ReactionChamberRecipe> holder,
             IRecipeSlotsView recipeSlotsView,
-            GuiGraphics guiGraphics,
+            GuiGraphicsExtractor guiGraphics,
             double mouseX,
             double mouseY) {
         this.background.draw(guiGraphics);
         this.progress.draw(guiGraphics, 135, 27);
 
+        var recipe = holder.value();
+
         var font = Minecraft.getInstance().font;
         var text = AAEText.ReactionChamberEnergy.text(recipe.getEnergy() / 1000);
         FormattedCharSequence formattedcharsequence = text.getVisualOrderText();
         var textX = getWidth() / 2 + 4 - font.width(formattedcharsequence) / 2;
-        guiGraphics.drawString(font, text, textX, 66, ChatFormatting.DARK_GRAY.getColor(), false);
+        guiGraphics.text(font, text, textX, 66, ARGB.opaque(ChatFormatting.DARK_GRAY.getColor()), false);
 
         bolt.draw(guiGraphics, textX - 16, 64);
     }

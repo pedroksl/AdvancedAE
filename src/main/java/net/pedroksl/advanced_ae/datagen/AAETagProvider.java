@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentType;
@@ -12,7 +11,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
@@ -20,28 +19,24 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.*;
 
 import appeng.core.AppEng;
+import appeng.core.ConventionTags;
 import appeng.core.definitions.BlockDefinition;
-import appeng.datagen.providers.tags.ConventionTags;
 import appeng.items.tools.MemoryCardItem;
 
 public class AAETagProvider {
     public static class AAEBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
-        public AAEBlockTagProvider(
-                PackOutput output,
-                CompletableFuture<HolderLookup.Provider> registries,
-                @Nullable ExistingFileHelper existingFileHelper) {
+        public AAEBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
             super(
                     output,
                     Registries.BLOCK,
                     registries,
-                    block -> BuiltInRegistries.BLOCK.getResourceKey(block).orElseThrow(),
-                    AdvancedAE.MOD_ID,
-                    existingFileHelper);
+                    block -> block.builtInRegistryHolder().key(),
+                    AdvancedAE.MOD_ID);
         }
 
         @Override
@@ -79,13 +74,12 @@ public class AAETagProvider {
         }
     }
 
-    public static class AAEItemTagProvider extends ItemTagsProvider {
+    public static class AAEItemTagProvider extends BlockTagCopyingItemTagProvider {
         public AAEItemTagProvider(
                 PackOutput output,
                 CompletableFuture<HolderLookup.Provider> registries,
-                CompletableFuture<TagsProvider.TagLookup<Block>> blockTags,
-                ExistingFileHelper existing) {
-            super(output, registries, blockTags, AdvancedAE.MOD_ID, existing);
+                CompletableFuture<TagsProvider.TagLookup<Block>> blockTagsProvider) {
+            super(output, registries, blockTagsProvider, AdvancedAE.MOD_ID);
         }
 
         @Override
@@ -104,7 +98,7 @@ public class AAETagProvider {
                             AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
 
             tag(AAEConventionTags.ENCODER_CURIO).add(AAEItems.ADV_PATTERN_ENCODER.asItem());
-            tag(ConventionTags.CURIOS).add(AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL.asItem());
+            // tag(ConventionTags.CURIOS).add(AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL.asItem());
 
             tag(ConventionTags.WRENCH).add(AAEItems.MONITOR_CONFIGURATOR.asItem());
 
@@ -142,15 +136,14 @@ public class AAETagProvider {
         }
     }
 
-    public static class AAEDataComponentTypeTagProvider extends TagsProvider<DataComponentType<?>> {
+    public static class AAEDataComponentTypeTagProvider extends KeyTagProvider<DataComponentType<?>> {
         private final AAELanguageProvider localization;
 
         public AAEDataComponentTypeTagProvider(
                 PackOutput output,
                 CompletableFuture<HolderLookup.Provider> registries,
-                @Nullable ExistingFileHelper existingFileHelper,
                 AAELanguageProvider localization) {
-            super(output, Registries.DATA_COMPONENT_TYPE, registries, AppEng.MOD_ID, existingFileHelper);
+            super(output, Registries.DATA_COMPONENT_TYPE, registries, AppEng.MOD_ID);
             this.localization = localization;
         }
 

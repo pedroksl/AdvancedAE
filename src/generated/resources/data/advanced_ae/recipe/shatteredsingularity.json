@@ -1,34 +1,25 @@
 {
-  "type": "advanced_ae:reaction",
+  "type": "advanced_ae:react",
   "input_energy": 200000,
   "input_fluid": {
     "amount": 100,
-    "ingredient": {
-      "fluid": "minecraft:lava"
-    }
+    "ingredient": "minecraft:lava"
   },
   "input_items": [
     {
-      "ingredient": {
-        "item": "ae2:singularity"
-      }
+      "ingredient": "ae2:singularity"
     },
     {
       "amount": 2,
-      "ingredient": {
-        "tag": "c:dusts/ender_pearl"
-      }
+      "ingredient": "#c:dusts/ender_pearl"
     },
     {
       "amount": 2,
-      "ingredient": {
-        "item": "ae2:sky_dust"
-      }
+      "ingredient": "ae2:sky_dust"
     }
   ],
-  "output": {
-    "#": 2,
-    "#t": "ae2:i",
+  "itemOutput": {
+    "count": 2,
     "id": "advanced_ae:shattered_singularity"
   }
 }

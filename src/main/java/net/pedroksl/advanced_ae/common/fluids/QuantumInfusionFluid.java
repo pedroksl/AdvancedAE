@@ -2,9 +2,9 @@ package net.pedroksl.advanced_ae.common.fluids;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.Level;
+import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
+
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -15,33 +15,18 @@ import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 @ParametersAreNonnullByDefault
 public abstract class QuantumInfusionFluid extends BaseFlowingFluid {
     public static final BaseFlowingFluid.Properties PROPERTIES = new BaseFlowingFluid.Properties(
-                    AAEFluids.QUANTUM_INFUSION.fluidTypeHolder(),
-                    AAEFluids.QUANTUM_INFUSION.flowingHolder(),
-                    AAEFluids.QUANTUM_INFUSION.sourceHolder())
-            .bucket(AAEFluids.QUANTUM_INFUSION.bucketItemId())
-            .block(AAEFluids.QUANTUM_INFUSION.blockHolder());
+                    AAEFluids.QUANTUM_INFUSION.fluidTypeHolder()::value,
+                    AAEFluids.QUANTUM_INFUSION.sourceHolder()::value,
+                    AAEFluids.QUANTUM_INFUSION.flowingHolder()::value)
+            .bucket(AAEFluids.QUANTUM_INFUSION::bucketItem)
+            .block(AAEFluids.QUANTUM_INFUSION.blockHolder()::value);
 
     protected QuantumInfusionFluid(Properties properties) {
         super(properties);
     }
 
     @Override
-    public Fluid getFlowing() {
-        return AAEFluids.QUANTUM_INFUSION.flowing();
-    }
-
-    @Override
-    public Fluid getSource() {
-        return AAEFluids.QUANTUM_INFUSION.source();
-    }
-
-    @Override
-    public Item getBucket() {
-        return AAEFluids.QUANTUM_INFUSION.bucketItem();
-    }
-
-    @Override
-    protected boolean canConvertToSource(Level pLevel) {
+    protected boolean canConvertToSource(ServerLevel level) {
         return false;
     }
 

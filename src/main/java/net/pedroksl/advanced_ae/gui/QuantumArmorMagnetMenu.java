@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.gui;
 
 import java.util.List;
 
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,25 +14,26 @@ import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import appeng.api.stacks.GenericStack;
 import appeng.api.storage.ISubMenuHost;
 import appeng.menu.MenuOpener;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.locator.MenuHostLocator;
 
 public class QuantumArmorMagnetMenu extends QuantumArmorFilterConfigMenu {
 
     @GuiSync(8)
-    public boolean blacklist;
+    public boolean blacklist = false;
 
     @GuiSync(9)
     public int currentValue = -1;
 
-    private static final String SET_BLACKLIST = "set_blacklist";
-    private static final String SET_CURRENT_VALUE = "set_current_value";
+    private static final ClientActionKey<Boolean> SET_BLACKLIST = new ClientActionKey<>("set_blacklist");
+    private static final ClientActionKey<Integer> SET_CURRENT_VALUE = new ClientActionKey<>("set_current_value");
 
     public QuantumArmorMagnetMenu(int id, Inventory playerInventory, ISubMenuHost host) {
         super(AAEMenus.QUANTUM_ARMOR_MAGNET.get(), id, playerInventory, host);
 
-        registerClientAction(SET_BLACKLIST, Boolean.class, this::setBlacklist);
-        registerClientAction(SET_CURRENT_VALUE, Integer.class, this::setCurrentValue);
+        registerClientAction(SET_BLACKLIST, ByteBufCodecs.BOOL, this::setBlacklist);
+        registerClientAction(SET_CURRENT_VALUE, ByteBufCodecs.INT, this::setCurrentValue);
     }
 
     public static void open(

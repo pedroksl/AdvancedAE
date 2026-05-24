@@ -6,15 +6,15 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.pedroksl.advanced_ae.common.blocks.AdvPatternProviderBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.logic.AdvPatternProviderLogic;
@@ -127,15 +127,15 @@ public class AdvPatternProviderEntity extends AENetworkedBlockEntity implements 
     }
 
     @Override
-    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
-        super.saveAdditional(data, registries);
-        this.logic.writeToNBT(data, registries);
+    public void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        this.logic.writeToNBT(output);
     }
 
     @Override
-    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
-        super.loadTag(data, registries);
-        this.logic.readFromNBT(data, registries);
+    public void loadTag(ValueInput input) {
+        super.loadTag(input);
+        this.logic.readFromNBT(input);
     }
 
     @Override

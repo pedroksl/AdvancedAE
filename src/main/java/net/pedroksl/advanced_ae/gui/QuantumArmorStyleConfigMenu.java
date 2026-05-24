@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.gui;
 
 import java.util.List;
 
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
@@ -12,6 +13,7 @@ import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.locator.MenuHostLocator;
 import appeng.menu.slot.DisabledSlot;
@@ -21,9 +23,9 @@ public class QuantumArmorStyleConfigMenu extends AEBaseMenu implements ISubMenu 
     private final QuantumArmorMenuHost<?> host;
 
     @GuiSync(13)
-    public int slotIndex;
+    public int slotIndex = -1;
 
-    private static final String SELECT_SLOT = "select_slot";
+    private static final ClientActionKey<Integer> SELECT_SLOT = new ClientActionKey<>("select_slot");
 
     public static final String LAST_SLOT_INDEX = "aae$lastSlotIndex";
 
@@ -43,12 +45,8 @@ public class QuantumArmorStyleConfigMenu extends AEBaseMenu implements ISubMenu 
             this.addSlot(slot, AAESlotSemantics.ARMOR);
         }
 
-        registerClientAction(SELECT_SLOT, Integer.class, this::setSelectedItemSlot);
-        if (getPlayer().getPersistentData().contains(LAST_SLOT_INDEX)) {
-            setSelectedItemSlot(getPlayer().getPersistentData().getInt(LAST_SLOT_INDEX));
-        } else {
-            setSelectedItemSlot(indexOfFirstQuantum);
-        }
+        registerClientAction(SELECT_SLOT, ByteBufCodecs.INT, this::setSelectedItemSlot);
+        setSelectedItemSlot(getPlayer().getPersistentData().getIntOr(LAST_SLOT_INDEX, indexOfFirstQuantum));
     }
 
     @Override
@@ -83,7 +81,7 @@ public class QuantumArmorStyleConfigMenu extends AEBaseMenu implements ISubMenu 
         for (var slotIndex : slots) {
             var slot = getSlot(slotIndex);
             if (slot != null && slot.hasItem() && slot.getItem().getItem() instanceof QuantumArmorBase armor) {
-                armor.setTintColor(this.getPlayerInventory().player, slot.getItem(), color);
+                armor.setTintColor(slot.getItem(), color);
             }
         }
     }

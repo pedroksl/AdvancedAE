@@ -191,8 +191,7 @@ public enum UpgradeType {
                     CHARGING,
                     WORKBENCH,
                     PICK_CRAFT,
-                    CAMO
-            /*HUD*/ -> new UpgradeSettings(1);
+                    CAMO /*HUD*/ -> new UpgradeSettings(1);
             case WALK_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxWalkSpeed(), 0.1f);
             case SPRINT_SPEED -> new UpgradeSettings(1, AAEConfig.instance().getMaxSprintSpeed(), 0.1f);
             case STEP_ASSIST -> new UpgradeSettings(1, AAEConfig.instance().getMaxStepHeight());
@@ -215,10 +214,10 @@ public enum UpgradeType {
             case EMPTY -> AAEText.UpgradeBaseTooltip.text();
             case WALK_SPEED -> AAEText.WalkSpeedTooltip.text();
             case SPRINT_SPEED -> AAEText.SprintSpeedTooltip.text();
-            case STEP_ASSIST -> AAEText.StepAssistTooltip.text(
-                    AAEConfig.instance().getMaxStepHeight());
-            case JUMP_HEIGHT -> AAEText.JumpHeightTooltip.text(
-                    AAEConfig.instance().getMaxJumpHeight());
+            case STEP_ASSIST ->
+                AAEText.StepAssistTooltip.text(AAEConfig.instance().getMaxStepHeight());
+            case JUMP_HEIGHT ->
+                AAEText.JumpHeightTooltip.text(AAEConfig.instance().getMaxJumpHeight());
             case LAVA_IMMUNITY -> AAEText.LavaImmunityTooltip.text();
             case FLIGHT -> AAEText.FlightTooltip.text();
             case WATER_BREATHING -> AAEText.WaterBreathingTooltip.text();
@@ -229,8 +228,8 @@ public enum UpgradeType {
             case EVASION -> AAEText.EvasionTooltip.text(AAEConfig.instance().getEvasionChance());
             case REGENERATION -> AAEText.RegenerationTooltip.text();
             case STRENGTH -> AAEText.StrengthTooltip.text(AAEConfig.instance().getStrengthBoost());
-            case ATTACK_SPEED -> AAEText.AttackSpeedTooltip.text(
-                    AAEConfig.instance().getAttackSpeedBoost());
+            case ATTACK_SPEED ->
+                AAEText.AttackSpeedTooltip.text(AAEConfig.instance().getAttackSpeedBoost());
             case LUCK -> AAEText.LuckTooltip.text(AAEConfig.instance().getLuckBoost());
             case REACH -> AAEText.ReachTooltip.text(AAEConfig.instance().getMaxReachBoost());
             case SWIM_SPEED -> AAEText.SwimSpeedTooltip.text();
@@ -240,7 +239,7 @@ public enum UpgradeType {
             case WORKBENCH -> AAEText.PortableWorkbenchTooltip.text();
             case PICK_CRAFT -> AAEText.PickCraftTooltip.text();
             case CAMO -> AAEText.CamoTooltip.text();
-                //            case HUD -> AAEText.PortableWorkbenchTooltip.text();
+            //            case HUD -> AAEText.PortableWorkbenchTooltip.text();
         };
     }
 

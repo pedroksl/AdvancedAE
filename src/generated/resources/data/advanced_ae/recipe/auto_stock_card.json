@@ -2,22 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "minecraft:shulker_box"
-    },
-    "C": {
-      "item": "advanced_ae:quantum_upgrade_base"
-    },
-    "M": {
-      "item": "ae2:controller"
-    },
-    "W": {
-      "item": "ae2:wireless_access_point"
-    }
+    "B": "minecraft:shulker_box",
+    "C": "advanced_ae:quantum_upgrade_base",
+    "M": "ae2:controller",
+    "W": "ae2:wireless_access_point"
   },
-  "pattern": [" W ", "BCB", " M "],
+  "pattern": [
+    " W ",
+    "BCB",
+    " M "
+  ],
   "result": {
-    "count": 1,
     "id": "advanced_ae:auto_stock_card"
   }
 }

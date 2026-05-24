@@ -3,6 +3,8 @@ package net.pedroksl.advanced_ae.common.blocks;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.entities.QuantumCrafterEntity;
@@ -25,8 +28,8 @@ public class QuantumCrafterBlock extends AEBaseEntityBlock<QuantumCrafterEntity>
 
     public static final BooleanProperty WORKING = BooleanProperty.create("working");
 
-    public QuantumCrafterBlock() {
-        super(metalProps());
+    public QuantumCrafterBlock(Properties p) {
+        super(metalProps(p));
         this.registerDefaultState(this.defaultBlockState().setValue(WORKING, false));
     }
 
@@ -38,8 +41,13 @@ public class QuantumCrafterBlock extends AEBaseEntityBlock<QuantumCrafterEntity>
 
     @ParametersAreNonnullByDefault
     @Override
-    public void neighborChanged(
-            BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+    protected void neighborChanged(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Block block,
+            @Nullable Orientation orientation,
+            boolean movedByPiston) {
         final QuantumCrafterEntity te = this.getBlockEntity(level, pos);
         if (te != null) {
             te.updateRedstoneState();
@@ -53,7 +61,7 @@ public class QuantumCrafterBlock extends AEBaseEntityBlock<QuantumCrafterEntity>
             if (!level.isClientSide()) {
                 MenuOpener.open(AAEMenus.QUANTUM_CRAFTER.get(), player, MenuLocators.forBlockEntity(be));
             }
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
 
         return super.useWithoutItem(state, level, pos, player, hitResult);

@@ -7,15 +7,16 @@ import javax.annotation.Nullable;
 
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.client.gui.widgets.DirectionInputButton;
@@ -25,6 +26,7 @@ import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionP
 
 import appeng.api.stacks.AEKey;
 import appeng.client.gui.AEBaseScreen;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.Scrollbar;
 import appeng.core.AppEng;
@@ -45,7 +47,7 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
 
     private static final Rect2i SLOT_BBOX = new Rect2i(146, 16, SLOT_SIZE, SLOT_SIZE);
 
-    private final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/adv_pattern_encoder.png");
+    private final Identifier DEFAULT_TEXTURE = AppEng.makeId("textures/guis/adv_pattern_encoder.png");
 
     private final Scrollbar scrollbar;
     private LinkedHashMap<AEKey, Direction> inputList = new LinkedHashMap<>();
@@ -59,28 +61,28 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (isCloseHotkey(keyCode, scanCode)) {
+    public boolean keyPressed(KeyEvent event) {
+        if (isCloseHotkey(event)) {
             this.getPlayer().closeContainer();
             return true;
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
-    private boolean isCloseHotkey(int keyCode, int scanCode) {
+    private boolean isCloseHotkey(KeyEvent event) {
         var hotkeyId = getMenu().getHost().getCloseHotkey();
         if (hotkeyId != null) {
             var hotkey = AAEHotkeys.INSTANCE.getHotkeyMapping(hotkeyId);
             if (hotkey != null) {
-                return hotkey.mapping().matches(keyCode, scanCode);
+                return hotkey.mapping().matches(event);
             }
         }
         return false;
     }
 
     @Override
-    public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
+    public void drawFG(GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
         this.menu.slots.removeIf(slot -> slot instanceof FakeSlot);
         this.directionButtons.forEach((key, value) -> {
             for (int x = 0; x < 7; x++) {
@@ -98,7 +100,7 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
             }
 
             InputRow row = this.rows.get(currentRow);
-            guiGraphics.renderItem(
+            guiGraphics.fakeItem(
                     row.key().wrapForDisplayOrFilter(),
                     LIST_ANCHOR_X + 1,
                     LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING));
@@ -122,7 +124,8 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
     }
 
     @Override
-    public void drawBG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+    public void drawBG(
+            GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
 
         int currentX = offsetX + LIST_ANCHOR_X;
@@ -130,14 +133,10 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
 
         int visibleRows = Math.min(VISIBLE_ROWS, this.inputList.size());
         for (int i = 0; i < visibleRows; ++i) {
-            guiGraphics.blit(
-                    DEFAULT_TEXTURE,
-                    currentX,
-                    currentY,
-                    SLOT_BBOX.getX(),
-                    SLOT_BBOX.getY(),
-                    SLOT_BBOX.getWidth(),
-                    SLOT_BBOX.getHeight());
+            Blitter.texture(DEFAULT_TEXTURE)
+                    .src(SLOT_BBOX)
+                    .dest(currentX, currentY)
+                    .blit(guiGraphics);
             currentY += ROW_HEIGHT + ROW_SPACING;
         }
     }
@@ -192,7 +191,7 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
 
     private void directionButtonPressed(Button b) {
         DirectionInputButton button = ((DirectionInputButton) b);
-        PacketDistributor.sendToServer(
+        ClientPacketDistributor.sendToServer(
                 new AdvPatternEncoderChangeDirectionPacket(button.getKey(), button.getDirection()));
     }
 
@@ -209,29 +208,36 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
         };
     }
 
-    private Pair<ResourceLocation, ResourceLocation> getDirButtonTextures(int index) {
+    private Pair<Identifier, Identifier> getDirButtonTextures(int index) {
         return switch (index) {
-            case 1 -> new Pair<>(
-                    AdvancedAE.makeId("textures/guis/north_button.png"),
-                    AdvancedAE.makeId("textures/guis/north_button_selected.png"));
-            case 2 -> new Pair<>(
-                    AdvancedAE.makeId("textures/guis/east_button.png"),
-                    AdvancedAE.makeId("textures/guis/east_button_selected.png"));
-            case 3 -> new Pair<>(
-                    AdvancedAE.makeId("textures/guis/south_button.png"),
-                    AdvancedAE.makeId("textures/guis/south_button_selected.png"));
-            case 4 -> new Pair<>(
-                    AdvancedAE.makeId("textures/guis/west_button.png"),
-                    AdvancedAE.makeId("textures/guis/west_button_selected.png"));
-            case 5 -> new Pair<>(
-                    AdvancedAE.makeId("textures/guis/up_button.png"),
-                    AdvancedAE.makeId("textures/guis/up_button_selected.png"));
-            case 6 -> new Pair<>(
-                    AdvancedAE.makeId("textures/guis/down_button.png"),
-                    AdvancedAE.makeId("textures/guis/down_button_selected.png"));
-            default -> new Pair<>(
-                    AdvancedAE.makeId("textures/guis/any_button.png"),
-                    AdvancedAE.makeId("textures/guis/any_button_selected.png"));
+            case 1 ->
+                new Pair<>(
+                        AdvancedAE.makeId("textures/guis/north_button.png"),
+                        AdvancedAE.makeId("textures/guis/north_button_selected.png"));
+            case 2 ->
+                new Pair<>(
+                        AdvancedAE.makeId("textures/guis/east_button.png"),
+                        AdvancedAE.makeId("textures/guis/east_button_selected.png"));
+            case 3 ->
+                new Pair<>(
+                        AdvancedAE.makeId("textures/guis/south_button.png"),
+                        AdvancedAE.makeId("textures/guis/south_button_selected.png"));
+            case 4 ->
+                new Pair<>(
+                        AdvancedAE.makeId("textures/guis/west_button.png"),
+                        AdvancedAE.makeId("textures/guis/west_button_selected.png"));
+            case 5 ->
+                new Pair<>(
+                        AdvancedAE.makeId("textures/guis/up_button.png"),
+                        AdvancedAE.makeId("textures/guis/up_button_selected.png"));
+            case 6 ->
+                new Pair<>(
+                        AdvancedAE.makeId("textures/guis/down_button.png"),
+                        AdvancedAE.makeId("textures/guis/down_button_selected.png"));
+            default ->
+                new Pair<>(
+                        AdvancedAE.makeId("textures/guis/any_button.png"),
+                        AdvancedAE.makeId("textures/guis/any_button_selected.png"));
         };
     }
 

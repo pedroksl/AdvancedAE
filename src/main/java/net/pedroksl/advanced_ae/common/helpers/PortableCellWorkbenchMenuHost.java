@@ -1,12 +1,12 @@
 package net.pedroksl.advanced_ae.common.helpers;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.pedroksl.advanced_ae.common.definitions.AAEHotkeysRegistry;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumHelmet;
+import net.pedroksl.ae2addonlib.registry.helpers.LibComponents;
 
 import appeng.api.config.CopyMode;
 import appeng.api.config.Settings;
@@ -44,11 +44,8 @@ public class PortableCellWorkbenchMenuHost extends ItemMenuHost<QuantumHelmet>
         this.manager.registerSetting(Settings.COPY_MODE, CopyMode.CLEAR_ON_REMOVE);
         this.cell.setEnableClientEvents(true);
 
-        var itemTag = this.getItemStack().get(AAEComponents.PORTABLE_CELL_STACK_TAG);
-        var registry = player.registryAccess();
-        if (itemTag != null) {
-            this.cell.readFromNBT(itemTag, "cell", registry);
-        }
+        var inv = this.getItemStack().getOrDefault(LibComponents.ITEM_INVENTORY, ItemContainerContents.EMPTY);
+        this.cell.fromItemContainerContents(inv);
     }
 
     public ICellWorkbenchItem getCell() {
@@ -133,15 +130,7 @@ public class PortableCellWorkbenchMenuHost extends ItemMenuHost<QuantumHelmet>
     }
 
     public void saveChanges() {
-        var itemTag = new CompoundTag();
-        var registry = this.getPlayer().registryAccess();
-        this.cell.writeToNBT(itemTag, "cell", registry);
-
-        if (!itemTag.isEmpty()) {
-            this.getItemStack().set(AAEComponents.PORTABLE_CELL_STACK_TAG, itemTag);
-        } else {
-            this.getItemStack().remove(AAEComponents.PORTABLE_CELL_STACK_TAG);
-        }
+        this.getItemStack().set(LibComponents.ITEM_INVENTORY, this.cell.toItemContainerContents());
     }
 
     @Override
@@ -197,7 +186,7 @@ public class PortableCellWorkbenchMenuHost extends ItemMenuHost<QuantumHelmet>
         return this.cacheUpgrades;
     }
 
-    public InternalInventory getSubInventory(ResourceLocation id) {
+    public InternalInventory getSubInventory(Identifier id) {
         if (id.equals(ISegmentedInventory.CELLS)) {
             return this.cell;
         }

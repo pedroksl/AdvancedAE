@@ -1,7 +1,7 @@
 package net.pedroksl.advanced_ae.client.gui.widgets;
 
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.ae2addonlib.client.widgets.IBlitterIcon;
 
@@ -41,7 +41,7 @@ public enum AAEIcon implements IBlitterIcon {
     public final int width;
     public final int height;
 
-    public static final ResourceLocation TEXTURE = AdvancedAE.makeId("textures/guis/states.png");
+    public static final Identifier TEXTURE = AdvancedAE.makeId("textures/guis/states.png");
     public static final int TEXTURE_WIDTH = 256;
     public static final int TEXTURE_HEIGHT = 256;
 
@@ -57,7 +57,7 @@ public enum AAEIcon implements IBlitterIcon {
     }
 
     @Override
-    public ResourceLocation getTexture() {
+    public Identifier getTexture() {
         return TEXTURE;
     }
 

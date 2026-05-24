@@ -78,13 +78,13 @@ public class AdvCraftingCPUCalculator extends MBCalculator<AdvCraftingBlockEntit
                         }
                         break;
                     }
-                    case STRUCTURE: {
+                    case QUANTUM_STRUCTURE: {
                         if (!isBoundary) {
                             return false;
                         }
                         break;
                     }
-                    case STORAGE_MULTIPLIER: {
+                    case DATA_ENTANGLER: {
                         if (!isBoundary && entangler < entanglerLimit) {
                             entangler++;
                         } else {
@@ -92,7 +92,7 @@ public class AdvCraftingCPUCalculator extends MBCalculator<AdvCraftingBlockEntit
                         }
                         break;
                     }
-                    case MULTI_THREADER: {
+                    case QUANTUM_MULTI_THREADER: {
                         if (!isBoundary && multi < multiLimit) {
                             multi++;
                         } else {

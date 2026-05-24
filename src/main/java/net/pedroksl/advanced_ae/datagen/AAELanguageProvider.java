@@ -2,10 +2,9 @@ package net.pedroksl.advanced_ae.datagen;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -41,10 +40,6 @@ public class AAELanguageProvider extends LanguageProvider {
             add(translation.getTranslationKey(), translation.getEnglishText());
         }
 
-        for (var material : AAEMaterials.INSTANCE.getMaterials()) {
-            add(material.get(), material.englishName());
-        }
-
         for (var key : AAEHotkeysRegistry.Keys.values()) {
             add("key." + AdvancedAE.MOD_ID + "." + key.getId(), key.getEnglishTranslation());
         }
@@ -57,7 +52,7 @@ public class AAELanguageProvider extends LanguageProvider {
     }
 
     private void generateLocalizations() {
-        add("key." + AdvancedAE.MOD_ID + ".category", "Advanced AE");
+        add("key.category." + AdvancedAE.MOD_ID + ".category", "Advanced AE");
         add("key.ae2.wireless_quantum_crafter_terminal", "Open Wireless Quantum Crafter Terminal");
         add("curios.identifier.adv_pattern_encoder", "Pattern Encoder");
 
@@ -102,10 +97,6 @@ public class AAELanguageProvider extends LanguageProvider {
 
     public void add(Fluid key, String englishName) {
         add(Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(key)), englishName);
-    }
-
-    public void add(ArmorMaterial key, String englishName) {
-        add(Util.makeDescriptionId("material", BuiltInRegistries.ARMOR_MATERIAL.getKey(key)), englishName);
     }
 
     @NotNull

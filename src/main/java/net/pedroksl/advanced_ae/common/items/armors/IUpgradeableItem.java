@@ -8,6 +8,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.pedroksl.advanced_ae.client.widgets.UpgradeState;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
@@ -46,8 +48,8 @@ public interface IUpgradeableItem extends IGridLinkedItem {
     }
 
     default boolean isUpgradePowered(ItemStack stack, UpgradeType upgrade) {
-        var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        return energy != null && energy.getEnergyStored() >= upgrade.getCost();
+        var energy = ItemAccess.forStack(stack).getCapability(Capabilities.Energy.ITEM);
+        return energy != null && energy.getAmountAsInt() >= upgrade.getCost();
     }
 
     default boolean isUpgradeEnabledAndPowered(ItemStack stack, UpgradeType upgrade) {
@@ -134,14 +136,14 @@ public interface IUpgradeableItem extends IGridLinkedItem {
                     } else {
                         msg.append(Component.literal(" OFF").withStyle(Tooltips.RED));
                     }
-                    player.displayClientMessage(msg, true);
+                    player.sendOverlayMessage(msg);
                 }
                 return true;
             }
         }
         if (player != null) {
             var id = Component.translatable(type.item().asItem().getDescriptionId());
-            player.displayClientMessage(AAEText.UpgradeNotInstalledMessage.text(id), true);
+            player.sendOverlayMessage(AAEText.UpgradeNotInstalledMessage.text(id));
         }
         return false;
     }
@@ -175,9 +177,12 @@ public interface IUpgradeableItem extends IGridLinkedItem {
             var multi = PowerMultiplier.CONFIG;
             item.extractAEPower(stack, multi.multiply(amount), Actionable.MODULATE);
         } else {
-            var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            var energy = ItemAccess.forStack(stack).getCapability(Capabilities.Energy.ITEM);
             if (energy != null) {
-                energy.extractEnergy(amount, false);
+                try (var tx = Transaction.openRoot()) {
+                    energy.extract(amount, tx);
+                    tx.commit();
+                }
             }
         }
     }

@@ -2,13 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "advanced_ae:quantum_alloy"
-    }
+    "#": "advanced_ae:quantum_alloy"
   },
-  "pattern": ["###", "###", "###"],
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
   "result": {
-    "count": 1,
     "id": "advanced_ae:quantum_alloy_block"
   }
 }

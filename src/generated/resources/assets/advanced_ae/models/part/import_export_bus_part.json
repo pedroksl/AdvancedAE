@@ -4,7 +4,6 @@
     "back": "advanced_ae:part/import_export_bus_back",
     "front": "advanced_ae:part/import_export_bus",
     "particle": "advanced_ae:part/import_export_bus_back",
-    "sides": "advanced_ae:part/import_export_bus_sides",
-    "sidesStatus": "ae2:part/monitor_sides_status"
+    "sides": "advanced_ae:part/import_export_bus_sides"
   }
 }

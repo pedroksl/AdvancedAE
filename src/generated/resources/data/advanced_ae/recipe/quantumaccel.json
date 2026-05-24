@@ -11,19 +11,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": {
-      "item": "advanced_ae:shattered_singularity"
-    },
-    "S": {
-      "item": "ae2:singularity"
-    },
-    "U": {
-      "item": "advanced_ae:quantum_unit"
-    }
+    "E": "advanced_ae:shattered_singularity",
+    "S": "ae2:singularity",
+    "U": "advanced_ae:quantum_unit"
   },
-  "pattern": ["ESE", "SUS", "ESE"],
+  "pattern": [
+    "ESE",
+    "SUS",
+    "ESE"
+  ],
   "result": {
-    "count": 1,
     "id": "advanced_ae:quantum_accelerator"
   }
 }

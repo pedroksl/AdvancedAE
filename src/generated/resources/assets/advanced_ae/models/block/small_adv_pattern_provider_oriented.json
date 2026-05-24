@@ -3,6 +3,6 @@
   "textures": {
     "bottom": "advanced_ae:block/small_adv_pattern_provider_back",
     "side": "advanced_ae:block/small_adv_pattern_provider_alt",
-    "top": "advanced_ae:block/small_adv_pattern_provider_front"
+    "top": "advanced_ae:block/small_adv_pattern_provider_back"
   }
 }

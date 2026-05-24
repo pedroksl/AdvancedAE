@@ -2,15 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "ae2:pattern_access_terminal"
-    },
-    {
-      "item": "advanced_ae:quantum_processor"
-    }
+    "ae2:pattern_access_terminal",
+    "advanced_ae:quantum_processor"
   ],
   "result": {
-    "count": 1,
-    "id": "advanced_ae:quantum_crafter_terminal"
+    "id": "advanced_ae:quantum_crafter_terminal_part"
   }
 }

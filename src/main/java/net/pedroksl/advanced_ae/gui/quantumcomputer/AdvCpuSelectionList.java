@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -15,7 +15,6 @@ import net.minecraft.util.Mth;
 import appeng.api.stacks.AmountFormat;
 import appeng.client.Point;
 import appeng.client.gui.ICompositeWidget;
-import appeng.client.gui.Icon;
 import appeng.client.gui.Tooltip;
 import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.Color;
@@ -25,6 +24,7 @@ import appeng.client.gui.widgets.Scrollbar;
 import appeng.core.localization.ButtonToolTips;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.Tooltips;
+import appeng.util.Icon;
 
 public class AdvCpuSelectionList implements ICompositeWidget {
     private static final int ROWS = 6;
@@ -167,7 +167,7 @@ public class AdvCpuSelectionList implements ICompositeWidget {
     }
 
     @Override
-    public void drawBackgroundLayer(GuiGraphics guiGraphics, Rect2i bounds, Point mouse) {
+    public void drawBackgroundLayer(GuiGraphicsExtractor guiGraphics, Rect2i bounds, Point mouse) {
         var x = bounds.getX() + this.bounds.getX();
         var y = bounds.getY() + this.bounds.getY();
         background.dest(x, y, this.bounds.getWidth(), this.bounds.getHeight()).blit(guiGraphics);
@@ -198,11 +198,11 @@ public class AdvCpuSelectionList implements ICompositeWidget {
             }
 
             var name = getCpuName(cpu);
-            pose.pushPose();
-            pose.translate(x + 3, y + 2, 0);
-            pose.scale(0.666f, 0.666f, 1);
-            guiGraphics.drawString(font, name, 0, 0, textColor.toARGB(), false);
-            pose.popPose();
+            pose.pushMatrix();
+            pose.translate(x + 3, y + 2);
+            pose.scale(0.666f);
+            guiGraphics.text(font, name, 0, 0, textColor.toARGB(), false);
+            pose.popMatrix();
 
             var infoBar = new InfoBar();
 
@@ -216,15 +216,15 @@ public class AdvCpuSelectionList implements ICompositeWidget {
 
                 // Draw a bar at the bottom of the button to indicate job progress
                 var progress = (int) (cpu.progress() * (buttonBg.getSrcWidth() - 1));
-                guiGraphics.pose().pushPose();
-                guiGraphics.pose().translate(1, -1, 0);
+                guiGraphics.pose().pushMatrix();
+                guiGraphics.pose().translate(1, -1);
                 guiGraphics.fill(
                         x,
                         y + buttonBg.getSrcHeight() - 2,
                         x + progress,
                         y + buttonBg.getSrcHeight() - 1,
                         menu.getSelectedCpuSerial() == cpu.serial() ? 0xFF7da9d2 : (selectedColor));
-                guiGraphics.pose().popPose();
+                guiGraphics.pose().popMatrix();
 
             } else {
                 infoBar.add(Icon.S_STORAGE, 1f, x + 32, y + 9);

@@ -1,42 +1,44 @@
 package net.pedroksl.advanced_ae.client;
 
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.util.FastColor;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.item.crafting.RecipeMap;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.gui.*;
-import net.pedroksl.advanced_ae.client.renderer.AAECraftingUnitModelProvider;
-import net.pedroksl.advanced_ae.client.renderer.ReactionChamberTESR;
-import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
+import net.pedroksl.advanced_ae.client.item.QuantumArmorItemModel;
+import net.pedroksl.advanced_ae.client.renderer.QuantumComputerModel;
+import net.pedroksl.advanced_ae.client.renderer.ReactionChamberRenderer;
+import net.pedroksl.advanced_ae.client.renderer.ThroughputMonitorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
-import net.pedroksl.advanced_ae.common.definitions.AAEItems;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
+import net.pedroksl.advanced_ae.common.parts.ThroughputMonitorPart;
 import net.pedroksl.advanced_ae.gui.AdvancedIOBusMenu;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterTermMenu;
-import net.pedroksl.advanced_ae.gui.QuantumCrafterWirelessTermMenu;
 import net.pedroksl.advanced_ae.gui.StockExportBusMenu;
-import net.pedroksl.ae2addonlib.registry.FluidRegistry;
-import net.pedroksl.ae2addonlib.registry.helpers.LibComponents;
-import net.pedroksl.ae2addonlib.util.Colors;
+import net.pedroksl.ae2addonlib.client.render.WaterBasedFluidModel;
+import net.pedroksl.ae2addonlib.util.WaterBasedFluidType;
 
-import appeng.api.util.AEColor;
-import appeng.client.render.StaticItemColor;
-import appeng.client.render.crafting.CraftingCubeModel;
-import appeng.hooks.BuiltInModelHooks;
-import appeng.init.client.InitScreens;
+import appeng.client.InitScreens;
+import appeng.client.api.renderer.parts.RegisterPartRendererEvent;
+import appeng.core.AELog;
 
 @SuppressWarnings("unused")
 @Mod(value = AdvancedAE.MOD_ID, dist = Dist.CLIENT)
@@ -44,34 +46,48 @@ public class AAEClient extends AdvancedAE {
 
     private static AAEClient INSTANCE;
 
+    // Recipes synchronized from the server
+    private RecipeMap recipeMap = RecipeMap.EMPTY;
+    private final Set<RecipeType<?>> knownRecipeTypes = Collections.newSetFromMap(new IdentityHashMap<>());
+
     public AAEClient(IEventBus eventBus, ModContainer container) {
         super(eventBus, container);
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 
-        initBuiltInModels();
-
         NeoForge.EVENT_BUS.register(AAEClientPlayerEvents.class);
 
         eventBus.addListener(AAEClient::initScreens);
-        eventBus.addListener(AAEClient::initItemBlockRenderTypes);
-        eventBus.addListener(AAEClient::initItemColours);
         eventBus.addListener(AAEClient::initRenderers);
         eventBus.addListener(AAEClient::initClientExtensions);
+        eventBus.addListener(AAEClient::registerItemModels);
+        eventBus.addListener(AAEClient::initFluidModels);
         eventBus.addListener(this::registerHotkeys);
 
+        eventBus.addListener(new AAEClientNetworkHandler()::registerPackets);
+
         INSTANCE = this;
+
+        eventBus.addListener(this::registerPartRenderers);
+        eventBus.addListener(this::registerBlockStateModels);
 
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post e) -> {
             AAEHotkeys.INSTANCE.checkHotkeys();
         });
+
+        NeoForge.EVENT_BUS.addListener(this::receiveRecipes);
     }
 
-    private static void initBuiltInModels() {
-        for (AAECraftingUnitType type : AAECraftingUnitType.values()) {
-            BuiltInModelHooks.addBuiltInModel(
-                    AdvancedAE.makeId("block/crafting/" + type.getAffix() + "_formed"),
-                    new CraftingCubeModel(new AAECraftingUnitModelProvider(type)));
+    public RecipeMap getRecipeMapForType(Level level, RecipeType<?> recipeType) {
+        if (level instanceof ClientLevel) {
+            if (!knownRecipeTypes.contains(recipeType)) {
+                AELog.warn("Haven't received recipes of type {} from server yet.", recipeType);
+                return RecipeMap.EMPTY;
+            }
+
+            return recipeMap;
         }
+
+        return super.getRecipeMapForType(level, recipeType);
     }
 
     private static void initScreens(RegisterMenuScreensEvent event) {
@@ -102,11 +118,11 @@ public class AAEClient extends AdvancedAE {
                 AAEMenus.QUANTUM_CRAFTER_TERMINAL.get(),
                 QuantumCrafterTermScreen::new,
                 "/screens/quantum_crafter_terminal.json");
-        InitScreens.<QuantumCrafterWirelessTermMenu, QuantumCrafterWirelessTermScreen>register(
-                event,
-                AAEMenus.QUANTUM_CRAFTER_WIRELESS_TERMINAL.get(),
-                QuantumCrafterWirelessTermScreen::new,
-                "/screens/wireless_quantum_crafter_terminal.json");
+        //        InitScreens.<QuantumCrafterWirelessTermMenu, QuantumCrafterWirelessTermScreen>register(
+        //                event,
+        //                AAEMenus.QUANTUM_CRAFTER_WIRELESS_TERMINAL.get(),
+        //                QuantumCrafterWirelessTermScreen::new,
+        //                "/screens/wireless_quantum_crafter_terminal.json");
 
         InitScreens.<StockExportBusMenu, StockExportBusScreen<StockExportBusMenu>>register(
                 event, AAEMenus.STOCK_EXPORT_BUS.get(), StockExportBusScreen::new, "/screens/stock_export_bus.json");
@@ -153,51 +169,58 @@ public class AAEClient extends AdvancedAE {
                 "/screens/portable_workbench.json");
     }
 
-    @SuppressWarnings("deprecation")
-    private static void initItemBlockRenderTypes(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            ItemBlockRenderTypes.setRenderLayer(AAEFluids.QUANTUM_INFUSION.source(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(AAEFluids.QUANTUM_INFUSION.flowing(), RenderType.translucent());
-        });
-    }
-
-    private void registerHotkeys(RegisterKeyMappingsEvent e) {
-        AAEHotkeys.INSTANCE.finalizeRegistration(e::register);
-    }
-
-    @SuppressWarnings("deprecation")
-    private static void initItemColours(RegisterColorHandlersEvent.Item event) {
-        event.register(makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.THROUGHPUT_MONITOR.asItem());
-        event.register(
-                makeOpaque(new StaticItemColor(AEColor.TRANSPARENT)), AAEItems.QUANTUM_CRAFTER_TERMINAL.asItem());
-        for (var item : AAEItems.getQuantumArmor()) {
-            event.register(
-                    (stack, index) -> index == 1
-                            ? stack.getOrDefault(LibComponents.TINT_COLOR_TAG, Colors.PURPLE.argb())
-                            : Colors.WHITE.argb(),
-                    item);
-        }
-
-        for (var bucket : AAEFluids.INSTANCE.getFluids()) {
-            event.getItemColors().register(FluidRegistry::getFluidColor, bucket.bucketItem());
-        }
+    private void registerPartRenderers(RegisterPartRendererEvent event) {
+        event.register(ThroughputMonitorPart.class, new ThroughputMonitorRenderer());
     }
 
     private static void initRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(AAEBlockEntities.REACTION_CHAMBER.get(), ReactionChamberTESR::new);
+        event.registerBlockEntityRenderer(AAEBlockEntities.REACTION_CHAMBER.get(), ReactionChamberRenderer::new);
+    }
+
+    private void registerBlockStateModels(RegisterBlockStateModels event) {
+        event.registerModel(QuantumComputerModel.Unbaked.ID, QuantumComputerModel.Unbaked.MAP_CODEC);
     }
 
     private static void initClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerFluidType(
-                (IClientFluidTypeExtensions) AAEFluids.QUANTUM_INFUSION.fluidType(),
+                new WaterBasedFluidModel<>(((WaterBasedFluidType) AAEFluids.QUANTUM_INFUSION.fluidType())),
                 AAEFluids.QUANTUM_INFUSION.fluidType());
     }
 
-    private static ItemColor makeOpaque(ItemColor itemColor) {
-        return (stack, tintIndex) -> FastColor.ARGB32.opaque(itemColor.getColor(stack, tintIndex));
+    private static void registerItemModels(RegisterItemModelsEvent event) {
+        event.register(QuantumArmorItemModel.Unbaked.ID, QuantumArmorItemModel.Unbaked.MAP_CODEC);
+    }
+
+    private static void initFluidModels(RegisterFluidModelsEvent event) {
+        for (var fluid : AAEFluids.INSTANCE.getFluids()) {
+            if (fluid.fluidType() instanceof WaterBasedFluidType type) {
+                event.register(new WaterBasedFluidModel<>(type).get(), fluid::source, fluid::flowing);
+            }
+        }
     }
 
     public static AAEClient instance() {
         return INSTANCE;
+    }
+
+    @Override
+    @Nullable
+    public Level getClientLevel() {
+        return Minecraft.getInstance().level;
+    }
+
+    @Override
+    public void registerHotkey(String id) {
+        AAEHotkeys.INSTANCE.registerHotkey(id);
+    }
+
+    private void registerHotkeys(RegisterKeyMappingsEvent e) {
+        AAEHotkeys.INSTANCE.finalizeRegistration(e);
+    }
+
+    private void receiveRecipes(RecipesReceivedEvent event) {
+        recipeMap = event.getRecipeMap();
+        knownRecipeTypes.clear();
+        knownRecipeTypes.addAll(event.getRecipeTypes());
     }
 }

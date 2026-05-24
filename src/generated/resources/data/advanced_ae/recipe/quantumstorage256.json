@@ -2,21 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "advanced_ae:shattered_singularity"
-    },
-    {
-      "item": "advanced_ae:quantum_storage_128"
-    },
-    {
-      "item": "advanced_ae:quantum_storage_128"
-    },
-    {
-      "item": "advanced_ae:quantum_unit"
-    }
+    "advanced_ae:shattered_singularity",
+    "advanced_ae:quantum_storage_128",
+    "advanced_ae:quantum_storage_128",
+    "advanced_ae:quantum_unit"
   ],
   "result": {
-    "count": 1,
     "id": "advanced_ae:quantum_storage_256"
   }
 }

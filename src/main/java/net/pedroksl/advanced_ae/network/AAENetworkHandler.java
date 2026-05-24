@@ -4,7 +4,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.network.packet.*;
 import net.pedroksl.advanced_ae.network.packet.quantumarmor.*;
-import net.pedroksl.ae2addonlib.network.NetworkHandler;
+import net.pedroksl.ae2addonlib.core.network.NetworkHandler;
 
 public class AAENetworkHandler extends NetworkHandler {
 
@@ -27,6 +27,7 @@ public class AAENetworkHandler extends NetworkHandler {
         serverbound(registrar, QuantumArmorMagnetPacket.TYPE, QuantumArmorMagnetPacket.STREAM_CODEC);
         serverbound(registrar, KeysPressedPacket.TYPE, KeysPressedPacket.STREAM_CODEC);
         serverbound(registrar, QuantumCrafterTerminalClientAction.TYPE, QuantumCrafterTerminalClientAction.STREAM_CODEC);
+		serverbound(registrar, QuickMovePatternPacket.TYPE, QuickMovePatternPacket.STREAM_CODEC);
 
         clientbound(registrar, AdvPatternEncoderPacket.TYPE, AdvPatternEncoderPacket.STREAM_CODEC);
         clientbound(registrar, PatternConfigServerUpdatePacket.TYPE, PatternConfigServerUpdatePacket.STREAM_CODEC);

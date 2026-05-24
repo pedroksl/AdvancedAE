@@ -2,12 +2,14 @@ package net.pedroksl.advanced_ae.gui;
 
 import java.util.List;
 
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.definitions.AAESlotSemantics;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
@@ -24,6 +26,7 @@ import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.SlotSemantics;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.interfaces.IProgressProvider;
 import appeng.menu.slot.AppEngSlot;
@@ -32,7 +35,7 @@ import appeng.menu.slot.DisabledSlot;
 public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, IProgressProvider {
 
     @GuiSync(2)
-    public int maxProcessingTime;
+    public int maxProcessingTime = 200;
 
     @GuiSync(3)
     public int processingTime = -1;
@@ -43,11 +46,11 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
 
     private boolean markDirty = false;
 
-    private static final String REQUEST_UPDATE = "request_update";
-    private static final String SELECT_SLOT = "select_slot";
-    private static final String REQUEST_UNINSTALL = "request_uninstall";
-    private static final String EMPTY_SLOT = "empty_slot";
-    private static final String OPEN_STYLE = "open_style";
+    private static final ClientActionKey<Void> REQUEST_UPDATE = new ClientActionKey<>("request_update");
+    private static final ClientActionKey<Integer> SELECT_SLOT = new ClientActionKey<>("select_slot");
+    private static final ClientActionKey<UpgradeType> REQUEST_UNINSTALL = new ClientActionKey<>("request_uninstall");
+    private static final ClientActionKey<Void> EMPTY_SLOT = new ClientActionKey<>("empty_slot");
+    private static final ClientActionKey<Void> OPEN_STYLE = new ClientActionKey<>("open_style");
 
     public static final String LAST_SLOT_INDEX = "aae$lastSlotIndex";
 
@@ -76,16 +79,13 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         this.host.setInventoryChangedHandler(this::onChangeInventory);
 
         registerClientAction(REQUEST_UPDATE, this::updateClient);
-        registerClientAction(SELECT_SLOT, Integer.class, this::setSelectedItemSlot);
-        registerClientAction(REQUEST_UNINSTALL, UpgradeType.class, this::requestUninstall);
+        registerClientAction(SELECT_SLOT, ByteBufCodecs.INT, this::setSelectedItemSlot);
+        registerClientAction(
+                REQUEST_UNINSTALL, NeoForgeStreamCodecs.enumCodec(UpgradeType.class), this::requestUninstall);
         registerClientAction(EMPTY_SLOT, this::emptyUpgradeSlot);
         registerClientAction(OPEN_STYLE, this::openStyleScreen);
 
-        if (getPlayer().getPersistentData().contains(LAST_SLOT_INDEX)) {
-            setSelectedItemSlot(getPlayer().getPersistentData().getInt(LAST_SLOT_INDEX));
-        } else {
-            setSelectedItemSlot(indexOfFirstQuantum);
-        }
+        setSelectedItemSlot(getPlayer().getPersistentData().getIntOr(LAST_SLOT_INDEX, indexOfFirstQuantum));
     }
 
     public QuantumArmorMenuHost<?> getHost() {
@@ -139,7 +139,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
 
     public void toggleUpgradeEnable(UpgradeType upgradeType, boolean state) {
         if (isClientSide()) {
-            PacketDistributor.sendToServer(new QuantumArmorUpgradeTogglePacket(upgradeType, state));
+            ClientPacketDistributor.sendToServer(new QuantumArmorUpgradeTogglePacket(upgradeType, state));
             return;
         }
 

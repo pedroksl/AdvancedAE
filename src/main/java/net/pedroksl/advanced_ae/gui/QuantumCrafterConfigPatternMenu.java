@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
@@ -17,6 +18,7 @@ import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.locator.MenuHostLocator;
 
 public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubMenu {
@@ -25,7 +27,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
     private final ISubMenuHost host;
     private AutoCraftingContainer crafter;
 
-    private final String SET_MAX_CRAFTED = "set_max_crafted";
+    private final ClientActionKey<Long> SET_MAX_CRAFTED = new ClientActionKey<>("set_max_crafted");
 
     public LinkedHashMap<AEKey, Long> inputs = new LinkedHashMap<>();
     public Pair<AEKey, Long> output;
@@ -39,7 +41,7 @@ public class QuantumCrafterConfigPatternMenu extends AEBaseMenu implements ISubM
         super(type, id, ip, host);
         this.host = host;
 
-        registerClientAction(SET_MAX_CRAFTED, Long.class, this::setMaxCrafted);
+        registerClientAction(SET_MAX_CRAFTED, ByteBufCodecs.LONG, this::setMaxCrafted);
     }
 
     @Override

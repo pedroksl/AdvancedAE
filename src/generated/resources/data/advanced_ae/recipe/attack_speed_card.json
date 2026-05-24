@@ -2,19 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": {
-      "item": "advanced_ae:quantum_upgrade_base"
-    },
-    "Q": {
-      "item": "advanced_ae:quantum_processor"
-    },
-    "S": {
-      "item": "ae2:speed_card"
-    }
+    "C": "advanced_ae:quantum_upgrade_base",
+    "Q": "advanced_ae:quantum_processor",
+    "S": "ae2:speed_card"
   },
-  "pattern": ["SSS", "QCQ", "SSS"],
+  "pattern": [
+    "SSS",
+    "QCQ",
+    "SSS"
+  ],
   "result": {
-    "count": 1,
     "id": "advanced_ae:attack_speed_card"
   }
 }

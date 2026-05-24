@@ -1,23 +1,19 @@
 package net.pedroksl.advanced_ae.client.renderer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.resources.model.ModelDebugName;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.client.resources.model.sprite.MaterialBaker;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.blocks.AAECraftingUnitType;
 
 import appeng.client.render.crafting.AbstractCraftingUnitModelProvider;
 
-@OnlyIn(Dist.CLIENT)
-public class AAECraftingUnitModelProvider extends AbstractCraftingUnitModelProvider<AAECraftingUnitType> {
+public class AAECraftingUnitModelProvider extends AbstractCraftingUnitModelProvider<AAECraftingUnitType>
+        implements ModelDebugName {
     private static final List<Material> MATERIALS = new ArrayList<>();
 
     protected static final Material STRUCTURE_FORMED_FACE = texture("quantum_structure_formed_face");
@@ -36,31 +32,29 @@ public class AAECraftingUnitModelProvider extends AbstractCraftingUnitModelProvi
     }
 
     @Override
-    public List<Material> getMaterials() {
-        return Collections.unmodifiableList(MATERIALS);
-    }
-
-    @Override
-    public BakedModel getBakedModel(Function<Material, TextureAtlasSprite> spriteGetter) {
-        if (type == AAECraftingUnitType.STRUCTURE) {
-            return new QuantumComputerStructureBakedModel(
-                    spriteGetter.apply(STRUCTURE_FORMED_FACE),
-                    spriteGetter.apply(STRUCTURE_FORMED_SIDES),
-                    spriteGetter.apply(STRUCTURE_ANIMATION_SIDES));
+    public BlockStateModel bake(MaterialBaker materialBaker) {
+        if (type == AAECraftingUnitType.QUANTUM_STRUCTURE) {
+            return new QuantumComputerModel(
+                    materialBaker.get(STRUCTURE_FORMED_FACE, this),
+                    materialBaker.get(STRUCTURE_FORMED_SIDES, this),
+                    materialBaker.get(STRUCTURE_ANIMATION_SIDES, this));
         } else {
-            return new QuantumComputerInternalBakedModel(
-                    spriteGetter.apply(INTERNAL_FORMED_FACE),
-                    spriteGetter.apply(INTERNAL_FORMED_SIDES),
-                    spriteGetter.apply(INTERNAL_ANIMATION_SIDES),
-                    spriteGetter.apply(INTERNAL_ANIMATION_FACE),
-                    spriteGetter.apply(INTERNAL_ANIMATION_FACE_TB),
-                    spriteGetter.apply(INTERNAL_ANIMATION_FACE_TB));
+            return new QuantumComputerModel(
+                    materialBaker.get(INTERNAL_FORMED_FACE, this),
+                    materialBaker.get(INTERNAL_FORMED_SIDES, this),
+                    materialBaker.get(INTERNAL_ANIMATION_SIDES, this),
+                    materialBaker.get(INTERNAL_ANIMATION_FACE, this),
+                    materialBaker.get(INTERNAL_ANIMATION_FACE_TB, this),
+                    materialBaker.get(INTERNAL_ANIMATION_FACE_TB, this));
         }
     }
 
     private static Material texture(String name) {
-        var material = new Material(InventoryMenu.BLOCK_ATLAS, AdvancedAE.makeId("block/crafting/" + name));
-        MATERIALS.add(material);
-        return material;
+        return new Material(AdvancedAE.makeId("block/crafting/" + name));
+    }
+
+    @Override
+    public String debugName() {
+        return getClass().toString();
     }
 }

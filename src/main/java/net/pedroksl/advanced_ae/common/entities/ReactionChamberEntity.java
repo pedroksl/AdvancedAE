@@ -6,11 +6,10 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -19,15 +18,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import net.pedroksl.advanced_ae.common.blocks.ReactionChamberBlock;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipe;
 import net.pedroksl.advanced_ae.recipes.ReactionChamberRecipes;
-import net.pedroksl.advanced_ae.xmod.Addons;
-import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 import net.pedroksl.ae2addonlib.api.IDirectionalOutputHost;
 
 import appeng.api.behaviors.ExternalStorageStrategy;
@@ -70,7 +73,7 @@ import appeng.util.inv.filter.AEItemFilters;
 
 public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         implements IGridTickable, IUpgradeableObject, IConfigurableObject, IDirectionalOutputHost {
-    private static final int MAX_INPUT_SLOTS = 9;
+    public static final int MAX_INPUT_SLOTS = 9;
     private static final int MAX_PROCESSING_STEPS = 200;
     private static final int MAX_POWER_STORAGE = 500000;
     private static final int MAX_TANK_CAPACITY = 16000;
@@ -90,6 +93,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     private final CustomGenericInv fluidInv =
             new CustomGenericInv(Set.of(AEKeyType.fluids()), this::onChangeTank, GenericStackInv.Mode.STORAGE, 2);
+    private final ResourceHandler<FluidResource> fluidHandler = new ReactionChamberResourceHandler();
 
     private boolean working = false;
     private int processingTime = 0;
@@ -161,17 +165,17 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     }
 
     @Override
-    protected void saveVisualState(CompoundTag data) {
+    protected void saveVisualState(ValueOutput data) {
         super.saveVisualState(data);
 
         data.putBoolean("working", isWorking());
     }
 
     @Override
-    protected void loadVisualState(CompoundTag data) {
-        super.loadVisualState(data);
+    protected void loadVisualState(ValueInput input) {
+        super.loadVisualState(input);
 
-        setWorking(data.getBoolean("working"));
+        setWorking(input.getBooleanOr("working", false));
     }
 
     @Override
@@ -194,6 +198,10 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     public GenericStackInv getTank() {
         return this.fluidInv;
+    }
+
+    public ResourceHandler<FluidResource> getFluidHandler() {
+        return fluidHandler;
     }
 
     public void setShowWarning(boolean show) {
@@ -223,7 +231,7 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
 
     @Nullable
     @Override
-    public InternalInventory getSubInventory(ResourceLocation id) {
+    public InternalInventory getSubInventory(Identifier id) {
         if (id.equals(ISegmentedInventory.STORAGE)) {
             return this.getInternalInventory();
         } else if (id.equals(ISegmentedInventory.UPGRADES)) {
@@ -340,14 +348,14 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
                 final int powerConsumption = Mth.floor(((float) getTask().getEnergy() / requiredTicks) * powerRatio);
                 final double powerThreshold = powerConsumption - 0.01;
 
-                // Try to recharge from fe cells
-                if (Addons.APPFLUX.isLoaded()) {
-                    AppliedFluxPlugin.rechargeEnergyStorage(
-                            grid,
-                            Integer.MAX_VALUE,
-                            IActionSource.ofMachine(this),
-                            this.getEnergyStorage(Direction.UP));
-                }
+                //                // Try to recharge from fe cells
+                //                if (Addons.APPFLUX.isLoaded()) {
+                //                    AppliedFluxPlugin.rechargeEnergyStorage(
+                //                            grid,
+                //                            Integer.MAX_VALUE,
+                //                            IActionSource.ofMachine(this),
+                //                            this.getEnergyStorage(Direction.UP));
+                //                }
 
                 double powerReq = this.extractAEPower(powerConsumption, Actionable.SIMULATE, PowerMultiplier.CONFIG);
 
@@ -536,36 +544,37 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
     }
 
     @Override
-    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
-        super.saveAdditional(data, registries);
-        this.fluidInv.writeToChildTag(data, "tank", registries);
+    public void saveAdditional(ValueOutput data) {
+        super.saveAdditional(data);
 
-        ListTag outputTags = new ListTag();
+        this.fluidInv.writeToChildTag(data, "tank");
+
+        var outputList = data.childrenList("outputs");
         for (var side : this.allowedOutputs) {
-            outputTags.add(StringTag.valueOf(side.name()));
+            var child = outputList.addChild();
+            child.putString("side", side.name());
         }
-        data.put("outputs", outputTags);
 
-        this.upgrades.writeToNBT(data, "upgrades", registries);
-        this.configManager.writeToNBT(data, registries);
+        this.upgrades.writeToNBT(data, "upgrades");
+        this.configManager.writeToNBT(data);
     }
 
     @Override
-    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
-        super.loadTag(data, registries);
-        this.fluidInv.readFromChildTag(data, "tank", registries);
+    public void loadTag(ValueInput data) {
+        super.loadTag(data);
+
+        this.fluidInv.readFromChildTag(data, "tank");
 
         this.allowedOutputs.clear();
-        ListTag outputTags = data.getList("outputs", Tag.TAG_STRING);
-        if (!outputTags.isEmpty()) {
-            for (var x = 0; x < outputTags.size(); x++) {
-                RelativeSide side = Enum.valueOf(RelativeSide.class, outputTags.getString(x));
-                this.allowedOutputs.add(side);
+        for (var entry : data.childrenListOrEmpty("outputs")) {
+            var side = entry.getStringOr("side", "");
+            if (!side.isEmpty()) {
+                this.allowedOutputs.add(Enum.valueOf(RelativeSide.class, side));
             }
         }
 
-        this.upgrades.readFromNBT(data, "upgrades", registries);
-        this.configManager.readFromNBT(data, registries);
+        this.upgrades.readFromNBT(data, "upgrades");
+        this.configManager.readFromNBT(data);
     }
 
     @Override
@@ -739,6 +748,22 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
             if (changed) {
                 onChange();
             }
+        }
+    }
+
+    private class ReactionChamberResourceHandler extends FluidStacksResourceHandler {
+        public ReactionChamberResourceHandler() {
+            super(fluidInv.size(), MAX_TANK_CAPACITY);
+        }
+
+        @Override
+        public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
+            return super.insert(1, resource, amount, transaction);
+        }
+
+        @Override
+        public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+            return super.extract(0, resource, amount, transaction);
         }
     }
 }

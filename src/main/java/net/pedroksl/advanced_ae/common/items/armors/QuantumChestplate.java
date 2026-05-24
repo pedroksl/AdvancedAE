@@ -1,27 +1,24 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import java.util.List;
+import java.util.function.Consumer;
+
+import com.geckolib.animatable.GeoItem;
 
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
-import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
-import net.pedroksl.advanced_ae.common.definitions.AAEMaterials;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.common.helpers.PickCraftMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
@@ -38,14 +35,12 @@ import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.me.crafting.CraftAmountMenu;
 
-import software.bernie.geckolib.animatable.GeoItem;
-
 public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISubMenuHost {
 
     private static final double MAX_POWER_STORAGE = 300000000;
 
     public QuantumChestplate(Properties properties) {
-        super(AAEMaterials.QUANTUM_ALLOY.material(), Type.CHESTPLATE, properties, () -> MAX_POWER_STORAGE);
+        super(ArmorType.CHESTPLATE, properties, () -> MAX_POWER_STORAGE);
 
         registerUpgrades(
                 UpgradeType.FLIGHT,
@@ -61,38 +56,14 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
 
     @Override
     protected void appendExtraHoverText(
-            ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {
-        lines.add(AAEText.QuantumArmorStableFootingTooltip.text().withStyle(Tooltips.NUMBER_TEXT));
-    }
-
-    @Override
-    public void tick(ItemStack stack, Level level, Entity entity, int slotId) {
-        if (slotId == Inventory.INVENTORY_SIZE + EquipmentSlot.CHEST.getIndex()) {
-            if (entity instanceof Player player) {
-                if (!getPassiveUpgrades(stack).isEmpty()) {
-                    tickUpgrades(level, player, stack);
-                }
-
-                if (level.isClientSide() && isVisible(stack)) {
-                    toggleBoneVisibilities(stack, player);
-                }
-            }
-        }
-    }
-
-    private void toggleBoneVisibilities(ItemStack stack, Player player) {
-        var renderer = getRenderer(player, stack);
-        if (renderer != null) {
-            var visible = stack.has(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.STRENGTH));
-            renderer.setBoneVisible(QuantumArmorRenderer.LEFT_BLADE_BONE, visible);
-            renderer.setBoneVisible(QuantumArmorRenderer.RIGHT_BLADE_BONE, visible);
-        }
+            ItemStack stack, TooltipContext context, Consumer<Component> lines, TooltipFlag advancedTooltips) {
+        lines.accept(AAEText.QuantumArmorStableFootingTooltip.text().withStyle(Tooltips.NUMBER_TEXT));
     }
 
     @Override
     public boolean openFromEquipmentSlot(Player player, ItemMenuHostLocator locator, boolean returningFromSubmenu) {
         var is = locator.locateItem(player);
-        if (!player.level().isClientSide() && checkPreconditions(is)) {
+        if (AdvancedAE.instance().getClientLevel() == null && checkPreconditions(is)) {
             player.getPersistentData().putInt(MENU_TYPE, MenuId.STANDARD.id);
             PacketDistributor.sendToPlayer(
                     ((ServerPlayer) player), new MenuSelectionPacket(MENU_TYPE, MenuId.STANDARD.id));
@@ -118,24 +89,24 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
                         }
                         // Item is not craftable
                         else {
-                            player.displayClientMessage(AAEText.ItemNotCraftable.text(), true);
+                            player.sendOverlayMessage(AAEText.ItemNotCraftable.text());
                         }
                     }
                     // No available target
                     else {
-                        player.displayClientMessage(AAEText.NoAvailableTarget.text(), true);
+                        player.sendOverlayMessage(AAEText.NoAvailableTarget.text());
                     }
                 }
                 // Upgrade disabled
                 else {
                     var id = Component.translatable(upgrade.item().asItem().getDescriptionId());
-                    player.displayClientMessage(AAEText.UpgradeNotEnabledMessage.text(id), true);
+                    player.sendOverlayMessage(AAEText.UpgradeNotEnabledMessage.text(id));
                 }
             }
             // Upgrade disabled
             else {
                 var id = Component.translatable(upgrade.item().asItem().getDescriptionId());
-                player.displayClientMessage(AAEText.UpgradeNotInstalledMessage.text(id), true);
+                player.sendOverlayMessage(AAEText.UpgradeNotInstalledMessage.text(id));
             }
         }
         return false;
@@ -144,7 +115,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
     @Override
     public ItemMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator, @Nullable BlockHitResult hitResult) {
         if (player.getPersistentData().contains(MENU_TYPE)
-                && player.getPersistentData().getInt(MENU_TYPE) == MenuId.STANDARD.id) {
+                && player.getPersistentData().getIntOr(MENU_TYPE, 0) == MenuId.STANDARD.id) {
             player.getPersistentData().remove(MENU_TYPE);
             return super.getMenuHost(player, locator, hitResult);
         }
@@ -168,7 +139,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
                         }
 
                     } else {
-                        blockEntity.saveToItem(itemStack, player.registryAccess());
+                        itemStack.applyComponents(blockEntity.collectComponents());
                     }
                 }
             }
@@ -197,7 +168,7 @@ public class QuantumChestplate extends QuantumArmorBase implements GeoItem, ISub
         }
         // Grid unavailable
         else {
-            player.displayClientMessage(errorHolder.getValue(), true);
+            player.sendOverlayMessage(errorHolder.getValue());
         }
         return false;
     }

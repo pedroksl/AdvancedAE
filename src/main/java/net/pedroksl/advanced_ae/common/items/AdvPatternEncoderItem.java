@@ -1,11 +1,9 @@
 package net.pedroksl.advanced_ae.common.items;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -44,18 +42,16 @@ public class AdvPatternEncoderItem extends AEBaseItem implements IMenuItem {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return super.isEnchantable(stack);
-    }
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        var is = player.getItemInHand(hand);
 
-    @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(
-            @NotNull Level level, @NotNull Player p, @NotNull InteractionHand hand) {
-        if (!level.isClientSide()) {
-            MenuOpener.open(AAEMenus.ADV_PATTERN_ENCODER.get(), p, MenuLocators.forHand(p, hand));
+        if (!player.level().isClientSide() && checkPreconditions(is)) {
+            if (MenuOpener.open(AAEMenus.ADV_PATTERN_ENCODER.get(), player, MenuLocators.forHand(player, hand))) {
+                return InteractionResult.SUCCESS;
+            }
         }
-        return new InteractionResultHolder<>(
-                InteractionResult.sidedSuccess(level.isClientSide()), p.getItemInHand(hand));
+
+        return InteractionResult.FAIL;
     }
 
     @Override

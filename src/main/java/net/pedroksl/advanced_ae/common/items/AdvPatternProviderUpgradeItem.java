@@ -1,14 +1,13 @@
 package net.pedroksl.advanced_ae.common.items;
 
-import java.util.List;
+import java.util.function.Consumer;
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -56,9 +55,9 @@ public class AdvPatternProviderUpgradeItem extends BlockUpgradeItem {
                 if (state == null) {
                     return InteractionResult.PASS;
                 }
-                for (var sp : originState.getValues().entrySet()) {
-                    var pt = sp.getKey();
-                    var va = sp.getValue();
+                for (var sp : originState.getValues().toList()) {
+                    var pt = sp.property();
+                    var va = sp.value();
                     try {
                         if (state.hasProperty(pt)) {
                             state = state.<Comparable, Comparable>setValue((Property) pt, va);
@@ -85,34 +84,36 @@ public class AdvPatternProviderUpgradeItem extends BlockUpgradeItem {
                                 || (Addons.EXTENDEDAE.isLoaded())
                                         && ExtendedAEPlugin.isPartProvider(part.getClass()))) {
                     var side = basePart.getSide();
-                    var contents = new CompoundTag();
 
                     var isSmall = part.getClass() == PatternProviderPart.class;
 
                     var partItem =
                             isSmall ? AAEItems.SMALL_ADV_PATTERN_PROVIDER.get() : AAEItems.ADV_PATTERN_PROVIDER.get();
 
-                    part.writeToNBT(contents, world.registryAccess());
+                    var components = basePart.getBlockEntity().collectComponents();
                     var p = cable.replacePart(partItem, side, context.getPlayer(), null);
                     if (p != null) {
-                        p.readFromNBT(contents, world.registryAccess());
+                        p.getBlockEntity().setComponents(components);
                     }
                 } else {
                     return InteractionResult.PASS;
                 }
                 context.getItemInHand().shrink(1);
-                return InteractionResult.sidedSuccess(world.isClientSide);
+                return InteractionResult.SUCCESS;
             }
         }
         return InteractionResult.PASS;
     }
 
-    @ParametersAreNonnullByDefault
     @Override
     public void appendHoverText(
-            ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+            ItemStack itemStack,
+            TooltipContext context,
+            TooltipDisplay display,
+            Consumer<Component> builder,
+            TooltipFlag tooltipFlag) {
+        super.appendHoverText(itemStack, context, display, builder, tooltipFlag);
 
-        tooltipComponents.add(AAEText.PatternProviderUpgrade.text().withColor(AAEText.TOOLTIP_DEFAULT_COLOR));
+        builder.accept(AAEText.PatternProviderUpgrade.text().withColor(AAEText.TOOLTIP_DEFAULT_COLOR));
     }
 }

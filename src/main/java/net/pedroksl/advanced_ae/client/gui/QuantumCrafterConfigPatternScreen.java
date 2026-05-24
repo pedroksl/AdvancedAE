@@ -7,12 +7,12 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.QuantumCrafterConfigPatternMenu;
@@ -23,6 +23,7 @@ import net.pedroksl.ae2addonlib.client.widgets.NumberTextField;
 import appeng.api.stacks.AEKey;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.implementations.AESubScreen;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.Scrollbar;
 import appeng.core.AppEng;
@@ -44,7 +45,7 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
     private static final int TEXTFIELD_HEIGHT = 16;
 
     private static final Rect2i SLOT_BBOX = new Rect2i(176, 0, SLOT_SIZE, SLOT_SIZE);
-    private final ResourceLocation DEFAULT_TEXTURE = AppEng.makeId("textures/guis/pattern_config.png");
+    private final Identifier DEFAULT_TEXTURE = AppEng.makeId("textures/guis/pattern_config.png");
 
     private final Scrollbar scrollbar;
     private final ArrayList<InputRow> rows = new ArrayList<>();
@@ -60,7 +61,9 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
     }
 
     @Override
-    public void drawFG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
+    public void drawFG(GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY) {
+        super.drawFG(guiGraphics, offsetX, offsetY, mouseX, mouseY);
+
         this.menu.slots.removeIf(slot -> slot instanceof FakeSlot);
         this.rows.forEach(row -> {
             if (row != null) {
@@ -94,11 +97,11 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
             var x = LIST_ANCHOR_X + 1;
             var y = LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING);
             InputRow row = this.rows.get(currentRow);
-            guiGraphics.renderItem(row.key.wrapForDisplayOrFilter(), x, y);
+            guiGraphics.item(row.key.wrapForDisplayOrFilter(), x, y);
 
             x += 37;
             y += 4;
-            guiGraphics.drawCenteredString(Minecraft.getInstance().font, row.label, x, y, 0xFFFFFF);
+            guiGraphics.centeredText(Minecraft.getInstance().font, row.label, x, y, 0xFFFFFFFF);
 
             x += offsetX + 20;
             y += offsetY;
@@ -114,11 +117,11 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
         if (outputRow != null) {
             var x = OUTPUT_X + 1;
             var y = OUTPUT_Y + 1;
-            guiGraphics.renderItem(outputRow.key.wrapForDisplayOrFilter(), x, y);
+            guiGraphics.item(outputRow.key.wrapForDisplayOrFilter(), x, y);
 
             x += 37;
             y += 4;
-            guiGraphics.drawCenteredString(Minecraft.getInstance().font, outputRow.label, x, y, 0xFFFFFF);
+            guiGraphics.centeredText(Minecraft.getInstance().font, outputRow.label, x, y, 0xFFFFFFFF);
 
             x += offsetX + 20;
             y += offsetY;
@@ -133,7 +136,8 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
     }
 
     @Override
-    public void drawBG(GuiGraphics guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+    public void drawBG(
+            GuiGraphicsExtractor guiGraphics, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         super.drawBG(guiGraphics, offsetX, offsetY, mouseX, mouseY, partialTicks);
 
         int currentX = offsetX + LIST_ANCHOR_X;
@@ -141,25 +145,17 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
 
         int visibleRows = Math.min(VISIBLE_ROWS, this.rows.size());
         for (int i = 0; i < visibleRows; ++i) {
-            guiGraphics.blit(
-                    DEFAULT_TEXTURE,
-                    currentX,
-                    currentY,
-                    SLOT_BBOX.getX(),
-                    SLOT_BBOX.getY(),
-                    SLOT_BBOX.getWidth(),
-                    SLOT_BBOX.getHeight());
+            Blitter.texture(DEFAULT_TEXTURE)
+                    .src(SLOT_BBOX.getX(), SLOT_BBOX.getY(), SLOT_BBOX.getWidth(), SLOT_BBOX.getHeight())
+                    .dest(currentX, currentY)
+                    .blit(guiGraphics);
             currentY += ROW_HEIGHT + ROW_SPACING;
         }
 
-        guiGraphics.blit(
-                DEFAULT_TEXTURE,
-                offsetX + OUTPUT_X,
-                offsetY + OUTPUT_Y,
-                SLOT_BBOX.getX(),
-                SLOT_BBOX.getY(),
-                SLOT_BBOX.getWidth(),
-                SLOT_BBOX.getHeight());
+        Blitter.texture(DEFAULT_TEXTURE)
+                .src(SLOT_BBOX.getX(), SLOT_BBOX.getY(), SLOT_BBOX.getWidth(), SLOT_BBOX.getHeight())
+                .dest(offsetX + OUTPUT_X, offsetY + OUTPUT_Y)
+                .blit(guiGraphics);
     }
 
     public void update(LinkedHashMap<AEKey, Long> inputs, Pair<AEKey, Long> output) {
@@ -209,14 +205,14 @@ public class QuantumCrafterConfigPatternScreen extends AEBaseScreen<QuantumCraft
                 0,
                 amount -> {
                     if (index >= 0) {
-                        PacketDistributor.sendToServer(new SetStockAmountPacket(index, amount));
+                        ClientPacketDistributor.sendToServer(new SetStockAmountPacket(index, amount));
                     } else {
                         menu.setMaxCrafted(amount);
                     }
                 },
                 tooltip);
 
-        numberField.setLongValue(value);
+        numberField.setLongValue(value, false);
 
         return numberField;
     }

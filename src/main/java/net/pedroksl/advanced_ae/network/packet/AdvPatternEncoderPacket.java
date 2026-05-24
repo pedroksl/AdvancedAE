@@ -4,13 +4,10 @@ import static appeng.api.stacks.AEKey.writeKey;
 
 import java.util.LinkedHashMap;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.client.gui.AdvPatternEncoderScreen;
 
 import appeng.api.stacks.AEKey;
 import appeng.core.network.ClientboundPacket;
@@ -53,12 +50,5 @@ public record AdvPatternEncoderPacket(LinkedHashMap<AEKey, Direction> dirMap) im
         }
 
         return new AdvPatternEncoderPacket(dirMap);
-    }
-
-    @Override
-    public void handleOnClient(Player player) {
-        if (Minecraft.getInstance().screen instanceof AdvPatternEncoderScreen encoderGui) {
-            encoderGui.update(this.dirMap);
-        }
     }
 }

@@ -2,22 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "minecraft:beacon"
-    },
-    "C": {
-      "item": "advanced_ae:quantum_upgrade_base"
-    },
-    "G": {
-      "item": "minecraft:glowstone_dust"
-    },
-    "S": {
-      "item": "minecraft:sea_lantern"
-    }
+    "B": "minecraft:beacon",
+    "C": "advanced_ae:quantum_upgrade_base",
+    "G": "minecraft:glowstone_dust",
+    "S": "minecraft:sea_lantern"
   },
-  "pattern": [" B ", "GCG", " S "],
+  "pattern": [
+    " B ",
+    "GCG",
+    " S "
+  ],
   "result": {
-    "count": 1,
     "id": "advanced_ae:night_vision_card"
   }
 }

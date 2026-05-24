@@ -11,20 +11,21 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.loading.LoadingModList;
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.moddiscovery.ModInfo;
 
 public class AAEMixinPlugin implements IMixinConfigPlugin {
 
     private static final Object2ObjectMap<String, String> MOD_MIXINS = new Object2ObjectOpenHashMap<>(
             new String[] {
-                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderMenu",
-                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderScreen",
-                "net.pedroksl.advanced_ae.mixins.appflux.MixinSmallAdvPatternProviderScreen",
-                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderLogic",
-                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderLogicHost"
+                //                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderMenu",
+                //                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderScreen",
+                //                "net.pedroksl.advanced_ae.mixins.appflux.MixinSmallAdvPatternProviderScreen",
+                //                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderLogic",
+                //                "net.pedroksl.advanced_ae.mixins.appflux.MixinAdvPatternProviderLogicHost"
             },
-            new String[] {"appflux", "appflux", "appflux", "appflux", "appflux"},
+            //            new String[] {"appflux", "appflux", "appflux", "appflux", "appflux"},
+            new String[] {},
             Object2ObjectOpenHashMap.DEFAULT_LOAD_FACTOR);
 
     @Override
@@ -58,7 +59,7 @@ public class AAEMixinPlugin implements IMixinConfigPlugin {
 
     private static boolean isModLoaded(String modId) {
         if (ModList.get() == null) {
-            return LoadingModList.get().getMods().stream()
+            return FMLLoader.getCurrent().getLoadingModList().getMods().stream()
                     .map(ModInfo::getModId)
                     .anyMatch(modId::equals);
         } else {

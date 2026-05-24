@@ -20,6 +20,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
+import net.pedroksl.advanced_ae.common.helpers.KeysPressed;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.advanced_ae.network.packet.ItemTrackingPacket;
@@ -29,10 +30,6 @@ import net.pedroksl.advanced_ae.xmod.apoth.ApoEnchPlugin;
 public class AAEPlayerEvents {
     public static final AttributeModifier flight =
             new AttributeModifier(AdvancedAE.makeId("flight"), 1.0, AttributeModifier.Operation.ADD_VALUE);
-
-    public static final String NO_KEY_DATA = "aae$nokey";
-    public static final String UP_KEY_DATA = "aae$upkey";
-    public static final String DOWN_KEY_DATA = "aae$downkey";
 
     @SubscribeEvent
     public static void itemAttributes(ItemAttributeModifierEvent event) {
@@ -122,9 +119,10 @@ public class AAEPlayerEvents {
         }
 
         ItemStack bootStack = player.getItemBySlot(EquipmentSlot.FEET);
+        var keys = new KeysPressed(player.getPersistentData().getByteOr(KeysPressed.KEYS_PRESSED, (byte) 0));
         if (bootStack.getItem() instanceof QuantumBoots boots) {
             if (player.getAbilities().flying && boots.isUpgradeEnabledAndPowered(bootStack, UpgradeType.FLIGHT_DRIFT)) {
-                if (player.getPersistentData().getBoolean(NO_KEY_DATA)) {
+                if (keys.noKey) {
                     var motion = player.getDeltaMovement();
                     if (motion.x != 0 || motion.z != 0) {
                         var value =
@@ -136,9 +134,7 @@ public class AAEPlayerEvents {
                 }
             }
         }
-        var upKey = player.getPersistentData().getBoolean(UP_KEY_DATA);
-        var downKey = player.getPersistentData().getBoolean(DOWN_KEY_DATA);
-        if (upKey != downKey) {
+        if (keys.upKey != keys.downKey) {
             ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
             if (chestStack.getItem() instanceof QuantumChestplate chest) {
                 var upgrade = UpgradeType.FLIGHT;
@@ -146,7 +142,7 @@ public class AAEPlayerEvents {
                     var value = upgrade.getSettings().multiplier
                             * chestStack.getOrDefault(AAEComponents.UPGRADE_VALUE.get(upgrade), 0)
                             / 25f;
-                    var direction = upKey ? 1 : -1;
+                    var direction = keys.upKey ? 1 : -1;
                     player.moveRelative(value, new Vec3(0, direction, 0));
                 }
             }
@@ -157,9 +153,9 @@ public class AAEPlayerEvents {
     public static void onStartTracking(PlayerEvent.StartTracking event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer
                 && event.getTarget() instanceof ItemEntity item
-                && ((ItemEntity) event.getTarget()).thrower != null) {
+                && item.thrower != null) {
             PacketDistributor.sendToPlayer(
-                    serverPlayer, new ItemTrackingPacket(item.thrower, item.getId(), item.pickupDelay));
+                    serverPlayer, new ItemTrackingPacket(item.thrower.getUUID(), item.getId(), item.pickupDelay));
         }
     }
 

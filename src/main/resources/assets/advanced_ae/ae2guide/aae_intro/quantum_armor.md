@@ -34,6 +34,7 @@ item_ids:
   - advanced_ae:recharging_card
   - advanced_ae:portable_workbench_card
   - advanced_ae:pick_craft_card
+  - advanced_ae:camo_card
 ---
 
 # Quantum Armor Set

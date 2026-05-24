@@ -11,22 +11,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "advanced_ae:quantum_accelerator"
-    },
-    "C": {
-      "item": "advanced_ae:quantum_core"
-    },
-    "S": {
-      "item": "advanced_ae:shattered_singularity"
-    },
-    "U": {
-      "item": "advanced_ae:quantum_unit"
-    }
+    "A": "advanced_ae:quantum_accelerator",
+    "C": "advanced_ae:quantum_core",
+    "S": "advanced_ae:shattered_singularity",
+    "U": "advanced_ae:quantum_unit"
   },
-  "pattern": ["SSS", "AUA", "ACA"],
+  "pattern": [
+    "SSS",
+    "AUA",
+    "ACA"
+  ],
   "result": {
-    "count": 1,
     "id": "advanced_ae:quantum_multi_threader"
   }
 }

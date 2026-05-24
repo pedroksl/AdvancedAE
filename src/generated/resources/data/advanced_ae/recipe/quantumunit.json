@@ -11,21 +11,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "ae2:crafting_unit"
-    },
-    {
-      "item": "ae2:singularity"
-    },
-    {
-      "item": "advanced_ae:shattered_singularity"
-    },
-    {
-      "item": "advanced_ae:shattered_singularity"
-    }
+    "ae2:crafting_unit",
+    "ae2:singularity",
+    "advanced_ae:shattered_singularity",
+    "advanced_ae:shattered_singularity"
   ],
   "result": {
-    "count": 1,
     "id": "advanced_ae:quantum_unit"
   }
 }

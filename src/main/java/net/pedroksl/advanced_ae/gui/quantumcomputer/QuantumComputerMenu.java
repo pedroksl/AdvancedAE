@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
@@ -16,13 +17,12 @@ import net.pedroksl.advanced_ae.common.entities.AdvCraftingBlockEntity;
 import appeng.api.config.CpuSelectionMode;
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.stacks.GenericStack;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.guisync.GuiSync;
 import appeng.menu.guisync.PacketWritable;
 import appeng.menu.me.crafting.CraftingCPUMenu;
 
 public class QuantumComputerMenu extends CraftingCPUMenu {
-
-    private static final String ACTION_SELECT_CPU = "selectCpu";
 
     private WeakHashMap<ICraftingCPU, Integer> cpuSerialMap = new WeakHashMap<>();
 
@@ -45,6 +45,8 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
     @GuiSync(10)
     public CpuSelectionMode selectionMode = CpuSelectionMode.ANY;
 
+    private static final ClientActionKey<Integer> ACTION_SELECT_CPU = new ClientActionKey<>("selectCpu");
+
     private final AdvCraftingBlockEntity host;
 
     public QuantumComputerMenu(int id, Inventory ip, AdvCraftingBlockEntity te) {
@@ -62,7 +64,7 @@ public class QuantumComputerMenu extends CraftingCPUMenu {
             selectionMode = te.getCluster().getSelectionMode();
         }
 
-        this.registerClientAction("selectCpu", Integer.class, this::selectCpu);
+        this.registerClientAction(ACTION_SELECT_CPU, ByteBufCodecs.INT, this::selectCpu);
     }
 
     private static final CraftingCpuList EMPTY_CPU_LIST = new CraftingCpuList(Collections.emptyList());

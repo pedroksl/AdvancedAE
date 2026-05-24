@@ -18,8 +18,15 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "requirements": [["has_the_recipe", "hasItem"]],
+  "requirements": [
+    [
+      "has_the_recipe",
+      "hasItem"
+    ]
+  ],
   "rewards": {
-    "recipes": ["advanced_ae:import_export_bus"]
+    "recipes": [
+      "advanced_ae:import_export_bus"
+    ]
   }
 }

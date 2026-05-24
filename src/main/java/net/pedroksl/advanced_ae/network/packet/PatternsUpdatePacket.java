@@ -3,11 +3,8 @@ package net.pedroksl.advanced_ae.network.packet;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.entity.player.Player;
-import net.pedroksl.advanced_ae.client.gui.QuantumCrafterScreen;
 
 import appeng.core.network.ClientboundPacket;
 import appeng.core.network.CustomAppEngPayload;
@@ -56,14 +53,6 @@ public record PatternsUpdatePacket(List<Boolean> invalidPatterns, List<Boolean> 
         data.writeInt(this.enabledPatterns.size());
         for (var entry : this.enabledPatterns) {
             data.writeBoolean(entry);
-        }
-    }
-
-    @Override
-    public void handleOnClient(Player player) {
-        if (Minecraft.getInstance().screen instanceof QuantumCrafterScreen screen) {
-            screen.updateInvalidButtons(this.invalidPatterns);
-            screen.updateEnabledButtons(this.enabledPatterns);
         }
     }
 }

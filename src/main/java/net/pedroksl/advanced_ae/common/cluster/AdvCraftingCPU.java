@@ -4,10 +4,10 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.pedroksl.advanced_ae.common.logic.AdvCraftingCPULogic;
 
 import appeng.api.config.CpuSelectionMode;
@@ -119,11 +119,11 @@ public class AdvCraftingCPU implements ICraftingCPU {
         return cluster.getSrc();
     }
 
-    public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
-        craftingLogic.writeToNBT(data, registries);
+    public void writeToNBT(ValueOutput output) {
+        craftingLogic.writeToNBT(output);
     }
 
-    public void readFromNBT(CompoundTag data, HolderLookup.Provider registries) {
-        craftingLogic.readFromNBT(data, registries);
+    public void readFromNBT(ValueInput input) {
+        craftingLogic.readFromNBT(input);
     }
 }

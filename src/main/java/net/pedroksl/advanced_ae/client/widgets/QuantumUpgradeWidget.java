@@ -9,19 +9,16 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.gui.QuantumArmorConfigScreen;
 import net.pedroksl.advanced_ae.client.gui.widgets.AAEIcon;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
 import net.pedroksl.ae2addonlib.client.widgets.AddonIconButton;
 
-import appeng.client.gui.Icon;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.AECheckbox;
 import appeng.client.gui.widgets.IconButton;
+import appeng.util.Icon;
 
-@OnlyIn(Dist.CLIENT)
 public class QuantumUpgradeWidget {
     private final QuantumArmorConfigScreen host;
     private final int index;

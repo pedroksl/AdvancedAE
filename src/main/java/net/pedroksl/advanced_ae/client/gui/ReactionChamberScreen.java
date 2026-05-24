@@ -1,6 +1,6 @@
 package net.pedroksl.advanced_ae.client.gui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -132,7 +132,7 @@ public class ReactionChamberScreen extends UpgradeableScreen<ReactionChamberMenu
         }
 
         @Override
-        protected void renderWidget(GuiGraphics guiGraphics, int i, int i1, float v) {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int i, int i1, float v) {
             this.powerAlert.dest(this.getX(), this.getY()).blit(guiGraphics);
         }
 

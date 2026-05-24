@@ -9,10 +9,10 @@ import com.google.common.base.Preconditions;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.pedroksl.advanced_ae.common.cluster.AdvCraftingCPU;
 
 import appeng.api.config.Actionable;
@@ -88,7 +88,7 @@ public class AdvCraftingCPULogic {
                 .map(p -> p instanceof ServerPlayer serverPlayer ? IPlayerRegistry.getPlayerId(serverPlayer) : null)
                 .orElse(null);
         var craftId = UUID.randomUUID();
-        var linkCpu = new CraftingLink(CraftingCpuHelper.generateLinkData(craftId, requester == null, false), cpu);
+        var linkCpu = new CraftingLink(craftId, requester == null, cpu);
         this.job = new ExecutingCraftingJob(plan, this::postChange, linkCpu, playerId);
         cpu.updateOutput(plan.finalOutput());
         cpu.markDirty();
@@ -99,7 +99,7 @@ public class AdvCraftingCPULogic {
 
         // Non-standalone jobs need another link for the requester, and both links need to be submitted to the cache.
         if (requester != null) {
-            var linkReq = new CraftingLink(CraftingCpuHelper.generateLinkData(craftId, false, true), requester);
+            var linkReq = new CraftingLink(craftId, false, requester);
 
             var craftingService = (CraftingService) grid.getCraftingService();
             craftingService.addLink(linkCpu);
@@ -405,10 +405,11 @@ public class AdvCraftingCPULogic {
         }
     }
 
-    public void readFromNBT(CompoundTag data, HolderLookup.Provider registries) {
-        this.inventory.readFromNBT(data.getList("inventory", 10), registries);
-        if (data.contains("job")) {
-            this.job = new ExecutingCraftingJob(data.getCompound("job"), registries, this::postChange, this);
+    public void readFromNBT(ValueInput input) {
+        this.inventory.deserialize(input.childrenListOrEmpty("inventory"));
+        var jobData = input.child("job").orElse(null);
+        if (jobData != null) {
+            this.job = new ExecutingCraftingJob(jobData, this::postChange, this);
             if (this.job.finalOutput == null) {
                 finishJob(false);
             } else {
@@ -419,10 +420,10 @@ public class AdvCraftingCPULogic {
         }
     }
 
-    public void writeToNBT(CompoundTag data, HolderLookup.Provider registries) {
-        data.put("inventory", this.inventory.writeToNBT(registries));
+    public void writeToNBT(ValueOutput output) {
+        this.inventory.serialize(output.childrenList("inventory"));
         if (this.job != null) {
-            data.put("job", this.job.writeToNBT(registries));
+            this.job.writeToNBT(output.child("job"));
         }
     }
 

@@ -3,11 +3,7 @@ package net.pedroksl.advanced_ae.common.patterns;
 import java.util.*;
 import javax.annotation.Nullable;
 
-import com.google.common.base.Preconditions;
-
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -228,19 +224,6 @@ public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails
         public AEKey getRemainingKey(AEKey template) {
             return null;
         }
-    }
-
-    private static ListTag encodeStackList(GenericStack[] stacks, HolderLookup.Provider registries) {
-        ListTag tag = new ListTag();
-        boolean foundStack = false;
-        for (var stack : stacks) {
-            tag.add(GenericStack.writeTag(registries, stack));
-            if (stack != null && stack.amount() > 0) {
-                foundStack = true;
-            }
-        }
-        Preconditions.checkArgument(foundStack, "List passed to pattern must contain at least one stack.");
-        return tag;
     }
 
     private static List<GenericStack> condenseStacks(List<GenericStack> sparseInput) {

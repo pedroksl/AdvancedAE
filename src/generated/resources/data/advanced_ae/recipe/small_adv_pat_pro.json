@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "minecraft:ender_pearl",
+    "L": "ae2:logic_processor",
+    "P": "ae2:pattern_provider",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "PR",
+    "EL"
+  ],
+  "result": {
+    "id": "advanced_ae:small_adv_pattern_provider"
+  }
+}

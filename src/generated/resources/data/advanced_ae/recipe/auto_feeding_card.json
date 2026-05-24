@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:golden_carrot",
+    "C": "advanced_ae:quantum_upgrade_base",
+    "E": "minecraft:enchanted_golden_apple",
+    "M": "minecraft:glistering_melon_slice",
+    "W": "ae2:wireless_access_point"
+  },
+  "pattern": [
+    " W ",
+    "ACM",
+    " E "
+  ],
+  "result": {
+    "id": "advanced_ae:auto_feeding_card"
+  }
+}

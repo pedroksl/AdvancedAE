@@ -6,15 +6,13 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.pedroksl.advanced_ae.AdvancedAE;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.pedroksl.advanced_ae.common.definitions.AAEMenus;
 import net.pedroksl.advanced_ae.common.helpers.StorageReader;
 import net.pedroksl.advanced_ae.common.helpers.StorageReaderImpl;
@@ -29,35 +27,19 @@ import appeng.api.networking.crafting.ICraftingService;
 import appeng.api.networking.energy.IEnergyService;
 import appeng.api.networking.storage.IStorageService;
 import appeng.api.parts.IPartItem;
-import appeng.api.parts.IPartModel;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
 import appeng.api.storage.ISubMenuHost;
-import appeng.core.AppEng;
 import appeng.core.definitions.AEItems;
-import appeng.items.parts.PartModels;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
-import appeng.parts.PartModel;
 import appeng.parts.automation.*;
 import appeng.util.ConfigInventory;
 import appeng.util.prioritylist.DefaultPriorityList;
 
 @SuppressWarnings("UnstableApiUsage")
 public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
-
-    public static final ResourceLocation MODEL_BASE = AdvancedAE.makeId("part/stock_export_bus_part");
-
-    @PartModels
-    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, AppEng.makeId("part/export_bus_off"));
-
-    @PartModels
-    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, AppEng.makeId("part/export_bus_on"));
-
-    @PartModels
-    public static final IPartModel MODELS_HAS_CHANNEL =
-            new PartModel(MODEL_BASE, AppEng.makeId("part/export_bus_has_channel"));
 
     private ConfigInventory config;
     private ArrayList<StorageReader> storageReaders;
@@ -72,15 +54,15 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
     }
 
     @Override
-    public void readFromNBT(CompoundTag extra, HolderLookup.Provider registries) {
-        super.readFromNBT(extra, registries);
-        this.config.readFromChildTag(extra, "extraConfig", registries);
+    public void readFromNBT(ValueInput extra) {
+        super.readFromNBT(extra);
+        this.config.readFromChildTag(extra, "extraConfig");
     }
 
     @Override
-    public void writeToNBT(CompoundTag extra, HolderLookup.Provider registries) {
-        super.writeToNBT(extra, registries);
-        this.config.writeToChildTag(extra, "extraConfig", registries);
+    public void writeToNBT(ValueOutput extra) {
+        super.writeToNBT(extra);
+        this.config.writeToChildTag(extra, "extraConfig");
     }
 
     public ConfigInventory getConfig() {
@@ -217,16 +199,5 @@ public class StockExportBusPart extends ExportBusPart implements ISubMenuHost {
 
     public ItemStack getMainMenuIcon() {
         return this.getPartItem().asItem().getDefaultInstance();
-    }
-
-    @Override
-    public IPartModel getStaticModels() {
-        if (this.isActive() && this.isPowered()) {
-            return MODELS_HAS_CHANNEL;
-        } else if (this.isPowered()) {
-            return MODELS_ON;
-        } else {
-            return MODELS_OFF;
-        }
     }
 }

@@ -1,28 +1,25 @@
 package net.pedroksl.advanced_ae.client.gui.widgets;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 
-import org.jetbrains.annotations.NotNull;
-
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import appeng.api.stacks.AEKey;
+import appeng.client.gui.style.Blitter;
 
 public class DirectionInputButton extends Button {
 
-    private final Pair<ResourceLocation, ResourceLocation> textures;
+    private final Pair<Identifier, Identifier> textures;
     private AEKey key;
     private int index;
     private boolean highlighted;
 
     public DirectionInputButton(
-            int x, int y, int width, int height, Pair<ResourceLocation, ResourceLocation> textures, OnPress onPress) {
+            int x, int y, int width, int height, Pair<Identifier, Identifier> textures, OnPress onPress) {
         super(x, y, width, height, Component.empty(), onPress, Button.DEFAULT_NARRATION);
 
         this.textures = textures;
@@ -57,25 +54,17 @@ public class DirectionInputButton extends Button {
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        RenderSystem.setShader(GameRenderer::getPositionShader);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+    protected void extractContents(GuiGraphicsExtractor guiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         if (highlighted) {
-            RenderSystem.setShaderTexture(0, textures.getSecond());
-            pGuiGraphics.blit(textures.getSecond(), this.getX(), this.getY(), 0, 0, width, height, 16, 16);
+            Blitter.texture(textures.getSecond(), 16, 16)
+                    .src(0, 0, width, height)
+                    .dest(this.getX(), this.getY())
+                    .blit(guiGraphics);
         } else {
-            RenderSystem.setShaderTexture(0, textures.getFirst());
-            pGuiGraphics.blit(textures.getFirst(), this.getX(), this.getY(), 0, 0, width, height, 16, 16);
+            Blitter.texture(textures.getFirst(), 16, 16)
+                    .src(0, 0, width, height)
+                    .dest(this.getX(), this.getY())
+                    .blit(guiGraphics);
         }
-    }
-
-    @Override
-    public void onClick(double p_onClick_1_, double p_onClick_3_) {
-        super.onClick(p_onClick_1_, p_onClick_3_);
-    }
-
-    @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        return super.mouseClicked(x, y, button);
     }
 }

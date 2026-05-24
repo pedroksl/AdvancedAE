@@ -1,36 +1,41 @@
 package net.pedroksl.advanced_ae.common.items.armors;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+
+import com.geckolib.animatable.GeoItem;
+import com.geckolib.animatable.client.GeoRenderProvider;
+import com.geckolib.animatable.instance.AnimatableInstanceCache;
+import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.AnimationController;
+import com.geckolib.animation.RawAnimation;
+import com.geckolib.renderer.GeoArmorRenderer;
+import com.geckolib.util.GeckoLibUtil;
+import com.google.common.base.Suppliers;
 
 import org.jetbrains.annotations.Nullable;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.client.renderer.QuantumArmorRenderer;
 import net.pedroksl.advanced_ae.common.definitions.*;
 import net.pedroksl.advanced_ae.common.inventory.QuantumArmorMenuHost;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.advanced_ae.common.materials.AAEMaterials;
 import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.apoth.ApoEnchPlugin;
 import net.pedroksl.ae2addonlib.registry.helpers.LibComponents;
@@ -43,21 +48,11 @@ import appeng.core.localization.Tooltips;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.ItemMenuHostLocator;
 
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.util.GeckoLibUtil;
-
 public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem, IUpgradeableItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     protected static final int DEFAULT_TINT_COLOR = Colors.PURPLE.argb();
+    protected static final int DEFAULT_ACCENT_COLOR = Colors.PINK.argb();
 
     protected final List<UpgradeType> possibleUpgrades = new ArrayList<>();
 
@@ -75,9 +70,16 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
         }
     }
 
-    public QuantumArmorBase(
-            Holder<ArmorMaterial> material, Type type, Properties properties, DoubleSupplier powerCapacity) {
-        super(material, type, properties.fireResistant().rarity(Rarity.EPIC).stacksTo(1), powerCapacity);
+    public QuantumArmorBase(ArmorType type, Properties properties, DoubleSupplier powerCapacity) {
+        super(
+                properties
+                        .humanoidArmor(AAEMaterials.QUANTUM_ALLOY, type)
+                        .fireResistant()
+                        .rarity(Rarity.EPIC)
+                        .stacksTo(1),
+                powerCapacity);
+
+        GeoItem.registerSyncedAnimatable(this);
     }
 
     protected void registerUpgrades(UpgradeType... upgrades) {
@@ -85,18 +87,18 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     }
 
     public int getTintColor(ItemStack stack) {
-        return stack.getOrDefault(LibComponents.TINT_COLOR_TAG, DEFAULT_TINT_COLOR)
-                .intValue();
+        return stack.getOrDefault(LibComponents.TINT_COLOR_TAG, DEFAULT_TINT_COLOR);
     }
 
-    public void setTintColor(Player player, ItemStack stack, int color) {
+    public void setTintColor(ItemStack stack, int color) {
         stack.set(LibComponents.TINT_COLOR_TAG, color);
+    }
 
-        if (player.level().isClientSide()) {
-            var renderer = getRenderer(player, stack);
-            if (renderer != null) {
-                renderer.setTintColor(color);
-            }
+    @Override
+    public void inventoryTick(
+            ItemStack stack, ServerLevel level, Entity entity, @org.jspecify.annotations.Nullable EquipmentSlot slot) {
+        if (!getPassiveUpgrades(stack).isEmpty() && entity instanceof Player player) {
+            tickUpgrades(level, player, stack);
         }
     }
 
@@ -104,59 +106,32 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
         return !stack.getOrDefault(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.CAMO), false);
     }
 
-    private void updateVisibility(Player player, ItemStack stack) {
-        var visible = isVisible(stack);
-        var renderer = getRenderer(player, stack);
-        if (renderer != null && stack.getItem() instanceof QuantumArmorBase item) {
-            renderer.setVisible(item.getEquipmentSlot(), visible);
-        }
-    }
-
     @Override
-    public final void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (level.isClientSide() && entity instanceof Player player) {
-            updateVisibility(player, stack);
-        }
-
-        tick(stack, level, entity, slotId);
-    }
-
-    protected void tick(ItemStack stack, Level level, Entity entity, int slotId) {}
-
-    protected QuantumArmorRenderer getRenderer(Player player, ItemStack stack) {
-        var renderProvider = getRenderProvider();
-        if (renderProvider instanceof GeoRenderProvider provider) {
-            var renderer = provider.getGeoArmorRenderer(player, stack, stack.getEquipmentSlot(), null);
-            if (renderer instanceof QuantumArmorRenderer quantumRenderer) {
-                return quantumRenderer;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
     public void appendHoverText(
-            ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {
-        super.appendHoverText(stack, context, lines, advancedTooltips);
+            ItemStack stack,
+            TooltipContext context,
+            TooltipDisplay display,
+            Consumer<Component> lines,
+            TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, display, lines, tooltipFlag);
 
         var hotkey = AAEHotkeys.INSTANCE.getHotkeyMapping(AAEHotkeysRegistry.Keys.ARMOR_CONFIG.getId());
         if (hotkey != null) {
-            lines.add(AAEText.QuantumArmorHotkeyTooltip.text(
+            lines.accept(AAEText.QuantumArmorHotkeyTooltip.text(
                             hotkey.mapping().getTranslatedKeyMessage().copy().withStyle(ChatFormatting.GRAY))
                     .withStyle(ChatFormatting.DARK_GRAY));
         }
 
-        appendExtraHoverText(stack, context, lines, advancedTooltips);
+        appendExtraHoverText(stack, context, lines, tooltipFlag);
 
         if (getLinkedPosition(stack) == null) {
-            lines.add(Tooltips.of(GuiText.Unlinked, Tooltips.RED));
+            lines.accept(Tooltips.of(GuiText.Unlinked, Tooltips.RED));
         } else {
-            lines.add(Tooltips.of(GuiText.Linked, Tooltips.GREEN));
+            lines.accept(Tooltips.of(GuiText.Linked, Tooltips.GREEN));
         }
 
-        lines.add(Component.empty());
-        lines.add(AAEText.QuantumArmorTooltip.text().withStyle(Tooltips.NORMAL_TOOLTIP_TEXT));
+        lines.accept(Component.empty());
+        lines.accept(AAEText.QuantumArmorTooltip.text().withStyle(Tooltips.NORMAL_TOOLTIP_TEXT));
         for (var upgrade : possibleUpgrades) {
             var upgradeComponent =
                     Component.translatable(upgrade.item().asItem().getDescriptionId());
@@ -166,7 +141,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
             } else {
                 upgradeComponent.withStyle(Tooltips.GREEN);
             }
-            lines.add(upgradeComponent);
+            lines.accept(upgradeComponent);
         }
     }
 
@@ -176,7 +151,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     }
 
     protected void appendExtraHoverText(
-            ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag advancedTooltips) {}
+            ItemStack stack, TooltipContext context, Consumer<Component> lines, TooltipFlag advancedTooltips) {}
 
     @Override
     public List<UpgradeType> getPossibleUpgrades() {
@@ -225,50 +200,22 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private QuantumArmorRenderer renderer;
+            private final Supplier<QuantumArmorRenderer<?>> renderer = Suppliers.memoize(QuantumArmorRenderer::new);
 
             @Override
-            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(
-                    @Nullable T livingEntity,
-                    ItemStack itemStack,
-                    @Nullable EquipmentSlot equipmentSlot,
-                    @Nullable HumanoidModel<T> original) {
-                if (this.renderer == null) this.renderer = new QuantumArmorRenderer();
-
-                this.renderer.setTintColor(getTintColor(itemStack));
-                var slot = itemStack.getEquipmentSlot();
-                if (slot != null) {
-                    this.renderer.setVisible(
-                            slot, !itemStack.getOrDefault(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.CAMO), true));
-                }
-
-                return this.renderer;
+            public @Nullable GeoArmorRenderer<?, ?> getGeoArmorRenderer(
+                    ItemStack itemStack, EquipmentSlot equipmentSlot) {
+                return this.renderer.get();
             }
         });
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<GeoAnimatable>(this, 20, state -> {
-            state.getController().setAnimation(RawAnimation.begin().thenLoop("animation.quantum_armor.idle"));
-            Entity entity = state.getData(DataTickets.ENTITY);
-            if (!(entity instanceof Player)) return PlayState.CONTINUE;
-
-            Set<Item> wornArmor = new ObjectOpenHashSet<>();
-            for (ItemStack stack : ((Player) entity).getArmorSlots()) {
-                if (stack.isEmpty()) return PlayState.STOP;
-
-                wornArmor.add(stack.getItem());
-            }
-
-            boolean isFullSet = wornArmor.containsAll(ObjectArrayList.of(
-                    AAEItems.QUANTUM_BOOTS.get(),
-                    AAEItems.QUANTUM_LEGGINGS.get(),
-                    AAEItems.QUANTUM_CHESTPLATE.get(),
-                    AAEItems.QUANTUM_HELMET.get()));
-
-            return isFullSet ? PlayState.CONTINUE : PlayState.STOP;
-        }));
+    public void registerControllers(final AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(
+                "cape",
+                20,
+                test -> test.setAndContinue(RawAnimation.begin().thenLoop("animation.quantum_armor.idle"))));
     }
 
     @Override

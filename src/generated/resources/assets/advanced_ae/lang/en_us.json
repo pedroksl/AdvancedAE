@@ -211,7 +211,7 @@
   "item.advanced_ae.quantum_alloy_plate": "Quantum Alloy Plate",
   "item.advanced_ae.quantum_boots": "Quantum Boots",
   "item.advanced_ae.quantum_chestplate": "Quantum Chestplate",
-  "item.advanced_ae.quantum_crafter_terminal": "Quantum Crafter Terminal",
+  "item.advanced_ae.quantum_crafter_terminal_part": "Quantum Crafter Terminal",
   "item.advanced_ae.quantum_helmet": "Quantum Helmet",
   "item.advanced_ae.quantum_infused_dust": "Quantum Infused Dust",
   "item.advanced_ae.quantum_infusion_bucket": "Quantum Infusion Bucket",
@@ -234,8 +234,6 @@
   "item.advanced_ae.throughput_monitor_configurator": "Throughput Monitor Configurator",
   "item.advanced_ae.walk_speed_card": "Walk Speed Card",
   "item.advanced_ae.water_breathing_card": "Water Breathing Card",
-  "item.advanced_ae.wireless_quantum_crafter_terminal": "Wireless Quantum Crafter Terminal",
-  "key.advanced_ae.category": "Advanced AE",
   "key.advanced_ae.pattern_encoder_action": "Open Advanced Pattern Encoder",
   "key.advanced_ae.pick_craft": "Attempt crafting targeted block",
   "key.advanced_ae.portable_workbench": "Open Portable Workbench",
@@ -244,5 +242,5 @@
   "key.advanced_ae.quantum_magnet_upgrade": "Toggle Quantum Armor Magnet",
   "key.advanced_ae.quantum_night_vision_upgrade": "Toggle Quantum Armor Night Vision",
   "key.ae2.wireless_quantum_crafter_terminal": "Open Wireless Quantum Crafter Terminal",
-  "material.advanced_ae.quantum_alloy": "Quantum Alloy"
+  "key.category.advanced_ae.category": "Advanced AE"
 }

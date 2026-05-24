@@ -3,144 +3,176 @@ package net.pedroksl.advanced_ae.client.renderer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.constant.DataTickets;
+import com.geckolib.constant.dataticket.DataTicket;
+import com.geckolib.model.DefaultedItemGeoModel;
+import com.geckolib.renderer.GeoArmorRenderer;
+import com.geckolib.renderer.base.BoneSnapshots;
+import com.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderer;
+import com.geckolib.renderer.base.RenderPassInfo;
+import com.geckolib.renderer.layer.builtin.AutoGlowingGeoLayer;
+import com.geckolib.renderer.layer.builtin.TextureLayerGeoLayer;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.pedroksl.advanced_ae.AdvancedAE;
+import net.pedroksl.advanced_ae.common.definitions.AAEComponents;
 import net.pedroksl.advanced_ae.common.items.armors.QuantumArmorBase;
+import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
+import net.pedroksl.advanced_ae.xmod.iris.IrisPlugin;
 import net.pedroksl.ae2addonlib.util.Colors;
 
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.model.DefaultedItemGeoModel;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
+public class QuantumArmorRenderer<R extends HumanoidRenderState & GeoRenderState>
+        extends GeoArmorRenderer<QuantumArmorBase, R> {
 
-public class QuantumArmorRenderer extends GeoArmorRenderer<QuantumArmorBase> {
+    public static final DataTicket<Integer> TINT_COLOR = DataTicket.create("quantum_armor_tint_color", Integer.class);
 
-    public static final String HUD_BONE = "hud";
-    public static final String LEFT_BLADE_BONE = "blade_left";
-    public static final String RIGHT_BLADE_BONE = "blade_right";
-    public static final String FACE_SHIELD_BONE = "face_shield";
+    public enum Bones {
+        HEAD("armorHead"),
+        CHEST("armorBody"),
+        LEFT_ARM("armorLeftArm"),
+        RIGHT_ARM("armorRightArm"),
+        LEFT_LEGS("armorLeftLeg"),
+        RIGHT_LEGS("armorRightLeg"),
+        LEFT_FOOT("armorLeftBoot"),
+        RIGHT_FOOT("armorRightBoot"),
+        HUD("hud"),
+        LEFT_BLADE("blade_left"),
+        RIGHT_BLADE("blade_right");
 
-    private final Map<EquipmentSlot, Boolean> visibilityMap = new HashMap<>();
+        public final String boneName;
 
-    private final QuantumArmorTintLayer tintLayer;
+        Bones(String boneName) {
+            this.boneName = boneName;
+        }
+    }
+
+    private final Map<Bones, Boolean> visibilityMap = new HashMap<>();
 
     public QuantumArmorRenderer() {
         super(new DefaultedItemGeoModel<>(AdvancedAE.makeId("quantum_armor")));
 
-        visibilityMap.put(EquipmentSlot.HEAD, true);
-        visibilityMap.put(EquipmentSlot.CHEST, true);
-        visibilityMap.put(EquipmentSlot.LEGS, true);
-        visibilityMap.put(EquipmentSlot.FEET, true);
-
-        this.tintLayer = new QuantumArmorTintLayer(this);
-        addRenderLayer(this.tintLayer);
+        withRenderLayer(new QuantumArmorTintLayer<>(this));
+        withRenderLayer(new AutoGlowingGeoLayer<>(this));
+        withRenderLayer(new QuantumArmorTintGlowingLayer<>(this));
     }
 
-    public void setBoneVisible(String boneName, boolean visible) {
-        this.getGeoModel().getBone(boneName).ifPresent(geoBone -> geoBone.setHidden(!visible));
-    }
-
-    public void setVisible(EquipmentSlot slot, boolean visible) {
-        visibilityMap.put(slot, visible);
+    public void setBoneVisible(Bones bone, boolean visible) {
+        visibilityMap.put(bone, visible);
     }
 
     @Override
-    protected void applyBoneVisibilityBySlot(EquipmentSlot currentSlot) {
-        setVisibleBySlot(currentSlot);
+    public void addRenderData(
+            QuantumArmorBase animatable, @Nullable RenderData relatedObject, R renderState, float partialTick) {
+        if (relatedObject == null) return;
 
-        super.applyBoneVisibilityBySlot(currentSlot);
+        var stack = relatedObject.itemStack();
+        var slot = relatedObject.slot();
+
+        renderState.addGeckolibData(TINT_COLOR, animatable.getTintColor(stack));
+
+        setVisible(slot, animatable.isVisible(stack));
+        toggleBoneVisibilities(slot, stack);
     }
 
-    private void setVisibleBySlot(EquipmentSlot slot) {
-        HumanoidModel<?> model = this;
+    private void toggleBoneVisibilities(EquipmentSlot slot, ItemStack stack) {
+        if (slot == EquipmentSlot.HEAD) {
+            var isHudVisible = IrisPlugin.isShaderPackInUse();
+            setBoneVisible(Bones.HUD, isHudVisible);
+        } else if (slot == EquipmentSlot.CHEST) {
+            var areBladesVisible = stack.has(AAEComponents.UPGRADE_TOGGLE.get(UpgradeType.STRENGTH));
+            setBoneVisible(Bones.LEFT_BLADE, areBladesVisible);
+            setBoneVisible(Bones.RIGHT_BLADE, areBladesVisible);
+        }
+    }
 
-        boolean visible = visibilityMap.get(slot);
+    private void setVisible(EquipmentSlot slot, boolean visible) {
         switch (slot) {
-            case HEAD -> {
-                model.head.visible = visible;
-            }
+            case HEAD -> visibilityMap.put(Bones.HEAD, visible);
             case CHEST -> {
-                model.body.visible = visible;
-                model.rightArm.visible = visible;
-                model.leftArm.visible = visible;
+                visibilityMap.put(Bones.CHEST, visible);
+                visibilityMap.put(Bones.LEFT_ARM, visible);
+                visibilityMap.put(Bones.RIGHT_ARM, visible);
             }
-            case LEGS, FEET -> {
-                model.rightLeg.visible = visible;
-                model.leftLeg.visible = visible;
+            case LEGS -> {
+                visibilityMap.put(Bones.LEFT_LEGS, visible);
+                visibilityMap.put(Bones.RIGHT_LEGS, visible);
+            }
+            case FEET -> {
+                visibilityMap.put(Bones.LEFT_FOOT, visible);
+                visibilityMap.put(Bones.RIGHT_FOOT, visible);
             }
         }
     }
 
-    public void setTintColor(int color) {
-        this.tintLayer.tintColor = color;
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void adjustModelBonesForRender(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
+        super.adjustModelBonesForRender(renderPassInfo, snapshots);
+
+        for (var entry : visibilityMap.entrySet()) {
+            snapshots.ifPresent(entry.getKey().boneName, snapshot -> {
+                if (!entry.getValue()) {
+                    snapshot.skipRender(true);
+                    snapshot.skipChildrenRender(true);
+                }
+            });
+        }
     }
 
-    private static class QuantumArmorTintLayer extends AutoGlowingGeoLayer<QuantumArmorBase> {
+    private static class QuantumArmorTintLayer<T extends GeoAnimatable, O, R extends GeoRenderState>
+            extends TextureLayerGeoLayer<T, O, R> {
 
-        private final ResourceLocation TINT_TEXTURE = AdvancedAE.makeId("textures/item/quantum_armor_tint.png");
-        private int tintColor = Colors.PURPLE.argb();
-
-        public QuantumArmorTintLayer(GeoArmorRenderer<QuantumArmorBase> armorRenderer) {
-            super(armorRenderer);
+        public QuantumArmorTintLayer(GeoRenderer<T, O, R> renderer) {
+            super(renderer, AdvancedAE.makeId("textures/item/quantum_armor_tint.png"));
         }
 
         @Override
-        public void render(
-                PoseStack poseStack,
-                QuantumArmorBase animatable,
-                BakedGeoModel bakedModel,
-                @Nullable RenderType renderType,
-                MultiBufferSource bufferSource,
-                @Nullable VertexConsumer buffer,
-                float partialTick,
-                int packedLight,
-                int packedOverlay) {
-            // Render Tint parts
-            RenderType render = RenderType.entityCutout(TINT_TEXTURE);
-            this.getRenderer()
-                    .reRender(
-                            bakedModel,
-                            poseStack,
-                            bufferSource,
-                            animatable,
-                            render,
-                            bufferSource.getBuffer(render),
-                            partialTick,
-                            packedLight,
-                            packedOverlay,
-                            this.tintColor);
+        public void submitRenderTask(RenderPassInfo<R> renderPassInfo, SubmitNodeCollector renderTasks) {
+            var color = renderPassInfo.renderColor();
 
-            // Render emissive parts
-            renderType = getRenderType(animatable, bufferSource);
-            if (renderType != null) {
-                getRenderer()
-                        .reRender(
-                                bakedModel,
-                                poseStack,
-                                bufferSource,
-                                animatable,
-                                renderType,
-                                bufferSource.getBuffer(renderType),
-                                partialTick,
-                                LightTexture.FULL_SKY,
-                                packedOverlay,
-                                this.tintColor);
-            }
+            renderPassInfo
+                    .renderState()
+                    .addGeckolibData(
+                            DataTickets.RENDER_COLOR,
+                            renderPassInfo.renderState().getOrDefaultGeckolibData(TINT_COLOR, Colors.PURPLE.argb()));
+            super.submitRenderTask(renderPassInfo, renderTasks);
+            renderPassInfo.renderState().addGeckolibData(DataTickets.RENDER_COLOR, color);
+        }
+    }
+
+    private static class QuantumArmorTintGlowingLayer<T extends GeoAnimatable, O, R extends GeoRenderState>
+            extends AutoGlowingGeoLayer<T, O, R> {
+
+        private static final Identifier TEXTURE = AdvancedAE.makeId("textures/item/quantum_armor_tint_glowmask.png");
+
+        public QuantumArmorTintGlowingLayer(GeoRenderer<T, O, R> renderer) {
+            super(renderer);
         }
 
         @Override
-        protected ResourceLocation getTextureResource(QuantumArmorBase animatable) {
-            return TINT_TEXTURE;
+        protected Identifier getTextureResource(R renderState) {
+            return TEXTURE;
+        }
+
+        @Override
+        public void submitRenderTask(RenderPassInfo<R> renderPassInfo, SubmitNodeCollector renderTasks) {
+            var color = renderPassInfo.renderColor();
+
+            renderPassInfo
+                    .renderState()
+                    .addGeckolibData(
+                            DataTickets.RENDER_COLOR,
+                            renderPassInfo.renderState().getOrDefaultGeckolibData(TINT_COLOR, Colors.PURPLE.argb()));
+            super.submitRenderTask(renderPassInfo, renderTasks);
+            renderPassInfo.renderState().addGeckolibData(DataTickets.RENDER_COLOR, color);
         }
     }
 }
