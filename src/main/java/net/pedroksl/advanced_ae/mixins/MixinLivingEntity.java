@@ -1,5 +1,6 @@
 package net.pedroksl.advanced_ae.mixins;
 
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,12 +22,15 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     protected float lastHurt;
 
+    @Shadow
+    public abstract @Nullable LivingEntity asLivingEntity();
+
     @Inject(method = "playHurtSound", at = @At("HEAD"), cancellable = true)
     public void hurtSound(DamageSource source, CallbackInfo ci) {
         if (lastHurt < 10f) {
-            if (source.getEntity() != null && super.getType() == EntityType.PLAYER) {
+            if (this.asLivingEntity() instanceof Player player) {
                 for (var slot : EquipmentSlot.values()) {
-                    if (((Player) source.getEntity()).getItemBySlot(slot).getItem() instanceof QuantumArmorBase) {
+                    if (player.getItemBySlot(slot).getItem() instanceof QuantumArmorBase) {
                         ci.cancel();
                         return;
                     }
