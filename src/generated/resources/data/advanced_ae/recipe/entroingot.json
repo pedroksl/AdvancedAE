@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
+    }
+  ],
+  "type": "advanced_ae:react",
+  "input_energy": 500000,
+  "input_fluid": {
+    "amount": 500,
+    "ingredient": "minecraft:water"
+  },
+  "input_items": [
+    {
+      "amount": 32,
+      "ingredient": "extendedae:entro_dust"
+    },
+    {
+      "amount": 32,
+      "ingredient": "minecraft:gold_ingot"
+    },
+    {
+      "amount": 32,
+      "ingredient": "minecraft:lapis_lazuli"
+    }
+  ],
+  "itemOutput": {
+    "count": 64,
+    "id": "extendedae:entro_ingot"
+  }
+}

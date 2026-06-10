@@ -86,10 +86,10 @@ configurations {
 }
 
 dependencies {
-    //runtimeOnly "curse.maven:glodium-957920:${glodium_file_id}"
+    runtimeOnly "curse.maven:glodium-957920:${glodium_file_id}"
     implementation "org.appliedenergistics:guideme:${guide_me_version}"
     api "org.appliedenergistics:appliedenergistics2:${ae2_version}"
-    //implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
+    implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
     jarJar implementation("io.github.pedroksl:ae2addonlib:${ae2addonlib_version}")
 //    jarJar implementation("de.mari_023:ae2wtlib_api:${ae2wtlib_version}") {
 //        transitive = false

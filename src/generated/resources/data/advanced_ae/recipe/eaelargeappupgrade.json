@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
+    }
+  ],
+  "type": "extendedae:crystal_assembler",
+  "energy": 2000,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots"
+    },
+    {
+      "amount": 3,
+      "ingredient": "ae2:capacity_card"
+    },
+    {
+      "amount": 3,
+      "ingredient": "minecraft:crafting_table"
+    },
+    {
+      "ingredient": "extendedae:concurrent_processor"
+    },
+    {
+      "amount": 6,
+      "ingredient": "#ae2:glass_cable"
+    }
+  ],
+  "output": {
+    "id": "advanced_ae:adv_pattern_provider_capacity_upgrade"
+  }
+}

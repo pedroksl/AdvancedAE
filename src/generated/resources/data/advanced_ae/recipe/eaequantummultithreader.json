@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
+    }
+  ],
+  "type": "extendedae:crystal_assembler",
+  "energy": 2000,
+  "input_items": [
+    {
+      "ingredient": "advanced_ae:quantum_unit"
+    },
+    {
+      "ingredient": "advanced_ae:quantum_core"
+    },
+    {
+      "amount": 8,
+      "ingredient": "advanced_ae:shattered_singularity"
+    },
+    {
+      "amount": 4,
+      "ingredient": "advanced_ae:quantum_accelerator"
+    },
+    {
+      "amount": 8,
+      "ingredient": "extendedae:concurrent_processor"
+    }
+  ],
+  "output": {
+    "id": "advanced_ae:quantum_multi_threader"
+  }
+}

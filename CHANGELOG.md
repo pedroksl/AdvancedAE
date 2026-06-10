@@ -1,2 +1,1 @@
-- Fixed crash that happened when getting hit wearing quantum armor
-- Fixed hurt sound still playing when taking low damage while wearing the quantum armor set
+- Re-added Extended AE compatibility

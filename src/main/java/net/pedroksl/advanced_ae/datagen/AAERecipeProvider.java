@@ -2,6 +2,10 @@ package net.pedroksl.advanced_ae.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
+import com.glodblock.github.extendedae.common.EAESingletons;
+import com.glodblock.github.extendedae.recipe.CircuitCutterRecipeBuilder;
+import com.glodblock.github.extendedae.recipe.CrystalAssemblerRecipeBuilder;
+
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -37,15 +41,15 @@ public class AAERecipeProvider extends RecipeProvider {
     @Override
     protected void buildRecipes() {
         // Devices
-        //        shaped(RecipeCategory.MISC, AAEBlocks.ADV_PATTERN_PROVIDER)
-        //                .pattern("PR")
-        //                .pattern("EL")
-        //                .define('P', EAESingletons.EX_PATTERN_PROVIDER)
-        //                .define('R', Items.REDSTONE)
-        //                .define('E', Items.ENDER_PEARL)
-        //                .define('L', AEItems.LOGIC_PROCESSOR)
-        //                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(output), makeId("eaeadvpatpro"));
+        shaped(RecipeCategory.MISC, AAEBlocks.ADV_PATTERN_PROVIDER)
+                .pattern("PR")
+                .pattern("EL")
+                .define('P', EAESingletons.EX_PATTERN_PROVIDER)
+                .define('R', Items.REDSTONE)
+                .define('E', Items.ENDER_PEARL)
+                .define('L', AEItems.LOGIC_PROCESSOR)
+                .unlockedBy("hasItem", has(AEBlocks.PATTERN_PROVIDER))
+                .save(Addons.EXTENDEDAE.conditionalRecipe(output), makeId("eaeadvpatpro"));
         shaped(RecipeCategory.MISC, AAEBlocks.SMALL_ADV_PATTERN_PROVIDER)
                 .pattern("PR")
                 .pattern("EL")
@@ -157,13 +161,13 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('L', AEItems.LOGIC_PROCESSOR)
                 .unlockedBy("hasItem", has(AEItems.BLANK_PATTERN))
                 .save(output, makeId("smallappupgrade"));
-        //        CrystalAssemblerRecipeBuilder.assemble(AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
-        //                .input(Tags.Items.INGOTS)
-        //                .input(AEItems.CAPACITY_CARD, 3)
-        //                .input(Items.CRAFTING_TABLE, 3)
-        //                .input(EAESingletons.CONCURRENT_PROCESSOR)
-        //                .input(ConventionTags.GLASS_CABLE, 6)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(output), makeId("eaelargeappupgrade"));
+        CrystalAssemblerRecipeBuilder.assemble(AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE, items, null)
+                .input(Tags.Items.INGOTS)
+                .input(AEItems.CAPACITY_CARD, 3)
+                .input(Items.CRAFTING_TABLE, 3)
+                .input(EAESingletons.CONCURRENT_PROCESSOR)
+                .input(ConventionTags.GLASS_CABLE, 6)
+                .save(Addons.EXTENDEDAE.conditionalRecipe(output), AdvancedAE.makeId("eaelargeappupgrade"));
         shaped(RecipeCategory.MISC, AAEItems.ADV_PATTERN_PROVIDER_CAPACITY_UPGRADE)
                 .pattern("STS")
                 .pattern("GIG")
@@ -232,10 +236,9 @@ public class AAERecipeProvider extends RecipeProvider {
                 .setTop(Ingredient.of(AAEItems.QUANTUM_PROCESSOR_PRESS))
                 .setMode(InscriberProcessType.INSCRIBE)
                 .save(output, AdvancedAE.makeId("quantum_processor_print"));
-        //        CircuitCutterRecipeBuilder.cut(AAEItems.QUANTUM_PROCESSOR_PRINT, 9)
-        //                .input(AAEBlocks.QUANTUM_ALLOY_BLOCK, 1)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c),
-        // AdvancedAE.makeId("quantum_processor_print_eae"));
+        CircuitCutterRecipeBuilder.cut(AAEItems.QUANTUM_PROCESSOR_PRINT, 9, items)
+                .input(AAEBlocks.QUANTUM_ALLOY_BLOCK, 1)
+                .save(Addons.EXTENDEDAE.conditionalRecipe(output), AdvancedAE.makeId("quantum_processor_print_eae"));
         InscriberRecipeBuilder.inscribe(this.items.getOrThrow(ConventionTags.REDSTONE), AAEItems.QUANTUM_PROCESSOR, 1)
                 .setTop(Ingredient.of(AAEItems.QUANTUM_PROCESSOR_PRINT))
                 .setBottom(Ingredient.of(AEItems.SILICON_PRINT))
@@ -280,27 +283,27 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('S', AEBlocks.SKY_STONE_BLOCK)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
                 .save(output, makeId("quantumstructure"));
-        //        shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_UNIT)
-        //                .requires(AEBlocks.CRAFTING_UNIT)
-        //                .requires(AEItems.SINGULARITY)
-        //                .requires(EAESingletons.CONCURRENT_PROCESSOR)
-        //                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(output), makeId("eaequantumunit"));
+        shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_UNIT)
+                .requires(AEBlocks.CRAFTING_UNIT)
+                .requires(AEItems.SINGULARITY)
+                .requires(EAESingletons.CONCURRENT_PROCESSOR)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(Addons.EXTENDEDAE.conditionalRecipe(output), makeId("eaequantumunit"));
         shapeless(RecipeCategory.MISC, AAEBlocks.QUANTUM_UNIT)
                 .requires(AEBlocks.CRAFTING_UNIT)
                 .requires(AEItems.SINGULARITY)
                 .requires(AAEItems.SHATTERED_SINGULARITY, 2)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
                 .save(Addons.EXTENDEDAE.notConditionalRecipe(output), makeId("quantumunit"));
-        //        shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_ACCELERATOR)
-        //                .pattern("ECE")
-        //                .pattern("CUC")
-        //                .pattern("ECE")
-        //                .define('E', AAEItems.SHATTERED_SINGULARITY)
-        //                .define('C', EAESingletons.CONCURRENT_PROCESSOR)
-        //                .define('U', AAEBlocks.QUANTUM_UNIT)
-        //                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(output), makeId("eaequantumaccel"));
+        shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_ACCELERATOR)
+                .pattern("ECE")
+                .pattern("CUC")
+                .pattern("ECE")
+                .define('E', AAEItems.SHATTERED_SINGULARITY)
+                .define('C', EAESingletons.CONCURRENT_PROCESSOR)
+                .define('U', AAEBlocks.QUANTUM_UNIT)
+                .unlockedBy("hasItem", has(AEItems.SINGULARITY))
+                .save(Addons.EXTENDEDAE.conditionalRecipe(output), makeId("eaequantumaccel"));
         shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_ACCELERATOR)
                 .pattern("ESE")
                 .pattern("SUS")
@@ -337,12 +340,12 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('T', AAEBlocks.QUANTUM_STORAGE_256M)
                 .unlockedBy("hasItem", has(AEItems.SINGULARITY))
                 .save(output, makeId("quantumcore"));
-        //        CrystalAssemblerRecipeBuilder.assemble(AAEBlocks.DATA_ENTANGLER)
-        //                .input(AAEBlocks.QUANTUM_UNIT)
-        //                .input(AAEBlocks.QUANTUM_CORE)
-        //                .input(AAEItems.SHATTERED_SINGULARITY, 8)
-        //                .input(AAEBlocks.QUANTUM_STORAGE_256M, 3)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("eaequantumdataentangler"));
+        CrystalAssemblerRecipeBuilder.assemble(AAEBlocks.DATA_ENTANGLER, items, null)
+                .input(AAEBlocks.QUANTUM_UNIT)
+                .input(AAEBlocks.QUANTUM_CORE)
+                .input(AAEItems.SHATTERED_SINGULARITY, 8)
+                .input(AAEBlocks.QUANTUM_STORAGE_256M, 3)
+                .save(Addons.EXTENDEDAE.conditionalRecipe(output), AdvancedAE.makeId("eaequantumdataentangler"));
         shaped(RecipeCategory.MISC, AAEBlocks.DATA_ENTANGLER)
                 .pattern("QQQ")
                 .pattern("SUS")
@@ -353,13 +356,13 @@ public class AAERecipeProvider extends RecipeProvider {
                 .define('Q', AAEBlocks.QUANTUM_STORAGE_256M)
                 .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_UNIT))
                 .save(Addons.EXTENDEDAE.notConditionalRecipe(output), makeId("quantumdataentangler"));
-        //        CrystalAssemblerRecipeBuilder.assemble(AAEBlocks.QUANTUM_MULTI_THREADER)
-        //                .input(AAEBlocks.QUANTUM_UNIT)
-        //                .input(AAEBlocks.QUANTUM_CORE)
-        //                .input(AAEItems.SHATTERED_SINGULARITY, 8)
-        //                .input(AAEBlocks.QUANTUM_ACCELERATOR, 4)
-        //                .input(EAESingletons.CONCURRENT_PROCESSOR, 8)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), AdvancedAE.makeId("eaequantummultithreader"));
+        CrystalAssemblerRecipeBuilder.assemble(AAEBlocks.QUANTUM_MULTI_THREADER, items, null)
+                .input(AAEBlocks.QUANTUM_UNIT)
+                .input(AAEBlocks.QUANTUM_CORE)
+                .input(AAEItems.SHATTERED_SINGULARITY, 8)
+                .input(AAEBlocks.QUANTUM_ACCELERATOR, 4)
+                .input(EAESingletons.CONCURRENT_PROCESSOR, 8)
+                .save(Addons.EXTENDEDAE.conditionalRecipe(output), AdvancedAE.makeId("eaequantummultithreader"));
         shaped(RecipeCategory.MISC, AAEBlocks.QUANTUM_MULTI_THREADER)
                 .pattern("SSS")
                 .pattern("AUA")
@@ -392,11 +395,11 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(AEItems.FLUIX_DUST, 32)
                 .fluid(Fluids.WATER, 500)
                 .save(output, "fluixcrystalfromdust");
-        //        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_CRYSTAL, 64, 100000)
-        //                .input(EAESingletons.ENTRO_DUST, 32)
-        //                .input(AEItems.FLUIX_CRYSTAL, 32)
-        //                .fluid(Fluids.WATER, 500)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(c), "entrocrystal");
+        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_CRYSTAL, 64, 100000)
+                .input(EAESingletons.ENTRO_DUST, 32)
+                .input(AEItems.FLUIX_CRYSTAL, 32)
+                .fluid(Fluids.WATER, 500)
+                .save(Addons.EXTENDEDAE.conditionalRecipe(output), "entrocrystal");
         ReactionChamberRecipeBuilder.react(AEBlocks.DAMAGED_BUDDING_QUARTZ, 8, 100000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 8)
                 .input(AEBlocks.QUARTZ_BLOCK, 8)
@@ -412,12 +415,12 @@ public class AAERecipeProvider extends RecipeProvider {
                 .input(AEBlocks.CHIPPED_BUDDING_QUARTZ, 8)
                 .fluid(Fluids.WATER, 1000)
                 .save(output, "flawedbudding");
-        //        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_INGOT, 64, 500000)
-        //                .input(EAESingletons.ENTRO_DUST, 32)
-        //                .input(Items.GOLD_INGOT, 32)
-        //                .input(Items.LAPIS_LAZULI, 32)
-        //                .fluid(Fluids.WATER, 500)
-        //                .save(Addons.EXTENDEDAE.conditionalRecipe(output), "entroingot");
+        ReactionChamberRecipeBuilder.react(EAESingletons.ENTRO_INGOT, 64, 500000)
+                .input(EAESingletons.ENTRO_DUST, 32)
+                .input(Items.GOLD_INGOT, 32)
+                .input(Items.LAPIS_LAZULI, 32)
+                .fluid(Fluids.WATER, 500)
+                .save(Addons.EXTENDEDAE.conditionalRecipe(output), "entroingot");
         ReactionChamberRecipeBuilder.react(AEItems.CERTUS_QUARTZ_CRYSTAL_CHARGED, 64, 1300000)
                 .input(AEItems.CERTUS_QUARTZ_CRYSTAL, 64)
                 .fluid(Fluids.WATER, 1000)

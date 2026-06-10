@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "minecraft:ender_pearl",
+    "L": "ae2:logic_processor",
+    "P": "extendedae:ex_pattern_provider",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "PR",
+    "EL"
+  ],
+  "result": {
+    "id": "advanced_ae:adv_pattern_provider"
+  }
+}
