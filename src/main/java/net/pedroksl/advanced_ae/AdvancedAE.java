@@ -1,6 +1,9 @@
 package net.pedroksl.advanced_ae;
 
+import com.mojang.logging.LogUtils;
+
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -49,6 +52,8 @@ public abstract class AdvancedAE {
     public static final String MOD_ID = "advanced_ae";
 
     static AdvancedAE INSTANCE;
+
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public AdvancedAE(IEventBus eventBus, ModContainer container) {
         if (INSTANCE != null) {

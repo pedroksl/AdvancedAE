@@ -1,1 +1,2 @@
 - Re-added Extended AE compatibility
+- Fixed upgrading pattern providers deleting nbt data
