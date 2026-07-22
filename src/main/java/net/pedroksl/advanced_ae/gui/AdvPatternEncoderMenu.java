@@ -1,6 +1,8 @@
 package net.pedroksl.advanced_ae.gui;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -77,14 +79,16 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
         if (details == null) return;
 
         LinkedHashMap<AEKey, Direction> dirMap = new LinkedHashMap<>();
+        LinkedHashMap<AEKey, List<Integer>> slotMap = new LinkedHashMap<>();
         if (details instanceof AEProcessingPattern processingPattern) {
             dirMap = decodeProcessingPattern(processingPattern);
         } else if (details instanceof AdvProcessingPattern advProcessingPattern) {
             dirMap = decodeAdvProcessingPattern(advProcessingPattern);
+            slotMap = advProcessingPattern.getSlotMap();
         }
 
         if (this.getPlayer() instanceof ServerPlayer sp) {
-            PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(dirMap));
+            PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(dirMap, slotMap));
         }
     }
 
@@ -117,7 +121,8 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
 
     private void clearDecodedPattern() {
         if (this.getPlayer() instanceof ServerPlayer sp) {
-            PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(new LinkedHashMap<>()));
+            PacketDistributor.sendToPlayer(
+                    sp, new AdvPatternEncoderPacket(new LinkedHashMap<>(), new LinkedHashMap<>()));
         }
     }
 
@@ -131,12 +136,73 @@ public class AdvPatternEncoderMenu extends AEBaseMenu {
         if (details != null) {
             var dirMap = details.getDirectionMap();
             dirMap.put(key, dir);
+            var slotMap = details.getSlotMap();
+            // Changing side invalidates whatever slot was picked for the old side.
+            slotMap.remove(key);
             var newPattern = AdvPatternDetailsEncoder.encodeProcessingPattern(
-                    details.getSparseInputs(), details.getSparseOutputs(), dirMap);
+                    details.getSparseInputs(), details.getSparseOutputs(), dirMap, slotMap);
             this.outputSlot.set(newPattern);
 
             if (this.getPlayer() instanceof ServerPlayer sp) {
-                PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(dirMap));
+                PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(dirMap, slotMap));
+            }
+        }
+    }
+
+    /**
+     * @param occurrence which occurrence of {@code key} to target (0 = first row of that item in the pattern,
+     * 1 = second row of the same item, etc) — lets e.g. two separate deepslate rows go to two different slots.
+     */
+    public void updateSlot(AEKey key, int occurrence, int slot) {
+        if (!this.outputSlot.hasItem()) {
+            copyItemToOutputSlot();
+        }
+
+        AdvProcessingPattern details = (AdvProcessingPattern) PatternDetailsHelper.decodePattern(
+                this.outputSlot.getItem(), this.getPlayer().level());
+        if (details != null) {
+            var dirMap = details.getDirectionMap();
+            var slotMap = details.getSlotMap();
+            var slots = slotMap.computeIfAbsent(key, k -> new ArrayList<>());
+            while (slots.size() <= occurrence) {
+                slots.add(-1);
+            }
+            slots.set(occurrence, slot);
+            var newPattern = AdvPatternDetailsEncoder.encodeProcessingPattern(
+                    details.getSparseInputs(), details.getSparseOutputs(), dirMap, slotMap);
+            this.outputSlot.set(newPattern);
+
+            if (this.getPlayer() instanceof ServerPlayer sp) {
+                PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(dirMap, slotMap));
+            }
+        }
+    }
+
+    /**
+     * Replaces the ENTIRE target slot list for {@code key} at once (used by the "Slots" mode text field, where
+     * the player types the whole comma-separated list rather than editing one occurrence at a time).
+     */
+    public void updateSlotList(AEKey key, List<Integer> slots) {
+        if (!this.outputSlot.hasItem()) {
+            copyItemToOutputSlot();
+        }
+
+        AdvProcessingPattern details = (AdvProcessingPattern) PatternDetailsHelper.decodePattern(
+                this.outputSlot.getItem(), this.getPlayer().level());
+        if (details != null) {
+            var dirMap = details.getDirectionMap();
+            var slotMap = details.getSlotMap();
+            if (slots.isEmpty()) {
+                slotMap.remove(key);
+            } else {
+                slotMap.put(key, new ArrayList<>(slots));
+            }
+            var newPattern = AdvPatternDetailsEncoder.encodeProcessingPattern(
+                    details.getSparseInputs(), details.getSparseOutputs(), dirMap, slotMap);
+            this.outputSlot.set(newPattern);
+
+            if (this.getPlayer() instanceof ServerPlayer sp) {
+                PacketDistributor.sendToPlayer(sp, new AdvPatternEncoderPacket(dirMap, slotMap));
             }
         }
     }

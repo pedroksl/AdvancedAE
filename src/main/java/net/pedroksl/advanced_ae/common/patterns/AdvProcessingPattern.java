@@ -31,6 +31,13 @@ public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails
     private final AdvProcessingPattern.Input[] inputs;
     private final List<GenericStack> condensedOutputs;
     private final LinkedHashMap<AEKey, Direction> dirMap = new LinkedHashMap<>();
+    /**
+     * One entry per distinct input key, holding the target slot chosen for EACH occurrence of that key in the
+     * original (uncondensed) sparse input list, in row order. E.g. two separate deepslate rows targeting slots 2
+     * and 3 respectively become {@code deepslate -> [2, 3]}. A missing/short list or {@code NO_SLOT} entries fall
+     * back to the default any-slot insertion for that occurrence's share of the amount.
+     */
+    private final LinkedHashMap<AEKey, List<Integer>> slotMap = new LinkedHashMap<>();
 
     public AdvProcessingPattern(AEItemKey definition) {
         this.definition = definition;
@@ -63,6 +70,9 @@ public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails
                 this.dirMap.put(input.what(), direction.getDirection());
             }
         }
+        for (var entry : encodedPattern.slotEntries()) {
+            this.slotMap.put(entry.key(), new ArrayList<>(entry.slots()));
+        }
     }
 
     public static void encode(
@@ -70,6 +80,15 @@ public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails
             List<GenericStack> sparseInputs,
             List<GenericStack> sparseOutputs,
             @Nullable HashMap<AEKey, Direction> dirMap) {
+        encode(stack, sparseInputs, sparseOutputs, dirMap, null);
+    }
+
+    public static void encode(
+            ItemStack stack,
+            List<GenericStack> sparseInputs,
+            List<GenericStack> sparseOutputs,
+            @Nullable HashMap<AEKey, Direction> dirMap,
+            @Nullable HashMap<AEKey, List<Integer>> slotMap) {
         if (sparseInputs.stream().noneMatch(Objects::nonNull)) {
             throw new IllegalArgumentException("At least one input must be non-null.");
         } else {
@@ -78,17 +97,28 @@ public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails
             NullableDirection[] nullDirArray = new NullableDirection[sparseInputs.size()];
             Arrays.fill(nullDirArray, NullableDirection.NULLDIR);
             List<NullableDirection> directionList = Arrays.asList(nullDirArray);
-            if (dirMap != null) {
-                for (var x = 0; x < sparseInputs.size(); x++) {
-                    var input = sparseInputs.get(x);
-                    if (input != null) {
-                        directionList.set(x, NullableDirection.fromDirection(dirMap.get(input.what())));
-                    }
+
+            for (var x = 0; x < sparseInputs.size(); x++) {
+                var input = sparseInputs.get(x);
+                if (input == null) {
+                    continue;
+                }
+                if (dirMap != null) {
+                    directionList.set(x, NullableDirection.fromDirection(dirMap.get(input.what())));
                 }
             }
+
+            List<EncodedAdvProcessingPattern.KeySlots> slotEntries = List.of();
+            if (slotMap != null) {
+                slotEntries = slotMap.entrySet().stream()
+                        .filter(e -> e.getValue() != null && !e.getValue().isEmpty())
+                        .map(e -> new EncodedAdvProcessingPattern.KeySlots(e.getKey(), e.getValue()))
+                        .toList();
+            }
+
             stack.set(
                     AAEComponents.ENCODED_ADV_PROCESSING_PATTERN,
-                    new EncodedAdvProcessingPattern(sparseInputs, sparseOutputs, directionList));
+                    new EncodedAdvProcessingPattern(sparseInputs, sparseOutputs, directionList, slotEntries));
         }
     }
 
@@ -151,6 +181,16 @@ public class AdvProcessingPattern implements IPatternDetails, IAdvPatternDetails
     @Override
     public Direction getDirectionSideForInputKey(AEKey key) {
         return this.dirMap.get(key);
+    }
+
+    @Override
+    public LinkedHashMap<AEKey, List<Integer>> getSlotMap() {
+        return slotMap;
+    }
+
+    @Override
+    public List<Integer> getSlotsForInputKey(AEKey key) {
+        return this.slotMap.getOrDefault(key, List.of());
     }
 
     @Override

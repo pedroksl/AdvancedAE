@@ -14,8 +14,16 @@ public final class AdvPatternDetailsEncoder {
 
     public static ItemStack encodeProcessingPattern(
             List<GenericStack> sparseInputs, List<GenericStack> sparseOutputs, HashMap<AEKey, Direction> dirMap) {
+        return encodeProcessingPattern(sparseInputs, sparseOutputs, dirMap, null);
+    }
+
+    public static ItemStack encodeProcessingPattern(
+            List<GenericStack> sparseInputs,
+            List<GenericStack> sparseOutputs,
+            HashMap<AEKey, Direction> dirMap,
+            HashMap<AEKey, List<Integer>> slotMap) {
         ItemStack stack = new ItemStack(AAEItems.ADV_PROCESSING_PATTERN);
-        AdvProcessingPattern.encode(stack, sparseInputs, sparseOutputs, dirMap);
+        AdvProcessingPattern.encode(stack, sparseInputs, sparseOutputs, dirMap, slotMap);
         return stack;
     }
 }
