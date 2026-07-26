@@ -751,19 +751,57 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         }
     }
 
+    /**
+     * caller: ReactionChamberBlock.useItemOn.
+     * Parent's stacks[] is unused; data is proxied directly to fluidInv to avoid the
+     * two-storage mismatch where super.insert(1, ...)/super.extract(0, ...) wrote
+     * to FluidStacksResourceHandler.stacks[1]/[0] while fluidInv stayed empty
+     *
+     * @author howxu &lt;dev@howxu.cn&gt;
+     */
     private class ReactionChamberResourceHandler extends FluidStacksResourceHandler {
         public ReactionChamberResourceHandler() {
-            super(fluidInv.size(), MAX_TANK_CAPACITY);
+            // size=1 keeps NeoForge 21.x Objects.checkIndex(0, 1) passing
+            // capacity=0 makes any accidental super.insert return 0.
+            super(1, 0);
         }
 
+        // slot 1 input interaction
         @Override
         public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
-            return super.insert(1, resource, amount, transaction);
+            if (resource.isEmpty() || amount <= 0) return 0;
+            var key = AEFluidKey.of(resource);
+            if (key == null) return 0;
+
+            var existing = fluidInv.getStack(1);
+            // Reject type mismatch to avoid overwriting a different fluid
+            if (existing != null && !existing.what().equals(key)) return 0;
+            long current = existing != null ? existing.amount() : 0;
+            long inserted = Math.min(amount, MAX_TANK_CAPACITY - current);
+            if (inserted <= 0) return 0;
+
+            fluidInv.setStack(1, new GenericStack(key, current + inserted));
+            return (int) inserted;
         }
 
+        // slot 0 output interaction
         @Override
         public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
-            return super.extract(0, resource, amount, transaction);
+            if (resource.isEmpty() || amount <= 0) return 0;
+            var key = AEFluidKey.of(resource);
+            if (key == null) return 0;
+
+            var existing = fluidInv.getStack(0);
+            if (existing == null || !existing.what().equals(key)) return 0;
+
+            long extracted = Math.min(amount, existing.amount());
+            long remaining = existing.amount() - extracted;
+            if (remaining <= 0) {
+                fluidInv.setStack(0, null);
+            } else {
+                fluidInv.setStack(0, new GenericStack(key, remaining));
+            }
+            return (int) extracted;
         }
     }
 }
