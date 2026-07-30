@@ -751,14 +751,6 @@ public class ReactionChamberEntity extends AENetworkedPoweredBlockEntity
         }
     }
 
-    /**
-     * caller: ReactionChamberBlock.useItemOn.
-     * Parent's stacks[] is unused; data is proxied directly to fluidInv to avoid the
-     * two-storage mismatch where super.insert(1, ...)/super.extract(0, ...) wrote
-     * to FluidStacksResourceHandler.stacks[1]/[0] while fluidInv stayed empty
-     *
-     * @author howxu &lt;dev@howxu.cn&gt;
-     */
     private class ReactionChamberResourceHandler extends FluidStacksResourceHandler {
         public ReactionChamberResourceHandler() {
             // size=1 keeps NeoForge 21.x Objects.checkIndex(0, 1) passing
