@@ -1,1 +1,2 @@
 - Fixed quantum armor upgrades not woring correctly
+- Fixed bucket interactions with the reaction chamber (@HowXu)
