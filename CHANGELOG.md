@@ -1,2 +1,1 @@
-- Re-added Extended AE compatibility
-- Fixed upgrading pattern providers deleting nbt data
+- Fixed quantum armor upgrades not woring correctly

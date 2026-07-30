@@ -1,6 +1,7 @@
 package net.pedroksl.advanced_ae.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -54,6 +55,19 @@ public class AAEClientPlayerEvents {
     }
 
     @SubscribeEvent
+    public static void prePlayerTick(PlayerTickEvent.Pre event) {
+        Player player = event.getEntity();
+        if (player instanceof ServerPlayer) return;
+        for (var slot : EquipmentSlot.values()) {
+            ItemStack stack = player.getItemBySlot(slot);
+            if (stack.getItem() instanceof QuantumArmorBase item
+                    && !item.getPassiveUpgrades(stack).isEmpty()) {
+                item.tickUpgrades(player.level(), player, stack);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void playerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
 
@@ -87,6 +101,7 @@ public class AAEClientPlayerEvents {
                 // Send packet to server if data on player is different
                 keys.downKey = downKey;
                 keys.upKey = upKey;
+                shouldUpdateServer = true;
                 player.getPersistentData().putByte(KeysPressed.KEYS_PRESSED, keys.toByte());
             }
         }

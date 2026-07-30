@@ -1,7 +1,12 @@
 package net.pedroksl.advanced_ae.events;
 
+import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -98,23 +103,27 @@ public class AAEPlayerEvents {
         Player player = event.getEntity();
 
         var nv = player.getEffect(MobEffects.NIGHT_VISION);
+        var wb = player.getEffect(MobEffects.WATER_BREATHING);
 
         ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof QuantumHelmet helmet) {
-                if (helmet.isUpgradeEnabledAndPowered(stack, UpgradeType.NIGHT_VISION)) {
-                    if (nv == null || nv.getDuration() < 210) {
-                        stack.set(AAEComponents.NIGHT_VISION_ACTIVATED, true);
-                        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 210, 0, false, false, false));
-                        helmet.consumeEnergy(player, stack, UpgradeType.NIGHT_VISION);
-                    }
-                }
-            }
-            if (stack.getOrDefault(AAEComponents.NIGHT_VISION_ACTIVATED, false)) {
-                if (nv != null && nv.getDuration() < 210) {
-                    player.removeEffect(MobEffects.NIGHT_VISION);
-                    stack.remove(AAEComponents.NIGHT_VISION_ACTIVATED);
-                }
+                addEffect(
+                        player,
+                        helmet,
+                        stack,
+                        MobEffects.NIGHT_VISION,
+                        nv,
+                        UpgradeType.NIGHT_VISION,
+                        AAEComponents.NIGHT_VISION_ACTIVATED);
+                addEffect(
+                        player,
+                        helmet,
+                        stack,
+                        MobEffects.WATER_BREATHING,
+                        wb,
+                        UpgradeType.WATER_BREATHING,
+                        AAEComponents.WATER_BREATHING_ACTIVATED);
             }
         }
 
@@ -145,6 +154,30 @@ public class AAEPlayerEvents {
                     var direction = keys.upKey ? 1 : -1;
                     player.moveRelative(value, new Vec3(0, direction, 0));
                 }
+            }
+        }
+    }
+
+    private static void addEffect(
+            Player player,
+            QuantumArmorBase item,
+            ItemStack stack,
+            Holder<@NotNull MobEffect> effect,
+            MobEffectInstance effectInstance,
+            UpgradeType upgrade,
+            DataComponentType<@NotNull Boolean> tag) {
+        if (item.isUpgradeEnabledAndPowered(stack, upgrade)) {
+            if (effectInstance == null || effectInstance.getDuration() < 210) {
+                stack.set(tag, true);
+                player.addEffect(new MobEffectInstance(effect, 210, 0, false, false, false));
+                item.consumeEnergy(player, stack, UpgradeType.NIGHT_VISION);
+            }
+        }
+
+        if (stack.getOrDefault(tag, false)) {
+            if (effectInstance != null && effectInstance.getDuration() < 210) {
+                player.removeEffect(effect);
+                stack.remove(tag);
             }
         }
     }

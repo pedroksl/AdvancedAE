@@ -28,6 +28,9 @@ public final class AAEComponents extends ComponentRegistry {
     public static final DataComponentType<Boolean> NIGHT_VISION_ACTIVATED =
             register("night_vision_activated", builder -> builder.persistent(Codec.BOOL)
                     .networkSynchronized(ByteBufCodecs.BOOL));
+    public static final DataComponentType<Boolean> WATER_BREATHING_ACTIVATED =
+            register("water_breathing_activated", builder -> builder.persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL));
 
     public static final DataComponentType<List<Integer>> EXPORTED_ALLOWED_SIDES =
             register("allowed_output_sides", builder -> builder.persistent(Codec.list(Codec.of(Codec.INT, Codec.INT)))
