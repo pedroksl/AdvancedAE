@@ -1,1 +1,1 @@
-- Fixed crash that happened on changing quantum armor colors on a dedicated server
+- Fixed curio slot texture
