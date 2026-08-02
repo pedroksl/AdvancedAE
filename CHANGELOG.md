@@ -1,1 +1,2 @@
-- Fixed quantum crafter using output space as an intermediate step to pushing to ME Storage (fixes some item voiding in high output setups) (Fixes #244)
+- Fixed unintended transparencies
+- Fixed curio slot texture color
