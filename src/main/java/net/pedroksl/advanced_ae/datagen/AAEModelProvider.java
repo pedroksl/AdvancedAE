@@ -68,7 +68,7 @@ public class AAEModelProvider extends AE2AddonModelProvider {
         basicItem(AAEItems.QUANTUM_PROCESSOR);
         basicItem(AAEItems.QUANTUM_STORAGE_COMPONENT);
         basicItem(AAEItems.MONITOR_CONFIGURATOR);
-        //        basicItem(AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL);
+        basicItem(AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL);
 
         quantumArmor(AAEItems.QUANTUM_HELMET);
         quantumArmor(AAEItems.QUANTUM_CHESTPLATE);

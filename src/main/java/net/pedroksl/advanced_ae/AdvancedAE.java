@@ -32,6 +32,7 @@ import net.pedroksl.advanced_ae.xmod.Addons;
 import net.pedroksl.advanced_ae.xmod.appflux.AppliedFluxPlugin;
 import net.pedroksl.advanced_ae.xmod.dme.DMEPlugin;
 import net.pedroksl.advanced_ae.xmod.mekansim.MekanismPlugin;
+import net.pedroksl.advanced_ae.xmod.wtlib.AE2wtlibPlugin;
 import net.pedroksl.ae2addonlib.api.IGridLinkedItem;
 
 import appeng.api.AECapabilities;
@@ -79,6 +80,8 @@ public abstract class AdvancedAE {
         eventBus.addListener(AAENetworkHandler.INSTANCE::register);
         NeoForge.EVENT_BUS.addListener(this::registerSynchronizedRecipes);
 
+        AE2wtlibPlugin.registerTerminal();
+
         eventBus.addListener(this::commonSetup);
         AAEHotkeysRegistry.INSTANCE.init();
     }
@@ -116,9 +119,9 @@ public abstract class AdvancedAE {
         GridLinkables.register(AAEItems.QUANTUM_CHESTPLATE, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_LEGGINGS, IGridLinkedItem.LINKABLE_HANDLER);
         GridLinkables.register(AAEItems.QUANTUM_BOOTS, IGridLinkedItem.LINKABLE_HANDLER);
-        //        GridLinkables.register(
-        //                AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL,
-        //                appeng.items.tools.powered.WirelessTerminalItem.LINKABLE_HANDLER);
+        GridLinkables.register(
+                AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL,
+                appeng.items.tools.powered.WirelessTerminalItem.LINKABLE_HANDLER);
     }
 
     private static void initUpgrades(FMLCommonSetupEvent event) {

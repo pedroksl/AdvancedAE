@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "appflux"
+    }
+  ],
+  "type": "advanced_ae:react",
+  "input_energy": 1300000,
+  "input_fluid": {
+    "amount": 1000,
+    "ingredient": "minecraft:water"
+  },
+  "input_items": [
+    {
+      "amount": 64,
+      "ingredient": "appflux:redstone_crystal"
+    }
+  ],
+  "itemOutput": {
+    "count": 64,
+    "id": "appflux:charged_redstone"
+  }
+}

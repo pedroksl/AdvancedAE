@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "appflux"
+    }
+  ],
+  "type": "advanced_ae:react",
+  "input_energy": 20000,
+  "input_fluid": {
+    "amount": 500,
+    "ingredient": "minecraft:water"
+  },
+  "input_items": [
+    {
+      "amount": 16,
+      "ingredient": "minecraft:redstone_block"
+    },
+    {
+      "amount": 16,
+      "ingredient": "ae2:fluix_crystal"
+    },
+    {
+      "amount": 16,
+      "ingredient": "minecraft:glowstone_dust"
+    }
+  ],
+  "itemOutput": {
+    "count": 64,
+    "id": "appflux:redstone_crystal"
+  }
+}

@@ -361,18 +361,20 @@ public class UpgradeCards {
 
     public static void rechargeItem(
             Player player, ItemStack stack, IGrid grid, double rate, IEnergyService energyService) {
-        var cap = ItemAccess.forStack(stack).getCapability(Capabilities.Energy.ITEM);
+        var itemAccess = ItemAccess.forStack(stack).getCapability(Capabilities.Energy.ITEM);
         var afRate = Integer.MAX_VALUE;
-        if (cap == null) return;
+        if (itemAccess == null) return;
 
         try (var tx = Transaction.openRoot()) {
             if (Addons.APPFLUX.isLoaded()) {
-                AppliedFluxPlugin.rechargeEnergyStorage(grid, afRate, IActionSource.ofPlayer(player), cap, tx);
+                AppliedFluxPlugin.rechargeEnergyStorage(grid, afRate, IActionSource.ofPlayer(player), itemAccess, tx);
             }
+        }
 
-            if (energyService.getStoredPower() > 0) {
+        if (energyService.getStoredPower() > 0) {
+            try (var tx = Transaction.openRoot()) {
                 var extracted = energyService.extractAEPower(rate, Actionable.MODULATE, PowerMultiplier.CONFIG);
-                var inserted = cap.insert((int) extracted, tx);
+                var inserted = itemAccess.insert((int) extracted, tx);
                 energyService.injectPower(extracted - inserted, Actionable.MODULATE);
                 tx.commit();
             }

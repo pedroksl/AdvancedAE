@@ -10,6 +10,7 @@ import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.items.AdvPatternEncoderItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderCapacityUpgradeItem;
 import net.pedroksl.advanced_ae.common.items.AdvPatternProviderUpgradeItem;
+import net.pedroksl.advanced_ae.common.items.QuantumCrafterWirelessTerminalItem;
 import net.pedroksl.advanced_ae.common.items.armors.*;
 import net.pedroksl.advanced_ae.common.items.upgrades.QuantumUpgradeBaseItem;
 import net.pedroksl.advanced_ae.common.items.upgrades.UpgradeType;
@@ -67,10 +68,10 @@ public class AAEItems extends ItemRegistry {
             "quantum_crafter_terminal_part",
             QuantumCrafterTerminalPart.class,
             QuantumCrafterTerminalPart::new);
-    //    public static final ItemDefinition<QuantumCrafterWirelessTerminalItem> QUANTUM_CRAFTER_WIRELESS_TERMINAL =
-    // item(
-    //            "Wireless Quantum Crafter Terminal", "wireless_quantum_crafter_terminal", p ->
-    // AE2wtlibPlugin.TERMINAL);
+    public static final ItemDefinition<QuantumCrafterWirelessTerminalItem> QUANTUM_CRAFTER_WIRELESS_TERMINAL = item(
+            "Wireless Quantum Crafter Terminal",
+            "wireless_quantum_crafter_terminal",
+            QuantumCrafterWirelessTerminalItem::new);
 
     public static final ItemDefinition<Item> ADV_PROCESSING_PATTERN = item(
             "Advanced Processing Pattern",

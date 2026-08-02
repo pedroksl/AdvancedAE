@@ -6,6 +6,8 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
+import dev.shadowsoffire.apothic_enchanting.Ench;
+
 public class ApoEnchPlugin {
 
     public enum Enchantment {
@@ -13,10 +15,9 @@ public class ApoEnchPlugin {
     }
 
     public static DataComponentType<?> getEnchantment(Enchantment enchantment) {
-        //        return switch (enchantment) {
-        //            case STABLE_FOOTING -> Ench.EnchantEffects.STABLE_FOOTING;
-        //        };
-        return null;
+        return switch (enchantment) {
+            case STABLE_FOOTING -> Ench.EnchantEffects.STABLE_FOOTING;
+        };
     }
 
     public static boolean checkForEnchant(Player player, Enchantment enchantment) {

@@ -1,0 +1,22 @@
+{
+  "type": "extendedae:crystal_assembler",
+  "energy": 2000,
+  "input_items": [
+    {
+      "amount": 4,
+      "ingredient": "advanced_ae:printed_quantum_processor"
+    },
+    {
+      "amount": 4,
+      "ingredient": "ae2:printed_silicon"
+    },
+    {
+      "amount": 4,
+      "ingredient": "#c:dusts/redstone"
+    }
+  ],
+  "output": {
+    "count": 4,
+    "id": "advanced_ae:quantum_processor"
+  }
+}

@@ -2,6 +2,7 @@ package net.pedroksl.advanced_ae.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
+import com.glodblock.github.appflux.common.AFSingletons;
 import com.glodblock.github.extendedae.common.EAESingletons;
 import com.glodblock.github.extendedae.recipe.CircuitCutterRecipeBuilder;
 import com.glodblock.github.extendedae.recipe.CrystalAssemblerRecipeBuilder;
@@ -214,15 +215,14 @@ public class AAERecipeProvider extends RecipeProvider {
                 .requires(AAEItems.QUANTUM_PROCESSOR)
                 .unlockedBy("hasItem", has(AAEBlocks.QUANTUM_CRAFTER))
                 .save(output, makeId("quantum_crafter_terminal"));
-        //        shaped(RecipeCategory.MISC, AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL)
-        //                .pattern(" W ")
-        //                .pattern(" T ")
-        //                .pattern(" C ")
-        //                .define('W', AEItems.WIRELESS_RECEIVER)
-        //                .define('T', AAEItems.QUANTUM_CRAFTER_TERMINAL)
-        //                .define('C', AEBlocks.DENSE_ENERGY_CELL)
-        //                .unlockedBy("hasItem", has(AAEItems.QUANTUM_CRAFTER_TERMINAL))
-        //                .save(output, makeId("wireless_quantum_crafter_terminal"));
+        shaped(RecipeCategory.MISC, AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL)
+                .pattern(" W ")
+                .pattern(" T ")
+                .pattern(" C ")
+                .define('W', AEItems.WIRELESS_RECEIVER)
+                .define('T', AAEItems.QUANTUM_CRAFTER_TERMINAL)
+                .define('C', AEBlocks.DENSE_ENERGY_CELL)
+                .unlockedBy("hasItem", has(AAEItems.QUANTUM_CRAFTER_TERMINAL));
         InscriberRecipeBuilder.inscribe(AAEItems.SHATTERED_SINGULARITY, AAEItems.QUANTUM_PROCESSOR_PRESS, 1)
                 .setTop(Ingredient.of(AEItems.ENGINEERING_PROCESSOR_PRESS))
                 .setBottom(Ingredient.of(AEItems.LOGIC_PROCESSOR_PRESS))
@@ -244,11 +244,11 @@ public class AAERecipeProvider extends RecipeProvider {
                 .setBottom(Ingredient.of(AEItems.SILICON_PRINT))
                 .setMode(InscriberProcessType.PRESS)
                 .save(output, AdvancedAE.makeId("quantum_processor"));
-        //        CrystalAssemblerRecipeBuilder.assemble(AAEItems.QUANTUM_PROCESSOR, 4)
-        //                .input(AAEItems.QUANTUM_PROCESSOR_PRINT, 4)
-        //                .input(AEItems.SILICON_PRINT, 4)
-        //                .input(ConventionTags.REDSTONE, 4)
-        //                .save(output, AdvancedAE.makeId("quantum_processor_eae"));
+        CrystalAssemblerRecipeBuilder.assemble(AAEItems.QUANTUM_PROCESSOR, 4, items, null)
+                .input(AAEItems.QUANTUM_PROCESSOR_PRINT, 4)
+                .input(AEItems.SILICON_PRINT, 4)
+                .input(ConventionTags.REDSTONE, 4)
+                .save(output, AdvancedAE.makeId("quantum_processor_eae"));
         shaped(RecipeCategory.MISC, AAEItems.QUANTUM_STORAGE_COMPONENT)
                 .pattern("PSP")
                 .pattern("CQC")
@@ -749,16 +749,16 @@ public class AAERecipeProvider extends RecipeProvider {
     }
 
     private void loadAppFluxRecipes() {
-        //        ReactionChamberRecipeBuilder.react(AFSingletons.REDSTONE_CRYSTAL, 64, 20000)
-        //                .input(Blocks.REDSTONE_BLOCK, 16)
-        //                .input(AEItems.FLUIX_CRYSTAL, 16)
-        //                .input(Items.GLOWSTONE_DUST, 16)
-        //                .fluid(Fluids.WATER, 500)
-        //                .save(Addons.APPFLUX.conditionalRecipe(output), "redstonecrystal");
-        //        ReactionChamberRecipeBuilder.react(AFSingletons.CHARGED_REDSTONE, 64, 1300000)
-        //                .input(AFSingletons.REDSTONE_CRYSTAL, 64)
-        //                .fluid(Fluids.WATER, 1000)
-        //                .save(Addons.APPFLUX.conditionalRecipe(output), "chargedredstone");
+        ReactionChamberRecipeBuilder.react(AFSingletons.REDSTONE_CRYSTAL, 64, 20000)
+                .input(Blocks.REDSTONE_BLOCK, 16)
+                .input(AEItems.FLUIX_CRYSTAL, 16)
+                .input(Items.GLOWSTONE_DUST, 16)
+                .fluid(Fluids.WATER, 500)
+                .save(Addons.APPFLUX.conditionalRecipe(output), "redstonecrystal");
+        ReactionChamberRecipeBuilder.react(AFSingletons.CHARGED_REDSTONE, 64, 1300000)
+                .input(AFSingletons.REDSTONE_CRYSTAL, 64)
+                .fluid(Fluids.WATER, 1000)
+                .save(Addons.APPFLUX.conditionalRecipe(output), "chargedredstone");
     }
 
     private void loadMegaCellsRecipes() {
