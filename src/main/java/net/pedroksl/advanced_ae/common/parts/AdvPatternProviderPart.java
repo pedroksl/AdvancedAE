@@ -98,6 +98,12 @@ public class AdvPatternProviderPart extends AEBasePart implements AdvPatternProv
     }
 
     @Override
+    public void clearContent() {
+        super.clearContent();
+        this.logic.clearContent();
+    }
+
+    @Override
     public float getCableConnectionLength(AECableType cable) {
         return 4.0F;
     }
