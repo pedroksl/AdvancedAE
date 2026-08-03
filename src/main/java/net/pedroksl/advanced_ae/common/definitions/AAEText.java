@@ -47,6 +47,19 @@ public enum AAEText implements LocalizationEnum {
     WestButton("Target the WEST face of the machine.", Type.TOOLTIP),
     UpButton("Target the UP face of the machine.", Type.TOOLTIP),
     DownButton("Target the DOWN face of the machine.", Type.TOOLTIP),
+    AdvPatternEncoderModeToggleSides("Sides", Type.GUI),
+    AdvPatternEncoderModeToggleSlots("Slots", Type.GUI),
+    AdvPatternEncoderModeToggleTooltip(
+            "Switch between configuring the SIDE (default) or the exact SLOT for each input", Type.TOOLTIP),
+    AdvPatternEncoderSlotButtonTooltip(
+            "Target slot for the 1st occurrence. Click: +1. Shift+click: -1. '-' = automatic. For an item repeated"
+                    + " in several slots, use 'Slots' mode (button next to the pattern slots).",
+            Type.TOOLTIP),
+    AdvPatternEncoderSlotListTooltip(
+            "Target slots, comma separated. E.g. 0,1 sends 1 unit to slot 0 and 1 unit to slot 1. Empty ="
+                    + " automatic (no specific slot). Only matters if the item appears more than once in the"
+                    + " recipe, or to force a single slot with one number.",
+            Type.TOOLTIP),
     ClearButton("Clear", Type.TOOLTIP),
     ClearFluidButtonHint("Flush the remaining fluid from the machine.", Type.TOOLTIP),
     ClearSidesButtonHint("Disable output from all sides of the machine.", Type.TOOLTIP),

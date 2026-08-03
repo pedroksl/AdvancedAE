@@ -3,12 +3,14 @@ package net.pedroksl.advanced_ae.client.gui;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.Direction;
@@ -19,9 +21,12 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.client.AAEHotkeys;
 import net.pedroksl.advanced_ae.client.gui.widgets.DirectionInputButton;
+import net.pedroksl.advanced_ae.client.gui.widgets.SlotInputButton;
 import net.pedroksl.advanced_ae.common.definitions.AAEText;
 import net.pedroksl.advanced_ae.gui.AdvPatternEncoderMenu;
 import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeDirectionPacket;
+import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeSlotListPacket;
+import net.pedroksl.advanced_ae.network.packet.AdvPatternEncoderChangeSlotPacket;
 
 import appeng.api.stacks.AEKey;
 import appeng.client.gui.AEBaseScreen;
@@ -42,6 +47,13 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
     private static final int DIRECTION_BUTTONS_OFFSET_X = 1;
     private static final int DIRECTION_BUTTONS_WIDTH = 12;
     private static final int DIRECTION_BUTTONS_HEIGHT = 14;
+    private static final int SLOT_BUTTON_WIDTH = 14;
+    private static final int SLOT_BUTTON_GAP = 2;
+
+    // "Slots" mode: one plain text field per row, right where the direction buttons would otherwise be. The
+    // player types a comma-separated list of target slots (e.g. "0,1" to split the ingredient 1-per-slot across
+    // slot 0 and slot 1). Far simpler than juggling separate occurrence-nav buttons.
+    private static final int SLOT_LIST_EDIT_WIDTH = 100;
 
     private static final Rect2i SLOT_BBOX = new Rect2i(146, 16, SLOT_SIZE, SLOT_SIZE);
 
@@ -49,8 +61,22 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
 
     private final Scrollbar scrollbar;
     private LinkedHashMap<AEKey, Direction> inputList = new LinkedHashMap<>();
+    private LinkedHashMap<AEKey, List<Integer>> slotList = new LinkedHashMap<>();
     private final HashMap<AEKey, DirectionInputButton[]> directionButtons = new HashMap<>();
+    private final HashMap<AEKey, SlotInputButton> slotButtons = new HashMap<>();
     private final ArrayList<InputRow> rows = new ArrayList<>();
+
+    /**
+     * Toggles between the default "Lados" (direction) row layout and the dedicated "Slots" layout. The latter
+     * trades the 7 direction buttons for one plain text box where the player types the full comma-separated
+     * list of target slots for that ingredient — needed when the same item appears more than once in a recipe
+     * and each occurrence has to land in a different slot (e.g. two separate deepslate units going to two
+     * different pedestals).
+     */
+    private boolean slotsMode = false;
+
+    private Button modeToggleButton;
+    private final HashMap<AEKey, EditBox> slotListEditBoxes = new HashMap<>();
 
     public AdvPatternEncoderScreen(
             AdvPatternEncoderMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
@@ -87,6 +113,8 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
                 value[x].visible = false;
             }
         });
+        this.slotButtons.forEach((key, button) -> button.visible = false);
+        this.slotListEditBoxes.forEach((key, box) -> box.setVisible(false));
 
         final int scrollLevel = scrollbar.getCurrentScroll();
         int visibleRows = Math.min(VISIBLE_ROWS, this.inputList.size());
@@ -103,22 +131,64 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
                     LIST_ANCHOR_X + 1,
                     LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING));
 
-            var buttons = this.directionButtons.get(row.key);
-            var highlight = getSelectedDirButton(row.dir);
-            for (var col = 0; col < 7; col++) {
-                var button = buttons[col];
-                button.setPosition(
-                        this.leftPos
-                                + LIST_ANCHOR_X
-                                + 2
-                                + SLOT_SIZE
-                                + (col + 1) * DIRECTION_BUTTONS_OFFSET_X
-                                + col * DIRECTION_BUTTONS_WIDTH,
-                        this.topPos + LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING));
-                button.setHighlighted(col == highlight);
-                button.visible = true;
+            int rowY = this.topPos + LIST_ANCHOR_Y + 1 + i * (ROW_HEIGHT + ROW_SPACING);
+
+            if (this.slotsMode) {
+                layoutSlotsModeRow(row.key(), rowY);
+            } else {
+                layoutDirectionModeRow(row.key(), row.dir(), rowY);
             }
         }
+    }
+
+    private void layoutDirectionModeRow(AEKey key, @Nullable Direction dir, int rowY) {
+        var buttons = this.directionButtons.get(key);
+        var highlight = getSelectedDirButton(dir);
+        for (var col = 0; col < 7; col++) {
+            var button = buttons[col];
+            button.setPosition(
+                    this.leftPos
+                            + LIST_ANCHOR_X
+                            + 2
+                            + SLOT_SIZE
+                            + (col + 1) * DIRECTION_BUTTONS_OFFSET_X
+                            + col * DIRECTION_BUTTONS_WIDTH,
+                    rowY);
+            button.setHighlighted(col == highlight);
+            button.visible = true;
+        }
+
+        var slotButton = this.slotButtons.get(key);
+        if (slotButton != null) {
+            slotButton.setPosition(
+                    this.leftPos
+                            + LIST_ANCHOR_X
+                            + 2
+                            + SLOT_SIZE
+                            + 8 * DIRECTION_BUTTONS_OFFSET_X
+                            + 7 * DIRECTION_BUTTONS_WIDTH
+                            + SLOT_BUTTON_GAP,
+                    rowY);
+            slotButton.visible = true;
+        }
+    }
+
+    private void layoutSlotsModeRow(AEKey key, int rowY) {
+        var editBox = this.slotListEditBoxes.get(key);
+        if (editBox == null) {
+            return;
+        }
+        editBox.setPosition(this.leftPos + LIST_ANCHOR_X + 2 + SLOT_SIZE + 2, rowY + 1);
+        if (!editBox.isFocused()) {
+            var slots = this.slotList.getOrDefault(key, List.of());
+            String text = slots.isEmpty()
+                    ? ""
+                    : String.join(",", slots.stream().map(String::valueOf).toList());
+            if (!editBox.getValue().equals(text)) {
+                editBox.setValue(text);
+            }
+        }
+        editBox.setVisible(true);
     }
 
     @Override
@@ -145,22 +215,61 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
     @Override
     public void init() {
         super.init();
+
+        // Placed in the otherwise-empty gap of the right-hand column, between the pattern input slot (top) and
+        // the encoded-pattern output slot (bottom) — doesn't collide with the title text or the row list.
+        this.modeToggleButton = this.addRenderableWidget(Button.builder(modeToggleLabel(), b -> {
+                    this.slotsMode = !this.slotsMode;
+                    b.setMessage(modeToggleLabel());
+                })
+                .bounds(this.leftPos + 146, this.topPos + 40, 20, 12)
+                .tooltip(Tooltip.create(
+                        Component.translatable(AAEText.AdvPatternEncoderModeToggleTooltip.getTranslationKey())))
+                .build());
+
         this.refreshList();
 
         this.getMenu().onUpdateRequested();
     }
 
-    public void update(LinkedHashMap<AEKey, Direction> inputList) {
-        this.inputList.clear();
+    private Component modeToggleLabel() {
+        return Component.translatable(
+                this.slotsMode
+                        ? AAEText.AdvPatternEncoderModeToggleSlots.getTranslationKey()
+                        : AAEText.AdvPatternEncoderModeToggleSides.getTranslationKey());
+    }
+
+    public void update(LinkedHashMap<AEKey, Direction> inputList, LinkedHashMap<AEKey, List<Integer>> slotList) {
+        // Every keystroke in the "Slots" text field round-trips through the server and comes back here as a
+        // fresh sync. If the set of ingredients hasn't actually changed (just their direction/slot values), swap
+        // the data in place and let drawFG's existing "don't touch a focused/unchanged field" logic handle the
+        // visual refresh — tearing down and recreating the widgets on every keystroke was destroying the very
+        // EditBox the player was typing into (killing focus, looking like flicker, and making it uneditable).
+        boolean sameKeys = this.inputList.keySet().equals(inputList.keySet());
+
+        this.inputList = inputList;
+        this.slotList = slotList;
+
+        if (sameKeys) {
+            this.rows.clear();
+            for (var key : this.inputList.keySet()) {
+                this.rows.add(new InputRow(key, this.inputList.get(key)));
+            }
+            return;
+        }
+
         this.directionButtons.forEach((k, v) -> {
             for (var btn : v) {
                 this.removeWidget(btn);
             }
         });
         this.directionButtons.clear();
+        this.slotButtons.forEach((k, btn) -> this.removeWidget(btn));
+        this.slotButtons.clear();
+        this.slotListEditBoxes.forEach((k, box) -> this.removeWidget(box));
+        this.slotListEditBoxes.clear();
         this.rows.clear();
 
-        this.inputList = inputList;
         this.refreshList();
     }
 
@@ -183,17 +292,58 @@ public class AdvPatternEncoderScreen extends AEBaseScreen<AdvPatternEncoderMenu>
                 button.visible = false;
                 buttons[x] = this.addRenderableWidget(button);
             }
-
             directionButtons.put(key, buttons);
+
+            var slots = this.slotList.getOrDefault(key, List.of());
+
+            var slotButton =
+                    new SlotInputButton(0, 0, SLOT_BUTTON_WIDTH, DIRECTION_BUTTONS_HEIGHT, this::slotButtonPressed);
+            slotButton.setKey(key);
+            slotButton.setSlot(slots.isEmpty() ? -1 : slots.get(0));
+            slotButton.setTooltip(Tooltip.create(
+                    Component.translatable(AAEText.AdvPatternEncoderSlotButtonTooltip.getTranslationKey())));
+            slotButton.visible = false;
+            slotButtons.put(key, this.addRenderableWidget(slotButton));
+
+            var editBox =
+                    new EditBox(this.font, 0, 0, SLOT_LIST_EDIT_WIDTH, DIRECTION_BUTTONS_HEIGHT, Component.empty());
+            editBox.setMaxLength(64);
+            editBox.setFilter(s -> s.matches("[0-9,\\-]*"));
+            editBox.setResponder(text -> onSlotListTextChanged(key, text));
+            editBox.setTooltip(Tooltip.create(
+                    Component.translatable(AAEText.AdvPatternEncoderSlotListTooltip.getTranslationKey())));
+            editBox.setVisible(false);
+            slotListEditBoxes.put(key, this.addRenderableWidget(editBox));
         }
 
         this.resetScrollbar();
+    }
+
+    private void onSlotListTextChanged(AEKey key, String text) {
+        List<Integer> slots = new ArrayList<>();
+        for (var part : text.split(",")) {
+            var trimmed = part.trim();
+            if (trimmed.isEmpty()) {
+                continue;
+            }
+            try {
+                slots.add(Integer.parseInt(trimmed));
+            } catch (NumberFormatException e) {
+                // Ignore partial/invalid numbers while the player is still typing.
+            }
+        }
+        PacketDistributor.sendToServer(new AdvPatternEncoderChangeSlotListPacket(key, slots));
     }
 
     private void directionButtonPressed(Button b) {
         DirectionInputButton button = ((DirectionInputButton) b);
         PacketDistributor.sendToServer(
                 new AdvPatternEncoderChangeDirectionPacket(button.getKey(), button.getDirection()));
+    }
+
+    private void slotButtonPressed(Button b) {
+        SlotInputButton button = ((SlotInputButton) b);
+        PacketDistributor.sendToServer(new AdvPatternEncoderChangeSlotPacket(button.getKey(), 0, button.getSlot()));
     }
 
     private int getSelectedDirButton(@Nullable Direction dir) {

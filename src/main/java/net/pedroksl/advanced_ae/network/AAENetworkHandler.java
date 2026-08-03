@@ -18,6 +18,8 @@ public class AAENetworkHandler extends NetworkHandler {
     public void onRegister(PayloadRegistrar registrar) {
         // spotless:off
         serverbound(registrar, AdvPatternEncoderChangeDirectionPacket.TYPE, AdvPatternEncoderChangeDirectionPacket.STREAM_CODEC);
+        serverbound(registrar, AdvPatternEncoderChangeSlotPacket.TYPE, AdvPatternEncoderChangeSlotPacket.STREAM_CODEC);
+        serverbound(registrar, AdvPatternEncoderChangeSlotListPacket.TYPE, AdvPatternEncoderChangeSlotListPacket.STREAM_CODEC);
         serverbound(registrar, AAEConfigButtonPacket.TYPE, AAEConfigButtonPacket.STREAM_CODEC);
         serverbound(registrar, SetStockAmountPacket.TYPE, SetStockAmountPacket.STREAM_CODEC);
         serverbound(registrar, QuantumArmorUpgradeTogglePacket.TYPE, QuantumArmorUpgradeTogglePacket.STREAM_CODEC);
