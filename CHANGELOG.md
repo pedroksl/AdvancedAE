@@ -1,2 +1,1 @@
-- Fixed unintended transparencies
-- Fixed curio slot texture color
+- Fix incorrect changelog link for the 1.21.1 branch
