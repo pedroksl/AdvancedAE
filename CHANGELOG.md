@@ -1,7 +1,1 @@
-- Fixed unintended texture transparencies
-- Fixed curio slot texture color
-- Readded mod integrations for:
-  - ExtendedAE
-  - AppliedFlux
-  - Apothic Enchanting
-  - AE2WTLib
+- Fixed Quantum Crafter universal terminal upgrade/combine recipes
