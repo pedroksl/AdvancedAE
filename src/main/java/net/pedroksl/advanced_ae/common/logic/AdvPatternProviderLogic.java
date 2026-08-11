@@ -21,6 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.pedroksl.advanced_ae.api.AAESettings;
 import net.pedroksl.advanced_ae.common.inventory.AdvPatternProviderReturnInventory;
 import net.pedroksl.advanced_ae.common.patterns.IAdvPatternDetails;
@@ -43,6 +45,7 @@ import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
+import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.GenericStack;
 import appeng.api.stacks.KeyCounter;
@@ -72,6 +75,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     public static final String NBT_SEND_LIST = "sendList";
     public static final String NBT_SEND_DIRECTION = "sendDirection";
     public static final String NBT_DIRECTION_MAP = "directionMap";
+    public static final String NBT_SLOT_MAP = "slotMap";
     public static final String NBT_RETURN_INV = "returnInv";
 
     private final AdvPatternProviderLogicHost host;
@@ -96,6 +100,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     private final List<GenericStack> sendList = new ArrayList<>();
     private Direction sendDirection;
     private HashMap<AEKey, Direction> directionMap = new HashMap<>();
+    private HashMap<AEKey, List<Integer>> slotMap = new HashMap<>();
     // Stack returning logic
     private final PatternProviderReturnInventory returnInv;
 
@@ -216,6 +221,23 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
         }
         tag.put(NBT_DIRECTION_MAP, dirListTag);
 
+        ListTag slotMapTag = new ListTag();
+        if (slotMap != null) {
+            for (var entry : this.slotMap.entrySet()) {
+                CompoundTag slotTag = new CompoundTag();
+                slotTag.put("aekey", entry.getKey().toTagGeneric(registries));
+                ListTag slotsTag = new ListTag();
+                for (var slot : entry.getValue()) {
+                    CompoundTag slotEntryTag = new CompoundTag();
+                    slotEntryTag.putInt("slot", slot);
+                    slotsTag.add(slotEntryTag);
+                }
+                slotTag.put("slots", slotsTag);
+                slotMapTag.add(slotTag);
+            }
+        }
+        tag.put(NBT_SLOT_MAP, slotMapTag);
+
         tag.put(NBT_RETURN_INV, this.returnInv.writeToTag(registries));
     }
 
@@ -263,6 +285,18 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
             Direction dir = dirTag == -1 ? null : Direction.from3DDataValue(dirTag);
 
             this.directionMap.put(key, dir);
+        }
+
+        ListTag slotListTag = tag.getList(NBT_SLOT_MAP, Tag.TAG_COMPOUND);
+        for (int x = 0; x < slotListTag.size(); x++) {
+            CompoundTag slotCompTag = slotListTag.getCompound(x);
+            AEKey key = AEKey.fromTagGeneric(registries, slotCompTag.getCompound("aekey"));
+            var slots = new ArrayList<Integer>();
+            ListTag slotsTag = slotCompTag.getList("slots", Tag.TAG_COMPOUND);
+            for (int y = 0; y < slotsTag.size(); y++) {
+                slots.add(slotsTag.getCompound(y).getInt("slot"));
+            }
+            this.slotMap.put(key, slots);
         }
 
         this.returnInv.readFromTag(tag.getList(NBT_RETURN_INV, Tag.TAG_COMPOUND), registries);
@@ -434,10 +468,26 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
     private boolean pushInputsDirectionally(
             Direction direction, KeyCounter[] inputHolder, IAdvPatternDetails patternDetails) {
         HashMap<AEKey, PatternProviderTarget> adapterMap = new HashMap<>();
+        HashMap<AEKey, Direction> fromSideMap = new HashMap<>();
         for (KeyCounter inputList : inputHolder) {
-            Direction fromSide = patternDetails.getDirectionSideForInputKey(inputList.getFirstKey());
+            var key = inputList.getFirstKey();
+            Direction fromSide = patternDetails.getDirectionSideForInputKey(key);
+            fromSideMap.put(key, fromSide);
+            var slots = patternDetails.getSlotsForInputKey(key);
+
+            if (!slots.isEmpty() && key instanceof AEItemKey) {
+                // Slot-targeted insertion bypasses the generic ME storage adapter entirely: simulate directly
+                // against the raw IItemHandler at the resolved face. The amount is split across every configured
+                // slot for this key (one entry per occurrence of the ingredient in the original pattern), so e.g.
+                // two separate rows of the same item can land in two different slots.
+                if (!this.slotsAcceptItems(direction, fromSide, slots, inputList)) {
+                    return false;
+                }
+                continue;
+            }
+
             var adapter = findAdapter(direction, fromSide);
-            adapterMap.put(inputList.getFirstKey(), adapter);
+            adapterMap.put(key, adapter);
 
             if (!this.adapterAcceptsItem(adapter, inputList)) {
                 // If one of the inputs fail, we can't input the items directionally
@@ -445,10 +495,16 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
             }
         }
         patternDetails.pushInputsToExternalInventory(inputHolder, (what, amount) -> {
-            var target = adapterMap.get(what);
-            var inserted = 0L;
-            if (target != null) {
-                inserted = target.insert(what, amount, Actionable.MODULATE);
+            var slots = patternDetails.getSlotsForInputKey(what);
+            long inserted;
+            if (!slots.isEmpty() && what instanceof AEItemKey itemKey) {
+                inserted = this.insertIntoSlots(direction, fromSideMap.get(what), slots, itemKey, amount);
+            } else {
+                var target = adapterMap.get(what);
+                inserted = 0L;
+                if (target != null) {
+                    inserted = target.insert(what, amount, Actionable.MODULATE);
+                }
             }
             if (inserted < amount) {
                 this.addToSendList(what, amount - inserted);
@@ -457,9 +513,98 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
         onPushPatternSuccess((IPatternDetails) patternDetails);
         this.sendDirection = direction;
         this.directionMap = patternDetails.getDirectionMap();
+        this.slotMap = patternDetails.getSlotMap();
         this.sendStacksOut();
         ++roundRobinIndex;
         return true;
+    }
+
+    /**
+     * @return the raw item {@link IItemHandler} at {@code direction} (optionally re-resolved through
+     * {@code fromSide}, same semantics as {@link #findAdapter(Direction, Direction)}), or {@code null} if there
+     * isn't one there.
+     */
+    @Nullable
+    private IItemHandler findItemHandler(Direction direction, Direction fromSide) {
+        var be = host.getBlockEntity();
+        var level = be.getLevel();
+        if (level == null) {
+            return null;
+        }
+        var side = fromSide == null ? direction : fromSide;
+        var pos = be.getBlockPos().relative(side);
+        // Passing null as the side context asks for the UNFILTERED handler (all slots, real indices), same view
+        // SFM/Ctrl+I shows. Passing the actual side would give e.g. a SidedInvWrapper that only exposes the
+        // subset of slots that side is allowed to touch, under a different (remapped) index range.
+        return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+    }
+
+    /**
+     * Splits {@code amount} evenly across {@code slots} (remainder going to the first slots) and simulates
+     * inserting each portion into its own slot. Fails (returns false) unless every non-zero portion fits.
+     */
+    private boolean slotsAcceptItems(
+            Direction direction, Direction fromSide, List<Integer> slots, KeyCounter inputList) {
+        var handler = findItemHandler(direction, fromSide);
+        if (handler == null) {
+            return false;
+        }
+        for (var input : inputList) {
+            if (!(input.getKey() instanceof AEItemKey itemKey)) {
+                return false;
+            }
+            for (var portion : splitAmount(input.getLongValue(), slots)) {
+                if (portion.amount() <= 0) {
+                    continue;
+                }
+                if (portion.slot() < 0 || portion.slot() >= handler.getSlots()) {
+                    return false;
+                }
+                var stack = itemKey.toStack((int) Math.min(Integer.MAX_VALUE, portion.amount()));
+                var remainder = handler.insertItem(portion.slot(), stack, true);
+                if (remainder.getCount() >= stack.getCount()) {
+                    // Nothing would fit in that slot right now
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private long insertIntoSlots(
+            Direction direction, Direction fromSide, List<Integer> slots, AEItemKey what, long amount) {
+        var handler = findItemHandler(direction, fromSide);
+        if (handler == null) {
+            return 0L;
+        }
+        long totalInserted = 0L;
+        for (var portion : splitAmount(amount, slots)) {
+            if (portion.amount() <= 0 || portion.slot() < 0 || portion.slot() >= handler.getSlots()) {
+                continue;
+            }
+            var stack = what.toStack((int) Math.min(Integer.MAX_VALUE, portion.amount()));
+            var remainder = handler.insertItem(portion.slot(), stack, false);
+            totalInserted += stack.getCount() - remainder.getCount();
+        }
+        return totalInserted;
+    }
+
+    private record SlotPortion(int slot, long amount) {}
+
+    /**
+     * Divides {@code amount} as evenly as possible across {@code slots}, in order (extra remainder units go to the
+     * earliest slots first). One slot list entry = one occurrence of that ingredient in the original pattern.
+     */
+    private static List<SlotPortion> splitAmount(long amount, List<Integer> slots) {
+        int count = slots.size();
+        long base = amount / count;
+        long remainder = amount % count;
+        var portions = new ArrayList<SlotPortion>(count);
+        for (int i = 0; i < count; i++) {
+            long portionAmount = base + (i < remainder ? 1 : 0);
+            portions.add(new SlotPortion(slots.get(i), portionAmount));
+        }
+        return portions;
     }
 
     public void resetCraftingLock() {
@@ -623,15 +768,22 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
             var what = stack.what();
             long amount = stack.amount();
 
-            if (directionMap != null) {
-                Direction dir = directionMap.get(what);
-                var newAdapter = findAdapter(sendDirection, dir);
-                if (newAdapter != null) {
-                    adapter = newAdapter;
+            Direction dir = directionMap != null ? directionMap.get(what) : null;
+            List<Integer> slots = slotMap != null ? slotMap.get(what) : null;
+
+            long inserted;
+            if (slots != null && !slots.isEmpty() && what instanceof AEItemKey itemKey) {
+                inserted = this.insertIntoSlots(sendDirection, dir, slots, itemKey, amount);
+            } else {
+                if (dir != null) {
+                    var newAdapter = findAdapter(sendDirection, dir);
+                    if (newAdapter != null) {
+                        adapter = newAdapter;
+                    }
                 }
+                inserted = adapter.insert(what, amount, Actionable.MODULATE);
             }
 
-            var inserted = adapter.insert(what, amount, Actionable.MODULATE);
             if (inserted >= amount) {
                 it.remove();
                 didSomething = true;
@@ -644,6 +796,7 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
         if (sendList.isEmpty()) {
             sendDirection = null;
             directionMap = null;
+            slotMap = null;
         }
 
         return didSomething;
