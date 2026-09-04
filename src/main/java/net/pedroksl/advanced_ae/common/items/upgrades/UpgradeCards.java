@@ -203,7 +203,6 @@ public class UpgradeCards {
                 var filter = stack.getOrDefault(
                         AAEComponents.UPGRADE_FILTER.get(UpgradeType.AUTO_STOCK), new ArrayList<GenericStack>());
                 boolean didSomething = false;
-                var inventory = storage.getInventory().getAvailableStacks();
                 for (var genStack : filter) {
                     if (genStack.what() instanceof AEItemKey itemKey) {
                         var desiredAmount = genStack.amount();
@@ -217,7 +216,7 @@ public class UpgradeCards {
                             }
                         }
                         var amountDelta = desiredAmount - currentAmount;
-                        if (amountDelta > 0 && inventory.get(itemKey) > 0) {
+                        if (amountDelta > 0) {
                             long extracted = storage.getInventory()
                                     .extract(
                                             genStack.what(),
