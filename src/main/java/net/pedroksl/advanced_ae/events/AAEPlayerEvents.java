@@ -81,7 +81,9 @@ public class AAEPlayerEvents {
                 ItemStack armor = player.getItemBySlot(EquipmentSlot.CHEST);
                 if (armor.getItem() instanceof QuantumChestplate) {
                     var newValue = Math.min(Float.MAX_VALUE, event.getOriginalSpeed() * 5);
-                    event.setNewSpeed(newValue);
+                    if (event.getNewSpeed() < newValue) {
+                        event.setNewSpeed(newValue);
+                    }
                 }
             }
         } else if (player.isEyeInFluid(FluidTags.WATER)) {
