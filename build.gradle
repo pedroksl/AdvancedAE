@@ -86,10 +86,10 @@ configurations {
 }
 
 dependencies {
-    runtimeOnly "curse.maven:glodium-957920:${glodium_file_id}"
+    //runtimeOnly "curse.maven:glodium-957920:${glodium_file_id}"
     implementation "org.appliedenergistics:guideme:${guide_me_version}"
     api "org.appliedenergistics:appliedenergistics2:${ae2_version}"
-    implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
+    //implementation "curse.maven:ex-pattern-provider-892005:${ex_pattern_file_id}"
     jarJar implementation("io.github.pedroksl:ae2addonlib:${ae2addonlib_version}")
     jarJar implementation("de.mari_023:ae2wtlib_api:${ae2wtlib_version}") {
         transitive = false
@@ -100,7 +100,7 @@ dependencies {
 
     implementation "com.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     //compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
-    implementation "curse.maven:applied-flux-965012:${applied_flux_file_id}"
+    //implementation "curse.maven:applied-flux-965012:${applied_flux_file_id}"
 
     implementation "curse.maven:jade-324717:${jade_file_id}"
     //compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
@@ -109,6 +109,7 @@ dependencies {
     // Compatibility
     compileOnly "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
     compileOnly "curse.maven:irisshaders-455508:${iris_file_id}"
+    compileOnly 'org.jspecify:jspecify:1.0.0'
     //implementation "curse.maven:mega-cells-622112:${mega_file_id}"
     //implementation "curse.maven:mekanism-268560:${mekanism_file_id}"
     //implementation "curse.maven:applied-mekanistics-574300:${appmek_file_id}"
@@ -118,13 +119,13 @@ dependencies {
     }
 
     // Runtime Tests
-    localRuntime "curse.maven:cucumber-272335:${cucumber_file_id}"
-    localRuntime "curse.maven:mystical-agriculture-246640:${ma_file_id}"
+    //localRuntime "curse.maven:cucumber-272335:${cucumber_file_id}"
+    //localRuntime "curse.maven:mystical-agriculture-246640:${ma_file_id}"
 
-    localRuntime "curse.maven:dark-mode-everywhere-574123:8351344"
-    localRuntime "curse.maven:placebo-283644:${placebo_file_id}"
-    localRuntime "curse.maven:apothic-attributes-898963:${apothic_att_file_id}"
-    localRuntime "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
+    //localRuntime "curse.maven:dark-mode-everywhere-574123:8351344"
+    //localRuntime "curse.maven:placebo-283644:${placebo_file_id}"
+    //localRuntime "curse.maven:apothic-attributes-898963:${apothic_att_file_id}"
+    //localRuntime "curse.maven:apothic-enchanting-1063926:${apothic_ench_file_id}"
 
     localRuntime "curse.maven:sodium-394468:${sodium_file_id}"
     localRuntime "curse.maven:irisshaders-455508:${iris_file_id}"

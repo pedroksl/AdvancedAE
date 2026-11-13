@@ -2,7 +2,7 @@ package net.pedroksl.advanced_ae.common.definitions;
 
 import java.util.Objects;
 
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.world.level.ItemLike;
 import net.pedroksl.advanced_ae.AdvancedAE;
@@ -20,20 +20,21 @@ public final class AAEHotkeysRegistry extends HotkeyRegistry {
     }
 
     public enum Keys {
-        ARMOR_CONFIG("quantum_armor_config", "Open Quantum Armor Configuration", GLFW.GLFW_KEY_Z),
+        ARMOR_CONFIG("quantum_armor_config", "Open Quantum Armor Configuration", InputConstants.KEY_Z),
         PATTERN_ENCODER_HOTKEY("pattern_encoder_action", "Open Advanced Pattern Encoder"),
-        QUANTUM_MAGNET_UPGRADE("quantum_magnet_upgrade", "Toggle Quantum Armor Magnet", GLFW.GLFW_KEY_G),
-        QUANTUM_AUTO_STOCK_UPGRADE("quantum_auto_stock_upgrade", "Toggle Quantum Armor Auto Stock", GLFW.GLFW_KEY_J),
+        QUANTUM_MAGNET_UPGRADE("quantum_magnet_upgrade", "Toggle Quantum Armor Magnet", InputConstants.KEY_G),
+        QUANTUM_AUTO_STOCK_UPGRADE(
+                "quantum_auto_stock_upgrade", "Toggle Quantum Armor Auto Stock", InputConstants.KEY_F),
         QUANTUM_NIGHT_VISION_UPGRADE("quantum_night_vision_upgrade", "Toggle Quantum Armor Night Vision"),
-        PORTABLE_WORKBENCH("portable_workbench", "Open Portable Workbench", GLFW.GLFW_KEY_C),
-        PICK_CRAFT("pick_craft", "Attempt crafting targeted block", GLFW.GLFW_KEY_V);
+        PORTABLE_WORKBENCH("portable_workbench", "Open Portable Workbench", InputConstants.KEY_C),
+        PICK_CRAFT("pick_craft", "Attempt crafting targeted block", InputConstants.KEY_V);
 
         private final String id;
         private final String englishTranslation;
         private final int defaultHotkey;
 
         Keys(String id, String englishTranslation) {
-            this(id, englishTranslation, GLFW.GLFW_KEY_UNKNOWN);
+            this(id, englishTranslation, InputConstants.UNKNOWN.getValue());
         }
 
         Keys(String id, String englishTranslation, int defaultHotkey) {
@@ -68,7 +69,7 @@ public final class AAEHotkeysRegistry extends HotkeyRegistry {
             if (key != null) {
                 return key.getDefaultHotkey();
             }
-            return GLFW.GLFW_KEY_UNKNOWN;
+            return InputConstants.UNKNOWN.getValue();
         }
     }
 

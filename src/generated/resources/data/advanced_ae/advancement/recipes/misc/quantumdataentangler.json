@@ -22,7 +22,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantumdataentangler"
+        "recipes": "advanced_ae:quantumdataentangler"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

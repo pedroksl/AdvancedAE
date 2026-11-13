@@ -1,8 +1,11 @@
 package net.pedroksl.advanced_ae.datagen;
 
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.pedroksl.advanced_ae.AdvancedAE;
 
 import appeng.datagen.providers.models.AE2ModelProvider;
@@ -17,12 +20,9 @@ public class AAEDataGen {
         var localization = new AAELanguageProvider(generator.getPackOutput());
         var pack = generator.getVanillaPack(true);
 
-        var lookup = event.getLookupProvider();
+        var lookup = event.getReloadableLookupProvider();
 
-        pack.addProvider(packOutput -> new AAELootTableProvider(packOutput, lookup));
         pack.addProvider(AE2ModelProvider.create(AdvancedAE.MOD_ID, AAEModelProvider::new));
-
-        pack.addProvider(packOutput -> new AAERecipeProvider.Runner(packOutput, lookup));
 
         var blockTags = pack.addProvider(packOutput -> new AAETagProvider.AAEBlockTagProvider(packOutput, lookup));
         pack.addProvider(
@@ -31,5 +31,12 @@ public class AAEDataGen {
                 packOutput -> new AAETagProvider.AAEDataComponentTypeTagProvider(packOutput, lookup, localization));
 
         pack.addProvider(_ -> localization);
+    }
+
+    @SubscribeEvent
+    public static void gatherRegistries(GatherDataRegistryEntriesEvent event) {
+        event.lootTable(new LootTableProvider.SubProviderEntry(
+                AAELootTableProvider.AAESubProvider::new, LootContextParamSets.BLOCK));
+        event.recipe(AAERecipeProvider::new);
     }
 }

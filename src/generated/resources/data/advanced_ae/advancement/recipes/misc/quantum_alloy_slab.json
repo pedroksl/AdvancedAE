@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantum_alloy_slab"
+        "recipes": "advanced_ae:quantum_alloy_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

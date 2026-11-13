@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:lava_immunity_card"
+        "recipes": "advanced_ae:lava_immunity_card"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -6,9 +6,8 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "C": "extendedae:concurrent_processor",
+    "C": "ae2:crafting_accelerator",
     "E": "advanced_ae:shattered_singularity",
     "U": "advanced_ae:quantum_unit"
   },

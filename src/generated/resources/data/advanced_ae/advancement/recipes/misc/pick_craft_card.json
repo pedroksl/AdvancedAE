@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:pick_craft_card"
+        "recipes": "advanced_ae:pick_craft_card"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

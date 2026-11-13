@@ -7,7 +7,7 @@ import org.apache.commons.lang3.mutable.MutableObject;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -275,7 +275,7 @@ public class UpgradeCards {
                         AAEComponents.UPGRADE_FILTER.get(UpgradeType.MAGNET), new ArrayList<GenericStack>());
                 var blacklist = stack.getOrDefault(AAEComponents.UPGRADE_EXTRA.get(UpgradeType.MAGNET), true);
                 List<ItemEntity> items = level.getEntities(
-                        EntityType.ITEM, area, obj -> MagnetHelpers.validEntities(obj, player, filter, blacklist));
+                        EntityTypes.ITEM, area, obj -> MagnetHelpers.validEntities(obj, player, filter, blacklist));
                 items.forEach(itemEntity -> {
                     if (!level.isClientSide()
                             && player.getInventory().getSlotWithRemainingSpace(itemEntity.getItem()) != -1) {
@@ -289,7 +289,7 @@ public class UpgradeCards {
                 if (!level.isClientSide()) {
                     List<ExperienceOrb> xps = level.getEntitiesOfClass(ExperienceOrb.class, area);
                     xps.forEach(xp -> {
-                        xp.invulnerableTime = 0;
+                        xp.setInvulnerableTime(0);
                         player.takeXpDelay = 0;
                         xp.playerTouch(player);
                     });

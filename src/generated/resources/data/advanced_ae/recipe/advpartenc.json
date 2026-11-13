@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "E": "ae2:engineering_processor",
     "Q": "ae2:charged_certus_quartz_crystal",

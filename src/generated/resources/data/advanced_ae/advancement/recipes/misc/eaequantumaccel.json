@@ -19,7 +19,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:eaequantumaccel"
+        "recipes": "advanced_ae:eaequantumaccel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

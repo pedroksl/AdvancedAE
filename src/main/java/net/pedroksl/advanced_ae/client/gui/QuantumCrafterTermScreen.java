@@ -2,6 +2,8 @@ package net.pedroksl.advanced_ae.client.gui;
 
 import java.util.*;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import it.unimi.dsi.fastutil.ints.Int2BooleanMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -239,7 +241,7 @@ public class QuantumCrafterTermScreen<C extends QuantumCrafterTermMenu> extends 
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if (this.searchField.isMouseOver(event.x(), event.y()) && event.button() == 1) {
+        if (this.searchField.isMouseOver(event.x(), event.y()) && event.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
             this.searchField.setValue("");
             // Don't return immediately to also grab focus.
         }

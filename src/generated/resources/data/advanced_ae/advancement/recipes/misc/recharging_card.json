@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:recharging_card"
+        "recipes": "advanced_ae:recharging_card"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

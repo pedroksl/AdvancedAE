@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantum_alloy_block_stair"
+        "recipes": "advanced_ae:quantum_alloy_block_stair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

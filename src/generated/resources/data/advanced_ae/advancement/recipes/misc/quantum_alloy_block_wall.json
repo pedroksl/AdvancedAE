@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantum_alloy_block_wall"
+        "recipes": "advanced_ae:quantum_alloy_block_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

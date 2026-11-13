@@ -17,8 +17,8 @@ pluginManagement {
         }
     }
     plugins {
-        id 'net.neoforged.moddev' version '2.0.141'
-        id 'net.neoforged.moddev.repositories' version '2.0.141'
+        id 'net.neoforged.moddev' version '2.0.148'
+        id 'net.neoforged.moddev.repositories' version '2.0.148'
         id 'com.diffplug.spotless' version '8.4.0'
     }
 }
@@ -79,6 +79,7 @@ dependencyResolutionManagement {
             url = 'https://maven.blamejared.com/'
             content {
                 includeGroup 'mezz.jei'
+                includeGroup "net.mezzdev.config"
             }
         }
     }

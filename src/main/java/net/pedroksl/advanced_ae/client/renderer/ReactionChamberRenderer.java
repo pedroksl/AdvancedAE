@@ -101,7 +101,7 @@ public class ReactionChamberRenderer implements BlockEntityRenderer<ReactionCham
 
         poseStack.pushPose();
 
-        RenderType renderType = Sheets.translucentBlockSheet();
+        RenderType renderType = Sheets.translucentBlockItemSheet();
 
         for (int x = 0; x < QUADS.length; x += 6) {
             poseStack.pushPose();

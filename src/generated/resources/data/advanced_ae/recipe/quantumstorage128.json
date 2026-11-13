@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "C": "advanced_ae:quantum_storage_component",
     "E": "advanced_ae:shattered_singularity",

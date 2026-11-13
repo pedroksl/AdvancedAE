@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "P": "advanced_ae:quantum_alloy_plate",
     "Q": "advanced_ae:quantum_processor"

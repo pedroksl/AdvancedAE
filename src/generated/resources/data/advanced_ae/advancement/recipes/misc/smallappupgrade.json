@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:smallappupgrade"
+        "recipes": "advanced_ae:smallappupgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

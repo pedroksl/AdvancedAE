@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:throughput_monitor_configurator"
+        "recipes": "advanced_ae:throughput_monitor_configurator"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

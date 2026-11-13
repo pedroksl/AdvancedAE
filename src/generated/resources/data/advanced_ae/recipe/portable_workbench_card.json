@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "advanced_ae:quantum_alloy",
     "B": "ae2:cell_workbench",

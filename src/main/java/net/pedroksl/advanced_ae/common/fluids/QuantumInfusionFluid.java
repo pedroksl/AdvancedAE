@@ -2,7 +2,7 @@ package net.pedroksl.advanced_ae.common.fluids;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
+import org.jspecify.annotations.NullMarked;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.pedroksl.advanced_ae.common.definitions.AAEFluids;
 
-@MethodsReturnNonnullByDefault
+@NullMarked
 @ParametersAreNonnullByDefault
 public abstract class QuantumInfusionFluid extends BaseFlowingFluid {
     public static final BaseFlowingFluid.Properties PROPERTIES = new BaseFlowingFluid.Properties(

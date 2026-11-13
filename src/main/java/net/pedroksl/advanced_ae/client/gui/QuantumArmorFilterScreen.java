@@ -51,7 +51,7 @@ public class QuantumArmorFilterScreen<M extends QuantumArmorFilterConfigMenu> ex
                 lines.add(Tooltips.getAmountTooltip(ButtonToolTips.Amount, unwrapped));
             }
 
-            lines.add(Tooltips.getSetAmountTooltip());
+            lines.add(Tooltips.getSetAmountTooltip(Component.translatable(ButtonToolTips.Amount.getTranslationKey())));
         } else {
             super.drawTooltip(guiGraphics, x, y, lines);
         }

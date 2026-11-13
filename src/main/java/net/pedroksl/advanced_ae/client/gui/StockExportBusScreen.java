@@ -93,7 +93,7 @@ public class StockExportBusScreen<M extends StockExportBusMenu> extends Upgradea
                 lines.add(Tooltips.getAmountTooltip(ButtonToolTips.Amount, unwrapped));
             }
 
-            lines.add(Tooltips.getSetAmountTooltip());
+            lines.add(Tooltips.getSetAmountTooltip(Component.translatable(ButtonToolTips.Amount.getTranslationKey())));
         } else {
             super.drawTooltip(guiGraphics, x, y, lines);
         }

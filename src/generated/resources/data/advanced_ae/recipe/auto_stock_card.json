@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "B": "minecraft:shulker_box",
     "C": "advanced_ae:quantum_upgrade_base",
