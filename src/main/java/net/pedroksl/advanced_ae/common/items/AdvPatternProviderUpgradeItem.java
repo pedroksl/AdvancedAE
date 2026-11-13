@@ -109,7 +109,8 @@ public class AdvPatternProviderUpgradeItem extends BlockUpgradeItem {
                         if (p != null) {
                             var input = TagValueInput.create(reporter, world.registryAccess(), output.buildResult());
                             p.readFromNBT(input);
-                            p.addToWorld();
+                            // setPart already added the part to the world, so only refresh the patterns.
+                            p.getLogic().updatePatterns();
                         }
                     }
                 } else {
