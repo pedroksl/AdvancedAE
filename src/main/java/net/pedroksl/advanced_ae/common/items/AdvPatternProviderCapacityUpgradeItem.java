@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -12,7 +14,10 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.pedroksl.advanced_ae.AdvancedAE;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlockEntities;
 import net.pedroksl.advanced_ae.common.definitions.AAEBlocks;
 import net.pedroksl.advanced_ae.common.definitions.AAEItems;
@@ -21,6 +26,7 @@ import net.pedroksl.advanced_ae.common.entities.SmallAdvPatternProviderEntity;
 import net.pedroksl.advanced_ae.common.parts.SmallAdvPatternProviderPart;
 import net.pedroksl.ae2addonlib.util.BlockUpgradeItem;
 
+import appeng.api.parts.PartHelper;
 import appeng.blockentity.networking.CableBusBlockEntity;
 import appeng.parts.AEBasePart;
 
@@ -37,6 +43,11 @@ public class AdvPatternProviderCapacityUpgradeItem extends BlockUpgradeItem {
         var pos = context.getClickedPos();
         var world = context.getLevel();
         var entity = world.getBlockEntity(pos);
+
+        if (!(world instanceof ServerLevel serverLevel)) {
+            return InteractionResult.PASS;
+        }
+
         if (entity != null) {
             var ctx = new BlockPlaceContext(context);
             var tClazz = entity.getClass();
@@ -71,12 +82,20 @@ public class AdvPatternProviderCapacityUpgradeItem extends BlockUpgradeItem {
 
                     var partItem = AAEItems.ADV_PATTERN_PROVIDER.get();
 
-                    var components = ((SmallAdvPatternProviderPart) part)
-                            .getBlockEntity()
-                            .collectComponents();
-                    var p = cable.replacePart(partItem, side, context.getPlayer(), null);
-                    if (p != null) {
-                        p.getBlockEntity().setComponents(components);
+                    // Carry the old part's data (patterns, settings, upgrades) over to the new part.
+                    // Copying the cable bus block entity's components is not enough, and replacing a part
+                    // removes the old one without dropping its contents.
+                    try (ProblemReporter.ScopedCollector reporter =
+                            new ProblemReporter.ScopedCollector(AdvancedAE.LOGGER)) {
+                        var output = TagValueOutput.createWithContext(reporter, world.registryAccess());
+                        part.writeToNBT(output);
+                        var p = PartHelper.setPart(serverLevel, pos, side, context.getPlayer(), partItem);
+                        if (p != null) {
+                            var input = TagValueInput.create(reporter, world.registryAccess(), output.buildResult());
+                            p.readFromNBT(input);
+                            // setPart already added the part to the world, so only refresh the patterns.
+                            p.getLogic().updatePatterns();
+                        }
                     }
                 } else {
                     return InteractionResult.PASS;
