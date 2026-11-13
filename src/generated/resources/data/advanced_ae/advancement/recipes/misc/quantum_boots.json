@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantum_boots"
+        "recipes": "advanced_ae:quantum_boots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

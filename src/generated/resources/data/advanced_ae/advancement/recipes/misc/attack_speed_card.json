@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:attack_speed_card"
+        "recipes": "advanced_ae:attack_speed_card"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -58,7 +58,7 @@ public class ReactionChamberBlock extends AEBaseEntityBlock<ReactionChamberEntit
 
         var be = level.getBlockEntity(pos);
         if (be instanceof ReactionChamberEntity chamber
-                && FluidUtil.interactWithFluidHandler(player, hand, pos, chamber.getFluidHandler())) {
+                && FluidUtil.interactWithFluidHandler(player, hand, pos, chamber.getFluidHandler(), null)) {
             return InteractionResult.SUCCESS;
         }
 

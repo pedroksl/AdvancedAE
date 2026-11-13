@@ -12,6 +12,7 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -781,14 +782,15 @@ public class AdvPatternProviderLogic implements InternalInventoryHost, ICrafting
                 blankPatternCount += pattern.getCount();
             } else {
                 // Give back any non-blank-patterns individually
-                playerInv.placeItemBackInInventory(pattern);
+                playerInv.placeItemBackInInventory(pattern, Prediction.SERVER_ONLY);
             }
             patternInventory.setItemDirect(i, ItemStack.EMPTY);
         }
 
         // Place back the removed blank patterns all at once
         if (blankPatternCount > 0) {
-            playerInv.placeItemBackInInventory(AEItems.BLANK_PATTERN.stack(blankPatternCount), false);
+            playerInv.placeItemBackInInventory(
+                    AEItems.BLANK_PATTERN.stack(blankPatternCount), false, Prediction.SERVER_ONLY);
         }
     }
 

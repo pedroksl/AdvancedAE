@@ -9,7 +9,6 @@
     }
   ],
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "ae2:crafting_unit",
     "ae2:singularity",

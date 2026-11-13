@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:step_assist_card"
+        "recipes": "advanced_ae:step_assist_card"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

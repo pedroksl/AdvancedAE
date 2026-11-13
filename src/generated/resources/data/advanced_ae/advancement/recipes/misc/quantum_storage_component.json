@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantum_storage_component"
+        "recipes": "advanced_ae:quantum_storage_component"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

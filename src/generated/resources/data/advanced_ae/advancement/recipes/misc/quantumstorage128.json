@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantumstorage128"
+        "recipes": "advanced_ae:quantumstorage128"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

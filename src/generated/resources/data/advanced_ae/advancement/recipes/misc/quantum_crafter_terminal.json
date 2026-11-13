@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantum_crafter_terminal"
+        "recipes": "advanced_ae:quantum_crafter_terminal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

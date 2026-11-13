@@ -10,13 +10,13 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
@@ -29,14 +29,9 @@ import appeng.core.definitions.BlockDefinition;
 import appeng.items.tools.MemoryCardItem;
 
 public class AAETagProvider {
-    public static class AAEBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
+    public static class AAEBlockTagProvider extends TagsProvider<Block> {
         public AAEBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-            super(
-                    output,
-                    Registries.BLOCK,
-                    registries,
-                    block -> block.builtInRegistryHolder().key(),
-                    AdvancedAE.MOD_ID);
+            super(output, Registries.BLOCK, registries, AdvancedAE.MOD_ID);
         }
 
         @Override
@@ -49,15 +44,15 @@ public class AAETagProvider {
 
             for (var block : AAEBlocks.INSTANCE.getBlocks()) {
                 for (var desiredTag : specialTags.getOrDefault(block, defaultTags)) {
-                    tag(desiredTag).add(block.block());
+                    tagBlock(desiredTag, block);
                 }
             }
 
-            tag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK).add(AAEBlocks.QUANTUM_ALLOY_BLOCK.block());
-            tag(Tags.Blocks.STORAGE_BLOCKS).addTag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK);
-            tag(BlockTags.WALLS).add(AAEBlocks.QUANTUM_ALLOY_WALL.block());
-            tag(BlockTags.STAIRS).add(AAEBlocks.QUANTUM_ALLOY_STAIRS.block());
-            tag(BlockTags.SLABS).add(AAEBlocks.QUANTUM_ALLOY_SLAB.block());
+            tagBlock(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK, AAEBlocks.QUANTUM_ALLOY_BLOCK);
+            tag(Tags.BlockItems.STORAGE_BLOCKS.block()).addTag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_BLOCK);
+            tagBlock(BlockTags.WALLS, AAEBlocks.QUANTUM_ALLOY_WALL);
+            tagBlock(BlockTags.STAIRS, AAEBlocks.QUANTUM_ALLOY_STAIRS);
+            tagBlock(BlockTags.SLABS, AAEBlocks.QUANTUM_ALLOY_SLAB);
         }
 
         private static final BlockDefinition<?>[] QUANTUM_ALLOY_BLOCKS = {
@@ -72,6 +67,11 @@ public class AAETagProvider {
         public String getName() {
             return "Tags (Block)";
         }
+
+        private void tagBlock(TagKey<Block> tagKey, BlockDefinition<?> block) {
+            tag(tagKey)
+                    .add(BuiltInRegistries.BLOCK.getResourceKey(block.block()).get());
+        }
     }
 
     public static class AAEItemTagProvider extends BlockTagCopyingItemTagProvider {
@@ -84,49 +84,46 @@ public class AAETagProvider {
 
         @Override
         protected void addTags(@NotNull HolderLookup.Provider provider) {
-            tag(AAETags.ADV_PATTERN_PROVIDER)
-                    .add(
-                            AAEBlocks.ADV_PATTERN_PROVIDER.asItem(),
-                            AAEItems.ADV_PATTERN_PROVIDER.asItem(),
-                            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER.asItem(),
-                            AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
-            tag(ConventionTags.PATTERN_PROVIDER)
-                    .add(
-                            AAEBlocks.ADV_PATTERN_PROVIDER.asItem(),
-                            AAEItems.ADV_PATTERN_PROVIDER.asItem(),
-                            AAEBlocks.SMALL_ADV_PATTERN_PROVIDER.asItem(),
-                            AAEItems.SMALL_ADV_PATTERN_PROVIDER.asItem());
+            tagItem(
+                    AAETags.ADV_PATTERN_PROVIDER,
+                    AAEBlocks.ADV_PATTERN_PROVIDER,
+                    AAEItems.ADV_PATTERN_PROVIDER,
+                    AAEBlocks.SMALL_ADV_PATTERN_PROVIDER,
+                    AAEItems.SMALL_ADV_PATTERN_PROVIDER);
+            tagItem(
+                    ConventionTags.PATTERN_PROVIDER,
+                    AAEBlocks.ADV_PATTERN_PROVIDER,
+                    AAEItems.ADV_PATTERN_PROVIDER,
+                    AAEBlocks.SMALL_ADV_PATTERN_PROVIDER,
+                    AAEItems.SMALL_ADV_PATTERN_PROVIDER);
 
-            tag(AAEConventionTags.ENCODER_CURIO).add(AAEItems.ADV_PATTERN_ENCODER.asItem());
+            tagItem(AAEConventionTags.ENCODER_CURIO, AAEItems.ADV_PATTERN_ENCODER);
             // tag(ConventionTags.CURIOS).add(AAEItems.QUANTUM_CRAFTER_WIRELESS_TERMINAL.asItem());
 
-            tag(ConventionTags.WRENCH).add(AAEItems.MONITOR_CONFIGURATOR.asItem());
+            tagItem(ConventionTags.WRENCH, AAEItems.MONITOR_CONFIGURATOR);
 
-            tag(Tags.Items.INGOTS).add(AAEItems.QUANTUM_ALLOY.asItem());
+            tagItem(Tags.Items.INGOTS, AAEItems.QUANTUM_ALLOY);
 
-            tag(Tags.Items.ARMORS)
-                    .add(
-                            AAEItems.QUANTUM_HELMET.asItem(),
-                            AAEItems.QUANTUM_CHESTPLATE.asItem(),
-                            AAEItems.QUANTUM_LEGGINGS.asItem(),
-                            AAEItems.QUANTUM_BOOTS.asItem());
-            tag(ItemTags.HEAD_ARMOR).add(AAEItems.QUANTUM_HELMET.asItem());
-            tag(ItemTags.CHEST_ARMOR).add(AAEItems.QUANTUM_CHESTPLATE.asItem());
-            tag(ItemTags.LEG_ARMOR).add(AAEItems.QUANTUM_LEGGINGS.asItem());
-            tag(ItemTags.FOOT_ARMOR).add(AAEItems.QUANTUM_BOOTS.asItem());
-            tag(Tags.Items.BUCKETS).add(AAEFluids.QUANTUM_INFUSION.bucketItem());
+            tagItem(
+                    Tags.Items.ARMORS,
+                    AAEItems.QUANTUM_HELMET,
+                    AAEItems.QUANTUM_CHESTPLATE,
+                    AAEItems.QUANTUM_LEGGINGS,
+                    AAEItems.QUANTUM_BOOTS);
+            tagItem(ItemTags.HEAD_ARMOR, AAEItems.QUANTUM_HELMET);
+            tagItem(ItemTags.CHEST_ARMOR, AAEItems.QUANTUM_CHESTPLATE);
+            tagItem(ItemTags.LEG_ARMOR, AAEItems.QUANTUM_LEGGINGS);
+            tagItem(ItemTags.FOOT_ARMOR, AAEItems.QUANTUM_BOOTS);
+            tagItem(Tags.Items.BUCKETS, AAEFluids.QUANTUM_INFUSION.bucketItem());
 
-            tag(Tags.Items.DUSTS).add(AAEItems.QUANTUM_INFUSED_DUST.asItem());
-            tag(AAEConventionTags.SHATTERED_SINGULARITY).add(AAEItems.QUANTUM_INFUSED_DUST.asItem());
+            tagItem(Tags.Items.DUSTS, AAEItems.QUANTUM_INFUSED_DUST);
+            tagItem(AAEConventionTags.SHATTERED_SINGULARITY, AAEItems.QUANTUM_INFUSED_DUST);
 
-            tag(AAEConventionTags.QUANTUM_ALLOY_PLATE).add(AAEItems.QUANTUM_ALLOY_PLATE.asItem());
+            tagItem(AAEConventionTags.QUANTUM_ALLOY_PLATE, AAEItems.QUANTUM_ALLOY_PLATE);
             tag(AAEConventionTags.PLATES).addTag(AAEConventionTags.QUANTUM_ALLOY_PLATE);
 
-            tag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_ITEM).add(AAEBlocks.QUANTUM_ALLOY_BLOCK.asItem());
-            tag(Tags.Items.STORAGE_BLOCKS).addTag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_ITEM);
-
-            tag(ItemTags.STAIRS).add(AAEBlocks.QUANTUM_ALLOY_STAIRS.asItem());
-            tag(ItemTags.SLABS).add(AAEBlocks.QUANTUM_ALLOY_SLAB.asItem());
+            tagItem(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_ITEM, AAEBlocks.QUANTUM_ALLOY_BLOCK);
+            tag(Tags.BlockItems.STORAGE_BLOCKS.item()).addTag(AAEConventionTags.QUANTUM_ALLOY_STORAGE_BLOCK_ITEM);
         }
 
         @NotNull
@@ -134,9 +131,16 @@ public class AAETagProvider {
         public String getName() {
             return "Tags (Item)";
         }
+
+        private void tagItem(TagKey<Item> tagKey, ItemLike... items) {
+            var tag = tag(tagKey);
+            for (ItemLike item : items) {
+                tag.add(BuiltInRegistries.ITEM.getResourceKey(item.asItem()).get());
+            }
+        }
     }
 
-    public static class AAEDataComponentTypeTagProvider extends KeyTagProvider<DataComponentType<?>> {
+    public static class AAEDataComponentTypeTagProvider extends TagsProvider<DataComponentType<?>> {
         private final AAELanguageProvider localization;
 
         public AAEDataComponentTypeTagProvider(
@@ -154,7 +158,7 @@ public class AAETagProvider {
 
             Map<DataComponentType<?>, ResourceKey<DataComponentType<?>>> componentKeys = new IdentityHashMap<>();
             for (var entry : AAEComponents.INSTANCE.getEntries()) {
-                componentKeys.put(entry.get(), entry.getKey());
+                componentKeys.put(entry.get(), entry.key());
             }
 
             addExportedComponentCategory("Allowed Sides", AAEComponents.EXPORTED_ALLOWED_SIDES);
@@ -171,5 +175,9 @@ public class AAETagProvider {
                 localization.add(MemoryCardItem.getSettingTranslationKey(type), englishCategoryName);
             }
         }
+    }
+
+    private static ResourceKey<Block> getBlockKey(Block block) {
+        return BuiltInRegistries.BLOCK.getResourceKey(block).get();
     }
 }

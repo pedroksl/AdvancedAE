@@ -26,20 +26,20 @@ public class AAEClientNetworkHandler extends ClientNetworkHandler {
     }
 
     public void handleAdvPatternEncoderPacket(AdvPatternEncoderPacket packet, Minecraft minecraft, Player player) {
-        if (Minecraft.getInstance().screen instanceof AdvPatternEncoderScreen encoderGui) {
+        if (Minecraft.getInstance().gui.screen() instanceof AdvPatternEncoderScreen encoderGui) {
             encoderGui.update(packet.dirMap());
         }
     }
 
     public void handlePatternConfigServerUpdatePacket(
             PatternConfigServerUpdatePacket packet, Minecraft minecraft, Player player) {
-        if (Minecraft.getInstance().screen instanceof QuantumCrafterConfigPatternScreen screen) {
+        if (Minecraft.getInstance().gui.screen() instanceof QuantumCrafterConfigPatternScreen screen) {
             screen.update(packet.inputs(), packet.output());
         }
     }
 
     public void handlePatternsUpdatePacket(PatternsUpdatePacket packet, Minecraft minecraft, Player player) {
-        if (Minecraft.getInstance().screen instanceof QuantumCrafterScreen screen) {
+        if (Minecraft.getInstance().gui.screen() instanceof QuantumCrafterScreen screen) {
             screen.updateInvalidButtons(packet.invalidPatterns());
             screen.updateEnabledButtons(packet.enabledPatterns());
         }
@@ -47,7 +47,7 @@ public class AAEClientNetworkHandler extends ClientNetworkHandler {
 
     public void handleQuantumArmorUpgradeStatePacket(
             QuantumArmorUpgradeStatePacket packet, Minecraft minecraft, Player player) {
-        if (Minecraft.getInstance().screen instanceof QuantumArmorConfigScreen screen) {
+        if (Minecraft.getInstance().gui.screen() instanceof QuantumArmorConfigScreen screen) {
             screen.refreshList(packet.selectedIndex(), packet.states());
         }
     }
@@ -72,7 +72,7 @@ public class AAEClientNetworkHandler extends ClientNetworkHandler {
 
     public void handleQuantumCrafterTerminalPacket(
             QuantumCrafterTerminalPacket packet, Minecraft minecraft, Player player) {
-        if (Minecraft.getInstance().screen instanceof QuantumCrafterTermScreen<?> screen) {
+        if (Minecraft.getInstance().gui.screen() instanceof QuantumCrafterTermScreen<?> screen) {
             if (packet.fullUpdate()) {
                 screen.postFullUpdate(
                         packet.inventoryId(),
@@ -90,7 +90,7 @@ public class AAEClientNetworkHandler extends ClientNetworkHandler {
 
     public void handleClearQuantumCrafterTerminalPacket(
             ClearQuantumCrafterTerminalPacket packet, Minecraft minecraft, Player player) {
-        if (Minecraft.getInstance().screen instanceof QuantumCrafterTermScreen<?> screen) {
+        if (Minecraft.getInstance().gui.screen() instanceof QuantumCrafterTermScreen<?> screen) {
             screen.clear();
         }
     }

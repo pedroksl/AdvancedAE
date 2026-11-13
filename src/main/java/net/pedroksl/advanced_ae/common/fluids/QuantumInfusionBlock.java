@@ -15,7 +15,7 @@ public class QuantumInfusionBlock extends LiquidBlock {
                         .noLootTable()
                         .replaceable()
                         .noCollision()
-                        .pushReaction(PushReaction.DESTROY)
+                        .pushReaction(PushReaction.POPPED)
                         .mapColor(MapColor.COLOR_PURPLE));
     }
 }

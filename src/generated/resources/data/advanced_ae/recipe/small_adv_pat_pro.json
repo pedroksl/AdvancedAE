@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "E": "minecraft:ender_pearl",
     "L": "ae2:logic_processor",

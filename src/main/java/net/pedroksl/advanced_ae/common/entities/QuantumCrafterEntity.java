@@ -12,6 +12,7 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.*;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -947,14 +948,15 @@ public class QuantumCrafterEntity extends AENetworkedPoweredBlockEntity
                 blankPatternCount += pattern.getCount();
             } else {
                 // Give back any non-blank-patterns individually
-                playerInv.placeItemBackInInventory(pattern);
+                playerInv.placeItemBackInInventory(pattern, Prediction.SERVER_ONLY);
             }
             this.patternInv.setItemDirect(i, ItemStack.EMPTY);
         }
 
         // Place back the removed blank patterns all at once
         if (blankPatternCount > 0) {
-            playerInv.placeItemBackInInventory(AEItems.BLANK_PATTERN.stack(blankPatternCount), false);
+            playerInv.placeItemBackInInventory(
+                    AEItems.BLANK_PATTERN.stack(blankPatternCount), false, Prediction.SERVER_ONLY);
         }
     }
 

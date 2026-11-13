@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:advpatpro2"
+        "recipes": "advanced_ae:advpatpro2"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

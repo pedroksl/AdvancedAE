@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:advpartenc"
+        "recipes": "advanced_ae:advpartenc"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:stock_export_bus"
+        "recipes": "advanced_ae:stock_export_bus"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

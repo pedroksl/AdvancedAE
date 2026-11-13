@@ -9,7 +9,6 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "advanced_ae:quantum_accelerator",
     "C": "advanced_ae:quantum_core",

@@ -2,10 +2,6 @@ package net.pedroksl.advanced_ae.mixins.appflux;
 
 import java.util.List;
 
-import com.glodblock.github.appflux.common.AFSingletons;
-import com.glodblock.github.appflux.common.me.energy.EnergyTicker;
-import com.glodblock.github.appflux.common.me.service.IEnergyDistributor;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,14 +40,16 @@ public abstract class MixinAdvPatternProviderLogic implements IUpgradeableObject
     @Unique
     private IUpgradeInventory af_upgrades = UpgradeInventories.empty();
 
+    /*
     @Unique
     private EnergyTicker af_ticker;
+    */
 
     @Unique
     private void af_onUpgradesChanged() {
         this.host.saveChanges();
         this.host.getBlockEntity().invalidateCapabilities();
-        this.af_ticker.updateSleep();
+        // this.af_ticker.updateSleep();
     }
 
     @Override
@@ -67,13 +65,15 @@ public abstract class MixinAdvPatternProviderLogic implements IUpgradeableObject
             IManagedGridNode mainNode, AdvPatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
         this.af_upgrades =
                 UpgradeInventories.forMachine(host.getTerminalIcon().getItem(), 1, this::af_onUpgradesChanged);
+        /*
         this.af_ticker = new EnergyTicker(
-                this.host::getBlockEntity,
-                this.host,
-                () -> this.af_upgrades.isInstalled(AFSingletons.INDUCTION_CARD),
-                this.mainNode,
-                this.actionSource);
+        		this.host::getBlockEntity,
+        		this.host,
+        		() -> this.af_upgrades.isInstalled(AFSingletons.INDUCTION_CARD),
+        		this.mainNode,
+        		this.actionSource);
         this.mainNode.addService(IEnergyDistributor.class, this.af_ticker);
+        */
     }
 
     @Inject(method = "writeToNBT", at = @At("TAIL"))

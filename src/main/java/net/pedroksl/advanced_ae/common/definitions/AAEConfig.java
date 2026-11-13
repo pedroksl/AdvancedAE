@@ -17,7 +17,7 @@ public class AAEConfig extends ConfigRegistry {
 
     AAEConfig(ModContainer container) {
         container.registerConfig(ModConfig.Type.CLIENT, client.spec);
-        container.registerConfig(ModConfig.Type.COMMON, common.spec);
+        container.registerConfig(ModConfig.Type.LOCAL, common.spec);
     }
 
     public boolean getEnableEffects() {

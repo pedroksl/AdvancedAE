@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "ae2:speed_card",
     "I": "advanced_ae:import_export_bus_part",

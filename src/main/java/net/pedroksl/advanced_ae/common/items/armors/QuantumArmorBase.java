@@ -190,7 +190,7 @@ public class QuantumArmorBase extends PoweredItem implements GeoItem, IMenuItem,
 
     @Override
     public <T extends LivingEntity> int damageItem(
-            ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+            ItemStack stack, int amount, @Nullable T entity, Consumer<ItemStack> onBroken) {
         if (entity instanceof Player player) {
             consumeEnergy(player, stack, amount);
         }

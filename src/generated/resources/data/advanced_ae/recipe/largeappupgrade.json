@@ -9,7 +9,6 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "C": "ae2:capacity_card",
     "G": "#ae2:glass_cable",

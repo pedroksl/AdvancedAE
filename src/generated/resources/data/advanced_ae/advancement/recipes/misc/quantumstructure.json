@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantumstructure"
+        "recipes": "advanced_ae:quantumstructure"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

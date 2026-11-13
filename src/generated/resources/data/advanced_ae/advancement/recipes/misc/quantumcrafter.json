@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantumcrafter"
+        "recipes": "advanced_ae:quantumcrafter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

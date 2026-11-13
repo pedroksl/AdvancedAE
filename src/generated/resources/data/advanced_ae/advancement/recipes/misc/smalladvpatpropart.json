@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:smalladvpatpropart"
+        "recipes": "advanced_ae:smalladvpatpropart"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

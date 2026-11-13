@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "advanced_ae:quantum_chestplate_item_reset"
+        "recipes": "advanced_ae:quantum_chestplate_item_reset"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -9,7 +9,6 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "E": "advanced_ae:shattered_singularity",
     "S": "ae2:singularity",

@@ -6,7 +6,6 @@
     "refmap": "mixins.aae.refmap.json",
     "compatibilityLevel": "JAVA_25",
     "mixins": [
-        "MixinContainerPatternModifier",
         "MixinEncodedPatternItem",
         "MixinIOBusPartInvoker",
         "MixinPlayer",

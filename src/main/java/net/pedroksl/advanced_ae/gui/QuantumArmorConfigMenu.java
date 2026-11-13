@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -221,7 +222,7 @@ public class QuantumArmorConfigMenu extends AEBaseMenu implements ISubMenuHost, 
         var upgradeStack = upgradeType.item().stack();
         if (upgradeRemoved) {
             if (!getPlayer().getInventory().add(upgradeStack)) {
-                getPlayer().drop(upgradeStack, false);
+                getPlayer().drop(upgradeStack, false, Prediction.SERVER_ONLY);
             }
         }
         this.markDirty = true;
