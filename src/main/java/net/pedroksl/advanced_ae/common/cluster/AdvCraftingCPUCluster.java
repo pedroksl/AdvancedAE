@@ -99,15 +99,30 @@ public class AdvCraftingCPUCluster implements IAECluster {
     }
 
     private void updateGridForChangedCpu(AdvCraftingCPUCluster cluster) {
-        var posted = false;
-        for (AdvCraftingBlockEntity r : this.blockEntities) {
-            final IGridNode n = r.getActionableNode();
-            if (n != null && !posted) {
-                n.getGrid().postEvent(new GridCraftingCpuChange(n));
-                posted = true;
-            }
+        // Refreshing the block entities changes their block states (powered, formed, light level...), which
+        // fires neighbor shape updates on the other units of this same cluster. Without this guard each of
+        // those updates re-runs the multiblock calculation while the cluster is being refreshed, which can
+        // rebuild and break clusters recursively and hang the server thread (see destroy(), which already
+        // guards its own call the same way).
+        boolean ownsModification = !MBCalculator.isModificationInProgress();
+        if (ownsModification) {
+            MBCalculator.setModificationInProgress(this);
+        }
+        try {
+            var posted = false;
+            for (AdvCraftingBlockEntity r : this.blockEntities) {
+                final IGridNode n = r.getActionableNode();
+                if (n != null && !posted) {
+                    n.getGrid().postEvent(new GridCraftingCpuChange(n));
+                    posted = true;
+                }
 
-            r.updateStatus(cluster);
+                r.updateStatus(cluster);
+            }
+        } finally {
+            if (ownsModification) {
+                MBCalculator.setModificationInProgress(null);
+            }
         }
     }
 
